@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Liffom.Formulas.Matrices
+namespace GoodSeat.Liffom.Formulas.Matrices
 {
 	/// <summary>
 	/// 行ベクトル、もしくは列ベクトルを表します。

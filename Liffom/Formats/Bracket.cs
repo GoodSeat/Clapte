@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Formats
+namespace GoodSeat.Liffom.Formats
 {
 	/// <summary>
 	/// 数式括弧を表します。

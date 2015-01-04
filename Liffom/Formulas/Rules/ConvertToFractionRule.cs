@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formats.Powers;
-using Liffom.Formulas.Operators;
-using Liffom.Extensions;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formats.Powers;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Extensions;
 
-namespace Liffom.Formulas.Rules
+namespace GoodSeat.Liffom.Formulas.Rules
 {
 	/// <summary>
 	/// 小数を有する数値を分数に変換するルールを表します。

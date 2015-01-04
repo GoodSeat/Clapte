@@ -1,13 +1,13 @@
-﻿using Liffom.Processes;
+﻿using GoodSeat.Liffom.Processes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Liffom.Formulas.Operators.Comparers;
-using Liffom;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

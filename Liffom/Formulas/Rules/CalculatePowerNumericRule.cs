@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Constants;
-using Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas.Operators.Rules;
 
-namespace Liffom.Formulas.Rules
+namespace GoodSeat.Liffom.Formulas.Rules
 {
 	/// <summary>
 	/// 累乗の数値計算を規定するルールを表します。

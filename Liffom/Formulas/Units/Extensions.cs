@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Units
+namespace GoodSeat.Liffom.Formulas.Units
 {
     public static class Extensions
     {

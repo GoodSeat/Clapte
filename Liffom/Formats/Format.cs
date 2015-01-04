@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Utilities;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Utilities;
 
-namespace Liffom.Formats
+namespace GoodSeat.Liffom.Formats
 {
 	/// <summary>
 	/// 数式の文字列出力時の書式情報を表します。

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Operators.Rules.Products
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 {
 	/// <summary>
 	/// 同指数の累乗の積算を、累乗にまとめるルールを表します。

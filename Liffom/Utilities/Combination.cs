@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom.Utilities
+namespace GoodSeat.Liffom.Utilities
 {
 	/// <summary>
 	/// コンビネーションの取得に関する操作を提供します。

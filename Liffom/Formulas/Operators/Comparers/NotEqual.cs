@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
+using GoodSeat.Liffom.Deforms;
 
-namespace Liffom.Formulas.Operators.Comparers
+namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 {
 	/// <summary>
 	/// 非等式記号による数式のつながりを表します。

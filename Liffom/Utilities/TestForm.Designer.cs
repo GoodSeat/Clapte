@@ -1,4 +1,4 @@
-﻿namespace Liffom.Utilities
+﻿namespace GoodSeat.Liffom.Utilities
 {
 	partial class TestForm
 	{

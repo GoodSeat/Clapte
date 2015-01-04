@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Deforms.Rules
+namespace GoodSeat.Liffom.Deforms.Rules
 {
 	/// <summary>
 	/// 複数のルールから成るルールを表します。

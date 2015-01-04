@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Formulas.Functions.Trigonometric.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 {
 	/// <summary>
 	/// 角度の単位をradに統一するルールです。

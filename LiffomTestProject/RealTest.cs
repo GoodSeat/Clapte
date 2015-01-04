@@ -1,8 +1,8 @@
-﻿using Liffom.Reals;
+﻿using GoodSeat.Liffom.Reals;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

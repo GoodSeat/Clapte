@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Units.Rules
+namespace GoodSeat.Liffom.Formulas.Units.Rules
 {
 	/// <summary>
 	/// 式中に存在する同次元単位の単位系を揃えるルールを表します。

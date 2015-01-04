@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Liffom.Utilities
+namespace GoodSeat.Liffom.Utilities
 {
 	public static class Sort
 	{

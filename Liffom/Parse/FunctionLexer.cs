@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Liffom.Formulas;
-using Liffom.Formulas.Functions;
-using Liffom.Utilities;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Utilities;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 関数の字句解析器を表します。

@@ -4,7 +4,7 @@ using System.Text;
 using System.IO;
 using System.Reflection;
 
-namespace Liffom.Utilities
+namespace GoodSeat.Liffom.Utilities
 {
 	/// <summary>
 	/// リフレクタ情報を提供します。

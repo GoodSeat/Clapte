@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
-using Liffom.Formats.Powers;
-using Liffom.Utilities;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formats.Powers;
+using GoodSeat.Liffom.Utilities;
 
-namespace Liffom.Formulas.Units
+namespace GoodSeat.Liffom.Formulas.Units
 {
 	/// <summary>
 	/// 単位接頭辞を表します。

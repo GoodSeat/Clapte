@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Array.Rules
+namespace GoodSeat.Liffom.Formulas.Array.Rules
 {
 	/// <summary>
 	/// 多次元配列における特定インデックスの参照ルールを表します。

@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Rules.Sums;
-using Liffom.Formulas.Operators.Rules;
-using Liffom.Formulas.Operators.Rules.Powers;
-using Liffom.Formulas.Operators.Rules.Products;
-using Liffom.Formulas.Units.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Sums;
+using GoodSeat.Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Formulas.Units.Rules;
 
-namespace Liffom.Deforms
+namespace GoodSeat.Liffom.Deforms
 {
 	/// <summary>
 	/// 整理変形を識別する変形識別トークンを表します。

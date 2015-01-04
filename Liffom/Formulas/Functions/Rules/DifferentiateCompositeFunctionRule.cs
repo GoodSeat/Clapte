@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators;
-using Liffom.Extensions;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Extensions;
 
-namespace Liffom.Formulas.Functions.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
 	/// <summary>
 	/// ‡¬ŠÖ”‚Ì”÷•ª‚ğ‹K’è‚·‚éƒ‹[ƒ‹‚ğ•\‚µ‚Ü‚·B

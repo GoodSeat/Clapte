@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Units.Rules
+namespace GoodSeat.Liffom.Formulas.Units.Rules
 {
 	/// <summary>
 	/// 積算に含まれる単位項を分離するルールを表します。

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Extensions;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Rules;
-using Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
 
-namespace Liffom.Formulas.Matrices.Rules
+namespace GoodSeat.Liffom.Formulas.Matrices.Rules
 {
 	/// <summary>
 	/// 負数を指数とする累乗において、その指数の-1を括りだすルールを表します。

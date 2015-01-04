@@ -2,12 +2,12 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Matrices.Rules;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Matrices.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Matrices
+namespace GoodSeat.Liffom.Formulas.Matrices
 {
 	/// <summary>
 	/// 行列を表します。

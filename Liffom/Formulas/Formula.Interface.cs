@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Collections;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Formulas
+namespace GoodSeat.Liffom.Formulas
 {
 	public abstract partial class Formula
 	{

@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Deforms
+namespace GoodSeat.Liffom.Deforms
 {
 	/// <summary>
 	/// ルールの適用履歴情報の一系統を表します。

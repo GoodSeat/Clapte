@@ -1,11 +1,11 @@
-﻿using Liffom.Extensions;
+﻿using GoodSeat.Liffom.Extensions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Liffom.Formulas.Matrices;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Matrices;
+using GoodSeat.Liffom.Formulas;
 using System.Collections.Generic;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

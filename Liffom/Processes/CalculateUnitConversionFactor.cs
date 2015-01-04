@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Threading;
 using System.ComponentModel;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Processes
+namespace GoodSeat.Liffom.Processes
 {
 	/// <summary>
 	/// 単位間の変換係数算出処理を表します。

@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
 
-namespace Liffom.Formulas.Operators.Rules.Powers
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 {
 	/// <summary>
 	/// 分数を指数とする累乗を、指数の分母を基数とした√に変換するルールを表します。

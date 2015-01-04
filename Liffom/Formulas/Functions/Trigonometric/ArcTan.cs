@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Functions.Rules;
-using Liffom.Formulas.Functions.Trigonometric;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Functions.Rules;
+using GoodSeat.Liffom.Formulas.Functions.Trigonometric;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Formulas.Functions
+namespace GoodSeat.Liffom.Formulas.Functions
 {
 	/// <summary>
 	/// ArcTan関数を表します。

@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Units
+namespace GoodSeat.Liffom.Formulas.Units
 {
 	/// <summary>
 	/// 単位変換テーブルにおける基準単位データを表します。

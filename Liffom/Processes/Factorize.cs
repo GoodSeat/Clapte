@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Extensions;
-using Liffom.Formulas;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Processes
+namespace GoodSeat.Liffom.Processes
 {
 	/// <summary>
 	/// 数式の因数分解処理を表します。

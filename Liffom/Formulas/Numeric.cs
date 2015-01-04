@@ -2,16 +2,16 @@
 using System.Collections.Generic;
 using System.Globalization;
 using System.Text;
-using Liffom.Formats.Numerics;
-using Liffom.Reals;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
-using Liffom.Formats;
-using Liffom.Formulas.Rules;
-using Liffom.Formulas.Operators.Rules.Powers;
+using GoodSeat.Liffom.Formats.Numerics;
+using GoodSeat.Liffom.Reals;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formats;
+using GoodSeat.Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 
-namespace Liffom.Formulas
+namespace GoodSeat.Liffom.Formulas
 {
 	/// <summary>
 	/// 数値データ（最小単位）

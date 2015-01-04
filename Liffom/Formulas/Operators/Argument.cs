@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formats;
+using GoodSeat.Liffom.Formats;
 
-namespace Liffom.Formulas.Operators
+namespace GoodSeat.Liffom.Formulas.Operators
 {
 	/// <summary>
 	/// 関数の作成などに用いる引数を表します。

@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
+using GoodSeat.Liffom.Deforms;
 
-namespace Liffom.Formulas.Constants
+namespace GoodSeat.Liffom.Formulas.Constants
 {
 	/// <summary>
 	/// ネイピア数(自然対数の底)eを表します。

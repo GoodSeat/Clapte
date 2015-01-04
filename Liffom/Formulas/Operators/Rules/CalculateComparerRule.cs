@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
 
-namespace Liffom.Formulas.Operators.Rules
+namespace GoodSeat.Liffom.Formulas.Operators.Rules
 {
 	/// <summary>
 	/// 比較演算子の評価結果を数値化するルールを表します。

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
-using Liffom.Formulas.Matrices;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Matrices;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Extensions
+namespace GoodSeat.Liffom.Extensions
 {
 	/*
 	 * 参考資料

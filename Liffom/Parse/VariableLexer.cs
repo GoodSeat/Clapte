@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 変数の字句解析器を表します。

@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Rules
+namespace GoodSeat.Liffom.Formulas.Rules
 {
 	/// <summary>
 	/// 数値の加算結果を規定する計算ルールを表します。

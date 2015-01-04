@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Constants.Rules
+namespace GoodSeat.Liffom.Formulas.Constants.Rules
 {
 	/// <summary>
 	/// 虚数の整数乗の整理を規程するルールを表します。

@@ -1,9 +1,9 @@
-﻿using Liffom.Formulas.Functions;
+﻿using GoodSeat.Liffom.Formulas.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

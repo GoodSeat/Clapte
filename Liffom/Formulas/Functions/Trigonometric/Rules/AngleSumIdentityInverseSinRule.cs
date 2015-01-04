@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Functions.Trigonometric.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 {
 	/// <summary>
 	/// 加法定理によるsin関数への整理を規定するルールを表します。

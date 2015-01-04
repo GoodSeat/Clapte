@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Operators.Rules.Powers
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 {
 	/// <summary>
 	/// 分母の有理化（分母の平方根を含む和を分子に移動）を行うルールを表します。

@@ -1,8 +1,8 @@
-﻿using Liffom.Formulas.Array;
+﻿using GoodSeat.Liffom.Formulas.Array;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

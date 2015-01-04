@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom.Formulas
+namespace GoodSeat.Liffom.Formulas
 {
 	/// <summary>
 	/// 編集対象とならない固定数式を初期化します。

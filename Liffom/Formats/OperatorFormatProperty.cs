@@ -1,10 +1,10 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 using System.Text.RegularExpressions;
 
-namespace Liffom.Formats
+namespace GoodSeat.Liffom.Formats
 {
 	/// <summary>
 	/// 演算記号を空白で囲うか否かの書式情報を表します。

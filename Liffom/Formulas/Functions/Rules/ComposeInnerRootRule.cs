@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Functions.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
 	/// <summary>
 	/// ルート関数内部のルート関数を合成するルールを表します。

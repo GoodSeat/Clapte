@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Matrices.Rules
+namespace GoodSeat.Liffom.Formulas.Matrices.Rules
 {		
 	/// <summary>
 	/// 行列の要素同士の積を規定するルールです。

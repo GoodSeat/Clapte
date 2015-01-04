@@ -1,12 +1,12 @@
-﻿using Liffom.Formats.Powers;
-using Liffom.Formulas.Operators;
+﻿using GoodSeat.Liffom.Formats.Powers;
+using GoodSeat.Liffom.Formulas.Operators;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Liffom;
-using Liffom.Deforms;
-using Liffom.Formulas;
+using GoodSeat.Liffom;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Formulas;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

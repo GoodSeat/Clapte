@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Extensions;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Rules.Powers;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 
-namespace Liffom.Formulas.Operators.Rules.Products
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 {
 	/// <summary>
 	/// 多項式の約分ルールを表します。

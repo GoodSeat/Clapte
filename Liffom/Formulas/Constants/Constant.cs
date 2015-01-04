@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Constants.Rules;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Utilities;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Constants.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Utilities;
 
-namespace Liffom.Formulas.Constants
+namespace GoodSeat.Liffom.Formulas.Constants
 {
 	/// <summary>
 	/// 定数を表します。

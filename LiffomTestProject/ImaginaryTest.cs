@@ -1,10 +1,10 @@
-﻿using Liffom.Formulas.Constants;
+﻿using GoodSeat.Liffom.Formulas.Constants;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Liffom;
-using Liffom.Formulas;
+using GoodSeat.Liffom;
+using GoodSeat.Liffom.Formulas;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

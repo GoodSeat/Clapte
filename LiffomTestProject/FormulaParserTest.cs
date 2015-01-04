@@ -1,17 +1,17 @@
-﻿using Liffom.Formulas.Matrices;
-using Liffom.Parse;
+﻿using GoodSeat.Liffom.Formulas.Matrices;
+using GoodSeat.Liffom.Parse;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
-using Liffom;
-using Liffom.Formulas;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Constants;
-using Liffom.Formulas.Units;
-using Liffom.Formulas.Operators.Comparers;
-using Liffom.Formulas.Operators.Booleans;
+using GoodSeat.Liffom;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Formulas.Operators.Booleans;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     
     

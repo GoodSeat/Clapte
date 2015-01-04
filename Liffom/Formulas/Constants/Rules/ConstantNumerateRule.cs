@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Constants.Rules
+namespace GoodSeat.Liffom.Formulas.Constants.Rules
 {
 	/// <summary>
 	/// 定数を数値化するルールを表します。

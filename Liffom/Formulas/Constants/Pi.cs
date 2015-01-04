@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
+using GoodSeat.Liffom.Deforms;
 
-namespace Liffom.Formulas.Constants
+namespace GoodSeat.Liffom.Formulas.Constants
 {
 	/// <summary>
 	/// 円周率を表します。
