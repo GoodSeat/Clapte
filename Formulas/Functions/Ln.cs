@@ -26,11 +26,6 @@ namespace GoodSeat.Liffom.Formulas.Functions
 		/// <param name="f">‘ÎÛ‚Ì”’lB</param>
 		public Ln(Formula f) : base(f, Napiers.e) { }
 
-		public override int MaximumArgumentQty
-		{
-			get { return 1; }
-		}
-
 		public override string GetInformation(out List<string> args)
 		{
 			args = new List<string>(); args.Add("”’l");
@@ -56,6 +51,21 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
 				yield return new DifferentiateCompositeFunctionRule(0);
 			}
+		}
+
+		public override Type GetEqualBaseType() { return typeof(Log); }
+
+		public override Formula this[int i]
+		{
+			get
+			{
+				if (i == 1) return Napiers.e;
+				else return base[i];
+			}
+			set 
+            {
+                if (i == 0) base[i] = value;
+            }
 		}
 	}
 }

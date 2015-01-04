@@ -174,7 +174,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("sqrt(8*a^3)"),
-				Formula.Parse("2*a*sqrt(2*a)")
+				Formula.Parse("(2*a)*sqrt(2*a)")
 				);
 		}
 

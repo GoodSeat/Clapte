@@ -76,6 +76,25 @@ namespace GoodSeat.Liffom.Deforms.Rules
 			set { _admitAddZero = value; }
 		}
 
+		/// <summary>
+		/// 無意味な数値にヒットしているか否かを取得します。
+		/// </summary>
+		public bool IsHitAdmitOneOrZero
+		{
+			get
+			{
+				if (AdmitPowerOne || AdmitMultiplyOne)
+				{
+					return (MatchedFormula == 1);
+				}
+				if (AdmitAddZero)
+				{
+					return (MatchedFormula == 0);
+				}
+				return false;
+			}
+		}
+
 
 		/// <summary>
 		/// ルールパターン数式中の一致数式を削除します。

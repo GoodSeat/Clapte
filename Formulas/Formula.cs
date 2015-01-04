@@ -524,7 +524,7 @@ namespace GoodSeat.Liffom.Formulas
 			if (this[0] == null) return this == f;
 			else
 			{
-				if (this.GetType() != f.GetType()) return false;
+				if (this.GetEqualBaseType() != f.GetEqualBaseType()) return false;
 				int index = 0;
 				while (this[index] != null)
 				{

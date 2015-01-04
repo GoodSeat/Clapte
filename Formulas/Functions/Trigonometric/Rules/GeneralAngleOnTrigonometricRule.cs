@@ -63,7 +63,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("sin(5*π)"),
-				Formula.Parse("sin(π)")
+				Formula.Parse("sin(0+π*(5-4))")
 				);
 		}
 

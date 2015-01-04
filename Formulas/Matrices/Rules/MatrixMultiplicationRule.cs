@@ -93,11 +93,11 @@ namespace GoodSeat.Liffom.Formulas.Matrices.Rules
 		public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
 		{
 			yield return new KeyValuePair<Formula, Formula>(
-				Formula.Parse("[a, b] * {[1,2], [3,4]}"),
+				Formula.Parse("[a, b] . {[1,2], [3,4]}"),
 				Formula.Parse("[a*1 + b*3, a*2 + b*4]")
 				);
 			yield return new KeyValuePair<Formula, Formula>(
-				Formula.Parse("{[1,2], [3,4]} * {a, b}"),
+				Formula.Parse("{[1,2], [3,4]} . {a, b}"),
 				Formula.Parse("{a*1 + b*2, a*3 + b*4}")
 				);
 		}

@@ -70,7 +70,7 @@ namespace GoodSeat.Liffom.Formulas
 			if (!this.IsUnit() &&  other.IsUnit()) return (CompareResult) (- 3);
 			if ( this.IsUnit() && !other.IsUnit()) return (CompareResult)3;
 
-			return (CompareResult)Math.Sign(ToString().Length.CompareTo(other.ToString().Length));
+			return (CompareResult)Math.Sign(GetUniqueText().Length.CompareTo(other.GetUniqueText().Length));
 		}
 
 		#endregion

@@ -69,7 +69,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("(a*b + b) / (a + 1)"),
-				Formula.Parse("b / 1")
+				Formula.Parse("b")
 				);
 		}
 

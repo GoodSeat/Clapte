@@ -45,7 +45,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("8^(2/3)"),
-				Formula.Parse("sqrt(8^2,3)")
+				Formula.Parse("root(8^2,3)")
 				);
 		}
 

@@ -104,7 +104,10 @@ namespace GoodSeat.Liffom.Reals
 		/// </summary>
 		public override double Data
 		{
-			get { return GetErrorModifiedData(); }
+			get 
+			{
+				return GetErrorModifiedData();
+			}
 			set
 			{
 				base.Data = value;
@@ -221,6 +224,14 @@ namespace GoodSeat.Liffom.Reals
 				}
 				return unit;
 			}
+		}
+
+		/// <summary>
+		/// 内部保持の数値を、内部誤差を修正した数値に置き換えます。
+		/// </summary>
+		public void ModifyError()
+		{
+			Data = GetErrorModifiedData();
 		}
 
 

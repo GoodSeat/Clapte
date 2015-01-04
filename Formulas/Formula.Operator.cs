@@ -29,7 +29,15 @@ namespace GoodSeat.Liffom.Formulas
 		/// </summary>
 		/// <param name="f1">数式</param>
 		/// <returns>負数</returns>
-		public static Formula operator -(Formula f1) { return -1 * f1; }
+		public static Formula operator -(Formula f1) 
+		{
+			var num = f1 as Numeric;
+			if (num != null && num.Data > 0)
+			{
+				return (-1 * f1).Numerate();
+			}
+			return -1 * f1;
+		}
 
 		/// <summary>
 		/// 乗算(<paramref name="f1"/>^<paramref name="f2"/>)を生成します。
