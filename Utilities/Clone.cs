@@ -5,7 +5,7 @@ using System.Text;
 using System.IO;
 using System.Runtime.Serialization.Formatters.Binary;
 
-namespace Liffom.Utilities
+namespace GoodSeat.Liffom.Utilities
 {	
 	/// <summary>
 	/// オブジェクトのクローン生成処理を提供します。

@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Deforms;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms;
 
-namespace Liffom.Deforms.Rules
+namespace GoodSeat.Liffom.Deforms.Rules
 {
 	/// <summary>
 	/// ルールパターン数式に用いる変数を表します。

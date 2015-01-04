@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators.Booleans;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators.Booleans;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 論理演算子の演算構文解析器を表します。

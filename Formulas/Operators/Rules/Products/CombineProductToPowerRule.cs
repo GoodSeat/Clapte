@@ -1,13 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators.Rules.Sums;
-using Liffom.Formulas.Operators.Rules.Powers;
-using Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Sums;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
+using GoodSeat.Liffom.Formulas.Rules;
 
-namespace Liffom.Formulas.Operators.Rules.Products
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 {
 	/// <summary>
 	/// 同項の積算を累乗にまとめるルールを表します。

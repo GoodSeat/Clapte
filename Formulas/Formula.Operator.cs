@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formats.Powers;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formats.Powers;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas
+namespace GoodSeat.Liffom.Formulas
 {
 	public abstract partial class Formula
 	{

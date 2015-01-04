@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Functions;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 絶対値を表す区切り記号トークンを表します。

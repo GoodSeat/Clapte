@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Liffom.Formulas;
-using Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Constants;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 定数の字句解析器を表します。

@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Formulas;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators.Comparers;
-using Liffom.Reals;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Reals;
 
-namespace Liffom.Processes
+namespace GoodSeat.Liffom.Processes
 {
 	/// <summary>
 	/// ニュートン・ラフソン法による解の算出処理を表します。

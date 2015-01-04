@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Reals
+namespace GoodSeat.Liffom.Reals
 {
 	/// <summary>
 	/// 数値計算用の実数を表します。

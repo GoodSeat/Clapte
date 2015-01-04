@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules;
 
-namespace Liffom.Formulas.Operators.Comparers
+namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 {
 	/// <summary>
 	/// 比較演算を表します。

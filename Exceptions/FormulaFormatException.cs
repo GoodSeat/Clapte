@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Liffom
+namespace GoodSeat.Liffom
 {
 	/// <summary>
 	/// Formula内の表記規定に抵触する例外を表します。

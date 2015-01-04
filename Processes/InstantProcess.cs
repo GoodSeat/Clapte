@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Processes
+namespace GoodSeat.Liffom.Processes
 {
 	/// <summary>
 	/// 一時的な使用を目的とした数式処理クラスを表します。

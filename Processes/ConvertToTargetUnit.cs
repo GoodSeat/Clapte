@@ -1,13 +1,13 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Processes
+namespace GoodSeat.Liffom.Processes
 {
 	/// <summary>
 	/// 数式中の単位を指定した目標単位に一括変換する処理を表します。

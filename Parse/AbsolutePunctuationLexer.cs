@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 絶対値を表す区切り記号の字句解析器を表します。

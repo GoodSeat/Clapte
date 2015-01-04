@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formats;
-using Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formats;
+using GoodSeat.Liffom.Formulas.Operators.Rules;
 
-namespace Liffom.Formulas.Operators
+namespace GoodSeat.Liffom.Formulas.Operators
 {
 	/// <summary>
 	/// 演算を表します。

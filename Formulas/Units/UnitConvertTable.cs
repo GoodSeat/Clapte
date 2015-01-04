@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.IO;
 using System.Text;
 using System.Reflection;
-using Liffom.Processes;
-using Liffom.Reals;
+using GoodSeat.Liffom.Processes;
+using GoodSeat.Liffom.Reals;
 
-namespace Liffom.Formulas.Units
+namespace GoodSeat.Liffom.Formulas.Units
 {
 	/// <summary>
 	/// 単位変換表を表します。

@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom.Formulas
+namespace GoodSeat.Liffom.Formulas
 {
 	/// <summary>
 	/// 数式不在を表します。

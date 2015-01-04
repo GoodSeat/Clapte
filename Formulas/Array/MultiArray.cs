@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Array.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Array.Rules;
 
-namespace Liffom.Formulas.Array
+namespace GoodSeat.Liffom.Formulas.Array
 {
 	/// <summary>
 	/// 多次元配列を表します。

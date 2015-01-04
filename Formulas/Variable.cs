@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Text;
 using System.Reflection;
-using Liffom.Deforms;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Constants;
 
-namespace Liffom.Formulas
+namespace GoodSeat.Liffom.Formulas
 {
 	/// <summary>
 	/// 変数を表します。

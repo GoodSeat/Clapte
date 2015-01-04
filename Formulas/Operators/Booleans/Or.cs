@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom.Formulas.Operators.Booleans
+namespace GoodSeat.Liffom.Formulas.Operators.Booleans
 {
 	/// <summary>
 	/// 論理和を表します。

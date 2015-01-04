@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 階乗記号の字句解析器を表します。

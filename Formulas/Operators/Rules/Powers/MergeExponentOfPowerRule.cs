@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Operators.Rules.Powers
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 {
 	/// <summary>
 	/// 累乗の累乗を合成するルールを表します。

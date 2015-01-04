@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Units;
-using Liffom.Reals;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Reals;
 
-namespace Liffom.Formulas.Functions.Trigonometric.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 {
 	/// <summary>
 	/// 三角関数における一般角(-π～π)の公式を規定するルールを表します。

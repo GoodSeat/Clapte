@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Functions
+namespace GoodSeat.Liffom.Formulas.Functions
 {
 	/// <summary>
 	/// ユーザー定義関数を表します。

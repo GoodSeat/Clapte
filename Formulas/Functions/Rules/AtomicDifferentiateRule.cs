@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Constants;
 
-namespace Liffom.Formulas.Functions.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
 	/// <summary>
 	/// 微分結果が0、もしくは1となる微分を既定するルールを表します。

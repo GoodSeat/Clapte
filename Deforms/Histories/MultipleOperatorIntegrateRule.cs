@@ -2,11 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Deforms
+namespace GoodSeat.Liffom.Deforms
 {
 	/// <summary>
 	/// 可変数演算の統合変形を実行するルールです。

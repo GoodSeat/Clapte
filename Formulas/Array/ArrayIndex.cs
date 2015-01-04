@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom.Formulas.Array
+namespace GoodSeat.Liffom.Formulas.Array
 {
 	/// <summary>
 	/// 配列内のインデックスを表します。

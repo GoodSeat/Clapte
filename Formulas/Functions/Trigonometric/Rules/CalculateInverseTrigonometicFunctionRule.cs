@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Functions.Trigonometric.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 {
 	/// <summary>
 	/// 逆三角関数の数値化に関する公式を規定するルールを表します。

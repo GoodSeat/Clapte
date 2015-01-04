@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom.Formulas.Units
+namespace GoodSeat.Liffom.Formulas.Units
 {
 	/// <summary>
 	/// IEC規格の接頭辞を表します。

@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Extensions;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Formulas.Operators;
 using System.Drawing.Drawing2D;
 using System.Drawing;
 
-namespace Liffom.Formulas.Functions
+namespace GoodSeat.Liffom.Formulas.Functions
 {
 	/// <summary>
 	/// Mod関数（剰余）を表します。

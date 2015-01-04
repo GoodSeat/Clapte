@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Formats.Powers;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formats.Powers;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 省略された乗算記号の構文解析器を表します。

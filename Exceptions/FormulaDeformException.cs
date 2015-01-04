@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Liffom
+namespace GoodSeat.Liffom
 {
 	/// <summary>
 	/// 数式の変形処理中に発生した例外情報を表します。

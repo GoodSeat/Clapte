@@ -1,19 +1,13 @@
 ﻿using System;
-using System.Collections;
 using System.Collections.Generic;
-using System.Text;
-using System.IO;
-using System.Runtime.Serialization.Formatters.Binary;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Comparers;
-using Liffom.Formats;
-using Liffom.Deforms.Rules;
-using Liffom.Deforms;
-using Liffom.Parse;
-using Liffom.Utilities;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Formats;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Parse;
+using GoodSeat.Liffom.Utilities;
 
-namespace Liffom.Formulas
+namespace GoodSeat.Liffom.Formulas
 {	
 	/// <summary>
 	/// 数式の抽象クラス

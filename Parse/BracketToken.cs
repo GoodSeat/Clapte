@@ -2,13 +2,13 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formats;
-using Liffom.Formulas;
-using Liffom.Formulas.Matrices;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formats;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Matrices;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 角括弧トークンを表します。

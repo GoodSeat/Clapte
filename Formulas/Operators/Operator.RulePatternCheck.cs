@@ -1,9 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Operators
+namespace GoodSeat.Liffom.Formulas.Operators
 {
 	public abstract partial class Operator
 	{

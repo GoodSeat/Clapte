@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Deforms;
-using Liffom.Utilities;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Utilities;
 
-namespace Liffom.Deforms.Rules
+namespace GoodSeat.Liffom.Deforms.Rules
 {		
 	/// <summary>
 	/// 数式の形状に応じた、適用可能な数式の変形処理を規定するルールを表します。

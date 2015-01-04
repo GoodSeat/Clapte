@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Formulas.Operators.Comparers
+namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 {
 	/// <summary>
 	/// 不等号(より小)による数式の比較を表します。

@@ -2,10 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 関数名トークンを表します。

@@ -1,16 +1,16 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Utilities;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators.Rules.Products;
-using Liffom.Formulas.Constants;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Units;
-using Liffom.Formats;
+using GoodSeat.Liffom.Utilities;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formats;
 
-namespace Liffom.Formulas.Operators
+namespace GoodSeat.Liffom.Formulas.Operators
 {
 	/// <summary>
 	/// 積算を表します。

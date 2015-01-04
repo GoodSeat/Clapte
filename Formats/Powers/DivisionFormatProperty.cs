@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Formats.Powers
+namespace GoodSeat.Liffom.Formats.Powers
 {
 	/// <summary>
 	/// 負の累乗を 1/x の形式で表示するかの出力書式を表します。

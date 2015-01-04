@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Extensions;
-using Liffom.Formulas.Units;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Operators.Rules.Sums
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 {
 	/// <summary>
 	/// 分数とそれ以外の項の通分処理を規定するルールを表します。

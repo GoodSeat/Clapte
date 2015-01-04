@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Deforms.Rules
+namespace GoodSeat.Liffom.Deforms.Rules
 {
 	/// <summary>
 	/// OperatorMultipleの構成項の各組合せについて、ルールの適用による数式変形を試みるルールを表します。

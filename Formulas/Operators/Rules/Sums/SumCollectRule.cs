@@ -1,10 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Operators.Rules.Sums
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 {
 	/// <summary>
 	/// 特定数式に関して、和算の整理を実行するルールを表します。

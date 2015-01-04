@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Formats.Numerics
+namespace GoodSeat.Liffom.Formats.Numerics
 {
 	/// <summary>
 	/// 数値の小数点の表記情報を表します。

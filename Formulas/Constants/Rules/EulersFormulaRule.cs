@@ -2,12 +2,12 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Functions.Trigonometric.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules;
 
-namespace Liffom.Formulas.Constants.Rules
+namespace GoodSeat.Liffom.Formulas.Constants.Rules
 {
 	/// <summary>
 	/// オイラーの公式を規定するルールを表します。

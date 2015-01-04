@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
-using Liffom.Formulas.Operators;
-using Liffom.Reals;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Reals;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Extensions
+namespace GoodSeat.Liffom.Extensions
 {
 	/// <summary>
 	/// 多項式に関する処理を提供します。

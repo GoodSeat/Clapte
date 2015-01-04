@@ -1,14 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Reals;
-using Liffom.Formulas.Operators.Comparers;
-using Liffom.Formulas.Rules;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Reals;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Processes
+namespace GoodSeat.Liffom.Processes
 {
 	/// <summary>
 	/// 方程式の求解処理を表します。

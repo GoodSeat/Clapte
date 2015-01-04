@@ -3,11 +3,11 @@ using System.Collections.Generic;
 using System.Text;
 using System.Drawing.Drawing2D;
 using System.Drawing;
-using Liffom.Deforms;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
 
-namespace Liffom.Formulas.Functions
+namespace GoodSeat.Liffom.Formulas.Functions
 {
 	/// <summary>
 	/// sigma（総和 Σ）関数を表します。

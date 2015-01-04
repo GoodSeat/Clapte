@@ -1,16 +1,16 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Reals;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Constants;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Reals;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
 
-namespace Liffom.Processes
+namespace GoodSeat.Liffom.Processes
 {
 	/// <summary>
 	/// 代数方程式を代数的に解く処理を表します。

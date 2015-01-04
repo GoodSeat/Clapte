@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom
+namespace GoodSeat.Liffom
 {
 	/// <summary>
 	/// 数式処理がユーザーによりキャンセルされたことを表す例外です。

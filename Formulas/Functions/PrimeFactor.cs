@@ -2,11 +2,11 @@ using System;
 using System.Linq;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
 using System.Drawing.Drawing2D;
 using System.Drawing;
+using GoodSeat.Liffom.Formulas.Operators;
 
-namespace Liffom.Formulas.Functions
+namespace GoodSeat.Liffom.Formulas.Functions
 {
 	/// <summary>
 	/// factor関数（素因数分解）を表します。

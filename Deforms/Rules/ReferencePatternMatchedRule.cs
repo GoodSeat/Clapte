@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Deforms.Rules
+namespace GoodSeat.Liffom.Deforms.Rules
 {
 	/// <summary>
 	/// ルールパターン数式の一致数式を参照するルールを表します。

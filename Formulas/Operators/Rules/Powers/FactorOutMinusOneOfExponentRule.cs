@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Extensions;
-using Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
 
-namespace Liffom.Formulas.Operators.Rules.Powers
+namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 {
 	/// <summary>
 	/// 負数を指数とする累乗において、その指数の-1を括りだすルールを表します。

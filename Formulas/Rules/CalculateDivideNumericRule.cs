@@ -2,11 +2,11 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
 
-namespace Liffom.Formulas.Rules
+namespace GoodSeat.Liffom.Formulas.Rules
 {
 	/// <summary>
 	/// 数値に対する数値による除算結果を規定するルールを表します。

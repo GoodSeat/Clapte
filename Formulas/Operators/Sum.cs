@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators.Rules.Sums;
-using Liffom.Utilities;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Sums;
+using GoodSeat.Liffom.Utilities;
 
-namespace Liffom.Formulas.Operators
+namespace GoodSeat.Liffom.Formulas.Operators
 {
 	/// <summary>
 	/// 和算を表します。

@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
 
-namespace Liffom.Formulas.Functions.Rules
+namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
 	/// <summary>
 	/// 関数を評価、計算するルールです。

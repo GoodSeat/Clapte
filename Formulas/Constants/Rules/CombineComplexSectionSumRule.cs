@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Rules;
-using Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Formulas.Rules;
 
-namespace Liffom.Formulas.Constants.Rules
+namespace GoodSeat.Liffom.Formulas.Constants.Rules
 {
 	/// <summary>
 	/// 虚数係数と数値係数の同項の和算を積算にまとめるルールを表します。

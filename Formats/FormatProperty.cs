@@ -1,9 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Formats
+namespace GoodSeat.Liffom.Formats
 {
 	/// <summary>
 	/// 数式の出力書式を表します。

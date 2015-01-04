@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Units;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
-namespace Liffom.Formulas.Rules
+namespace GoodSeat.Liffom.Formulas.Rules
 {
 	/// <summary>
 	/// 0の含まれる積算において、不要な項を削除するルールを表します。

@@ -1,14 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators;
-using Liffom.Formulas.Operators.Rules.Powers;
-using Liffom.Formulas.Constants.Rules;
-using Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
+using GoodSeat.Liffom.Formulas.Constants.Rules;
+using GoodSeat.Liffom.Formulas.Rules;
 
-namespace Liffom.Formulas.Constants
+namespace GoodSeat.Liffom.Formulas.Constants
 {
 	/// <summary>
 	/// 虚数記号iを表します。

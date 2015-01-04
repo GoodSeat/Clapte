@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Formulas;
-using Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Functions;
 
-namespace Liffom.Parse
+namespace GoodSeat.Liffom.Parse
 {
 	/// <summary>
 	/// 階乗記号!を解析する演算構文解析器します。

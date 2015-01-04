@@ -5,9 +5,9 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Utilities
+namespace GoodSeat.Liffom.Utilities
 {
 	public partial class TestForm : Form
 	{

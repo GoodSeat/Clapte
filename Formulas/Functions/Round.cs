@@ -1,11 +1,11 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Operators;
 using System.Drawing.Drawing2D;
 using System.Drawing;
 
-namespace Liffom.Formulas.Functions
+namespace GoodSeat.Liffom.Formulas.Functions
 {
 	/// <summary>
 	/// Round関数（桁丸め）を表します。

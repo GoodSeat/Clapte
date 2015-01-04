@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 
-namespace Liffom.Reals
+namespace GoodSeat.Liffom.Reals
 {
 	/// <summary>
 	/// 最大推定値と最小推定値を追跡する有効桁数考慮実数を表します。

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace Liffom.Deforms
+namespace GoodSeat.Liffom.Deforms
 {
 	/// <summary>
 	/// 展開変形を表す変形識別トークンを表します。

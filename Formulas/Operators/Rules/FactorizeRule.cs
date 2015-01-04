@@ -1,12 +1,12 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Processes;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Rules;
-using Liffom.Formulas.Operators.Rules.Sums;
+using GoodSeat.Liffom.Processes;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Sums;
 
-namespace Liffom.Formulas.Operators.Rules
+namespace GoodSeat.Liffom.Formulas.Operators.Rules
 {
 	/// <summary>
 	/// 因数分解の処理を規定するルールを表します。

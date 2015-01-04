@@ -1,17 +1,17 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using Liffom.Reals;
-using Liffom.Utilities;
-using Liffom.Deforms;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas.Operators.Rules.Powers;
-using Liffom.Formulas.Operators.Rules.Products;
-using Liffom.Formulas.Functions;
-using Liffom.Formulas.Units;
-using Liffom.Formats;
+using GoodSeat.Liffom.Reals;
+using GoodSeat.Liffom.Utilities;
+using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formats;
 
-namespace Liffom.Formulas.Operators
+namespace GoodSeat.Liffom.Formulas.Operators
 {
 	/// <summary>
 	/// 累乗を表します。

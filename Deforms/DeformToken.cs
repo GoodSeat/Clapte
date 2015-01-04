@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using Liffom.Deforms.Rules;
-using Liffom.Formulas;
+using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas;
 
-namespace Liffom.Deforms
+namespace GoodSeat.Liffom.Deforms
 {
 	/// <summary>
 	/// 数式変形の種別を識別するトークンを表します。
