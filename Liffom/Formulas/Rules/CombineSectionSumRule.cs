@@ -43,8 +43,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
 		public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
 		{
 			yield return new KeyValuePair<Formula, Formula>(
-				Formula.Parse("3*(3/2)*a+4^2*a"),
-				Formula.Parse("(3*(3/2)+4^2)*a")
+				Formula.Parse("3*(3/2)*a + 4^2*a"),
+				Formula.Parse("(3*(3/2) + 1*4^2) * a")
 				);
 		}
 

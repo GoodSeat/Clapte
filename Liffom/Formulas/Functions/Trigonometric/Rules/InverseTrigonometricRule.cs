@@ -32,7 +32,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("asin(a)+acos(a)"),
-				Formula.Parse("π/2")
+				Formula.Parse("(π/2) * 1")
 				);
 		}
 

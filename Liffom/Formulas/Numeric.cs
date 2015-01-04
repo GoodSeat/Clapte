@@ -139,6 +139,11 @@ namespace GoodSeat.Liffom.Formulas
 		/// <returns>変換されたRealオブジェクト。</returns>
 		public static implicit operator Real(Numeric n) { return n.Data; }
 
+		/// <summary>
+		/// 内部保持の数値を、内部誤差を修正した数値に置き換えます。
+		/// </summary>
+		public void ModifyError() { (Data as ValidReal).ModifyError(); }
+
 
 		public override string GetText()
 		{

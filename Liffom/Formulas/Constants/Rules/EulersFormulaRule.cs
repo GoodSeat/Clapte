@@ -69,7 +69,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 		protected override void GetRulePatternFormula(out Formula formula1, out Formula formula2)
 		{
 			formula1 = new Cos(a) * b;
-			formula2 = new Sin(a) * b * Imaginary.i;
+			formula2 = new Product(new Sin(a), b, Imaginary.i);
 			(b as RulePatternVariable).AdmitMultiplyOne = true;
 		}
 
@@ -97,7 +97,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("cos(x)+i*sin(x)"),
-				Formula.Parse("e^(i*x)")
+				Formula.Parse("(1*e)^(i*x)")
 				);
 		}
 

@@ -245,11 +245,16 @@ namespace GoodSeat.Liffom.Formulas.Operators
 						}
 
 						if (checkType == PatternCheckTargetType.ChildOperator ||
-							checkType == PatternCheckTargetType.Other ||
-							checkType == PatternCheckTargetType.MatchedPatternVariable)
+							checkType == PatternCheckTargetType.Other )
 						{
 							if (!matched) return false;
 						}
+						if (checkType == PatternCheckTargetType.MatchedPatternVariable)
+						{
+							var rv = rule as RulePatternVariable;
+							if (!matched && !rv.IsHitAdmitOneOrZero) return false; 
+						}
+
 					}
 				}
 

@@ -64,7 +64,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
 				);
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("-3*x^7 - 6*x^6 + 9*x^5 + 18*x^4 - 9*x^3 - 18*x^2 + 3*x + 6"),
-				Formula.Parse("3 * (x+2) * ((1-x)*(1+x))^3")
+				Formula.Parse("3 * (x+2) * ((-1+x)*(-1-x))^3")
 				);
 		}
 

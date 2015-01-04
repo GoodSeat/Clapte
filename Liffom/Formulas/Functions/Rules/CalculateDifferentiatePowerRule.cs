@@ -69,7 +69,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("diff(x^x, x)"),
-				Formula.Parse("x*x^(x-1) + ln(x)*x^x")
+				Formula.Parse("diff(x,x) * (x*x^(x-1)) + diff(x,x) * (ln(x)*x^x)")
 				);
 		}
 

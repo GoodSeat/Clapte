@@ -27,10 +27,10 @@ namespace GoodSeat.Liffom.Reals
 		/// </summary>
 		/// <param name="n"></param>
 		/// <returns></returns>
-		private static double GetLog10(Real n)
+		private static double GetLog10(double n)
 		{
-			if (n.Data == 0) return 0;
-			return Math.Log10(Math.Abs(n.Data));
+			if (n == 0) return 0;
+			return Math.Log10(Math.Abs(n));
 		}
 
 		/// <summary>
@@ -95,7 +95,7 @@ namespace GoodSeat.Liffom.Reals
 		{
 			get
 			{
-				double digit = GetLog10(this);
+				double digit = GetLog10(_data);
 				double exponent = digit - (digit % 1.0);
 				if (digit < 0 && digit % 1.0 != 0) exponent -= 1.0;
 				return (int)exponent;

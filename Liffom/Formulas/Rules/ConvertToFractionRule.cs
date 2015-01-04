@@ -47,6 +47,9 @@ namespace GoodSeat.Liffom.Formulas.Rules
 			Numeric mol = (f / gcd).Numerate() as Numeric;
 			Numeric den = (1 / gcd).Numerate() as Numeric;
 
+			mol.ModifyError();
+			den.ModifyError();
+
 			if (den == 1) return mol;
 			else if (mol == 1)
 			{

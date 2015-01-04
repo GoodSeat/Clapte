@@ -49,7 +49,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("a*x^2+a*x+b*x^2+x+a"),
-				Formula.Parse("(a+b)*x^2+(a+1)*x+a")
+				Formula.Parse("(a+b)*x^2+(a+1)*x^1+a")
 				);
 		}
 

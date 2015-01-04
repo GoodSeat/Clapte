@@ -79,6 +79,8 @@ namespace GoodSeat.LiffomTestProject
 		[TestCategory("ルール"), TestMethod()]
 		public void SelfCheckTestTest()
 		{
+			UnitConvertTableTest.RegistBasicUnitRecord();
+
 			bool checkOK = true;
 			var allRuleReflectors = Rule.GetAllRuleReflectors();
 

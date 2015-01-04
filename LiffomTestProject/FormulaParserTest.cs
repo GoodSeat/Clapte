@@ -153,7 +153,6 @@ namespace GoodSeat.LiffomTestProject
 			var expected = new UserFunction("test");
 			expected.Argument = new Argument(new Variable("a"), new Variable("b"));
 			AddParseTestCase(target, "test(a, b)", expected);
-			
 		}
 
 		private void AddParseTestCase(Liffom.Parse.FormulaParser target, string actual, Formula expected)

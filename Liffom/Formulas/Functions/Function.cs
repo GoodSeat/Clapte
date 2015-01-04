@@ -174,7 +174,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
 		{
 			var children = new List<string>();
 			foreach (var child in this) children.Add(child.GetUniqueText());
-			return string.Join(",", this);
+			return string.Join(",", children);
 		}
 		
 	}
