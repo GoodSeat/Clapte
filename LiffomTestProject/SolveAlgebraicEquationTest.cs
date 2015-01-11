@@ -80,6 +80,7 @@ namespace GoodSeat.LiffomTestProject
 			SolveEquationTest.AddTestCase(target, "(x^2+2)[cm] = 45[cm]", "x", "x=(sqrt(43, 2), -sqrt(43, 2))");
 			SolveEquationTest.AddTestCase(target, "x / 50.75[cm] = 3.4", "x", "x = 172.55[cm]");
 			SolveEquationTest.AddTestCase(target, "x^3 - 6*x^2 + 11*x - 6 = 0", "x", "x=(1,2,3)");
+			SolveEquationTest.AddTestCase(target, "y^3 - 10*y^2 + 31*y - 30 = 0", "y", "y=(2,3,5)");
 		}
 
 		/// <summary>

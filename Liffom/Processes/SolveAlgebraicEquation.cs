@@ -321,10 +321,7 @@ namespace GoodSeat.Liffom.Processes
 
 				if (!AdmitImaginary && solRounded.Contains(Imaginary.i)) continue;
 
-				//if (!solRounded.Contains<Sum>())
-				//    result.Add(GetRoundSolution(target.LeftSection, about, solRounded, 0.001));
-				//else
-					result.Add(solRounded);
+				result.Add(GetModifiedSolution(target.LeftHandSide, about, solRounded, 0));
 			}
 			result.Sort();
 			return result;
