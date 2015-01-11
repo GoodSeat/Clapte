@@ -104,7 +104,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 				return new KeyValuePair<Formula, Formula>(outer, inner);
 			}
 			else if (innerRoot is Numeric && (innerRoot as Numeric).IsInteger)
-				return GetInOut((int)innerRoot, pow);
+				return GetInOut((double)innerRoot, pow);
 			else
 				return new KeyValuePair<Formula, Formula>(1, innerRoot);
 		}
@@ -115,12 +115,12 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 		/// <param name="num">√中の整数値</param>
 		/// <param name="pow">√基数。自然数のみ。</param>
 		/// <returns></returns>
-		KeyValuePair<Formula, Formula> GetInOut(int num, int pow)
+		KeyValuePair<Formula, Formula> GetInOut(double num, int pow)
 		{
 			if (pow <= 0) throw new FormulaAssertionException("GetInOutメソッドでは、自然数の√基数のみを対象としています。");
 
 			Formula fc = PrimeFactor.PrimeFactorize(num, false);
-			int inner = 1;
+			double inner = 1;
 			Formula outer = 1;
 
 			// √8
@@ -144,11 +144,12 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 						notOutList.Add(f, 1);
 				}
 
-				foreach (KeyValuePair<Formula, int> k in notOutList) inner *= (int)Math.Pow(k.Key, k.Value);
+				foreach (KeyValuePair<Formula, int> k in notOutList) inner *= Math.Pow(k.Key, k.Value);
 			}
 			else { inner = num; }
 
-			if (outList.Count != 0) outer = new Product(outList.ToArray());
+			if (outList.Count == 1) outer = outList[0];
+			else if (outList.Count > 1) outer = new Product(outList.ToArray());
 
 			return new KeyValuePair<Formula, Formula>(outer, inner);
 		}
