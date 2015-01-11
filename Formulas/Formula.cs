@@ -144,8 +144,8 @@ namespace GoodSeat.Liffom.Formulas
 				if (_format == null) 
 				{
 					_format = new Format();
-					_format.Target = this;
 				}
+				_format.Target = this;
 				return _format;
 			}
 			set
@@ -158,7 +158,6 @@ namespace GoodSeat.Liffom.Formulas
 					return;
 				}
 				_format = Clone.GetClone<Format>(value);
-				_format.Target = this;
 			}
 		}
 
@@ -258,14 +257,14 @@ namespace GoodSeat.Liffom.Formulas
 		
 
 		/// <summary>
-		/// 数式に対する処理を指定して、処理を実行します。
+		/// 変形識別トークンを指定して、数式の変形処理を実行します。
 		/// </summary>
 		/// <param name="deformToken">変形処理識別トークン。</param>
 		/// <returns>処理後の数式。</returns>
 		public Formula DeformFormula(DeformToken deformToken) { return Deform.Apply(deformToken, this); }
 
 		/// <summary>
-		/// 数式に対する処理を指定して、処理を実行します。
+		/// 変形識別トークンを指定して、数式の変形処理を実行します。
 		/// </summary>
 		/// <param name="deformToken">変形処理識別トークン。</param>
 		/// <param name="history">変形履歴情報。</param>
@@ -277,7 +276,7 @@ namespace GoodSeat.Liffom.Formulas
 		}
 
 		/// <summary>
-		/// 指定処理に関連するルールをすべて返す反復子を取得します。
+		/// 指定処理に関連する変形ルールをすべて返す反復子を取得します。
 		/// </summary>
 		/// <param name="deformToken">変形識別トークン。</param>
 		/// <param name="sender">ルール適用対象となる最上位親数式。</param>
@@ -289,7 +288,7 @@ namespace GoodSeat.Liffom.Formulas
 		}
 
 		/// <summary>
-		/// 指定した可変数のルールに基づいて変形します。
+		/// 指定した可変数の変形ルールに基づいて変形します。
 		/// </summary>
 		/// <param name="autoSort">ルール自体に設定されたソート順に基づいて自動ソートを行うか否かを指定します。</param>
 		/// <param name="rules">適用する可変数のルール。</param>
