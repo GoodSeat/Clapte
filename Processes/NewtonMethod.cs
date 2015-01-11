@@ -75,26 +75,23 @@ namespace GoodSeat.Liffom.Processes
 		/// <summary>
 		/// 指定された数式に対して、処理を実行します。
 		/// </summary>
-		/// <param name="target">求解対象の等式</param>
-		/// <param name="about">求解対象の変数</param>
-		/// <param name="userState">一意のユーザー状態</param>
+		/// <param name="target">求解対象の等式。</param>
+		/// <param name="about">求解対象の変数。</param>
+		/// <param name="userState">一意のユーザー状態。</param>
 		public override Equal Solve(object userState, Equal target, Variable about)
 		{
-			return GetSolution(target, about, new Numeric(InitialSolution), ErrorTolerance, MaxTryCount, Increment, IncrementWidth);
+			return GetSolution(target, about, new Numeric(InitialSolution), userState);
 		}
 
 		/// <summary>
 		/// ニュートン・ラフソン法により解を求めます。
 		/// </summary>
-		/// <param name="target">対象方程式</param>
-		/// <param name="x">求める変数</param>
-		/// <param name="initial">解の初期値</param>
-		/// <param name="error">許容誤差</param>
-		/// <param name="maxTryCount">最大試行回数</param>
-		/// <param name="increment">試行解のずらし基準量</param>
-		/// <param name="incrementWidth">試行解のずらし量の乱数振れ幅</param>
+		/// <param name="target">対象方程式。</param>
+		/// <param name="x">求める変数。</param>
+		/// <param name="initial">解の初期値。</param>
+		/// <param name="userState">一意のユーザー状態。</param>
 		/// <returns>求められた解。ただし、最大試行回数まで解が見つからなかった場合、null。</returns>
-		public static Equal GetSolution(Equal target, Variable x, Numeric initial, double error, int maxTryCount, double increment, double incrementWidth)
+		private Equal GetSolution(Equal target, Variable x, Numeric initial, object userState)
 		{
 			if (!target.Contains(x))
 				throw new FormulaProcessException(string.Format("数式「{0}」に、求解対象の変数{1}が存在しません。", target, x));
@@ -106,26 +103,24 @@ namespace GoodSeat.Liffom.Processes
 			if (f.Contains(v=>(v is Variable && v != x)))
 				throw new FormulaProcessException(string.Format("数式「{0}」に{1}以外の変数が存在するため、ニュートン法で解くことができません。", target, x));
 
-			Numeric solution = GetSolution(f, x, initial, error, maxTryCount, increment, incrementWidth);
+			Numeric solution = GetSolution(f, x, initial, userState);
 #if DEBUG
 			DateTime end = DateTime.Now;
 			Console.WriteLine("ニュートン法による解の算出終了：計算時間：" + (end - start).ToString());
 #endif
-			return new Equal(x, GetModifiedSolution(f, x, solution, error));
+			if (IsCanceled(userState)) return null;
+			return new Equal(x, GetModifiedSolution(f, x, solution, ErrorTolerance));
 		}
 
 		/// <summary>
 		/// ニュートン・ラフソン法による解の算出処理を実行します。
 		/// </summary>
-		/// <param name="f">f(x)=0における、f(x)</param>
-		/// <param name="x">f(x)=0における、x</param>
-		/// <param name="initial">解の初期値</param>
-		/// <param name="error">許容誤差</param>
-		/// <param name="maxTryCount">最大試行回数</param>
-		/// <param name="increment">試行解のずらし基準量</param>
-		/// <param name="incrementWidth">試行解のずらし量の乱数振れ幅</param>
-		/// <returns>求められた解</returns>
-		public static Numeric GetSolution(Formula f, Variable x, Numeric initial, double error, int maxTryCount, double increment, double incrementWidth)
+		/// <param name="f">f(x)=0における、f(x)。</param>
+		/// <param name="x">f(x)=0における、x。</param>
+		/// <param name="initial">解の初期値。</param>
+		/// <param name="userState">一意のユーザー状態。</param>
+		/// <returns>求められた解。</returns>
+		private Numeric GetSolution(Formula f, Variable x, Numeric initial, object userState)
 		{
 			var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
@@ -145,7 +140,7 @@ namespace GoodSeat.Liffom.Processes
 			// 導関数が0になるなら初期値の設定をやり直す。
 			Random random = new Random(0);
 			while (fd.Substituted(x, solution).DeformFormula(token) == 0) 
-				solution = GetRandomShift(solution, increment, incrementWidth, random);
+				solution = GetRandomShift(solution, random);
 
 			// 無限ループ検知用の途中解リスト
 			List<double> solList = new List<double>();
@@ -155,7 +150,8 @@ namespace GoodSeat.Liffom.Processes
 			int tryCount = 0;
 			do
 			{
-				if (tryCount++ > maxTryCount) throw new FormulaProcessException(maxTryCount + "回の試行回数内では、指定誤差値以内に解が収束しませんでした。");
+				if (IsCanceled(userState)) return null;
+				if (tryCount++ > MaxTryCount) throw new FormulaProcessException(MaxTryCount + "回の試行回数内では、指定誤差値以内に解が収束しませんでした。");
 				Formula.CheckCancelOperation(f);
 
 				lastSolution = solution;
@@ -166,13 +162,13 @@ namespace GoodSeat.Liffom.Processes
 
 				// 非数値や無限大ならリセット
 				if (solution == null || double.IsNaN(solution.Data) || double.IsInfinity(solution.Data)) 
-					solution = GetRandomShift(new Numeric(0), increment, incrementWidth, random);
+					solution = GetRandomShift(new Numeric(0), random);
 
 				// 無限ループを検知、もしくは導関数が0となったら、解を適当にずらす
 				fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Data;
 				while (solList.Contains(solution) ||  fdSubstituted == 0) 
 				{
-					solution = GetRandomShift(solution, increment, incrementWidth, random);
+					solution = GetRandomShift(solution, random);
 					fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Data;
 				}
 
@@ -181,7 +177,7 @@ namespace GoodSeat.Liffom.Processes
 				Console.WriteLine(string.Format("{0}回目の試行:x={1}:{2}+{3}", tryCount, solution, DateTime.Now.Second, DateTime.Now.Millisecond / 1000d));
 #endif
 			}
-			while (Math.Abs(lastSolution - solution) >= error);
+			while (Math.Abs(lastSolution - solution) >= ErrorTolerance);
 
 			return solution;
 		}
@@ -190,14 +186,12 @@ namespace GoodSeat.Liffom.Processes
 		/// <summary>
 		/// 指定数値を適当にシフトした数値を取得します。
 		/// </summary>
-		/// <param name="baseNumeric">規準数値</param>
-		/// <param name="increment">試行解のずらし基準量</param>
-		/// <param name="incrementWidth">試行解のずらし量の乱数振れ幅</param>
-		/// <param name="random">乱数生成器</param>
-		/// <returns>ずらした数値</returns>
-		private static Numeric GetRandomShift(Numeric baseNumeric, double increment, double incrementWidth, Random random)
+		/// <param name="baseNumeric">規準数値。</param>
+		/// <param name="random">乱数生成器。</param>
+		/// <returns>ずらした数値。</returns>
+		private Numeric GetRandomShift(Numeric baseNumeric, Random random)
 		{
-			return new Numeric(baseNumeric.Data + increment + (random.NextDouble() - 0.5) * incrementWidth * 2);
+			return new Numeric(baseNumeric.Data + Increment + (random.NextDouble() - 0.5) * IncrementWidth * 2);
 		}
 
 	}
