@@ -15,7 +15,7 @@ namespace GoodSeat.Liffom.Parse
 		static NumericLexer()
 		{
 			// 正負記号は和算演算に任せる
-			NumericRegex = new Regex("^[0-9]*(\\.)?[0-9]+(e[+-][0-9]+)?$", RegexOptions.IgnoreCase);
+			NumericRegex = new Regex("^([0-9]*(\\.)?[0-9]+|[0-9]+(\\.)?[0-9]*)(e[+-][0-9]+)?$", RegexOptions.IgnoreCase);
 		}
 
 		public static Regex NumericRegex { get; private set; }
