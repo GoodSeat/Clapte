@@ -380,12 +380,14 @@ namespace GoodSeat.Liffom.Deforms.Rules
 		public int CompareTo(Rule other)
 		{
 			var otherType = other.GetType();
+			var thisType = GetType();
+			if (otherType == thisType) return 0;
+
 			foreach (var type in GetPreDemandRules())
 				if (type == otherType) return 1;
 			foreach (var type in GetPostDemandRules())
 				if (type == otherType) return -1;
 
-			var thisType = GetType();
 			foreach (var type in other.GetPreDemandRules())
 				if (type == thisType) return -1;
 			foreach (var type in other.GetPostDemandRules())
