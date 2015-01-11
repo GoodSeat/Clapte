@@ -11,13 +11,13 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 	/// </summary>
 	public class MergeExponentOfPowerRule : PatternRule
 	{
-		protected override Formula GetRulePatternFormula()
-		{
-			(c as RulePatternVariable).CheckTarget = f => f != -1;
-			return (a ^ b) ^ c;
-		}
+		protected override Formula GetRulePatternFormula() { return (a ^ b) ^ c; }
 
-		protected override Formula GetRuledFormula() { return a ^ (b * c).Combine(); }
+		protected override Formula GetRuledFormula()
+		{
+			if (b != -1 && c == -1) return null;
+			return a ^ (b * c);
+		}
 
 		protected internal override bool IsTargetTypeFormula(Formula target) { return target is Power; }
 

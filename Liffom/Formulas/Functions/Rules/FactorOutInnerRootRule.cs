@@ -160,6 +160,11 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 			yield return typeof(CombineProductToPowerRule); // 逆変換の展開傾向
 		}
 
+		protected override IEnumerable<Type> OnGetPostDemandRules()
+		{
+			yield return typeof(CalculateFunctionRule); // √8 → 8^(1/2)
+		}
+
 		protected override IEnumerable<Rule> OnGetReverseRule()
 		{
 			yield return new CombineProductToPowerRule(); // 5*5^(1/2) → 5^(3/2)

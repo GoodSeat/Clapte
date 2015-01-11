@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 
 namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 {
@@ -27,6 +28,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 
 		protected override IEnumerable<Type> OnGetPreDemandRules()
 		{
+			yield return typeof(MergeExponentOfPowerRule); // a^-1 * b^-1^-1 → a^-1 * b
 			yield return typeof(BinaryDistributivePropertyRule); // 逆変換の展開傾向
 		}
 

@@ -1,13 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Text;
-using GoodSeat.Liffom.Reals;
-using GoodSeat.Liffom.Utilities;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
-using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Functions.Rules;
 using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Liffom.Formats;
 using GoodSeat.Liffom.Formats.Powers;
@@ -171,6 +168,8 @@ namespace GoodSeat.Liffom.Formulas.Operators
 				if (sender.Exponent == -1)
 				{
 					yield return new RationalizeDenominatorRule(); // (a^b)^-1 → a^(1-b)*a^-1
+					yield return new RationalizeDenominatorRootRule(); // (a^b)^-1 → a^(1-b)*a^-1
+
 					yield return new RationalizeDenominatorOfRootSumRule(); // (a*(b^1/2) + c)^-1 → (a*(b^1/2) - c) * (a^2*b - c^2)^-1
 				}
 				if (sender.Base is Power)
