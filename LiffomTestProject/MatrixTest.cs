@@ -91,7 +91,7 @@ namespace GoodSeat.LiffomTestProject
 			var a = new Variable("A");
 			var b = new Variable("B");
 			DeformTokenTest.DeformTest(token, Formula.Parse("A.A").Substitute(a, A), "{[7, 10], [15, 22]}");
-			DeformTokenTest.DeformTest(token, Formula.Parse("A^^2.A^^3").Substitute(a, A), "{[1069, 1558], [2337, 3406]}");
+			DeformTokenTest.DeformTest(token, Formula.Parse("(A^^2).(A^^3)").Substitute(a, A), "{[1069, 1558], [2337, 3406]}");
 			DeformTokenTest.DeformTest(token,
 					Formula.Parse("(A+B).A").Substitute(a, A).Substitute(b, B),
 					"{[3a + 10, 4a + 16], [3c + 16, 4c + 24]}");

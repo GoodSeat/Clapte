@@ -396,6 +396,11 @@ namespace GoodSeat.Liffom.Parse
 
 			do
 			{
+				if (currentToken is OperatorToken &&
+					currentToken.NextToken is OperatorToken &&
+					operatorParser.IsParseTarget(currentToken as OperatorToken) && 
+					operatorParser.IsParseTarget(currentToken.NextToken as OperatorToken)) throw new FormulaParseException("演算子トークンが連続しています。");
+
 				currentToken = currentToken.NextToken;
 
 				if (currentToken is OperatorToken)
