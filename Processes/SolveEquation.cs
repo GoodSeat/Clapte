@@ -32,8 +32,8 @@ namespace GoodSeat.Liffom.Processes
 		/// <summary>
 		/// 指定された数式に対して、処理を実行します。
 		/// </summary>
-		/// <param name="target">求解対象の等式</param>
-		/// <param name="about">求解対象の変数</param>
+		/// <param name="target">求解対象の等式。</param>
+		/// <param name="about">求解対象の変数。</param>
 		public Equal Solve(Equal target, Variable about)
 		{
 			return Solve(DefaultState, target, about);
@@ -42,9 +42,9 @@ namespace GoodSeat.Liffom.Processes
 		/// <summary>
 		/// 指定された数式に対して、処理を実行します。
 		/// </summary>
-		/// <param name="target">求解対象の等式</param>
-		/// <param name="about">求解対象の変数</param>
-		/// <param name="userState">一意のユーザー状態</param>
+		/// <param name="target">求解対象の等式。</param>
+		/// <param name="about">求解対象の変数。</param>
+		/// <param name="userState">一意のユーザー状態。</param>
 		/// <returns>方程式の解を表す等式。解が複数の場合は、x=(x1,x2)のように、引数を解として表現する。</returns>
 		public abstract Equal Solve(object userState, Equal target, Variable about);
 
@@ -52,8 +52,8 @@ namespace GoodSeat.Liffom.Processes
 		/// <summary>
 		/// 得られた近似解と判定誤差値に基づいて、真値を取得します。
 		/// </summary>
-		/// <param name="f">f(x)=0 における f(x)</param>
-		/// <param name="x">f(x)=0 における x</param>
+		/// <param name="f">f(x)=0 における f(x)。</param>
+		/// <param name="x">f(x)=0 における x。</param>
 		/// <param name="solution">近似解。</param>
 		/// <param name="error">近似解を求めるのに使用した許容誤差値。</param>
 		/// <returns>解の真値。</returns>
@@ -78,7 +78,7 @@ namespace GoodSeat.Liffom.Processes
 		/// <param name="f">方程式 f(x)=0 におけるf(x)。</param>
 		/// <param name="x">方程式 f(x)=0 における x。</param>
 		/// <param name="solution">検討対象の解。</param>
-		/// <param name="error">計算時に用いた許容誤差値</param>
+		/// <param name="error">計算時に用いた許容誤差値。</param>
 		/// <returns></returns>
 		private static Formula GetRoundSolution(Formula f, Variable x, Formula solution, double error)
 		{
@@ -103,12 +103,12 @@ namespace GoodSeat.Liffom.Processes
 		/// <summary>
 		/// 有効桁数を無限大とした解を f(x)=0 に代入した時の左辺の有効桁数から、解の有効桁数の調整が必要か否かを判定して取得します。
 		/// </summary>
-		/// <param name="f">f(x)=0 における f(x)</param>
-		/// <param name="x">f(x)=0 における x</param>
-		/// <param name="solution">方程式の解</param>
-		/// <param name="initialValidDigit">有効桁数を無限大とした解を代入したときの左辺の最大有効桁</param>
-		/// <param name="initialPrecision">有効桁数を無限大とした解を代入したときの左辺の有効桁数</param>
-		/// <returns>解の有効桁数調整が必要か否か</returns>
+		/// <param name="f">f(x)=0 における f(x)。</param>
+		/// <param name="x">f(x)=0 における x。</param>
+		/// <param name="solution">方程式の解。</param>
+		/// <param name="initialValidDigit">有効桁数を無限大とした解を代入したときの左辺の最大有効桁。</param>
+		/// <param name="initialPrecision">有効桁数を無限大とした解を代入したときの左辺の有効桁数。</param>
+		/// <returns>解の有効桁数調整が必要か否か。</returns>
 		private static bool GetInitialPrecision(Formula f, Variable x, Formula solution, out int initialValidDigit, out int initialPrecision)
 		{
 			var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
@@ -132,10 +132,10 @@ namespace GoodSeat.Liffom.Processes
 		/// <summary>
 		/// 方程式の左辺の有効桁数をもとに、解の有効桁数を調整して取得します。
 		/// </summary>
-		/// <param name="f">f(x)=0 における f(x)</param>
-		/// <param name="x">f(x)=0 における x</param>
-		/// <param name="solution">初期解</param>
-		/// <param name="initialValidDigit">解の有効桁数を無限大としたときの f(x) の最大有効桁</param>
+		/// <param name="f">f(x)=0 における f(x)。</param>
+		/// <param name="x">f(x)=0 における x。</param>
+		/// <param name="solution">初期解。</param>
+		/// <param name="initialValidDigit">解の有効桁数を無限大としたときの f(x) の最大有効桁。</param>
 		/// <returns></returns>
 		private static Formula GetPrecisionModifiedSolution(Formula f, Variable x, Formula solution, int initialValidDigit)
 		{
