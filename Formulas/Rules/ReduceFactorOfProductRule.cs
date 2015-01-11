@@ -86,11 +86,14 @@ namespace GoodSeat.Liffom.Formulas.Rules
 		protected override IEnumerable<Type> OnGetPreDemandRules()
 		{
 			yield return typeof(CalculateProductOfMolecularNumericRule); // 積算の数値は計算済み
-			yield return typeof(CombineSameExponentProductRule); // 分母の数値も計算済み
 		}
 
 		protected override bool IntegrateAfterRuled { get { return true; } }
 
+		protected override IEnumerable<Type> OnGetPostDemandRules()
+		{
+			yield return typeof(CombineSameExponentProductRule); // 15 * 5^-1 * a^-1 → 15 * (5*a)^-1
+		}
 
 		public override string Information
 		{

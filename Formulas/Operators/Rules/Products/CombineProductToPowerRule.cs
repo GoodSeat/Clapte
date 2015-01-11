@@ -14,7 +14,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 	/// ((a^b)^d) * ((a^c)^e) → a^(bd + ce)
 	/// </summary>
 	/// <remarks>
-	/// このルールにて、二重の累乗を想定しているのは、整理では ^-1 を括り出すため。
+	/// このルールで二重の累乗を想定しているのは、整理では ^-1 を括り出すため。
 	/// </remarks>
 	public class CombineProductToPowerRule : CombinationPatternRule
 	{
@@ -48,6 +48,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 
 		protected override IEnumerable<Type> OnGetPreDemandRules()
 		{
+			yield return typeof(CalculateProductOfMolecularNumericRule); // 10 * 3√3 → 30√3
 			yield return typeof(ExpandNumericPowerRule); // 逆変換の展開傾向
 			yield return typeof(DistributivePropertyRule); // 同数式に対する展開傾向
 		}

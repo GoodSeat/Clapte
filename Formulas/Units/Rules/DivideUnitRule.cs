@@ -4,6 +4,7 @@ using System.Text;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
 
 namespace GoodSeat.Liffom.Formulas.Units.Rules
 {
@@ -85,6 +86,11 @@ namespace GoodSeat.Liffom.Formulas.Units.Rules
 		protected override IEnumerable<Type> OnGetPreDemandRules()
 		{
 			yield return typeof(MultipleOperatorIntegrateRule); // 逆変換の展開傾向
+		}
+
+		protected override IEnumerable<Type> OnGetPostDemandRules()
+		{
+			yield return typeof(CombineSameExponentProductRule); // 1/3 * 2 [kN/m] → 2[kN] / 3[m]
 		}
 
 		protected override IEnumerable<Rule> OnGetReverseRule()

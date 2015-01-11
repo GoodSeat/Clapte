@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Linq;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
@@ -174,19 +175,10 @@ namespace GoodSeat.Liffom.Formulas.Units
 			foreach (var rule in base.GetRelatedRulesOf(deformToken, sender, history)) yield return rule;
 
 			// 単位系の統一、ただし既に実行されていたら対象外
-			if (deformToken.Has<CombineToken>() && history.Era == 1)
+			if (deformToken.Has<CombineToken>())
 			{
-				bool alreadyApplied = false;
-				foreach (var applied in history.GetAllAppliedRules())
-				{
-					if (applied is UniteUnitRule)
-					{
-						alreadyApplied = true;
-						break;
-					}
-				}
-
-				if (!alreadyApplied) yield return UniteUnitRule.Entity;
+				if (history.GetAppliedRules().Count(rule => rule is UniteUnitRule) == 0)
+					yield return UniteUnitRule.Entity;
 			}
 
 			if (sender is Product) foreach(var rule in  GetProductRelatedRulesOf(sender as Product, deformToken)) yield return rule;

@@ -41,7 +41,7 @@ namespace GoodSeat.Liffom.Deforms
 		protected override Formula OnTryMatchRule(Formula target)
 		{
 			Formula.IsTargetFormula isAbortApply = null;
-			if (target is OperatorMultiple) isAbortApply = f => f.GetType() == target.GetType(); // a+(a*(a+b)) → a+(aa+ab) となったら、統合処理の必要があるため、ルールの再帰適用を中止する。
+			if (target is OperatorMultiple) isAbortApply = f => f.GetEqualBaseType() == target.GetEqualBaseType(); // a+(a*(a+b)) → a+(aa+ab) となったら、統合処理の必要があるため、ルールの再帰適用を中止する。
 
 			bool applied = false;
 			var deformed = new List<Formula>();
@@ -54,7 +54,11 @@ namespace GoodSeat.Liffom.Deforms
 				var childHistory = new DeformHistory(initialNode, ParentHistoryNode);
 				if (ParentHistoryNode != null) ParentHistoryNode.AddChildHistory(childHistory);
 
-				deformed.Add(Deform.Apply(CauseDeformToken, target[i], childHistory, isAbortApply));
+				// もともと同じ形式の子数式なら、統合処理のための処理中止は行わない (3*3^a*2^a)*[kN*m] ⇒ (3*(3*2)^a)*[kN*m] となっても処理を続行
+				Formula.IsTargetFormula isAbort = null;
+				if (target[i].GetEqualBaseType() != target.GetEqualBaseType()) isAbort = isAbortApply;
+
+				deformed.Add(Deform.Apply(CauseDeformToken, target[i], childHistory, isAbort));
 
 				if (!applied && childHistory.CurrentNode != initialNode)
 				{

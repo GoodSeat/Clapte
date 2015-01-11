@@ -74,6 +74,12 @@ namespace GoodSeat.Liffom.Formulas.Units.Rules
 				);
 		}
 
+		protected override IEnumerable<Type> OnGetPostDemandRules()
+		{
+			yield return typeof(DivideUnitRule); // 変換係数を分離する必要があるため
+		}
+
+
 		protected override IEnumerable<Rule> OnGetAllPatternSample()
 		{
 			yield return UniteUnitRule.Entity;
