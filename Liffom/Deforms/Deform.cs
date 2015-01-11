@@ -92,7 +92,6 @@ namespace GoodSeat.Liffom.Deforms
 			}
 
 			testRules = token.GetApplyRules(target, history, testRules); // カスタム追加
-			Utilities.Sort.StableSort<Rule>(testRules); // 優先度順にルールを並び替え
 
 			for (int i = 0; i < testRules.Count; i++)
 			{
@@ -105,11 +104,17 @@ namespace GoodSeat.Liffom.Deforms
 						testRules.RemoveAt(k--);
 				}
 
-				// 同じルールの連続適用はしない
-				if (rule == history.CurrentNode.AppliedRule) testRules.RemoveAt(i--);
 				// 抑止ルールなら削除
-				else if (history.IsPreventedRule(rule)) testRules.RemoveAt(i--);
+				if (history.IsPreventedRule(rule)) testRules.RemoveAt(i--);
+				// 同じルールは優先度を下げる
+				else if (rule == history.CurrentNode.AppliedRule && i != testRules.Count - 1)
+				{
+					testRules.RemoveAt(i--);
+					testRules.Add(rule);
+				}
 			}
+			Utilities.Sort.StableSort<Rule>(testRules); // 優先度順にルールを並び替え
+
 			return testRules;
 		}
 
