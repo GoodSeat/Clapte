@@ -106,15 +106,15 @@
 			this._btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._btnHelp.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnHelp.DownMove = 1;
-			this._btnHelp.FocusImage = global::Clapte.Properties.Resources.Icon_Help;
-			this._btnHelp.Image = global::Clapte.Properties.Resources.Icon_Help_Unfocus;
+			this._btnHelp.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Help;
+			this._btnHelp.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Help_Unfocus;
 			this._btnHelp.Location = new System.Drawing.Point(518, 8);
 			this._btnHelp.Name = "_btnHelp";
 			this._btnHelp.Size = new System.Drawing.Size(16, 16);
 			this._btnHelp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnHelp.TabIndex = 0;
 			this._btnHelp.TabStop = false;
-			this._btnHelp.UnFocusImage = global::Clapte.Properties.Resources.Icon_Help_Unfocus;
+			this._btnHelp.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Help_Unfocus;
 			this._btnHelp.Click += new System.EventHandler(this._btnHelp_Click);
 			// 
 			// FormOfSetting

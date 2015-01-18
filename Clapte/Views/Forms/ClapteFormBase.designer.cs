@@ -103,8 +103,8 @@
 			this._btnClose.BackColor = System.Drawing.Color.White;
 			this._btnClose.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnClose.DownMove = 1;
-			this._btnClose.FocusImage = global::Clapte.Properties.Resources.Icon_ClearFilter;
-			this._btnClose.Image = global::Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
+			this._btnClose.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter;
+			this._btnClose.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
 			this._btnClose.Location = new System.Drawing.Point(516, 10);
 			this._btnClose.Name = "_btnClose";
 			this._btnClose.Size = new System.Drawing.Size(14, 14);
@@ -112,7 +112,7 @@
 			this._btnClose.TabIndex = 12;
 			this._btnClose.TabStop = false;
 			this._toolHelpTip.SetToolTip(this._btnClose, "閉じる");
-			this._btnClose.UnFocusImage = global::Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
+			this._btnClose.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
 			this._btnClose.Click += new System.EventHandler(this._btnClose_Click);
 			// 
 			// _btnTopMost
@@ -121,8 +121,8 @@
 			this._btnTopMost.BackColor = System.Drawing.Color.White;
 			this._btnTopMost.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnTopMost.DownMove = 1;
-			this._btnTopMost.FocusImage = global::Clapte.Properties.Resources.Icon_PushPin;
-			this._btnTopMost.Image = global::Clapte.Properties.Resources.Icon_PushPin_Abort;
+			this._btnTopMost.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin;
+			this._btnTopMost.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
 			this._btnTopMost.Location = new System.Drawing.Point(495, 9);
 			this._btnTopMost.Name = "_btnTopMost";
 			this._btnTopMost.Size = new System.Drawing.Size(18, 16);
@@ -130,7 +130,7 @@
 			this._btnTopMost.TabIndex = 11;
 			this._btnTopMost.TabStop = false;
 			this._toolHelpTip.SetToolTip(this._btnTopMost, "最前面表示の有効化／無効化");
-			this._btnTopMost.UnFocusImage = global::Clapte.Properties.Resources.Icon_PushPin_Abort;
+			this._btnTopMost.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
 			this._btnTopMost.Click += new System.EventHandler(this._btnTopMost_Click);
 			// 
 			// _picTitleBar
@@ -151,15 +151,15 @@
 			this._btnOK.BackColor = System.Drawing.Color.White;
 			this._btnOK.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnOK.DownMove = 1;
-			this._btnOK.FocusImage = global::Clapte.Properties.Resources.Image_OK;
-			this._btnOK.Image = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOK.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK;
+			this._btnOK.Image = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOK.Location = new System.Drawing.Point(369, 332);
 			this._btnOK.Name = "_btnOK";
 			this._btnOK.Size = new System.Drawing.Size(79, 23);
 			this._btnOK.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnOK.TabIndex = 9;
 			this._btnOK.TabStop = false;
-			this._btnOK.UnFocusImage = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOK.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOK.Click += new System.EventHandler(this._btnOK_Click);
 			// 
 			// _btnCancel
@@ -168,22 +168,22 @@
 			this._btnCancel.BackColor = System.Drawing.Color.White;
 			this._btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnCancel.DownMove = 1;
-			this._btnCancel.FocusImage = global::Clapte.Properties.Resources.Image_Cancel;
-			this._btnCancel.Image = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancel.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel;
+			this._btnCancel.Image = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancel.Location = new System.Drawing.Point(453, 332);
 			this._btnCancel.Name = "_btnCancel";
 			this._btnCancel.Size = new System.Drawing.Size(79, 23);
 			this._btnCancel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnCancel.TabIndex = 10;
 			this._btnCancel.TabStop = false;
-			this._btnCancel.UnFocusImage = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancel.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancel.Click += new System.EventHandler(this._btnCancel_Click);
 			// 
 			// _frameBottomRight
 			// 
 			this._frameBottomRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
 			this._frameBottomRight.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameBottomRight.Image = global::Clapte.Properties.Resources.Frame_BottomRight;
+			this._frameBottomRight.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_BottomRight;
 			this._frameBottomRight.Location = new System.Drawing.Point(483, 310);
 			this._frameBottomRight.Name = "_frameBottomRight";
 			this._frameBottomRight.Size = new System.Drawing.Size(56, 50);
@@ -196,7 +196,7 @@
 			this._frameRight.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._frameRight.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameRight.Image = global::Clapte.Properties.Resources.Frame_Right;
+			this._frameRight.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_Right;
 			this._frameRight.Location = new System.Drawing.Point(483, 48);
 			this._frameRight.Name = "_frameRight";
 			this._frameRight.Size = new System.Drawing.Size(56, 277);
@@ -208,7 +208,7 @@
 			// 
 			this._frameTopRight.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._frameTopRight.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameTopRight.Image = global::Clapte.Properties.Resources.Frame_TopRight;
+			this._frameTopRight.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_TopRight;
 			this._frameTopRight.Location = new System.Drawing.Point(483, 0);
 			this._frameTopRight.Name = "_frameTopRight";
 			this._frameTopRight.Size = new System.Drawing.Size(56, 49);
@@ -221,7 +221,7 @@
 			this._frameBottom.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._frameBottom.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameBottom.Image = global::Clapte.Properties.Resources.Frame_Bottom;
+			this._frameBottom.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_Bottom;
 			this._frameBottom.Location = new System.Drawing.Point(54, 310);
 			this._frameBottom.Name = "_frameBottom";
 			this._frameBottom.Size = new System.Drawing.Size(441, 50);
@@ -234,7 +234,7 @@
 			this._frameTop.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
 			this._frameTop.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameTop.Image = global::Clapte.Properties.Resources.Frame_Top;
+			this._frameTop.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_Top;
 			this._frameTop.Location = new System.Drawing.Point(54, 0);
 			this._frameTop.Name = "_frameTop";
 			this._frameTop.Size = new System.Drawing.Size(441, 49);
@@ -246,7 +246,7 @@
 			// 
 			this._frameBottomLeft.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this._frameBottomLeft.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameBottomLeft.Image = global::Clapte.Properties.Resources.Frame_BottomLeft;
+			this._frameBottomLeft.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_BottomLeft;
 			this._frameBottomLeft.Location = new System.Drawing.Point(0, 310);
 			this._frameBottomLeft.Name = "_frameBottomLeft";
 			this._frameBottomLeft.Size = new System.Drawing.Size(56, 50);
@@ -259,7 +259,7 @@
 			this._frameLeft.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left)));
 			this._frameLeft.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameLeft.Image = global::Clapte.Properties.Resources.Frame_Left;
+			this._frameLeft.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_Left;
 			this._frameLeft.Location = new System.Drawing.Point(0, 48);
 			this._frameLeft.Name = "_frameLeft";
 			this._frameLeft.Size = new System.Drawing.Size(56, 277);
@@ -270,7 +270,7 @@
 			// _frameTopLeft
 			// 
 			this._frameTopLeft.HitPosition = Clapte.Views.Components.ChameleonPictureBox.WindowsHitPosition.Transparent;
-			this._frameTopLeft.Image = global::Clapte.Properties.Resources.Frame_TopLeft;
+			this._frameTopLeft.Image = global::GoodSeat.Clapte.Properties.Resources.Frame_TopLeft;
 			this._frameTopLeft.Location = new System.Drawing.Point(0, 0);
 			this._frameTopLeft.Name = "_frameTopLeft";
 			this._frameTopLeft.Size = new System.Drawing.Size(56, 49);

@@ -160,21 +160,21 @@
 			this._btnExe.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
 			this._btnExe.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnExe.DownMove = 1;
-			this._btnExe.FocusImage = global::Clapte.Properties.Resources.Image_Exe;
-			this._btnExe.Image = global::Clapte.Properties.Resources.Image_Exe_Unfocus;
+			this._btnExe.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Exe;
+			this._btnExe.Image = global::GoodSeat.Clapte.Properties.Resources.Image_Exe_Unfocus;
 			this._btnExe.Location = new System.Drawing.Point(7, 61);
 			this._btnExe.Name = "_btnExe";
 			this._btnExe.Size = new System.Drawing.Size(48, 21);
 			this._btnExe.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnExe.TabIndex = 18;
 			this._btnExe.TabStop = false;
-			this._btnExe.UnFocusImage = global::Clapte.Properties.Resources.Image_Exe_Unfocus;
+			this._btnExe.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Exe_Unfocus;
 			this._btnExe.Click += new System.EventHandler(this._btnExe_Click);
 			// 
 			// _imgInfo
 			// 
 			this._imgInfo.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Right)));
-			this._imgInfo.Image = global::Clapte.Properties.Resources.Icon_Info;
+			this._imgInfo.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Info;
 			this._imgInfo.Location = new System.Drawing.Point(262, 64);
 			this._imgInfo.Name = "_imgInfo";
 			this._imgInfo.Size = new System.Drawing.Size(16, 16);

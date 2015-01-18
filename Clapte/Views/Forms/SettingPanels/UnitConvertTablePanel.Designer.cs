@@ -167,8 +167,8 @@
 			this._btnMoveDown.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._btnMoveDown.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnMoveDown.DownMove = 1;
-			this._btnMoveDown.FocusImage = global::Clapte.Properties.Resources.Icon_MoveDown;
-			this._btnMoveDown.Image = global::Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
+			this._btnMoveDown.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveDown;
+			this._btnMoveDown.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
 			this._btnMoveDown.Location = new System.Drawing.Point(286, 14);
 			this._btnMoveDown.Name = "_btnMoveDown";
 			this._btnMoveDown.Size = new System.Drawing.Size(24, 24);
@@ -176,7 +176,7 @@
 			this._btnMoveDown.TabIndex = 20;
 			this._btnMoveDown.TabStop = false;
 			this._toolTip.SetToolTip(this._btnMoveDown, "選択した単位レコードを下に移動");
-			this._btnMoveDown.UnFocusImage = global::Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
+			this._btnMoveDown.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
 			this._btnMoveDown.Click += new System.EventHandler(this._btnMoveDown_Click);
 			// 
 			// _btnMoveUp
@@ -184,8 +184,8 @@
 			this._btnMoveUp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._btnMoveUp.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnMoveUp.DownMove = 1;
-			this._btnMoveUp.FocusImage = global::Clapte.Properties.Resources.Icon_MoveUp;
-			this._btnMoveUp.Image = global::Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
+			this._btnMoveUp.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveUp;
+			this._btnMoveUp.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
 			this._btnMoveUp.Location = new System.Drawing.Point(306, 7);
 			this._btnMoveUp.Name = "_btnMoveUp";
 			this._btnMoveUp.Size = new System.Drawing.Size(24, 24);
@@ -193,7 +193,7 @@
 			this._btnMoveUp.TabIndex = 19;
 			this._btnMoveUp.TabStop = false;
 			this._toolTip.SetToolTip(this._btnMoveUp, "選択した単位レコードを上に移動");
-			this._btnMoveUp.UnFocusImage = global::Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
+			this._btnMoveUp.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
 			this._btnMoveUp.Click += new System.EventHandler(this._btnMoveUp_Click);
 			// 
 			// _btnDeleteRecord
@@ -201,8 +201,8 @@
 			this._btnDeleteRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._btnDeleteRecord.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnDeleteRecord.DownMove = 1;
-			this._btnDeleteRecord.FocusImage = global::Clapte.Properties.Resources.Icon_DeleteUnitRecord;
-			this._btnDeleteRecord.Image = global::Clapte.Properties.Resources.Icon_DeleteUnitRecord_Unfocus;
+			this._btnDeleteRecord.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteUnitRecord;
+			this._btnDeleteRecord.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteUnitRecord_Unfocus;
 			this._btnDeleteRecord.Location = new System.Drawing.Point(361, 11);
 			this._btnDeleteRecord.Name = "_btnDeleteRecord";
 			this._btnDeleteRecord.Size = new System.Drawing.Size(26, 26);
@@ -210,7 +210,7 @@
 			this._btnDeleteRecord.TabIndex = 14;
 			this._btnDeleteRecord.TabStop = false;
 			this._toolTip.SetToolTip(this._btnDeleteRecord, "選択した単位レコードの削除");
-			this._btnDeleteRecord.UnFocusImage = global::Clapte.Properties.Resources.Icon_DeleteUnitRecord_Unfocus;
+			this._btnDeleteRecord.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteUnitRecord_Unfocus;
 			this._btnDeleteRecord.Click += new System.EventHandler(this._btnDeleteRecord_Click);
 			// 
 			// _btnAddRecord
@@ -218,8 +218,8 @@
 			this._btnAddRecord.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._btnAddRecord.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnAddRecord.DownMove = 1;
-			this._btnAddRecord.FocusImage = global::Clapte.Properties.Resources.Icon_AddUnitRecord;
-			this._btnAddRecord.Image = global::Clapte.Properties.Resources.Icon_AddUnitRecord_Unfocus;
+			this._btnAddRecord.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_AddUnitRecord;
+			this._btnAddRecord.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_AddUnitRecord_Unfocus;
 			this._btnAddRecord.Location = new System.Drawing.Point(332, 11);
 			this._btnAddRecord.Name = "_btnAddRecord";
 			this._btnAddRecord.Size = new System.Drawing.Size(28, 28);
@@ -227,7 +227,7 @@
 			this._btnAddRecord.TabIndex = 13;
 			this._btnAddRecord.TabStop = false;
 			this._toolTip.SetToolTip(this._btnAddRecord, "新規単位レコードの追加");
-			this._btnAddRecord.UnFocusImage = global::Clapte.Properties.Resources.Icon_AddUnitRecord_Unfocus;
+			this._btnAddRecord.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_AddUnitRecord_Unfocus;
 			this._btnAddRecord.Click += new System.EventHandler(this._btnAddRecord_Click);
 			// 
 			// _txtUnitTypeComment
@@ -277,15 +277,15 @@
 			this._btnOK.BackColor = System.Drawing.Color.White;
 			this._btnOK.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnOK.DownMove = 1;
-			this._btnOK.FocusImage = global::Clapte.Properties.Resources.Image_OK;
-			this._btnOK.Image = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOK.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK;
+			this._btnOK.Image = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOK.Location = new System.Drawing.Point(200, 106);
 			this._btnOK.Name = "_btnOK";
 			this._btnOK.Size = new System.Drawing.Size(79, 23);
 			this._btnOK.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnOK.TabIndex = 19;
 			this._btnOK.TabStop = false;
-			this._btnOK.UnFocusImage = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOK.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOK.Click += new System.EventHandler(this._btnOK_Click);
 			// 
 			// _btnCancel
@@ -294,15 +294,15 @@
 			this._btnCancel.BackColor = System.Drawing.Color.White;
 			this._btnCancel.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnCancel.DownMove = 1;
-			this._btnCancel.FocusImage = global::Clapte.Properties.Resources.Image_Cancel;
-			this._btnCancel.Image = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancel.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel;
+			this._btnCancel.Image = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancel.Location = new System.Drawing.Point(284, 106);
 			this._btnCancel.Name = "_btnCancel";
 			this._btnCancel.Size = new System.Drawing.Size(79, 23);
 			this._btnCancel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnCancel.TabIndex = 20;
 			this._btnCancel.TabStop = false;
-			this._btnCancel.UnFocusImage = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancel.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancel.Click += new System.EventHandler(this._btnCancel_Click);
 			// 
 			// _txtBoxUnitTableComment
@@ -409,15 +409,15 @@
 			this._btnOKRecord.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnOKRecord.DownMove = 1;
 			this._btnOKRecord.Enabled = false;
-			this._btnOKRecord.FocusImage = global::Clapte.Properties.Resources.Image_OK;
-			this._btnOKRecord.Image = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOKRecord.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK;
+			this._btnOKRecord.Image = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOKRecord.Location = new System.Drawing.Point(200, 64);
 			this._btnOKRecord.Name = "_btnOKRecord";
 			this._btnOKRecord.Size = new System.Drawing.Size(79, 23);
 			this._btnOKRecord.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnOKRecord.TabIndex = 21;
 			this._btnOKRecord.TabStop = false;
-			this._btnOKRecord.UnFocusImage = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOKRecord.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOKRecord.Click += new System.EventHandler(this._btnOKRecord_Click);
 			// 
 			// _btnCancelRecord
@@ -426,15 +426,15 @@
 			this._btnCancelRecord.BackColor = System.Drawing.Color.White;
 			this._btnCancelRecord.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnCancelRecord.DownMove = 1;
-			this._btnCancelRecord.FocusImage = global::Clapte.Properties.Resources.Image_Cancel;
-			this._btnCancelRecord.Image = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancelRecord.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel;
+			this._btnCancelRecord.Image = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancelRecord.Location = new System.Drawing.Point(284, 64);
 			this._btnCancelRecord.Name = "_btnCancelRecord";
 			this._btnCancelRecord.Size = new System.Drawing.Size(79, 23);
 			this._btnCancelRecord.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnCancelRecord.TabIndex = 22;
 			this._btnCancelRecord.TabStop = false;
-			this._btnCancelRecord.UnFocusImage = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancelRecord.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancelRecord.Click += new System.EventHandler(this._btnCancelRecord_Click);
 			// 
 			// _toolTip
@@ -445,8 +445,8 @@
 			// 
 			this._btnChangeTable.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnChangeTable.DownMove = 1;
-			this._btnChangeTable.FocusImage = global::Clapte.Properties.Resources.Icon_ChangeUnitTable;
-			this._btnChangeTable.Image = global::Clapte.Properties.Resources.Icon_ChangeUnitTable_Unfocus;
+			this._btnChangeTable.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ChangeUnitTable;
+			this._btnChangeTable.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ChangeUnitTable_Unfocus;
 			this._btnChangeTable.Location = new System.Drawing.Point(162, 0);
 			this._btnChangeTable.Name = "_btnChangeTable";
 			this._btnChangeTable.Size = new System.Drawing.Size(26, 26);
@@ -454,15 +454,15 @@
 			this._btnChangeTable.TabIndex = 18;
 			this._btnChangeTable.TabStop = false;
 			this._toolTip.SetToolTip(this._btnChangeTable, "単位表の名前、コメントの編集");
-			this._btnChangeTable.UnFocusImage = global::Clapte.Properties.Resources.Icon_ChangeUnitTable_Unfocus;
+			this._btnChangeTable.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ChangeUnitTable_Unfocus;
 			this._btnChangeTable.Click += new System.EventHandler(this._btnChangeTable_Click);
 			// 
 			// _btnDeleteTable
 			// 
 			this._btnDeleteTable.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnDeleteTable.DownMove = 1;
-			this._btnDeleteTable.FocusImage = global::Clapte.Properties.Resources.Icon_DeleteUnitTable;
-			this._btnDeleteTable.Image = global::Clapte.Properties.Resources.Icon_DeleteUnitTable_Unfocus;
+			this._btnDeleteTable.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteUnitTable;
+			this._btnDeleteTable.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteUnitTable_Unfocus;
 			this._btnDeleteTable.Location = new System.Drawing.Point(187, 1);
 			this._btnDeleteTable.Name = "_btnDeleteTable";
 			this._btnDeleteTable.Size = new System.Drawing.Size(25, 25);
@@ -470,15 +470,15 @@
 			this._btnDeleteTable.TabIndex = 18;
 			this._btnDeleteTable.TabStop = false;
 			this._toolTip.SetToolTip(this._btnDeleteTable, "現在の単位表の削除");
-			this._btnDeleteTable.UnFocusImage = global::Clapte.Properties.Resources.Icon_DeleteUnitTable_Unfocus;
+			this._btnDeleteTable.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteUnitTable_Unfocus;
 			this._btnDeleteTable.Click += new System.EventHandler(this._btnDeleteTable_Click);
 			// 
 			// _btnAddTable
 			// 
 			this._btnAddTable.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnAddTable.DownMove = 1;
-			this._btnAddTable.FocusImage = global::Clapte.Properties.Resources.Icon_AddUnitTable;
-			this._btnAddTable.Image = global::Clapte.Properties.Resources.Icon_AddUnitTable_Unfocus;
+			this._btnAddTable.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_AddUnitTable;
+			this._btnAddTable.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_AddUnitTable_Unfocus;
 			this._btnAddTable.Location = new System.Drawing.Point(137, 0);
 			this._btnAddTable.Name = "_btnAddTable";
 			this._btnAddTable.Size = new System.Drawing.Size(26, 26);
@@ -486,7 +486,7 @@
 			this._btnAddTable.TabIndex = 17;
 			this._btnAddTable.TabStop = false;
 			this._toolTip.SetToolTip(this._btnAddTable, "新規単位表の追加");
-			this._btnAddTable.UnFocusImage = global::Clapte.Properties.Resources.Icon_AddUnitTable_Unfocus;
+			this._btnAddTable.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_AddUnitTable_Unfocus;
 			this._btnAddTable.Click += new System.EventHandler(this._btnAddTable_Click);
 			// 
 			// _panelSelectAddChangeTarget
@@ -538,15 +538,15 @@
 			this._btnOKChangeAdd.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnOKChangeAdd.DownMove = 1;
 			this._btnOKChangeAdd.Enabled = false;
-			this._btnOKChangeAdd.FocusImage = global::Clapte.Properties.Resources.Image_OK;
-			this._btnOKChangeAdd.Image = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOKChangeAdd.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK;
+			this._btnOKChangeAdd.Image = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOKChangeAdd.Location = new System.Drawing.Point(200, 64);
 			this._btnOKChangeAdd.Name = "_btnOKChangeAdd";
 			this._btnOKChangeAdd.Size = new System.Drawing.Size(79, 23);
 			this._btnOKChangeAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnOKChangeAdd.TabIndex = 21;
 			this._btnOKChangeAdd.TabStop = false;
-			this._btnOKChangeAdd.UnFocusImage = global::Clapte.Properties.Resources.Image_OK_Unfocus;
+			this._btnOKChangeAdd.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_OK_Unfocus;
 			this._btnOKChangeAdd.Click += new System.EventHandler(this._btnOKChangeAdd_Click);
 			// 
 			// _btnCancelChangeAdd
@@ -555,15 +555,15 @@
 			this._btnCancelChangeAdd.BackColor = System.Drawing.Color.White;
 			this._btnCancelChangeAdd.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnCancelChangeAdd.DownMove = 1;
-			this._btnCancelChangeAdd.FocusImage = global::Clapte.Properties.Resources.Image_Cancel;
-			this._btnCancelChangeAdd.Image = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancelChangeAdd.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel;
+			this._btnCancelChangeAdd.Image = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancelChangeAdd.Location = new System.Drawing.Point(284, 64);
 			this._btnCancelChangeAdd.Name = "_btnCancelChangeAdd";
 			this._btnCancelChangeAdd.Size = new System.Drawing.Size(79, 23);
 			this._btnCancelChangeAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnCancelChangeAdd.TabIndex = 22;
 			this._btnCancelChangeAdd.TabStop = false;
-			this._btnCancelChangeAdd.UnFocusImage = global::Clapte.Properties.Resources.Image_Cancel_Unfocus;
+			this._btnCancelChangeAdd.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Image_Cancel_Unfocus;
 			this._btnCancelChangeAdd.Click += new System.EventHandler(this._btnCancelChangeAdd_Click);
 			// 
 			// UnitConvertTablePanel

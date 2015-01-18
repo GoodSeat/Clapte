@@ -140,8 +140,8 @@
             this._btnSave.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this._btnSave.Cursor = System.Windows.Forms.Cursors.Hand;
             this._btnSave.DownMove = 1;
-            this._btnSave.FocusImage = global::Clapte.Properties.Resources.Icon_MoveUp;
-            this._btnSave.Image = global::Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
+            this._btnSave.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveUp;
+            this._btnSave.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
             this._btnSave.Location = new System.Drawing.Point(7, 7);
             this._btnSave.Name = "_btnSave";
             this._btnSave.Size = new System.Drawing.Size(24, 24);
@@ -149,7 +149,7 @@
             this._btnSave.TabIndex = 18;
             this._btnSave.TabStop = false;
             this._toolHelpTip.SetToolTip(this._btnSave, "テキストファイルに保存");
-            this._btnSave.UnFocusImage = global::Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
+            this._btnSave.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveUp_Unfocus;
             this._btnSave.Click += new System.EventHandler(this._btnSave_Click);
             // 
             // _btnLoad
@@ -158,8 +158,8 @@
             this._btnLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
             this._btnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
             this._btnLoad.DownMove = 1;
-            this._btnLoad.FocusImage = global::Clapte.Properties.Resources.Icon_MoveDown;
-            this._btnLoad.Image = global::Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
+            this._btnLoad.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveDown;
+            this._btnLoad.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
             this._btnLoad.Location = new System.Drawing.Point(32, 7);
             this._btnLoad.Name = "_btnLoad";
             this._btnLoad.Size = new System.Drawing.Size(24, 24);
@@ -167,7 +167,7 @@
             this._btnLoad.TabIndex = 19;
             this._btnLoad.TabStop = false;
             this._toolHelpTip.SetToolTip(this._btnLoad, "テキストファイルの読込");
-            this._btnLoad.UnFocusImage = global::Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
+            this._btnLoad.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveDown_Unfocus;
             this._btnLoad.Click += new System.EventHandler(this._btnLoad_Click);
             // 
             // _openFileDialog

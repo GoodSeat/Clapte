@@ -8,7 +8,7 @@
     <ProjectGuid>{5B81A9C6-F2C8-4A70-A3A6-BE7550563FC1}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Clapte</RootNamespace>
+    <RootNamespace>GoodSeat.Clapte</RootNamespace>
     <AssemblyName>Clapte</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -51,7 +51,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ClapteTest.cs" />
     <Compile Include="Models\FormulaCell.cs" />
     <Compile Include="Models\FormulaCellContent.cs" />
     <Compile Include="Models\FormulaCellContentComment.cs" />
@@ -334,7 +333,16 @@
     <None Include="Resources\Icon_Sub_Unfocus.png" />
     <None Include="Resources\Icon_Sub.png" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <ProjectReference Include="..\Liffom\Liffom\Liffom.csproj">
+      <Project>{CF032E29-3935-467A-9A45-136A5099A468}</Project>
+      <Name>Liffom</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sio\Sio.csproj">
+      <Project>{EB56E3F5-BCE8-4731-B8A0-9BEAA1A761EB}</Project>
+      <Name>Sio</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

@@ -6,10 +6,10 @@
     <ProductVersion>
     </ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <ProjectGuid>{1B04D87E-4553-47FA-8E75-F427186F8772}</ProjectGuid>
+    <ProjectGuid>{C7460392-FAEE-45AF-AE5F-4F8BC015A2A4}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>ClapteTestProject</RootNamespace>
+    <RootNamespace>GoodSeat.ClapteTestProject</RootNamespace>
     <AssemblyName>ClapteTestProject</AssemblyName>
     <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
@@ -33,6 +33,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Azuki">
+      <HintPath>..\Azuki\Azuki.dll</HintPath>
+    </Reference>
     <Reference Include="Microsoft.VisualBasic" />
     <Reference Include="Microsoft.VisualStudio.QualityTools.UnitTestFramework, Version=10.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL" />
     <Reference Include="System" />
@@ -62,9 +65,14 @@
       <Project>{5B81A9C6-F2C8-4A70-A3A6-BE7550563FC1}</Project>
       <Name>Clapte</Name>
     </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Shadow Include="テストの参照\Clapte.accessor" />
+    <ProjectReference Include="..\Liffom\Liffom\Liffom.csproj">
+      <Project>{CF032E29-3935-467A-9A45-136A5099A468}</Project>
+      <Name>Liffom</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Sio\Sio.csproj">
+      <Project>{EB56E3F5-BCE8-4731-B8A0-9BEAA1A761EB}</Project>
+      <Name>Sio</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

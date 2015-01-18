@@ -68,15 +68,15 @@
 			this._btnSub.BackColor = System.Drawing.Color.Transparent;
 			this._btnSub.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnSub.DownMove = 1;
-			this._btnSub.FocusImage = global::Clapte.Properties.Resources.Icon_Sub;
-			this._btnSub.Image = global::Clapte.Properties.Resources.Icon_Sub_Unfocus;
+			this._btnSub.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub;
+			this._btnSub.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub_Unfocus;
 			this._btnSub.Location = new System.Drawing.Point(7, 4);
 			this._btnSub.Name = "_btnSub";
 			this._btnSub.Size = new System.Drawing.Size(16, 16);
 			this._btnSub.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnSub.TabIndex = 3;
 			this._btnSub.TabStop = false;
-			this._btnSub.UnFocusImage = global::Clapte.Properties.Resources.Icon_Sub_Unfocus;
+			this._btnSub.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub_Unfocus;
 			this._btnSub.Visible = false;
 			this._btnSub.Click += new System.EventHandler(this._btnSub_Click);
 			// 
@@ -86,15 +86,15 @@
 			this._btnAdd.BackColor = System.Drawing.Color.Transparent;
 			this._btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnAdd.DownMove = 1;
-			this._btnAdd.FocusImage = global::Clapte.Properties.Resources.Icon_Add;
-			this._btnAdd.Image = global::Clapte.Properties.Resources.Icon_Add_Unfocus;
+			this._btnAdd.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Add;
+			this._btnAdd.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Add_Unfocus;
 			this._btnAdd.Location = new System.Drawing.Point(93, 4);
 			this._btnAdd.Name = "_btnAdd";
 			this._btnAdd.Size = new System.Drawing.Size(16, 16);
 			this._btnAdd.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
 			this._btnAdd.TabIndex = 2;
 			this._btnAdd.TabStop = false;
-			this._btnAdd.UnFocusImage = global::Clapte.Properties.Resources.Icon_Add_Unfocus;
+			this._btnAdd.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Add_Unfocus;
 			this._btnAdd.Visible = false;
 			this._btnAdd.Click += new System.EventHandler(this._btnAdd_Click);
 			// 

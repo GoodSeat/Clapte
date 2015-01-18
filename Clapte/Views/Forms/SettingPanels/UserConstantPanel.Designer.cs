@@ -119,8 +119,8 @@
 			this._btnDelete.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._btnDelete.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnDelete.DownMove = 1;
-			this._btnDelete.FocusImage = global::Clapte.Properties.Resources.Icon_DeleteVariable;
-			this._btnDelete.Image = global::Clapte.Properties.Resources.Icon_DeleteVariable_Unfocus;
+			this._btnDelete.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteVariable;
+			this._btnDelete.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteVariable_Unfocus;
 			this._btnDelete.Location = new System.Drawing.Point(358, 3);
 			this._btnDelete.Name = "_btnDelete";
 			this._btnDelete.Size = new System.Drawing.Size(24, 24);
@@ -128,7 +128,7 @@
 			this._btnDelete.TabIndex = 4;
 			this._btnDelete.TabStop = false;
 			this._toolTip.SetToolTip(this._btnDelete, "選択した変数の削除");
-			this._btnDelete.UnFocusImage = global::Clapte.Properties.Resources.Icon_DeleteVariable_Unfocus;
+			this._btnDelete.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_DeleteVariable_Unfocus;
 			this._btnDelete.Click += new System.EventHandler(this._btnDelete_Click);
 			// 
 			// _btnAdd
@@ -136,8 +136,8 @@
 			this._btnAdd.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
 			this._btnAdd.Cursor = System.Windows.Forms.Cursors.Hand;
 			this._btnAdd.DownMove = 1;
-			this._btnAdd.FocusImage = global::Clapte.Properties.Resources.Icon_AddVariable;
-			this._btnAdd.Image = global::Clapte.Properties.Resources.Icon_AddVariable_Unfocus;
+			this._btnAdd.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_AddVariable;
+			this._btnAdd.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_AddVariable_Unfocus;
 			this._btnAdd.Location = new System.Drawing.Point(333, 3);
 			this._btnAdd.Name = "_btnAdd";
 			this._btnAdd.Size = new System.Drawing.Size(24, 24);
@@ -145,7 +145,7 @@
 			this._btnAdd.TabIndex = 3;
 			this._btnAdd.TabStop = false;
 			this._toolTip.SetToolTip(this._btnAdd, "変数の新規追加");
-			this._btnAdd.UnFocusImage = global::Clapte.Properties.Resources.Icon_AddVariable_Unfocus;
+			this._btnAdd.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_AddVariable_Unfocus;
 			this._btnAdd.Click += new System.EventHandler(this._btnAdd_Click);
 			// 
 			// UserConstantPanel
