@@ -112,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="Frame_All" type="System.Resources.ResXFileRef, System.Windows.Forms">
@@ -238,11 +238,29 @@
   <data name="Icon_MoveUp_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_MoveUp_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Icon_Open" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Open.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Open_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Open_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Open_Unfocus_mini" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Open_Unfocus_mini.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
   <data name="Icon_PushPin" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_PushPin.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Icon_PushPin_Abort" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_PushPin_Abort.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Save_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Save_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Save_Unfocus_mini" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Save_Unfocus_mini.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
   <data name="Icon_Sub" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_Sub.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>

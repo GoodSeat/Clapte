@@ -414,6 +414,11 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.Text = File.ReadAllText(_openFileDialog.FileName, Encoding.Default);
         }
 
+		private void _btnSave_MouseEnter(object sender, EventArgs e)
+		{
+			(sender as Control).BringToFront();
+		}
+
 		#endregion
 
 		#region ISerializable メンバー

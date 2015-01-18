@@ -463,6 +463,36 @@ namespace GoodSeat.Clapte.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
+        internal static System.Drawing.Bitmap Icon_Open {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Open", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Open_Unfocus {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Open_Unfocus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Open_Unfocus_mini {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Open_Unfocus_mini", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
         internal static System.Drawing.Bitmap Icon_PushPin {
             get {
                 object obj = ResourceManager.GetObject("Icon_PushPin", resourceCulture);
@@ -476,6 +506,36 @@ namespace GoodSeat.Clapte.Properties {
         internal static System.Drawing.Bitmap Icon_PushPin_Abort {
             get {
                 object obj = ResourceManager.GetObject("Icon_PushPin_Abort", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Save {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Save", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Save_Unfocus {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Save_Unfocus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Save_Unfocus_mini {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Save_Unfocus_mini", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

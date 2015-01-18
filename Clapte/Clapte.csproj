@@ -280,6 +280,12 @@
     <Content Include="Icon_Clapte.ico" />
     <Content Include="Icon_Clapte_Notify.ico" />
     <Content Include="Icon_Clapte_Notify_Deactive.ico" />
+    <None Include="Resources\Icon_Save_Unfocus_mini.png" />
+    <None Include="Resources\Icon_Open_Unfocus_mini.png" />
+    <None Include="Resources\Icon_Save_Unfocus.png" />
+    <None Include="Resources\Icon_Save.png" />
+    <None Include="Resources\Icon_Open_Unfocus.png" />
+    <None Include="Resources\Icon_Open.png" />
     <None Include="Resources\Icon_Info.png" />
     <None Include="Resources\Image_Exe_Unfocus.png" />
     <None Include="Resources\Image_Exe.png" />
