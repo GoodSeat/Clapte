@@ -267,7 +267,10 @@ namespace GoodSeat.Liffom.Parse
 			var endPunctuation = endToken as PunctuationToken;
 			if (!startPunctuation.IsValidSetPunctuation(endPunctuation)) throw new FormulaParseException("数式文字列中の区切りが正しく対応しませんでした。");
 
-			Formula parsed = ParseInner(startPunctuation.NextToken, endPunctuation.PreviousToken).ParsedFormula;
+			var parsedToken = ParseInner(startPunctuation.NextToken, endPunctuation.PreviousToken);
+			if (parsedToken == null) throw new FormulaParseException(startPunctuation.NextToken.GetBaseText(endPunctuation) + "の解析に失敗しました。");
+			Formula parsed = parsedToken.ParsedFormula;
+
 			parsed = startPunctuation.OnInnerParsed(parsed); // 区切りトークンに応じた数式加工
 			FormulaToken newToken = new FormulaToken(startPunctuation.GetBaseText(endPunctuation), parsed);
 
