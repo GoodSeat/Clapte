@@ -1,0 +1,346 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{5B81A9C6-F2C8-4A70-A3A6-BE7550563FC1}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Clapte</RootNamespace>
+    <AssemblyName>Clapte</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>Icon_Clapte.ico</ApplicationIcon>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Azuki">
+      <HintPath>..\Azuki\Azuki.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.VisualBasic" />
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Deployment" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ClapteTest.cs" />
+    <Compile Include="Models\FormulaCell.cs" />
+    <Compile Include="Models\FormulaCellContent.cs" />
+    <Compile Include="Models\FormulaCellContentComment.cs" />
+    <Compile Include="Models\FormulaCellContentDefineConstant.cs" />
+    <Compile Include="Models\FormulaCellContentDefineFunction.cs" />
+    <Compile Include="Models\FormulaCellContentDefineWithEquation.cs" />
+    <Compile Include="Models\FormulaCellList.cs" />
+    <Compile Include="Solvers\ConstantDefine.cs" />
+    <Compile Include="Solvers\Error.cs" />
+    <Compile Include="Solvers\FunctionDefine.cs" />
+    <Compile Include="Solvers\Processes\ConvertToSpecifiedUnitProcess.cs" />
+    <Compile Include="Solvers\Processes\CalculateFormulaProcess.cs" />
+    <Compile Include="Solvers\Processes\ClapteProcessException.cs" />
+    <Compile Include="Solvers\Processes\DetectSplitCommmaProcess.cs" />
+    <Compile Include="Solvers\Processes\EvaluateUserDefineProcess.cs" />
+    <Compile Include="Solvers\Processes\OutputTextByteFormatProcess.cs" />
+    <Compile Include="Solvers\Processes\ProcessSet.cs" />
+    <Compile Include="Solvers\Processes\Process.cs" />
+    <Compile Include="Solvers\Processes\ReplaceAlternateStringProcess.cs" />
+    <Compile Include="Solvers\Processes\ReplaceVariableInUnitProcess.cs" />
+    <Compile Include="Solvers\Processes\SieveResultFormulaProcess.cs" />
+    <Compile Include="Solvers\Processes\SieveTargetInputProcess.cs" />
+    <Compile Include="Solvers\Processes\SolveEquationProcess.cs" />
+    <Compile Include="Solvers\SplitDataCounter.cs" />
+    <Compile Include="ViewModels\ClapteCommands\CalculateCommand.cs" />
+    <Compile Include="ViewModels\ClapteCommands\ClapteCommand.cs" />
+    <Compile Include="ViewModels\ClapteCommands\ClapteCommandResult.cs" />
+    <Compile Include="ViewModels\ClapteCommands\DefineConstantCommand.cs" />
+    <Compile Include="ViewModels\ClapteCommands\DefineFunctionCommand.cs" />
+    <Compile Include="ViewModels\ClapteCommands\DeleteConstantCommand.cs" />
+    <Compile Include="ViewModels\ClapteCommands\DeleteFunctionCommand.cs" />
+    <Compile Include="ViewModels\ClapteCommands\MultiLineCommand.cs" />
+    <Compile Include="ViewModels\ClapteCommands\SplitDataCountCommand.cs" />
+    <Compile Include="ViewModels\ClapteCoreViewModel.cs" />
+    <Compile Include="ViewModels\ConstantListViewModel.cs" />
+    <Compile Include="ViewModels\FormulaCellListViewModel.cs" />
+    <Compile Include="ViewModels\FormulaCellViewModel.cs" />
+    <Compile Include="ViewModels\FunctionListViewModel.cs" />
+    <Compile Include="ViewModels\SolverViewModel.cs" />
+    <Compile Include="ViewModels\UnitConvertTableViewModel.cs" />
+    <Compile Include="Views\AzukiExtension.cs" />
+    <Compile Include="Views\ClapteHelp.cs" />
+    <Compile Include="Views\ClaptePadInputSupportEnumerator.cs" />
+    <Compile Include="Views\ClaptePadKeywordHighlighter.cs" />
+    <Compile Include="Views\ClipBoardWatcher.cs" />
+    <Compile Include="Views\Components\ChameleonPictureBox.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Components\ChameleonPictureBox.designer.cs">
+      <DependentUpon>ChameleonPictureBox.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Components\ImageButton.cs">
+      <SubType>Component</SubType>
+    </Compile>
+    <Compile Include="Views\Components\ImageButton.designer.cs">
+      <DependentUpon>ImageButton.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Controls\NumericSlider.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Controls\NumericSlider.designer.cs">
+      <DependentUpon>NumericSlider.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfCalculator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfCalculator.Designer.cs">
+      <DependentUpon>FormOfCalculator.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfClaptePad.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfClaptePad.Designer.cs">
+      <DependentUpon>FormOfClaptePad.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfMain.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfMain.Designer.cs">
+      <DependentUpon>FormOfMain.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\ClapteFormBase.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\ClapteFormBase.designer.cs">
+      <DependentUpon>ClapteFormBase.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfSetting.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\FormOfSetting.Designer.cs">
+      <DependentUpon>FormOfSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\FunctionArgumentHelp.cs" />
+    <Compile Include="Views\HotkeyManager.cs" />
+    <Compile Include="Views\Forms\SettingPanels\CalculatorSettingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\CalculatorSettingPanel.Designer.cs">
+      <DependentUpon>CalculatorSettingPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\GeneralSettingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\GeneralSettingPanel.Designer.cs">
+      <DependentUpon>GeneralSettingPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\SettingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\SettingPanel.designer.cs">
+      <DependentUpon>SettingPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\SolveEquationSettingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\SolveEquationSettingPanel.Designer.cs">
+      <DependentUpon>SolveEquationSettingPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\SplitDataCounterPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\SplitDataCounterPanel.Designer.cs">
+      <DependentUpon>SplitDataCounterPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\UnitConvertTablePanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\UnitConvertTablePanel.Designer.cs">
+      <DependentUpon>UnitConvertTablePanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\UserConstantPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\UserConstantPanel.Designer.cs">
+      <DependentUpon>UserConstantPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\UserFunctionPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\UserFunctionPanel.Designer.cs">
+      <DependentUpon>UserFunctionPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\VersionInformationPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\VersionInformationPanel.Designer.cs">
+      <DependentUpon>VersionInformationPanel.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Solvers\Result.cs" />
+    <Compile Include="Solvers\Solver.cs" />
+    <Compile Include="Views\InputSupports\InputSupport.cs" />
+    <Compile Include="Views\InputSupports\InputSupportCandidate.cs" />
+    <Compile Include="Views\InputSupports\IInputSupportEnumerator.cs" />
+    <Compile Include="Views\InputSupports\InputSupportSelectState.cs" />
+    <Compile Include="Views\InputSupports\InputSupportState.cs" />
+    <Compile Include="Views\InputSupports\InputSupportTypingState.cs" />
+    <EmbeddedResource Include="Views\Controls\NumericSlider.resx">
+      <DependentUpon>NumericSlider.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\FormOfCalculator.resx">
+      <DependentUpon>FormOfCalculator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\FormOfClaptePad.resx">
+      <DependentUpon>FormOfClaptePad.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\FormOfMain.resx">
+      <DependentUpon>FormOfMain.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\ClapteFormBase.resx">
+      <DependentUpon>ClapteFormBase.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\FormOfSetting.resx">
+      <DependentUpon>FormOfSetting.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\CalculatorSettingPanel.resx">
+      <DependentUpon>CalculatorSettingPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\GeneralSettingPanel.resx">
+      <DependentUpon>GeneralSettingPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\SettingPanel.resx">
+      <DependentUpon>SettingPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\SolveEquationSettingPanel.resx">
+      <DependentUpon>SolveEquationSettingPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\SplitDataCounterPanel.resx">
+      <DependentUpon>SplitDataCounterPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\UnitConvertTablePanel.resx">
+      <DependentUpon>UnitConvertTablePanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\UserConstantPanel.resx">
+      <DependentUpon>UserConstantPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\UserFunctionPanel.resx">
+      <DependentUpon>UserFunctionPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\VersionInformationPanel.resx">
+      <DependentUpon>VersionInformationPanel.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+      <SubType>Designer</SubType>
+    </EmbeddedResource>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
+    </Compile>
+    <None Include="app.config" />
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Icon_Clapte.ico" />
+    <Content Include="Icon_Clapte_Notify.ico" />
+    <Content Include="Icon_Clapte_Notify_Deactive.ico" />
+    <None Include="Resources\Icon_Info.png" />
+    <None Include="Resources\Image_Exe_Unfocus.png" />
+    <None Include="Resources\Image_Exe.png" />
+    <None Include="Resources\Icon_Help_Unfocus.png" />
+    <None Include="Resources\Icon_Help.png" />
+    <None Include="Resources\Icon_MoveUp_Unfocus.png" />
+    <None Include="Resources\Icon_MoveUp.png" />
+    <None Include="Resources\Icon_MoveDown_Unfocus.png" />
+    <None Include="Resources\Icon_MoveDown.png" />
+    <None Include="Resources\Icon_DeleteUnitTable_Unfocus.png" />
+    <None Include="Resources\Icon_DeleteUnitRecord_Unfocus.png" />
+    <None Include="Resources\Icon_ChangeUnitTable_Unfocus.png" />
+    <None Include="Resources\Icon_AddUnitTable_Unfocus.png" />
+    <None Include="Resources\Icon_AddUnitRecord_Unfocus.png" />
+    <None Include="Resources\Icon_DeleteUnitTable.png" />
+    <None Include="Resources\Icon_DeleteUnitRecord.png" />
+    <None Include="Resources\Icon_ChangeUnitTable.png" />
+    <None Include="Resources\Icon_AddUnitTable.png" />
+    <None Include="Resources\Icon_AddUnitRecord.png" />
+    <None Include="Resources\Icon_DeleteVariable_Unfocus.png" />
+    <None Include="Resources\Icon_DeleteVariable.png" />
+    <None Include="Resources\Icon_DeleteFunction_Unfocus.png" />
+    <None Include="Resources\Icon_DeleteFunction.png" />
+    <None Include="Resources\Icon_ChangeVariable_Unfocus.png" />
+    <None Include="Resources\Icon_ChangeVariable.png" />
+    <None Include="Resources\Icon_ChangeFunction_Unfocus.png" />
+    <None Include="Resources\Icon_ChangeFunction.png" />
+    <None Include="Resources\Icon_AddVariable_Unfocus.png" />
+    <None Include="Resources\Icon_AddVariable.png" />
+    <None Include="Resources\Icon_AddFunction_Unfocus.png" />
+    <None Include="Resources\Icon_AddFunction.png" />
+    <None Include="Resources\Icon_PushPin.png" />
+    <None Include="Resources\Icon_PushPin_Abort.png" />
+    <None Include="Resources\Frame_TopRight.png" />
+    <None Include="Resources\Frame_TopLeft.png" />
+    <None Include="Resources\Frame_Top.png" />
+    <None Include="Resources\Frame_Right.png" />
+    <None Include="Resources\Frame_Left.png" />
+    <None Include="Resources\Frame_BottomRight.png" />
+    <None Include="Resources\Frame_BottomLeft.png" />
+    <None Include="Resources\Frame_Bottom.png" />
+    <None Include="Resources\Frame_All.png" />
+    <None Include="Resources\Image_OK_Unfocus.png" />
+    <None Include="Resources\Image_OK.png" />
+    <None Include="Resources\Image_Cancel_Unfocus.png" />
+    <None Include="Resources\Image_Cancel.png" />
+    <None Include="Resources\Icon_ClearFilter_Unfocus.png" />
+    <None Include="Resources\Icon_ClearFilter.png" />
+    <None Include="Resources\Icon_Add_Unfocus.png" />
+    <None Include="Resources\Icon_Add.png" />
+    <None Include="Resources\Icon_Sub_Unfocus.png" />
+    <None Include="Resources\Icon_Sub.png" />
+  </ItemGroup>
+  <ItemGroup />
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

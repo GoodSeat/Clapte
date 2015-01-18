@@ -1,0 +1,431 @@
+﻿using System;
+using System.Collections.Generic;
+using System.ComponentModel;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using GoodSeat.Sio.Xml;
+using GoodSeat.Clapte.Solvers;
+using System.Windows.Forms;
+
+namespace GoodSeat.Clapte.ViewModels
+{
+    /// <summary>
+    /// ユーザーによる入力テキストを数式セルに変換し、評価するViewModelを表します。
+    /// </summary>
+    public class FormulaCellListViewModel : IEnumerable<FormulaCellViewModel>
+    {
+		static int s_evaluateWorkerCount = 2;
+
+        /// <summary>
+        /// ユーザーによる入力テキストを数式セルに変換し、評価するViewModelを表します。
+        /// </summary>
+        /// <param name="solver">数式の評価に使用するソルバ。</param>
+        /// <param name="constantList">評価で参照すべきユーザー定義定数リスト。</param>
+        /// <param name="functionList">評価で参照すべきユーザー定義関数リスト。</param>
+        public FormulaCellListViewModel(SolverViewModel solver, ConstantListViewModel constantList, FunctionListViewModel functionList)
+        {
+            UserConstantList = constantList.Target;
+            UserFunctionList = functionList.Target;
+			ConstantList = constantList;
+			FunctionList = functionList;
+
+			FormulaCellList = new List<FormulaCellViewModel>();
+
+			FormulaCellCreateWorker = new BackgroundWorker();
+			FormulaCellCreateWorker.WorkerSupportsCancellation = true;
+			FormulaCellCreateWorker.DoWork += new DoWorkEventHandler(CreateFormulaCellListDoWork);
+			FormulaCellCreateWorker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(CreateFormulaCellListCreated);
+
+			Solvers = new List<SolverViewModel>();
+			FormulaCellEvaluateWorkers = new List<BackgroundWorker>();
+
+			BaseSolver = solver;
+            BaseSolver.SettingUpdated += new EventHandler(BaseSolver_SettingUpdated);
+
+            // TODO: 定数、関数リストの追加、削除、変更時に対応するフックを用意。
+            // 非同期の評価計画に基づいて再評価。
+            // constantList.Target.
+        }
+
+		object _evaluateLockObject = new object();
+		object _createLockObject = new object();
+
+        bool _recreateFlag = false;
+        string _targetText;
+		SolverViewModel _baseSolver;
+
+        #region イベント
+
+        /// <summary>
+        /// 数式セルの評価に用いるソルバの更新が完了した時に呼び出されます。
+        /// </summary>
+        public event EventHandler SolversUpdated;
+
+        /// <summary>
+        /// いずれかの行の結果に変更があった時に呼び出されます。
+        /// </summary>
+        public event EventHandler ResultChanged;
+
+        #endregion
+
+
+        /// <summary>
+        /// 数式セルの生成を行うバックグラウンドワーカーを設定もしくは取得します。
+        /// </summary>
+		BackgroundWorker FormulaCellCreateWorker { get; set; }
+
+        /// <summary>
+        /// 数式セルの評価を行うバックグラウンドワーカーリストを設定もしくは取得します。
+        /// </summary>
+		List<BackgroundWorker> FormulaCellEvaluateWorkers { get; set; }
+
+
+        /// <summary>
+        /// 数式セルの評価に用いるソルバを取得します。
+        /// </summary>
+        public SolverViewModel BaseSolver
+		{
+			get { return _baseSolver; }
+			private set
+			{
+				_baseSolver = value;
+				InitializeSolver(s_evaluateWorkerCount);
+			}
+		}
+
+        /// <summary>
+        /// 数式セルの評価に用いるソルバリストを設定もしくは取得します。
+        /// </summary>
+        private List<SolverViewModel> Solvers { get; set; }
+
+		/// <summary>
+		/// 定数リスト管理オブジェクトを取得します。
+		/// </summary>
+		public ConstantListViewModel ConstantList { get; private set; }
+
+		/// <summary>
+		/// 関数リスト管理オブジェクトを取得します。
+		/// </summary>
+		public FunctionListViewModel FunctionList { get; private set; }
+
+        /// <summary>
+        /// ユーザー定義定数リストを設定もしくは取得します。
+        /// </summary>
+        public IList<ConstantDefine> UserConstantList { get; set; }
+
+        /// <summary>
+        /// ユーザー定義関数リストを設定もしくは取得します。
+        /// </summary>
+        public IList<FunctionDefine> UserFunctionList { get; set; }
+
+		/// <summary>
+		/// 現在有効な数式セルリストを設定もしくは取得します。
+		/// </summary>
+        private List<FormulaCellViewModel> FormulaCellList { get; set; }
+
+		/// <summary>
+		/// 全ての数式セルを再評価します。
+		/// </summary>
+        /// <param name="text">変化後の入力テキスト。</param>
+		public void RenewAll(string text)
+		{
+			FormulaCellList.Clear();
+			NotifyChangeText(text);
+		}
+
+		/// <summary>
+		/// 数式セルリストの再生成要請フラグを設定もしくは取得します。
+		/// </summary>
+        private bool RecreateFlag
+        {
+            get { lock (_createLockObject) return _recreateFlag; }
+            set { lock (_createLockObject) _recreateFlag = value; }
+        }
+
+		/// <summary>
+		/// 最後に通知された数式セルリスト生成用の元となる文字列を設定もしくは取得します。
+		/// </summary>
+        private string TargetText
+        {
+            get { lock (_createLockObject) return _targetText; }
+            set { lock (_createLockObject) _targetText = value; }
+        }
+
+
+		/// <summary>
+		/// 計算に使用するソルバとワーカーを初期化します。
+		/// </summary>
+		/// <param name="threadCount">計算に使用するスレッド数。</param>
+		private void InitializeSolver(int threadCount)
+		{
+			foreach (var worker in FormulaCellEvaluateWorkers) 
+			{
+				worker.DoWork -= new DoWorkEventHandler(EvaluateFormulaCellDoWork);
+				worker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(EvaluateFormulaCellCompleted);
+				worker.ProgressChanged -= new ProgressChangedEventHandler(EvaluateProgressChanged);
+				worker.Dispose();
+			}
+			FormulaCellEvaluateWorkers.Clear();
+
+			Solvers.Clear();
+			for (int i = 0; i < threadCount; i++)
+			{
+				var solver = new SolverViewModel();
+				var xmlElement = new XmlElement("setting");
+				BaseSolver.OnSerialize(xmlElement);
+				solver.OnDeserialize(xmlElement);
+
+				solver.Target.AbortLevel = Error.Level.Error;
+				solver.Target.UserConstants = UserConstantList;
+				solver.Target.UserFunctions = UserFunctionList;
+				Solvers.Add(solver);
+
+				var worker = new BackgroundWorker();
+				worker.WorkerSupportsCancellation = true;
+				worker.WorkerReportsProgress = true;
+				worker.DoWork += new DoWorkEventHandler(EvaluateFormulaCellDoWork);
+				worker.RunWorkerCompleted += new RunWorkerCompletedEventHandler(EvaluateFormulaCellCompleted);
+				worker.ProgressChanged += new ProgressChangedEventHandler(EvaluateProgressChanged);
+				FormulaCellEvaluateWorkers.Add(worker);
+			}
+
+            if (SolversUpdated != null) SolversUpdated(this, EventArgs.Empty);
+		}
+
+
+        /// <summary>
+        /// ユーザーの入力テキストに変化のあったことを通知します。
+        /// </summary>
+        /// <param name="text">変化後の入力テキスト。</param>
+        public void NotifyChangeText(string text)
+        {
+            TargetText = text;
+
+            if (FormulaCellCreateWorker.IsBusy)
+                RecreateFlag = true;
+            else
+                FormulaCellCreateWorker.RunWorkerAsync();
+        }
+
+
+		/// <summary>
+		/// 数式セルリストの生成処理を実行します。
+		/// </summary>
+		private void CreateFormulaCellListDoWork(object sender, DoWorkEventArgs e)
+		{
+			var worker = sender as BackgroundWorker;
+
+            do
+            {
+                RecreateFlag = false;
+                string text = TargetText;
+
+                var list = CreateFormulaCellList(text, worker);
+                CombineNewFormulaCellList(list, worker);
+
+                foreach (var evaluateWorker in FormulaCellEvaluateWorkers)
+                {
+                    if (worker.CancellationPending) break;
+                    if (RecreateFlag) break;
+                    while (evaluateWorker.IsBusy)
+                    {
+                        if (!evaluateWorker.CancellationPending) evaluateWorker.CancelAsync();
+                        Application.DoEvents();
+                        Thread.Sleep(0);
+                    }
+                }
+                Application.DoEvents();
+            }
+            while (RecreateFlag);
+
+			e.Cancel = worker.CancellationPending;
+		}
+		
+		/// <summary>
+		/// 数式セルリストの生成処理終了時の処理を実行します。
+		/// </summary>
+		private void CreateFormulaCellListCreated(object sender, RunWorkerCompletedEventArgs e)
+		{
+			if (e.Cancelled) return;
+			if (ResultChanged != null) ResultChanged(this, e);
+
+			int count = 0;
+			foreach (var worker in FormulaCellEvaluateWorkers)
+			{
+				worker.RunWorkerAsync(count++);
+			}
+		}
+
+		/// <summary>
+		/// 指定した文字列から、数式セルリストを生成して取得します。
+		/// </summary>
+		/// <param name="text">数式セルリストの生成元文字列。</param>
+		private List<FormulaCellViewModel> CreateFormulaCellList(string text, BackgroundWorker worker)
+		{
+			var result = new List<FormulaCellViewModel>();
+			foreach (string line in text.Split('\n'))
+			{
+				if (worker.CancellationPending) break;
+				if (RecreateFlag) break;
+
+				result.Add(new FormulaCellViewModel(line, BaseSolver, result.ToArray()));
+			}
+			return result;
+		}
+
+		/// <summary>
+		/// 生成された新しい数式セルリストをもとに、現状の数式セルリストを置き換えます。
+		/// </summary>
+		/// <param name="newFormulaCells">新しい数式セルリスト。</param>
+		private void CombineNewFormulaCellList(List<FormulaCellViewModel> newFormulaCells, BackgroundWorker worker)
+		{
+			foreach (var newFormulaCell in newFormulaCells)
+			{
+				var newText = newFormulaCell.GetUniqueText();
+				foreach (var oldFormulaCell in FormulaCellList)
+				{
+					if (worker.CancellationPending) return;
+                    if (RecreateFlag) return;
+
+					if (newText != oldFormulaCell.GetUniqueText()) continue;
+
+					newFormulaCell.Target.Content = oldFormulaCell.Target.Content;
+					break;
+				}
+			}
+			FormulaCellList = newFormulaCells;
+#if DEBUG
+			Console.WriteLine("CombineNewFormulaCellList");
+#endif
+		}
+
+		/// <summary>
+		/// 各数式セルを順次評価する処理を実行します。
+		/// </summary>
+		private void EvaluateFormulaCellDoWork(object sender, DoWorkEventArgs e)
+		{
+			int id = (int)e.Argument; // スレッドに割り当てられた番号
+            var solver = Solvers[id]; // このスレッドで使用するソルバ
+
+			var thisWorker = sender as BackgroundWorker;
+			bool evaluated = true;
+			while (evaluated && !thisWorker.CancellationPending)
+			{
+				evaluated = false;
+				foreach (var cell in FormulaCellList)
+				{
+					if (thisWorker.CancellationPending) break;
+
+					lock (_evaluateLockObject)
+					{
+						if (cell.Evaluated) continue; // すでに評価済み
+						if (cell.Tag != null || !cell.Target.CanEvaluate) // 他スレッドで評価中 or 評価に必要な他セルの評価が未実施
+						{
+							evaluated = true; 
+							continue;
+						}
+						cell.Tag = thisWorker; // このスレッドで評価中であることを明示
+					}
+#if DEBUG
+					Console.WriteLine("EvaluateFormulaCellDoWork::" + id.ToString() + "::" + cell.CacheText);
+#endif
+					cell.Evaluate(solver);
+//					Thread.Sleep(1000); // 計算に時間がかかる場合を想定
+#if DEBUG
+					Console.WriteLine("EvaluateFormulaCellDoWork::" + id.ToString() + ":: →" + cell.Target.Content.ResultText);
+#endif
+					if (thisWorker.CancellationPending) break;
+
+					thisWorker.ReportProgress(1);
+					cell.Tag = null;
+					evaluated = true;
+				}
+			}
+		}
+
+		/// <summary>
+		/// いずれかの数式セルの評価が終了した時の処理を実行します。
+		/// </summary>
+		private void EvaluateProgressChanged(object sender, ProgressChangedEventArgs e)
+		{
+			if (ResultChanged != null) ResultChanged(this, e);
+		}
+
+		/// <summary>
+		/// 全ての数式セルの評価が終了した時の処理を実行します。
+		/// </summary>
+		private void EvaluateFormulaCellCompleted(object sender, RunWorkerCompletedEventArgs e)
+		{
+		}
+
+
+        /// <summary>
+        /// 指定行の結果を取得します。
+        /// </summary>
+        /// <param name="row">取得対象の行番号。</param>
+        /// <returns>
+        /// 指定行に対応する数式セルの評価結果。
+        /// 複数行にわたる数式セルでは、対応するResultオブジェクトは1行目に対してのみ返され、その他の行ではnullが返されます。
+        /// </returns>
+        public string GetResultOf(int row)
+        {
+			if (row >= FormulaCellList.Count) return null;
+
+            var targetViewModel = FormulaCellList[row];
+			var target = targetViewModel.Target;
+
+			var result = target.Content.ResultText;
+            if (result == null) result = "";
+			if (target.CommentText != null) 
+			{
+				if (!string.IsNullOrEmpty(result)) result += " ";
+				result += target.CommentText;
+			}
+			result = targetViewModel.Indent + result;
+
+            return result;
+        }
+
+		/// <summary>
+		/// 指定行番号のFormulaCellViewModelオブジェクトを取得します。
+		/// </summary>
+		public FormulaCellViewModel this[int index]
+		{
+			get 
+			{
+				if (FormulaCellList.Count <= index) return null;
+
+				return FormulaCellList[index];
+			}
+		}
+
+        /// <summary>
+        /// ソルバの設定更新時に呼び出されます。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        void BaseSolver_SettingUpdated(object sender, EventArgs e)
+        {
+            InitializeSolver(s_evaluateWorkerCount);
+        }
+
+		#region IEnumerable<FormulaCellViewModel> メンバー
+
+		public IEnumerator<FormulaCellViewModel> GetEnumerator()
+		{
+			return FormulaCellList.GetEnumerator();
+		}
+
+		#endregion
+
+		#region IEnumerable メンバー
+
+		System.Collections.IEnumerator System.Collections.IEnumerable.GetEnumerator()
+		{
+			return FormulaCellList.GetEnumerator();
+		}
+
+		#endregion
+	}
+}
