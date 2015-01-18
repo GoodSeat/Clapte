@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Liffom", "Liffom.csproj", "{CF032E29-3935-467A-9A45-136A5099A468}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "LiffomTestProject", "..\LiffomTestProject\LiffomTestProject.csproj", "{D478A2C5-A309-4578-BEDE-94A83BDB2BE9}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{CF032E29-3935-467A-9A45-136A5099A468}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF032E29-3935-467A-9A45-136A5099A468}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF032E29-3935-467A-9A45-136A5099A468}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF032E29-3935-467A-9A45-136A5099A468}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D478A2C5-A309-4578-BEDE-94A83BDB2BE9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D478A2C5-A309-4578-BEDE-94A83BDB2BE9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D478A2C5-A309-4578-BEDE-94A83BDB2BE9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D478A2C5-A309-4578-BEDE-94A83BDB2BE9}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
