@@ -76,7 +76,16 @@ namespace GoodSeat.Clapte.Views.InputSupports
 			set
 			{
 				if (_state == value) return;
-				if (value is InputSupportTypingState) ToolTipHelp.Hide(CandidateListBox);
+
+                if (value is InputSupportTypingState)
+                {
+                    ToolTipHelp.Hide(CandidateListBox);
+                    Azuki.Document.EndUndo();
+                }
+                else
+                {
+                    Azuki.Document.BeginUndo();
+                }
 
 				_state = value;
 				_state.NotifyStartState();

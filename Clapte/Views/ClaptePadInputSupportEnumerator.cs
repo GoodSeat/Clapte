@@ -38,16 +38,19 @@ namespace GoodSeat.Clapte.Views.InputSupports
 				if (Target[i] == null) continue;
 				var cell = Target[i].Target;
 
-				foreach (var def in cell.Content.GetAllConstantDefines().Where(def => def.Name.StartsWith(startsWith)))
-				{
-					def.Information = cell.CacheText; // cell.CommentText.TrimStart(' ', '#');
-					yield return def;
-				}
+                List<ConstantDefine> list = new List<ConstantDefine>(cell.Content.GetAllConstantDefines().Where(def => def.Name.StartsWith(startsWith)));
+                if (cell.CommentText.Contains(startsWith)) list = new List<ConstantDefine>(cell.Content.GetAllConstantDefines());
+
+                foreach (var def in list)
+                {
+                    def.Information = cell.CacheText; // cell.CommentText.TrimStart(' ', '#');
+                    yield return def;
+                }
 			}
 
-			foreach (var def in Target.ConstantList.Target.Where(def => def.Name.StartsWith(startsWith)))
+			foreach (var def in Target.ConstantList.Target.Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
 				yield return def;
-			foreach (var def in Target.ConstantList.GetSystemConstants().Where(def => def.Name.StartsWith(startsWith)))
+			foreach (var def in Target.ConstantList.GetSystemConstants().Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
 				yield return def;
 		}
 
@@ -58,16 +61,19 @@ namespace GoodSeat.Clapte.Views.InputSupports
 				if (Target[i] == null) continue;
 				var cell = Target[i].Target;
 
-				foreach (var def in cell.Content.GetAllFunctionDefines().Where(def => def.Name.StartsWith(startsWith)))
+                List<FunctionDefine> list = new List<FunctionDefine>(cell.Content.GetAllFunctionDefines().Where(def => def.Name.StartsWith(startsWith)));
+                if (cell.CommentText.Contains(startsWith)) list = new List<FunctionDefine>(cell.Content.GetAllFunctionDefines());
+
+				foreach (var def in list)
 				{
 					def.Information = cell.CacheText; // cell.CommentText.TrimStart(' ', '#');
 					yield return def;
 				}
 			}
 
-			foreach (var def in Target.FunctionList.Target.Where(def => def.Name.StartsWith(startsWith)))
+			foreach (var def in Target.FunctionList.Target.Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
 				yield return def;
-			foreach (var def in Target.FunctionList.GetSystemFunctions().Where(def => def.Name.StartsWith(startsWith)))
+			foreach (var def in Target.FunctionList.GetSystemFunctions().Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
 				yield return def;
 		}
 
