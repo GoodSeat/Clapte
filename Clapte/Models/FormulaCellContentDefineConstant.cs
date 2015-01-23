@@ -55,6 +55,7 @@ namespace GoodSeat.Clapte.Models
 
 			var target = equal.LeftHandSide as Variable;
 			if (target == null) return null;
+            if (target.Mark == SolveEquationProcess.PermanentSolveTarget) return null; // "?"は変数名として許可しない
 
 			if (equal.RightHandSide.Contains(target)) return null;
 

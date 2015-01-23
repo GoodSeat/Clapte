@@ -63,8 +63,7 @@ namespace GoodSeat.Clapte.Models
 				return new FormulaCellContentDefineWithEquation(formulaText, f, variableList[0], f, previous);
 
 			var permanentTarget = new Variable(SolveEquationProcess.PermanentSolveTarget);
-			if (variableList.Contains(permanentTarget)) // 恒久的な求解対象が存在する。
-				return new FormulaCellContentDefineWithEquation(formulaText, f, permanentTarget, f, previous);
+            if (variableList.Contains(permanentTarget)) return null; // 恒久的な求解対象が存在する ⇒ 変数定義とはみなさない
 
 			var noDefinedList = variableList.Where(v => !IsDefined(v, solver, previous));
 			if (noDefinedList.Count() != 1) return null; // 未定義の変数が1つでない。
