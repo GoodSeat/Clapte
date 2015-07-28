@@ -124,7 +124,7 @@ namespace GoodSeat.Liffom.Formats
 		}
 
 		/// <summary>
-		/// 数式の出力文字列を修正します。
+		/// 書式情報に基づいて、数式の出力文字列を修正します。
 		/// </summary>
 		/// <param name="ownerFormat">この書式情報を保持する書式オブジェクト。</param>
 		/// <param name="baseText">変更前の出力文字列。</param>
