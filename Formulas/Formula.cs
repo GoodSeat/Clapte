@@ -10,7 +10,7 @@ using GoodSeat.Liffom.Utilities;
 namespace GoodSeat.Liffom.Formulas
 {	
 	/// <summary>
-	/// 数式の抽象クラス
+	/// 数式を表します。
 	/// </summary>
 	/// <remarks>
 	/// TODO: MathML構成、解析の抽象メソッド
@@ -188,17 +188,18 @@ namespace GoodSeat.Liffom.Formulas
 		/// <summary>
 		/// ユーザーから処理の中止命令が出ているかを確認します。
 		/// </summary>
-		/// <returns>中止する場合には、trueを返します。</returns>
+		/// <param name="f">処理中の数式。</param>
+        /// <exception cref="FormulaOperationCanceledExceptions">ユーザーが処理をキャンセルした場合に投げられます。</exception>
 		internal static void CheckCancelOperation(Formula f)
 		{
-			bool stopped = false;
+			bool stop = false;
 
 			if (FormulaProcessing != null)
-				FormulaProcessing(f, EventArgs.Empty, ref stopped);
+				FormulaProcessing(f, EventArgs.Empty, ref stop);
 
-			if (stopped)
+			if (stop)
 			{
-				if (FormulaProcessCanceled != null) FormulaProcessCanceled(f, new EventArgs());
+				if (FormulaProcessCanceled != null) FormulaProcessCanceled(f, EventArgs.Empty);
 				throw new FormulaOperationCanceledExceptions();
 			}
 		}
@@ -556,7 +557,7 @@ namespace GoodSeat.Liffom.Formulas
 		public virtual Formula this[int i] { get { return null; } set { } }
 		
 		/// <summary>
-		/// 数式を認識できる文字列を取得します。
+		/// 数式を認識可能な文字列に変換して取得します。
 		/// </summary>
 		/// <returns>数式を表す文字列。</returns>
 		public override string ToString() 
@@ -571,7 +572,7 @@ namespace GoodSeat.Liffom.Formulas
 		}
 
 		/// <summary>
-		/// 数式を認識できる等価な文字列を取得します。
+		/// 数式を認識可能な文字列に変換して取得します。
 		/// </summary>
 		/// <returns>数式を表す文字列。</returns>
 		public abstract string GetText();
@@ -596,7 +597,7 @@ namespace GoodSeat.Liffom.Formulas
 		/// </summary>
 		/// <returns>一意性評価に用いるタイプ。</returns>
 		/// <remarks>
-		/// 例えば、sqrtクラスでは、rootクラスのタイプを返すべきです。
+		/// 例えばsqrtクラスでは、rootクラスのタイプを返すべきです。
 		/// </remarks>
 		public virtual Type GetEqualBaseType() { return GetType(); }
 
