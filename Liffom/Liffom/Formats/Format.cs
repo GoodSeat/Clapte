@@ -7,7 +7,7 @@ using GoodSeat.Liffom.Utilities;
 namespace GoodSeat.Liffom.Formats
 {
 	/// <summary>
-	/// 数式の文字列出力時の書式情報を表します。
+	/// 数式を文字列に変換する際の書式情報を表します。
 	/// </summary>
 	[Serializable()]
 	public class Format
@@ -88,7 +88,7 @@ namespace GoodSeat.Liffom.Formats
 		}
 
 		/// <summary>
-		/// 数式の文字列出力時の書式情報を初期化します。
+		/// 数式を文字列に変換する際の書式情報を初期化します。
 		/// </summary>
 		public Format() 
 		{
@@ -163,7 +163,7 @@ namespace GoodSeat.Liffom.Formats
 
 
 		/// <summary>
-		/// 数式の出力文字列を修正します。
+		/// 書式情報に基づいて、数式の出力文字列を修正します。
 		/// </summary>
 		/// <param name="baseText">変更前の出力文字列。</param>
         /// <returns>書式修正後の文字列。</returns>
