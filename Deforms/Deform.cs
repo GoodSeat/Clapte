@@ -37,6 +37,7 @@ namespace GoodSeat.Liffom.Deforms
 
 			if (isAbortApply == null) isAbortApply = f => false;
 			if (history == null) history = new DeformHistory(target);
+            if (history.Era > token.EraMaximum) throw new FormulaDeformException(string.Format("数式変形の世代が、許容されている最大数{0}を超過しました。", token.EraMaximum));
 
 			bool ruleApplied = true;
 			while (ruleApplied)

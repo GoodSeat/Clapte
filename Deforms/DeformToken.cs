@@ -21,9 +21,16 @@ namespace GoodSeat.Liffom.Deforms
 		/// </summary>
 		public DeformToken(params DeformToken[] children)
 		{
+            EraMaximum = 12;
+
 			Children = new List<DeformToken>(children);
 			AdditionalTryRules = new List<Rule>();
 		}
+
+        /// <summary>
+        /// 数式変形中に許容する最大履歴深さを設定若しくは取得します。
+        /// </summary>
+        public int EraMaximum { get; set; }
 
 		/// <summary>
 		/// 変形種別トークンの子変形種別トークンリストを取得します。
