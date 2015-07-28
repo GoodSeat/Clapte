@@ -7,6 +7,7 @@ using System.Threading;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Clapte.Solvers;
 using System.Windows.Forms;
+using GoodSeat.Liffom.Formulas;
 
 namespace GoodSeat.Clapte.ViewModels
 {
@@ -43,6 +44,8 @@ namespace GoodSeat.Clapte.ViewModels
 			BaseSolver = solver;
             BaseSolver.SettingUpdated += new EventHandler(BaseSolver_SettingUpdated);
 
+            Formula.FormulaProcessing += Formula_FormulaProcessing;
+
             // TODO: 定数、関数リストの追加、削除、変更時に対応するフックを用意。
             // 非同期の評価計画に基づいて再評価。
             // constantList.Target.
@@ -54,6 +57,7 @@ namespace GoodSeat.Clapte.ViewModels
         bool _recreateFlag = false;
         string _targetText;
 		SolverViewModel _baseSolver;
+        bool _abortFlag = false;
 
         #region イベント
 
@@ -66,6 +70,16 @@ namespace GoodSeat.Clapte.ViewModels
         /// いずれかの行の結果に変更があった時に呼び出されます。
         /// </summary>
         public event EventHandler ResultChanged;
+
+        /// <summary>
+        /// 数式の評価開始時に呼びされます。
+        /// </summary>
+        public event EventHandler EvaluateStarted;
+
+        /// <summary>
+        /// 数式の評価終了時に呼びされます。
+        /// </summary>
+        public event EventHandler EvaluateFinished;
 
         #endregion
 
@@ -93,6 +107,21 @@ namespace GoodSeat.Clapte.ViewModels
 				InitializeSolver(s_evaluateWorkerCount);
 			}
 		}
+
+        /// <summary>
+        /// 数式の評価処理中か否かを取得します。
+        /// </summary>
+        public bool IsEvaluating
+        {
+            get
+            {
+                foreach (var evaluateWorker in FormulaCellEvaluateWorkers)
+                {
+                    if (evaluateWorker.IsBusy) return true;
+                }
+                return false;
+            }
+        }
 
         /// <summary>
         /// 数式セルの評価に用いるソルバリストを設定もしくは取得します。
@@ -133,6 +162,24 @@ namespace GoodSeat.Clapte.ViewModels
 			FormulaCellList.Clear();
 			NotifyChangeText(text);
 		}
+
+        /// <summary>
+        /// 数式セルの評価を強制中止します。
+        /// </summary>
+        public void AbortEvaluate()
+        {
+            foreach (var evaluateWorker in FormulaCellEvaluateWorkers)
+            {
+                if (!evaluateWorker.IsBusy) continue;
+
+                if (!evaluateWorker.CancellationPending)
+                {
+                    _abortFlag = true;
+                    evaluateWorker.CancelAsync();
+                }
+            }
+        }
+
 
 		/// <summary>
 		/// 数式セルリストの再生成要請フラグを設定もしくは取得します。
@@ -255,6 +302,7 @@ namespace GoodSeat.Clapte.ViewModels
 			{
 				worker.RunWorkerAsync(count++);
 			}
+            if (EvaluateStarted != null) EvaluateStarted(this, e);
 		}
 
 		/// <summary>
@@ -357,6 +405,7 @@ namespace GoodSeat.Clapte.ViewModels
 		/// </summary>
 		private void EvaluateFormulaCellCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+            if (EvaluateFinished != null) EvaluateFinished(sender, e);
 		}
 
 
@@ -410,6 +459,18 @@ namespace GoodSeat.Clapte.ViewModels
             InitializeSolver(s_evaluateWorkerCount);
         }
 
+        /// <summary>
+        /// 数式評価中に定期的に呼び出されます。
+        /// </summary>
+        void Formula_FormulaProcessing(Formula sender, EventArgs e, ref bool Cancel)
+        {
+            if (_abortFlag)
+            {
+                Cancel = true;
+                _abortFlag = false;
+            }
+        }
+        
 		#region IEnumerable<FormulaCellViewModel> メンバー
 
 		public IEnumerator<FormulaCellViewModel> GetEnumerator()

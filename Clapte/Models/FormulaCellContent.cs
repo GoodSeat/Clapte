@@ -304,8 +304,15 @@ namespace GoodSeat.Clapte.Models
 		/// <returns>評価結果を表す文字列。</returns>
 		protected virtual string OnEvaluate(Solver solver)
 		{
-			var result = solver.Solve(FormulaText);
-			return result.ResultText;
+            try
+            {
+                var result = solver.Solve(FormulaText);
+                return result.ResultText;
+            }
+            catch (Exception e)
+            {
+                return e.Message;
+            }
 		}
 
 

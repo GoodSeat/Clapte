@@ -51,6 +51,7 @@ namespace GoodSeat.Clapte.ViewModels
 			this.SolveAlgebraic = new SolveAlgebraicEquation();
 			this.NewtonMethod = new NewtonMethod();
 			this.BrentMethod = new BrentMethod();
+            this.MaxTime = 3000;
 
 			PermitOmitProductMark = true;
 
@@ -140,6 +141,11 @@ namespace GoodSeat.Clapte.ViewModels
 		/// ブレント法による方程式の求解処理を設定もしくは取得します。
 		/// </summary>
         public BrentMethod BrentMethod { get; set; }
+
+        /// <summary>
+        /// 計算を中止する時間[ms]を設定若しくは取得します。
+        /// </summary>
+        public double MaxTime { get; set; }
 
 		#endregion
 
@@ -233,7 +239,7 @@ namespace GoodSeat.Clapte.ViewModels
 			if (SolveAlgebraic != null) solveList.Add(SolveAlgebraic);
 			if (NewtonMethod != null) solveList.Add(NewtonMethod);
 			if (BrentMethod != null) solveList.Add(BrentMethod);
-			if (solveList.Count != 0) list.Add(new SolveEquationProcess(solver, solveList.ToArray()));
+			if (solveList.Count != 0) list.Add(new SolveEquationProcess(solver, MaxTime, solveList.ToArray()));
 
 			// 計算処理
 			List<DeformToken> tokenList = new List<DeformToken>();
@@ -248,7 +254,7 @@ namespace GoodSeat.Clapte.ViewModels
 				var token = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
 				tokenList.Add(token);
 			}
-			list.Add(new CalculateFormulaProcess(solver, tokenList.ToArray()));
+			list.Add(new CalculateFormulaProcess(solver, MaxTime, tokenList.ToArray()));
 
 			return new ProcessSet(solver, list.ToArray());
 		}
@@ -318,6 +324,7 @@ namespace GoodSeat.Clapte.ViewModels
 
 			XmlElement calculateElement = xmlElement["CalculateSetting"];
 			Mode = (CalculateMode)Enum.Parse(typeof(CalculateMode), calculateElement.GetAttribute("Mode"));
+            MaxTime = double.Parse(calculateElement.GetAttribute("MaxTime", "3000"));
 			MidpointRound = (MidpointRounding)Enum.Parse(typeof(MidpointRounding), calculateElement.GetAttribute("MidpointRound"));
 			{
 				XmlElement newtonElement = calculateElement["NewtonMethod"];
@@ -353,6 +360,7 @@ namespace GoodSeat.Clapte.ViewModels
 
 			XmlElement calculateElement = new XmlElement("CalculateSetting");
 			calculateElement.AddAttribute("Mode", Mode.ToString());
+            calculateElement.AddAttribute("MaxTime", MaxTime.ToString());
 			calculateElement.AddAttribute("MidpointRound", MidpointRound.ToString());
 			{
 				XmlElement newtonElement = new XmlElement("NewtonMethod");

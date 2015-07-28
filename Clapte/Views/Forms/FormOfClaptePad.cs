@@ -46,6 +46,8 @@ namespace GoodSeat.Clapte.Views.Forms
             _target = target;
             Target.ResultChanged += new EventHandler(Target_ResultChanged);
             Target.SolversUpdated += new EventHandler(Target_SolversUpdated);
+            Target.EvaluateStarted += Target_EvaluateStarted;
+            Target.EvaluateFinished += Target_EvaluateFinished;
 
 			InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
 			Support = new InputSupport(_inputTextBox, this, InputSupportEnumerator);
@@ -310,6 +312,22 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         /// <summary>
+        /// 数式セルの評価開始時に呼び出されます。
+        /// </summary>
+        void Target_EvaluateStarted(object sender, EventArgs e)
+        {
+            _picStatus.Visible = Target.IsEvaluating;
+        }
+
+        /// <summary>
+        /// 数式セルの評価終了時に呼び出されます。
+        /// </summary>
+        void Target_EvaluateFinished(object sender, EventArgs e)
+        {
+            _picStatus.Visible = Target.IsEvaluating;
+        }
+
+        /// <summary>
         /// 入力ボックスのテキストに変更があったときに呼び出されます。
         /// </summary>
 		private void _inputTextBox_TextChanged(object sender, EventArgs e)
@@ -412,6 +430,11 @@ namespace GoodSeat.Clapte.Views.Forms
             if (_openFileDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
             _inputTextBox.Text = File.ReadAllText(_openFileDialog.FileName, Encoding.Default);
+        }
+
+        private void _btnAbort_Click(object sender, EventArgs e)
+        {
+            Target.AbortEvaluate();
         }
 
 		private void _btnSave_MouseEnter(object sender, EventArgs e)
