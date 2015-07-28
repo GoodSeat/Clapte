@@ -15,7 +15,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
 	{
 		static DetectSplitCommmaProcess()
 		{
-			SplitNumericRegex = new Regex(@"[1-9]{1,3}(\,[0-9]{3})+(\D|$)", RegexOptions.IgnoreCase);
+			SplitNumericRegex = new Regex(@"[1-9][0-9]{0,2}(\,[0-9]{3})+(\D|$)", RegexOptions.IgnoreCase);
 		}
 
 		/// <summary>
