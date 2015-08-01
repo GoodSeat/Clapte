@@ -76,7 +76,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
 				);
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("(x+y)*(x+y)"),
-				Formula.Parse("(x+y)*x + (x+y)*y") // この変形時点で積が和となるので終了。さらなる展開は子数式変形でおこわなれる。
+				Formula.Parse("(x+y)*x + (x+y)*y") // この変形時点で積が和となるので終了。さらなる展開は子数式変形でおこなわれる。
 				);
 		}
 
