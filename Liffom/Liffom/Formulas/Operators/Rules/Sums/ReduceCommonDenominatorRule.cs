@@ -98,11 +98,8 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 				// 分母の最小公倍数
 				Formula lcm = Polynomial.LCM(b, d);
 
-				Formula surplus;
-				Formula postA = a * lcm.Divide(b, out surplus);
-				if (surplus != 0) throw new FormulaAssertionException(string.Format("{0}を、{0}と{1}の最小公倍数{2}で除したときの剰余が0となりませんでした。(={3})", b, d, lcm, surplus));
-				Formula postC = c * lcm.Divide(d, out surplus);
-				if (surplus != 0) throw new FormulaAssertionException(string.Format("{1}を、{0}と{1}の最小公倍数{2}で除したときの剰余が0となりませんでした。(={3})", b, d, lcm, surplus));
+                Formula postA = a * (lcm / b);
+				Formula postC = c * (lcm / d);
 
 				return (postA + postC) / lcm;
 			}
@@ -128,7 +125,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 		{
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("5/z+5/x"),
-				Formula.Parse("(5*x+5*z)/(x*z)")
+				Formula.Parse("(5*((x*z)/x)+5*((x*z)/z))/(x*z)")
 				);
 		}
 
