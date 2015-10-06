@@ -21,7 +21,7 @@ namespace GoodSeat.Liffom.Deforms
 		/// </summary>
 		public DeformToken(params DeformToken[] children)
 		{
-            EraMaximum = 12;
+            EraMaximum = 50;
 
 			Children = new List<DeformToken>(children);
 			AdditionalTryRules = new List<Rule>();
