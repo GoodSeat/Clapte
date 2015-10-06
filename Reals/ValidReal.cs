@@ -329,7 +329,7 @@ namespace GoodSeat.Liffom.Reals
 			if (!double.IsInfinity(n1.Data) && n1.Data != 0 && !double.IsInfinity(n2.Data) && double.IsInfinity(Math.Pow(n1.Data, n2.Data)))
 				throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
 
-			ValidReal result = new ValidReal(Math.Pow(n1.BaseData, n2.BaseData));
+			ValidReal result = new ValidReal(Math.Pow(n1.Data, n2.BaseData));
 			result.Precision = Math.Min(n1.Precision, n2.Precision);
 			
 			return result;
