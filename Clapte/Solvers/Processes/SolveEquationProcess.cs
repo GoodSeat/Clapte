@@ -105,6 +105,9 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
         void Formula_FormulaProcessing(Formula sender, EventArgs e, ref bool Cancel)
         {
+#if DEBUG
+            return;
+#endif
             if (DateTime.Now - _calcStartTime > TimeSpan.FromMilliseconds(MaxTime))
             {
                 throw new Exception("一定時間以上計算が終了しませんでした。計算式が複雑すぎます。");
