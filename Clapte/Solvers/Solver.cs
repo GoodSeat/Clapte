@@ -49,6 +49,8 @@ namespace GoodSeat.Clapte.Solvers
 		{
 			ProcessList = new List<Process>();
 			AbortLevel = Error.Level.Abort;
+            UserConstants = new List<ConstantDefine>();
+            UserFunctions = new List<FunctionDefine>();
 		}
 
 		/// <summary>
@@ -87,7 +89,6 @@ namespace GoodSeat.Clapte.Solvers
 		/// <returns>指定型の登録済みプロセス。</returns>
 		public T GetProcessOf<T>() where T : Process
 		{
-			T proc = null;
 			foreach (var process in ProcessList)
 			{
 				if (process is T) return process as T;
