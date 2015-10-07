@@ -68,7 +68,7 @@ namespace GoodSeat.Liffom.Processes
 				Formula coef = factor * aMatched;
 				if (ApplyDeformToken != null) coef = coef.DeformFormula(ApplyDeformToken);
 
-				var result = new Product(true, coef, targetUnit);
+				var result = new Product(false, coef, targetUnit);
 
 				target = target.Substitute(convert, result);
 			}
