@@ -276,14 +276,16 @@ namespace GoodSeat.Liffom.Reals
 			ValidReal n2 = r as ValidReal;
 			if (n2 == null) n2 = new ValidReal(r.Data);
 
-			if (!double.IsInfinity(n1.Data) && !double.IsInfinity(n2.Data) && double.IsInfinity(n1.Data + n2.Data))
+            var n1d = n1.Data;
+            var n2d = n2.Data;
+			if (!double.IsInfinity(n1d) && !double.IsInfinity(n2d) && double.IsInfinity(n1d + n2d))
 				throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
 
 			int minPrecision1 = (int)n1.Exponent - n1.Precision + 1; // 有効最小桁数
 			int minPrecision2 = (int)n2.Exponent - n2.Precision + 1; // 有効最小桁数
 
 			int postMinPrecision = Math.Max(minPrecision1, minPrecision2);
-			ValidReal result = new ValidReal(n1.Data + n2.Data);
+			ValidReal result = new ValidReal(n1d + n2d);
 						
 			result.MinimumDigit = Math.Min(n1.MinimumDigit, n2.MinimumDigit);
 
@@ -304,8 +306,11 @@ namespace GoodSeat.Liffom.Reals
 			ValidReal n2 = r as ValidReal;
 			if (n2 == null) n2 = new ValidReal(r.Data);
 
-				if (!double.IsInfinity(n1.Data) && !double.IsInfinity(n2.Data) && double.IsInfinity(n1.Data * n2.Data))
-					throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
+            if (!double.IsInfinity(n1.BaseData))
+            {
+                if (!double.IsInfinity(n2.BaseData) && double.IsInfinity(n1.BaseData * n2.BaseData))
+                    throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
+            }
 
 			ValidReal result = new ValidReal(n1.BaseData * n2.BaseData);
 
@@ -326,8 +331,11 @@ namespace GoodSeat.Liffom.Reals
 			ValidReal n2 = r as ValidReal;
 			if (n2 == null) n2 = new ValidReal(r.Data);
 
-			if (!double.IsInfinity(n1.Data) && n1.Data != 0 && !double.IsInfinity(n2.Data) && double.IsInfinity(Math.Pow(n1.Data, n2.Data)))
-				throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
+            if (!double.IsInfinity(n1.BaseData) && n1.BaseData != 0)
+            {
+                if (!double.IsInfinity(n2.BaseData) && double.IsInfinity(Math.Pow(n1.BaseData, n2.BaseData)))
+                    throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
+            }
 
 			ValidReal result = new ValidReal(Math.Pow(n1.Data, n2.BaseData));
 			result.Precision = Math.Min(n1.Precision, n2.Precision);
@@ -346,8 +354,12 @@ namespace GoodSeat.Liffom.Reals
 			ValidReal n2 = r as ValidReal;
 			if (n2 == null) n2 = new ValidReal(r.Data);
 
-			if (!double.IsInfinity(n1.Data) && n1.Data != 0 && !double.IsInfinity(n2.Data) && double.IsInfinity(n1.Data / n2.Data))
-				throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
+            if (!double.IsInfinity(n1.BaseData) && n1.BaseData != 0)
+            {
+                if (n2.BaseData == 0) throw new DivideByZeroException();
+                if (!double.IsInfinity(n2.BaseData) && double.IsInfinity(n1.BaseData / n2.BaseData))
+                    throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
+            }
 
 			ValidReal result = new ValidReal(n1.BaseData / n2.BaseData);
 			result.Precision = Math.Min(n1.Precision, n2.Precision);

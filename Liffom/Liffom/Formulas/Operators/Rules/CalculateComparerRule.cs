@@ -38,8 +38,9 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
 		protected override Formula OnTryMatchRule(Formula target)
 		{
 			var comparer = target as Comparer;
-			if (comparer.GetJudge() == Comparer.Judge.True) return 1;
-			else if (comparer.GetJudge() == Comparer.Judge.False) return 0;
+            var judge = comparer.GetJudge();
+			if (judge == Comparer.Judge.True) return 1;
+			else if (judge == Comparer.Judge.False) return 0;
 			else return null;
 		}
 
