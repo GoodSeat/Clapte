@@ -21,12 +21,18 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <summary>
         /// 現在の目標単位を設定もしくは取得します。
         /// </summary>
-		Formula CurrentTargetUnit { get; set; }
+		public Formula CurrentTargetUnit { get; private set; }
 
         /// <summary>
         /// 単位変換実施後の数式に対して適用する変形の識別トークンを設定もしくは取得します。
         /// </summary>
-        DeformToken ApplyDeformToken { get; set; }
+        public DeformToken ApplyDeformToken { get; set; }
+
+		/// <summary>
+		/// 目標単位の認識と変換の処理を初期化します。
+		/// </summary>
+		/// <param name="owner">処理の保持者となるソルバ。</param>
+		public ConvertToSpecifiedUnitProcess(Solver owner) : this(owner, null) { }
 
 		/// <summary>
 		/// 目標単位の認識と変換の処理を初期化します。

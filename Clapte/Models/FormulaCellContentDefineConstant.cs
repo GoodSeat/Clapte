@@ -21,11 +21,13 @@ namespace GoodSeat.Clapte.Models
 		/// <param name="f">対象の数式。</param>
 		/// <param name="target">定義対象の変数。</param>
 		/// <param name="evaluateTarget">具体に評価対象とする数式。</param>
+		/// <param name="unitProc">目標単位を保持する単位変換処理。</param>
 		/// <param name="previous">前方に宣言されている可変数の数式セル。</param>
-		protected internal FormulaCellContentDefineConstant(string formulaText, Formula f, Variable target, Formula evaluateTarget, params FormulaCell[] previous)
+		protected internal FormulaCellContentDefineConstant(string formulaText, Formula f, Variable target, Formula evaluateTarget, ConvertToSpecifiedUnitProcess unitProc, params FormulaCell[] previous)
 			: base(formulaText, f, evaluateTarget, previous)
 		{
 			DefineTarget = target;
+            UnitProcess = unitProc;
 		}
 
 		/// <summary>
@@ -38,6 +40,11 @@ namespace GoodSeat.Clapte.Models
 		/// </summary>
 		public ConstantDefine EvaluatedDefine { get; private set; }
 
+        /// <summary>
+        /// 目標単位の検知と変換を行う処理を設定若しくは取得します。
+        /// </summary>
+        private ConvertToSpecifiedUnitProcess UnitProcess { get; set; }
+
 		/// <summary>
 		/// 指定文字列から、数式セルの内容を初期化して取得します。
 		/// </summary>
@@ -47,6 +54,9 @@ namespace GoodSeat.Clapte.Models
 		/// <returns>初期化された数式セル内容オブジェクト。</returns>
 		protected override FormulaCellContent CreateFrom(string formulaText, Solver solver, params FormulaCell[] previous)
 		{
+            var unitProc = new ConvertToSpecifiedUnitProcess(solver, Formula.CombineToken);
+            unitProc.CheckInputText(ref formulaText);
+
 			Formula f;
 			solver.TryParse(formulaText, out f);
 
@@ -61,7 +71,7 @@ namespace GoodSeat.Clapte.Models
 
             string[] split = formulaText.Split('=');
 
-			return new FormulaCellContentDefineConstant(formulaText.Substring(split[0].Length + 1), f, target, equal.RightHandSide, previous);
+			return new FormulaCellContentDefineConstant(formulaText.Substring(split[0].Length + 1), f, target, equal.RightHandSide, unitProc, previous);
 		}
 
 		/// <summary>
@@ -81,9 +91,11 @@ namespace GoodSeat.Clapte.Models
 			if (result.ResultLevel == Result.Level.Success)
 			{
 				EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
-				EvaluatedDefine.Define = result.ResultFormula.ToString();
+                var res = result.ResultFormula;
+                UnitProcess.CheckOutputFormula(ref res);
+				EvaluatedDefine.Define = res.ToString();
 
-				return string.Format("{0} = {1}", DefineTarget, result.ResultFormula);
+				return string.Format("{0} = {1}", DefineTarget, res.ToString());
 			}
 			else
 				return result.ResultText;

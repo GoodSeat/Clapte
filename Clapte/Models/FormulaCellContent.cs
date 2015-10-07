@@ -35,7 +35,7 @@ namespace GoodSeat.Clapte.Models
 
 		static FormulaCellContent()
 		{
-			s_protTypes.Add(new FormulaCellContentDefineConstant(null, null, null, null));
+			s_protTypes.Add(new FormulaCellContentDefineConstant(null, null, null, null, null));
 			s_protTypes.Add(new FormulaCellContentDefineFunction(null, null, null, null));
 			s_protTypes.Add(new FormulaCellContentDefineWithEquation(null, null, null, null));
 			s_protTypes.Add(new FormulaCellContent(null, null, null));
