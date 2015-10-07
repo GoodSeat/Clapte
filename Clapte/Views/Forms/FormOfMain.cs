@@ -196,13 +196,19 @@ namespace GoodSeat.Clapte.Views.Forms
 			{
 				_clipBoradWatcher.DrawClipBoard -= new EventHandler(_clipBoradWatcher_DrawClipBoard);
 				_clipBoradWatcher.Enable = false;
-				try
-				{
-					if (Clipboard.ContainsText())
-					{
-						ClapteCore.InformTextCommand(Clipboard.GetText());
-					}
-				}
+                try
+                {
+                    if (Clipboard.ContainsText())
+                    {
+                        ClapteCore.InformTextCommand(Clipboard.GetText());
+                    }
+                }
+                catch (Exception exc)
+                {
+#if DEBUG
+                    TaskTrayIcon.ShowBalloonTip(ClapteCore.LimitTime * 1000, "予期しない例外", exc.Message, ToolTipIcon.Error);
+#endif
+                }
 				finally
 				{
 					_clipBoradWatcher.Enable = true;

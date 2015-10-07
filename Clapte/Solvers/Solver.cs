@@ -143,6 +143,11 @@ namespace GoodSeat.Clapte.Solvers
 				errors.Add(new Error(Error.Level.Error, e.Message));
 				return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
 			}
+			catch (Exception e)
+			{
+				errors.Add(new Error(Error.Level.Error, e.Message));
+				return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
+			}
 		}
 
 		/// <summary>
