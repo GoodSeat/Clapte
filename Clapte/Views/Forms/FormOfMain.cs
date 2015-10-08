@@ -12,6 +12,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Clapte.Views.Forms.SettingPanels;
 using GoodSeat.Clapte.ViewModels;
+using GoodSeat.Clapte.Models.Windows;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -191,6 +192,8 @@ namespace GoodSeat.Clapte.Views.Forms
 		void _clipBoradWatcher_DrawClipBoard(object sender, EventArgs e)
 		{
 			if (!_menuEnable.Checked) return;
+            foreach (var exclude in ClapteCore.ExcludeTargetList)
+                if (exclude.MatchWith(WindowInfo.ActiveWindowInfo)) return;
 
 			lock (_lockClipboard)
 			{

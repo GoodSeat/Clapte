@@ -69,6 +69,8 @@ namespace GoodSeat.Clapte.Views.Forms
 			{
 				case "一般設定":
 					return new GeneralSettingPanel(OwnerMainForm.ClapteCore, OwnerMainForm, OwnerMainForm.HotkeyManager);
+                case "監視対象外":
+                    return new ExcludeListSettingPanel(OwnerMainForm.ClapteCore);
 				case "定数":
 					return new UserConstantPanel(OwnerMainForm.UserConstants, OwnerMainForm.ClapteCore);
 				case "関数":

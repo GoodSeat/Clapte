@@ -6,6 +6,7 @@ using GoodSeat.Clapte.ViewModels.ClapteCommands;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Sio.Xml.Serialization;
+using GoodSeat.Clapte.Models.Windows;
 
 namespace GoodSeat.Clapte.ViewModels
 {
@@ -24,6 +25,7 @@ namespace GoodSeat.Clapte.ViewModels
 			this.LimitTime = 10;
 			this.ActionWithSameCopy = true;
 
+            ExcludeTargetList = new List<WindowIdentifyInfo>();
 			Commands = new List<ClapteCommand>();
 			CalculateCommand = new CalculateCommand(this);
 			SplitDataCountCommand = new ClapteCommands.SplitDataCountCommand(this);
@@ -49,6 +51,10 @@ namespace GoodSeat.Clapte.ViewModels
 		/// </summary>
 		public bool ActionWithSameCopy {get; set;}
 
+        /// <summary>
+        /// 監視対象より除外するウインドウ情報リストを取得します。
+        /// </summary>
+        public List<WindowIdentifyInfo> ExcludeTargetList { get; private set; }
 
 
 		/// <summary>
@@ -169,6 +175,19 @@ namespace GoodSeat.Clapte.ViewModels
 
 			CalculateCommand.OnDeserialize(xmlElement["CalculateCommand"]);
 			SplitDataCountCommand.OnDeserialize(xmlElement["SplitDataCountCommand"]);
+
+            // 監視除外の設定の復元
+            XmlElement excludeSetting = xmlElement.GetElement("ExcludeSetting");
+            if (excludeSetting != null)
+            {
+                ExcludeTargetList.Clear();
+                foreach (XmlElement elm in excludeSetting.GetElements("Target"))
+                {
+                    WindowIdentifyInfo wid = new WindowIdentifyInfo();
+                    wid.OnDeserialize(elm);
+                    ExcludeTargetList.Add(wid);
+                }
+            }
 		}
 
 		public void OnSerialize(XmlElement xmlElement)
@@ -183,6 +202,16 @@ namespace GoodSeat.Clapte.ViewModels
 			XmlElement splitDataCountCommandElement = new XmlElement("SplitDataCountCommand");
 			SplitDataCountCommand.OnSerialize(splitDataCountCommandElement);
 			xmlElement.AddElements(splitDataCountCommandElement);
+
+            // 監視除外の設定の保存
+            XmlElement excludeSetting = new XmlElement("ExcludeSetting");
+            foreach (var wid in ExcludeTargetList)
+            {
+                XmlElement elm = new XmlElement("Target");
+                wid.OnSerialize(elm);
+                excludeSetting.AddElements(elm);
+            }
+            xmlElement.AddElements(excludeSetting);
 		}
 
 		#endregion

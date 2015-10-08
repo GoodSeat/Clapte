@@ -58,6 +58,9 @@
     <Compile Include="Models\FormulaCellContentDefineFunction.cs" />
     <Compile Include="Models\FormulaCellContentDefineWithEquation.cs" />
     <Compile Include="Models\FormulaCellList.cs" />
+    <Compile Include="Models\Windows\WindowIdentifyInfo.cs" />
+    <Compile Include="Models\Windows\WindowInfo.cs" />
+    <Compile Include="Models\Windows\WindowInfo.Win32API.cs" />
     <Compile Include="Solvers\ConstantDefine.cs" />
     <Compile Include="Solvers\Error.cs" />
     <Compile Include="Solvers\FunctionDefine.cs" />
@@ -143,6 +146,12 @@
     </Compile>
     <Compile Include="Views\Forms\FormOfSetting.Designer.cs">
       <DependentUpon>FormOfSetting.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\ExcludeListSettingPanel.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Views\Forms\SettingPanels\ExcludeListSettingPanel.Designer.cs">
+      <DependentUpon>ExcludeListSettingPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\FunctionArgumentHelp.cs" />
     <Compile Include="Views\HotkeyManager.cs" />
@@ -231,6 +240,9 @@
     <EmbeddedResource Include="Views\Forms\SettingPanels\CalculatorSettingPanel.resx">
       <DependentUpon>CalculatorSettingPanel.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\ExcludeListSettingPanel.resx">
+      <DependentUpon>ExcludeListSettingPanel.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Views\Forms\SettingPanels\GeneralSettingPanel.resx">
       <DependentUpon>GeneralSettingPanel.cs</DependentUpon>
     </EmbeddedResource>
@@ -281,6 +293,10 @@
     <Content Include="Icon_Clapte_Notify.ico" />
     <Content Include="Icon_Clapte_Notify_Deactive.ico" />
     <None Include="Resources\status_anim.gif" />
+    <None Include="Resources\Icon_AddFilter.png" />
+    <None Include="Resources\Icon_AddFilter_Unfocus.png" />
+    <None Include="Resources\Icon_ChangeFilter.png" />
+    <None Include="Resources\Icon_ChangeFilter_Unfocus.png" />
     <None Include="Resources\Icon_Save_Unfocus_mini.png" />
     <None Include="Resources\Icon_Open_Unfocus_mini.png" />
     <None Include="Resources\Icon_Save_Unfocus.png" />
@@ -296,6 +312,8 @@
     <None Include="Resources\Icon_MoveUp.png" />
     <None Include="Resources\Icon_MoveDown_Unfocus.png" />
     <None Include="Resources\Icon_MoveDown.png" />
+    <None Include="Resources\Icon_DeleteFilter.png" />
+    <None Include="Resources\Icon_DeleteFilter_Unfocues.png" />
     <None Include="Resources\Icon_DeleteUnitTable_Unfocus.png" />
     <None Include="Resources\Icon_DeleteUnitRecord_Unfocus.png" />
     <None Include="Resources\Icon_ChangeUnitTable_Unfocus.png" />
@@ -320,6 +338,8 @@
     <None Include="Resources\Icon_AddFunction.png" />
     <None Include="Resources\Icon_PushPin.png" />
     <None Include="Resources\Icon_PushPin_Abort.png" />
+    <None Include="Resources\Icon_PickApplication.png" />
+    <None Include="Resources\Icon_PickApplication_Unfocus.png" />
     <None Include="Resources\Frame_TopRight.png" />
     <None Include="Resources\Frame_TopLeft.png" />
     <None Include="Resources\Frame_Top.png" />
