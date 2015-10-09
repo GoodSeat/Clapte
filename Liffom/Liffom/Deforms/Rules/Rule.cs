@@ -369,8 +369,10 @@ namespace GoodSeat.Liffom.Deforms.Rules
 			foreach (var pair in GetExamples())
 			{
 				var f = pair.Key;
-				var result = GetClone().TryMatchRule(f.Copy());
+                var rule = GetClone();
+                if (!rule.IsTargetTypeFormula(f)) yield return new FormulaRuleException(string.Format("ルールに登録されたサンプル「{0}」がルール変形の対象となりませんでした。", pair.Key));
 
+				var result = rule.TryMatchRule(f.Copy());
 				if (result != pair.Value) yield return new FormulaRuleException(string.Format("ルールに登録されたサンプルと異なる結果が得られました。{0}に対し、{1}への変形が期待されますが、{2}となりました。", pair.Key, pair.Value, result));
 			}
 		}
