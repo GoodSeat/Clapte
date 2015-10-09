@@ -425,7 +425,11 @@ namespace GoodSeat.Clapte.ViewModels
 			var target = targetViewModel.Target;
 
 			var result = target.Content.ResultText;
-            if (result == null) result = "";
+            if (result == null)
+            {
+                if (targetViewModel.Tag == null) result = "~~~ 計算待機中...";
+                else result = "~~~ 計算実行中...";
+            }
 			if (target.CommentText != null) 
 			{
 				if (!string.IsNullOrEmpty(result)) result += " ";

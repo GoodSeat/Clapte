@@ -146,9 +146,21 @@ namespace GoodSeat.Clapte.Views.InputSupports
 		/// <summary>
 		/// 現在の状況に応じて、入力補助を表示します。
 		/// </summary>
-		public void ShowInputSupport()
+        /// <param name="force">キャレットの後方に文字列が続く場合にも強制的に候補を表示するか。</param>
+		public void ShowInputSupport(bool force)
 		{
 			if (!(State is InputSupportTypingState)) return;
+            if (!force)
+            {
+                int caret = Azuki.Document.CaretIndex;
+                if (caret < Azuki.Document.Text.Length)
+                {
+                    var nextChar = Azuki.Document.GetCharAt(caret);
+                    if (('a' <= nextChar && nextChar <= 'z') || ('A' <= nextChar && nextChar <= 'Z') ||
+                        ('1' <= nextChar && nextChar <= '0')) return;
+                    if (nextChar == '_') return;
+                }
+            }
 
 			int startIndex;
 			var target = Azuki.GetPreCaretWord(out startIndex);
@@ -227,8 +239,8 @@ namespace GoodSeat.Clapte.Views.InputSupports
 		{
             int currentTextLength = Azuki.TextLength;
 
-            if (CandidateListBox.Visible) ShowInputSupport();
-            else if (AutoShow && currentTextLength > _lastTextLength) ShowInputSupport();
+            if (CandidateListBox.Visible) ShowInputSupport(true);
+            else if (AutoShow && currentTextLength > _lastTextLength) ShowInputSupport(false);
 
             _lastTextLength = currentTextLength;
 		}

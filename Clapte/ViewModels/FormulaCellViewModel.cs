@@ -39,7 +39,6 @@ namespace GoodSeat.Clapte.ViewModels
 			}
 		}
 
-		FormulaCell _target;
 		BackgroundWorker _backWorker;
 
 		/// <summary>

@@ -29,7 +29,10 @@ namespace GoodSeat.Clapte.Views
 			/// <summary>演算記号を表します。</summary>
 			Operator = CharClass.Macro,
 			/// <summary>コメントを表します。</summary>
-			Comment = CharClass.Comment
+			Comment = CharClass.Comment,
+			/// <summary>コメントを表します。</summary>
+            Condition = CharClass.DocComment,
+            Error = CharClass.RemovedLine
 		}
 
 		/// <summary>
@@ -39,6 +42,8 @@ namespace GoodSeat.Clapte.Views
 		{
 			Target = target;
 			AddLineHighlight("#", GetCharClassOf(SyntaxTarget.Comment));
+			AddLineHighlight("~~~", GetCharClassOf(SyntaxTarget.Condition));
+			AddLineHighlight("!!!", GetCharClassOf(SyntaxTarget.Error));
 		}
 
 		/// <summary>

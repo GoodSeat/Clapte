@@ -217,7 +217,7 @@ namespace GoodSeat.Clapte.Views.Forms
 			_inputTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
             _inputTextBox.ShowsHScrollBar = false;
 
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => Support.ShowInputSupport());
+            _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => Support.ShowInputSupport(true));
             _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
 
 			_resultTextBox.View.ColorScheme.SelectionBack = Color.Gray;
@@ -442,6 +442,11 @@ namespace GoodSeat.Clapte.Views.Forms
 			(sender as Control).BringToFront();
 		}
 
+        private void _picStatus_VisibleChanged(object sender, EventArgs e)
+        {
+            _btnAbort.Visible = _picStatus.Visible;
+        }
+
 		#endregion
 
 		#region ISerializable メンバー
@@ -507,6 +512,7 @@ namespace GoodSeat.Clapte.Views.Forms
 		}
 
 		#endregion
+
 		
 	}
 }

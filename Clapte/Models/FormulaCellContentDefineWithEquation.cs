@@ -104,7 +104,7 @@ namespace GoodSeat.Clapte.Models
 		/// </summary>
 		/// <param name="solver">評価に用いるソルバ。</param>
 		/// <returns>評価結果を表す文字列。</returns>
-		protected override string OnEvaluate(Solver solver)
+		protected override Result OnEvaluate(Solver solver)
 		{
 			var result = solver.Solve(FormulaText);
 
@@ -116,15 +116,14 @@ namespace GoodSeat.Clapte.Models
                 if (equal.LeftHandSide == DefineTarget)
 				{
 					EvaluatedDefine.Define = equal.RightHandSide.ToString();
-					return string.Format("{0} = {1}", DefineTarget, EvaluatedDefine.Define);
+					result.ResultText = string.Format("{0} = {1}", DefineTarget, EvaluatedDefine.Define);
 				}
 				else
 				{
-					return string.Format("{0}についての求解に失敗しました。", DefineTarget);
+					result.ResultText = string.Format("{0}についての求解に失敗しました。", DefineTarget);
 				}
 			}
-			else
-				return result.ResultText;
+            return result;
 		}
 
 

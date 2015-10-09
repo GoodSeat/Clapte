@@ -48,9 +48,9 @@ namespace GoodSeat.Clapte.Solvers
 		}
 
 		/// <summary>
-		/// 結果を表す文字列を取得します。
+		/// 結果を表す文字列を設定若しくは取得します。
 		/// </summary>
-		public string ResultText { get; private set; }
+		public string ResultText { get; set; }
 
 		/// <summary>
 		/// 結果の概要を取得します。

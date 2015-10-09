@@ -29,27 +29,28 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Sgry.Azuki.FontInfo fontInfo3 = new Sgry.Azuki.FontInfo();
-            Sgry.Azuki.FontInfo fontInfo4 = new Sgry.Azuki.FontInfo();
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfClaptePad));
+            Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
+            Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
             this._inputTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._resultTextBox = new Sgry.Azuki.WinForms.AzukiControl();
+            this._picStatus = new System.Windows.Forms.PictureBox();
+            this._btnAbort = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnLoad = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnSave = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._timerDelay = new System.Windows.Forms.Timer(this.components);
             this._toolTipHoverHelp = new System.Windows.Forms.ToolTip(this.components);
-            this._btnSave = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
-            this._btnLoad = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
-            this._btnAbort = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
-            this._picStatus = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
             this._splitContainer.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._btnSave)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._btnLoad)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._btnAbort)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStatus)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnAbort)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnLoad)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnSave)).BeginInit();
             this.SuspendLayout();
             // 
             // _inputTextBox
@@ -64,10 +65,10 @@
             this._inputTextBox.DrawsTab = false;
             this._inputTextBox.FirstVisibleLine = 0;
             this._inputTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo3.Name = "HGｺﾞｼｯｸM";
-            fontInfo3.Size = 9;
-            fontInfo3.Style = System.Drawing.FontStyle.Regular;
-            this._inputTextBox.FontInfo = fontInfo3;
+            fontInfo1.Name = "HGｺﾞｼｯｸM";
+            fontInfo1.Size = 9;
+            fontInfo1.Style = System.Drawing.FontStyle.Regular;
+            this._inputTextBox.FontInfo = fontInfo1;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
             this._inputTextBox.Name = "_inputTextBox";
@@ -77,7 +78,7 @@
             this._inputTextBox.ShowsHScrollBar = false;
             this._inputTextBox.ShowsLineNumber = false;
             this._inputTextBox.ShowsVScrollBar = false;
-            this._inputTextBox.Size = new System.Drawing.Size(330, 322);
+            this._inputTextBox.Size = new System.Drawing.Size(330, 326);
             this._inputTextBox.TabIndex = 16;
             this._inputTextBox.ViewWidth = 4097;
             this._inputTextBox.CaretMoved += new System.EventHandler(this._inputTextBox_CaretMoved);
@@ -90,7 +91,7 @@
             this._splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._splitContainer.Location = new System.Drawing.Point(12, 31);
+            this._splitContainer.Location = new System.Drawing.Point(9, 28);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
@@ -100,7 +101,7 @@
             // _splitContainer.Panel2
             // 
             this._splitContainer.Panel2.Controls.Add(this._resultTextBox);
-            this._splitContainer.Size = new System.Drawing.Size(518, 322);
+            this._splitContainer.Size = new System.Drawing.Size(520, 326);
             this._splitContainer.SplitterDistance = 330;
             this._splitContainer.TabIndex = 17;
             // 
@@ -116,10 +117,10 @@
             this._resultTextBox.DrawsTab = false;
             this._resultTextBox.FirstVisibleLine = 0;
             this._resultTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo4.Name = "HGｺﾞｼｯｸM";
-            fontInfo4.Size = 9;
-            fontInfo4.Style = System.Drawing.FontStyle.Regular;
-            this._resultTextBox.FontInfo = fontInfo4;
+            fontInfo2.Name = "HGｺﾞｼｯｸM";
+            fontInfo2.Size = 9;
+            fontInfo2.Style = System.Drawing.FontStyle.Regular;
+            this._resultTextBox.FontInfo = fontInfo2;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
             this._resultTextBox.IsReadOnly = true;
             this._resultTextBox.Location = new System.Drawing.Point(0, 0);
@@ -129,14 +130,59 @@
             this._resultTextBox.ShowsDirtBar = false;
             this._resultTextBox.ShowsHScrollBar = false;
             this._resultTextBox.ShowsLineNumber = false;
-            this._resultTextBox.Size = new System.Drawing.Size(184, 322);
+            this._resultTextBox.Size = new System.Drawing.Size(186, 326);
             this._resultTextBox.TabIndex = 17;
             this._resultTextBox.ViewWidth = 4097;
             this._resultTextBox.VScroll += new System.EventHandler(this._resultTextBox_VScroll);
             // 
-            // _timerDelay
+            // _picStatus
             // 
-            this._timerDelay.Tick += new System.EventHandler(this._timerDelay_Tick);
+            this._picStatus.Image = global::GoodSeat.Clapte.Properties.Resources.status_anim;
+            this._picStatus.Location = new System.Drawing.Point(73, 12);
+            this._picStatus.Name = "_picStatus";
+            this._picStatus.Size = new System.Drawing.Size(47, 16);
+            this._picStatus.TabIndex = 17;
+            this._picStatus.TabStop = false;
+            this._picStatus.Visible = false;
+            this._picStatus.VisibleChanged += new System.EventHandler(this._picStatus_VisibleChanged);
+            // 
+            // _btnAbort
+            // 
+            this._btnAbort.BackColor = System.Drawing.Color.White;
+            this._btnAbort.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnAbort.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnAbort.DownMove = 1;
+            this._btnAbort.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter;
+            this._btnAbort.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
+            this._btnAbort.Location = new System.Drawing.Point(52, 11);
+            this._btnAbort.Name = "_btnAbort";
+            this._btnAbort.Size = new System.Drawing.Size(15, 15);
+            this._btnAbort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this._btnAbort.TabIndex = 20;
+            this._btnAbort.TabStop = false;
+            this._toolHelpTip.SetToolTip(this._btnAbort, "評価の中止");
+            this._btnAbort.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
+            this._btnAbort.Visible = false;
+            this._btnAbort.Click += new System.EventHandler(this._btnAbort_Click);
+            // 
+            // _btnLoad
+            // 
+            this._btnLoad.BackColor = System.Drawing.Color.White;
+            this._btnLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnLoad.DownMove = 1;
+            this._btnLoad.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open;
+            this._btnLoad.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
+            this._btnLoad.Location = new System.Drawing.Point(27, 4);
+            this._btnLoad.Name = "_btnLoad";
+            this._btnLoad.Size = new System.Drawing.Size(26, 26);
+            this._btnLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnLoad.TabIndex = 19;
+            this._btnLoad.TabStop = false;
+            this._toolHelpTip.SetToolTip(this._btnLoad, "テキストファイルの読込");
+            this._btnLoad.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
+            this._btnLoad.Click += new System.EventHandler(this._btnLoad_Click);
+            this._btnLoad.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
             // 
             // _btnSave
             // 
@@ -146,7 +192,7 @@
             this._btnSave.DownMove = 1;
             this._btnSave.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save;
             this._btnSave.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
-            this._btnSave.Location = new System.Drawing.Point(6, 3);
+            this._btnSave.Location = new System.Drawing.Point(5, 4);
             this._btnSave.Name = "_btnSave";
             this._btnSave.Size = new System.Drawing.Size(26, 26);
             this._btnSave.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -157,24 +203,9 @@
             this._btnSave.Click += new System.EventHandler(this._btnSave_Click);
             this._btnSave.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
             // 
-            // _btnLoad
+            // _timerDelay
             // 
-            this._btnLoad.BackColor = System.Drawing.Color.White;
-            this._btnLoad.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this._btnLoad.Cursor = System.Windows.Forms.Cursors.Hand;
-            this._btnLoad.DownMove = 1;
-            this._btnLoad.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open;
-            this._btnLoad.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
-            this._btnLoad.Location = new System.Drawing.Point(28, 3);
-            this._btnLoad.Name = "_btnLoad";
-            this._btnLoad.Size = new System.Drawing.Size(26, 26);
-            this._btnLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this._btnLoad.TabIndex = 19;
-            this._btnLoad.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnLoad, "テキストファイルの読込");
-            this._btnLoad.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
-            this._btnLoad.Click += new System.EventHandler(this._btnLoad_Click);
-            this._btnLoad.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
+            this._timerDelay.Tick += new System.EventHandler(this._timerDelay_Tick);
             // 
             // _openFileDialog
             // 
@@ -190,34 +221,6 @@
             this._saveFileDialog.InitialDirectory = "Notes";
             this._saveFileDialog.Title = "テキストの保存";
             // 
-            // _btnAbort
-            // 
-            this._btnAbort.BackColor = System.Drawing.Color.White;
-            this._btnAbort.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this._btnAbort.Cursor = System.Windows.Forms.Cursors.Hand;
-            this._btnAbort.DownMove = 1;
-            this._btnAbort.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open;
-            this._btnAbort.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
-            this._btnAbort.Location = new System.Drawing.Point(72, 3);
-            this._btnAbort.Name = "_btnAbort";
-            this._btnAbort.Size = new System.Drawing.Size(26, 26);
-            this._btnAbort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this._btnAbort.TabIndex = 20;
-            this._btnAbort.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnAbort, "テキストファイルの読込");
-            this._btnAbort.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
-            this._btnAbort.Click += new System.EventHandler(this._btnAbort_Click);
-            // 
-            // _picStatus
-            // 
-            this._picStatus.Image = global::GoodSeat.Clapte.Properties.Resources.status_anim;
-            this._picStatus.Location = new System.Drawing.Point(104, 9);
-            this._picStatus.Name = "_picStatus";
-            this._picStatus.Size = new System.Drawing.Size(47, 16);
-            this._picStatus.TabIndex = 17;
-            this._picStatus.TabStop = false;
-            this._picStatus.Visible = false;
-            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -228,6 +231,7 @@
             this.Controls.Add(this._btnLoad);
             this.Controls.Add(this._btnSave);
             this.Controls.Add(this._splitContainer);
+            this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormOfClaptePad";
             this.ShowCancelButton = true;
             this.ShowOKButton = true;
@@ -244,10 +248,10 @@
             this._splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).EndInit();
             this._splitContainer.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._btnSave)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._btnLoad)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._btnAbort)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picStatus)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnAbort)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnLoad)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnSave)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 

@@ -54,6 +54,9 @@ namespace GoodSeat.Clapte.Models
 		/// <returns>初期化された数式セル内容オブジェクト。</returns>
 		protected override FormulaCellContent CreateFrom(string formulaText, Solver solver, params FormulaCell[] previous)
 		{
+			if (!formulaText.Contains("=")) return null;
+            if (formulaText.TrimEnd(' ').EndsWith("=")) return null;
+
             var unitProc = new ConvertToSpecifiedUnitProcess(solver, Formula.CombineToken);
             unitProc.CheckInputText(ref formulaText);
 
@@ -84,7 +87,7 @@ namespace GoodSeat.Clapte.Models
 		/// </summary>
 		/// <param name="solver">評価に用いるソルバ。</param>
 		/// <returns>評価結果を表す文字列。</returns>
-		protected override string OnEvaluate(Solver solver)
+		protected override Result OnEvaluate(Solver solver)
 		{
 			var result = solver.Solve(FormulaText);
 
@@ -95,10 +98,9 @@ namespace GoodSeat.Clapte.Models
                 UnitProcess.CheckOutputFormula(ref res);
 				EvaluatedDefine.Define = res.ToString();
 
-				return string.Format("{0} = {1}", DefineTarget, res.ToString());
+                result.ResultText  = string.Format("{0} = {1}", DefineTarget, res.ToString());
 			}
-			else
-				return result.ResultText;
+            return result;
 		}
 
 

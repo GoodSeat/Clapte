@@ -32,6 +32,7 @@ namespace GoodSeat.Clapte.Models
     public class FormulaCellContent
     {
 		static List<FormulaCellContent> s_protTypes = new List<FormulaCellContent>();
+        static FormulaCellContentComment s_commentContent = new FormulaCellContentComment();
 
 		static FormulaCellContent()
 		{
@@ -39,7 +40,7 @@ namespace GoodSeat.Clapte.Models
 			s_protTypes.Add(new FormulaCellContentDefineFunction(null, null, null, null));
 			s_protTypes.Add(new FormulaCellContentDefineWithEquation(null, null, null, null));
 			s_protTypes.Add(new FormulaCellContent(null, null, null));
-			s_protTypes.Add(new FormulaCellContentComment());
+			s_protTypes.Add(s_commentContent);
 		}
 
 
@@ -52,6 +53,9 @@ namespace GoodSeat.Clapte.Models
 		/// <returns>初期化された数式セル内容オブジェクト。</returns>
 		public static FormulaCellContent CreateFormulaCellContent(string formulaText, Solver solver, params FormulaCell[] previous)
 		{
+            // 速度改善のため、空白文字のみの構成はコメントにしてすぐ返す
+            if (string.IsNullOrWhiteSpace(formulaText)) return s_commentContent.CreateFrom(formulaText, solver, previous);
+
 			var proc = solver.GetProcessOf<EvaluateUserDefineProcess>();
 			proc.CustomDefineConstants.Clear();
 			proc.CustomDefineFunctions.Clear();
@@ -292,9 +296,10 @@ namespace GoodSeat.Clapte.Models
             }
 
 			// 結果をセット
-			ResultText = OnEvaluate(solver);
-			if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
-			if (ResultText == null) throw new InvalidOperationException("数式の評価に失敗しました。");
+            var result = OnEvaluate(solver);
+            ResultText = result.ResultText;
+            if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText;
+            else if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
 		}
 
 		/// <summary>
@@ -302,16 +307,15 @@ namespace GoodSeat.Clapte.Models
 		/// </summary>
 		/// <param name="solver">評価に用いるソルバ。</param>
 		/// <returns>評価結果を表す文字列。</returns>
-		protected virtual string OnEvaluate(Solver solver)
+		protected virtual Result OnEvaluate(Solver solver)
 		{
             try
             {
-                var result = solver.Solve(FormulaText);
-                return result.ResultText;
+                return solver.Solve(FormulaText);
             }
             catch (Exception e)
             {
-                return e.Message;
+                return new Result(Result.Level.Error, e.Message, null, new Error(Error.Level.Error, e.Message));
             }
 		}
 

@@ -91,7 +91,7 @@ namespace GoodSeat.Clapte.Models
 		/// </summary>
 		/// <param name="solver">評価に用いるソルバ。</param>
 		/// <returns>評価結果を表す文字列。</returns>
-		protected override string OnEvaluate(Solver solver)
+		protected override Result OnEvaluate(Solver solver)
 		{
 			var evaluateUserDefineProc = solver.GetProcessOf<EvaluateUserDefineProcess>();
 			var replaceUnitProc = solver.GetProcessOf<ReplaceVariableInUnitProcess>();
@@ -118,10 +118,9 @@ namespace GoodSeat.Clapte.Models
 				EvaluatedDefine.Define = FormulaText;
 				DefineTarget.UseFormula = result.ResultFormula;
 
-				return string.Format("{0} = {1}", DefineTarget.NameForView, result.ResultFormula);
+				result.ResultText = string.Format("{0} = {1}", DefineTarget.NameForView, result.ResultFormula);
 			}
-			else
-				return result.ResultText;
+            return result;
 		}
 
 
