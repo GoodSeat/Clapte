@@ -87,6 +87,7 @@ namespace GoodSeat.LiffomTestProject
 			DeformTokenTest.DeformTest(token, "sin(13/6*pi[rad])", "1/2");
 			DeformTokenTest.DeformTest(token, "cos(5*pi)", "-1");
 			DeformTokenTest.DeformTest(token, "sin(390[deg])", "1/2");
+			DeformTokenTest.DeformTest(token, "atan(0.5)", "0.463647609000806[rad]");
 		}
 	}
 }
