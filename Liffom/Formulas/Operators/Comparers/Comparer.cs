@@ -66,8 +66,9 @@ namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 		/// <summary>
 		/// 比較結果を真偽値として取得します。
 		/// </summary>
+        /// <param name="token">比較結果取得に際して用いる変形識別子。</param>
 		/// <returns></returns>
-		public abstract Judge GetJudge();
+		public abstract Judge GetJudge(DeformToken token);
 
 
 		/// <summary>
@@ -81,7 +82,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 		{
 			foreach (var rule in base.GetRelatedRulesOf(deformToken, sender, history)) yield return rule;
 
-			if (deformToken.Has<NumerateToken>()) yield return CalculateComparerRule.Entity;
+			if (deformToken.Has<NumerateToken>() || deformToken.Has<CalculateToken>()) yield return CalculateComparerRule.Entity;
 		}
 
 	}

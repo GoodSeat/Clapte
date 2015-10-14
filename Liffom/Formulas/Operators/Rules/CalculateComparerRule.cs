@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.Liffom.Formulas.Operators.Rules
 {
@@ -13,6 +14,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
 	public class CalculateComparerRule : Rule
 	{
 		static CalculateComparerRule s_entity;
+        static DeformToken s_token = new DeformToken(Formula.CalculateToken, Formula.NumerateToken, Formula.SimplifyToken);
 
 		/// <summary>
 		/// 比較演算子の評価結果を数値化するルールの実体を取得します。
@@ -38,7 +40,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
 		protected override Formula OnTryMatchRule(Formula target)
 		{
 			var comparer = target as Comparer;
-            var judge = comparer.GetJudge();
+            var judge = comparer.GetJudge(s_token);
 			if (judge == Comparer.Judge.True) return 1;
 			else if (judge == Comparer.Judge.False) return 0;
 			else return null;
