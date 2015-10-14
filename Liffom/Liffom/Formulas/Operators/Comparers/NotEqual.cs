@@ -34,9 +34,8 @@ namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 			return LeftHandSide.ToString() + "≠" + RightHandSide.ToString();
 		}
 
-		public override Judge GetJudge()
+		public override Judge GetJudge(DeformToken token)
 		{
-			var token = new DeformToken(Formula.CalculateToken, Formula.NumerateToken, Formula.SimplifyToken);
 			Formula left = LeftHandSide.DeformFormula(token);
 			Formula right = RightHandSide.DeformFormula(token);
 			

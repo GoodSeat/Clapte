@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoodSeat.Liffom.Deforms;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -39,9 +40,9 @@ namespace GoodSeat.Liffom.Formulas.Operators.Booleans
 			return LeftHandSide.ToString() + "&" + RightHandSide.ToString();
 		}
 
-		public override Judge  GetJudge()
+		public override Judge GetJudge(DeformToken token)
 		{
-			Formula f = (LeftHandSide * RightHandSide).Calculate().Numerate().Combine() ;
+            Formula f = (LeftHandSide * RightHandSide).DeformFormula(token);
 			if (f is Numeric)
 			{
 				if (f != 0) return Judge.True;
