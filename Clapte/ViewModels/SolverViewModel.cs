@@ -251,8 +251,12 @@ namespace GoodSeat.Clapte.ViewModels
 			}
 			else
 			{
-				var token = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
-				tokenList.Add(token);
+				var token1 = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
+                token1.NoTryRules.Add(CalculatePowerNumericRule.Entity);
+				tokenList.Add(token1);
+
+				var token2 = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
+				tokenList.Add(token2);
 			}
 			list.Add(new CalculateFormulaProcess(solver, MaxTime, tokenList.ToArray()));
 

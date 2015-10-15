@@ -53,7 +53,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
                     Numeric exp = power.Exponent.Numerate() as Numeric;
                     if (exp != null && exp > 0) return 0;
                 }
-                else // 0^a → 0 （aが負数の可能性もあるからこの変形は抑制すべきかとも考えたが、Maximaは(ratsimpさえ介さずに、勝手に)こう変形するので。
+                else // 0^a → 0 (aが負数の可能性もあるからこの変形は抑制すべきかとも考えたが、Maximaは(ratsimpさえ介さずに、勝手に)こう変形するので。)
                 {
                     return 0;
                 }

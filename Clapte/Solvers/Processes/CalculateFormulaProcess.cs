@@ -52,12 +52,9 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
             try
             {
-                Formula result = null;
+                Formula result = input;
                 for (int i = 0; i < Tokens.Count; i++)
-                {
-                    result = input.DeformFormula(Tokens[i]);
-                    if (result != input) break;
-                }
+                    result = result.DeformFormula(Tokens[i]);
 
                 input = result;
                 return null;
