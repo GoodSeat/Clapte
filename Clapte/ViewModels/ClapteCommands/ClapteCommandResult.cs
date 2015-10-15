@@ -17,11 +17,13 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 		/// <param name="title">メッセージタイトル。</param>
 		/// <param name="message">結果を表すメッセージ。</param>
 		/// <param name="icon">結果を表すアイコン。</param>
-		public ClapteCommandResult(string title, string message, ToolTipIcon icon)
+		/// <param name="enableNext">続けて操作を実行可能か否か。</param>
+		public ClapteCommandResult(string title, string message, ToolTipIcon icon, bool enableNext)
 		{
 			Title = title;
 			Message = message;
 			Icon = icon;
+            EnableNextAction = enableNext;
 		}
 
 		/// <summary>
@@ -38,5 +40,10 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 		/// 結果を表すアイコンを設定もしくは取得します。
 		/// </summary>
 		public ToolTipIcon Icon { get; set; }
+
+        /// <summary>
+        /// 続けて操作を実行できるか否かを設定若しくは取得します。
+        /// </summary>
+        public bool EnableNextAction { get; set; }
 	}
 }

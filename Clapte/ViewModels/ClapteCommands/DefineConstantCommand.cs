@@ -118,7 +118,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 				message = string.Format("操作の続行により、ユーザー定義定数 {0} の定義を更新します。\n※ 現在の定義 {0}={1}【{2}】",
                                                 Target.Name, AlreadyExist.Define, AlreadyExist.Information);
 			}
-			return new ClapteCommandResult("ユーザー定義定数の定義", message, ToolTipIcon.Info);
+			return new ClapteCommandResult("ユーザー定義定数の定義", message, ToolTipIcon.Info, true);
 		}
 
 		public override ClapteCommandResult DoAction()
@@ -132,7 +132,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 					(AlreadyExist == null) ? "追加" : "更新");
 
 			Target = null;
-			return new ClapteCommandResult(title, message, ToolTipIcon.Info);
+			return new ClapteCommandResult(title, message, ToolTipIcon.Info, false);
 		}
 
 	}

@@ -132,7 +132,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 			var nextCopyDataText = TextOf(nextCopyData);
 			if (nextCopyDataText != null) result += string.Format("\n\n操作の続行で、{0}をコピーします。", nextCopyDataText);
 
-			return new ClapteCommandResult("区切り数値集計結果", result.TrimStart('\n'), ToolTipIcon.Info);
+			return new ClapteCommandResult("区切り数値集計結果", result.TrimStart('\n'), ToolTipIcon.Info, true);
 		}
 
 		public override ClapteCommandResult DoAction()
@@ -150,11 +150,11 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 				var nextCopyData = GetNextCopyData();
 				var nextCopyDataText = TextOf(nextCopyData);
 
-				return new ClapteCommandResult("集計結果コピー", string.Format("\"{0}\"({1})をコピーしました。\n\n操作の続行で、{2}をコピーします。", text, copyDataText, nextCopyDataText), ToolTipIcon.Info);
+				return new ClapteCommandResult("集計結果コピー", string.Format("\"{0}\"({1})をコピーしました。\n\n操作の続行で、{2}をコピーします。", text, copyDataText, nextCopyDataText), ToolTipIcon.Info, true);
 			}
 			catch
 			{
-				return new ClapteCommandResult("結果コピー失敗", "結果のコピーに失敗しました。\nこのメッセージが表示されている間、再試行できます。", ToolTipIcon.Error);
+				return new ClapteCommandResult("結果コピー失敗", "結果のコピーに失敗しました。\nこのメッセージが表示されている間、再試行できます。", ToolTipIcon.Error, true);
 			}
 		}
 

@@ -65,7 +65,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 			if (Target == null) return null;
 
 			var message = string.Format("操作の続行により、ユーザー定義関数 {0} を削除します。", name);
-			return new ClapteCommandResult("ユーザー定義関数の削除", message, ToolTipIcon.Warning);
+			return new ClapteCommandResult("ユーザー定義関数の削除", message, ToolTipIcon.Warning, true);
 		}
 
 		public override ClapteCommandResult DoAction()
@@ -87,7 +87,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 			Target = null;
 
 			if (deleted)
-				return new ClapteCommandResult(title, message, ToolTipIcon.Info);
+				return new ClapteCommandResult(title, message, ToolTipIcon.Info, false);
 			else
 				return null;
 		}

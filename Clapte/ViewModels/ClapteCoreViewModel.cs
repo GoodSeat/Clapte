@@ -123,7 +123,7 @@ namespace GoodSeat.Clapte.ViewModels
 		/// <param name="text">命令テキスト。</param>
 		public void InformTextCommand(string text)
 		{
-			if (ActionWithSameCopy && text == LastTextCommand && IsValidTime())
+			if (ActionWithSameCopy && text == LastTextCommand && IsValidTime() && CurrentCommand != null)
 			{
 				InformAction();
 			}
@@ -153,6 +153,7 @@ namespace GoodSeat.Clapte.ViewModels
 			if (CurrentCommand == null) return;
 
 			Message = CurrentCommand.DoAction();
+            if (!Message.EnableNextAction) CurrentCommand = null;
 		}
 
 		/// <summary>

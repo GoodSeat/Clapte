@@ -69,7 +69,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 			string title = "複数処理の連続実行";
 			string message = string.Format("操作の続行により、以下の処理を連続実行します。\n{0}", text);
 
-			return new ClapteCommandResult(title, message, ToolTipIcon.Info);
+			return new ClapteCommandResult(title, message, ToolTipIcon.Info, true);
 		}
 
 		public override ClapteCommandResult DoAction()
@@ -86,7 +86,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 			CommandList.Clear();
 
 			string title = "複数処理の連続実行";
-			return new ClapteCommandResult(title, message.TrimEnd('\n'), ToolTipIcon.Info);
+			return new ClapteCommandResult(title, message.TrimEnd('\n'), ToolTipIcon.Info, false);
 		}
 
 	}

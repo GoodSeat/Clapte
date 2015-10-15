@@ -41,7 +41,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 			if (result != null && result.ResultLevel == Result.Level.Success)
 			{
 				LastResult = result;
-				return new ClapteCommandResult("計算結果", result.ResultText, ToolTipIcon.Info);
+				return new ClapteCommandResult("計算結果", result.ResultText, ToolTipIcon.Info, true);
 			}
 			else
 			{
@@ -54,11 +54,11 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
 			try
 			{
 				Clipboard.SetText(LastResult.ResultText);
-				return new ClapteCommandResult("結果コピー", string.Format("\"{0}\"をコピーしました。", LastResult.ResultText), ToolTipIcon.Info);
+				return new ClapteCommandResult("結果コピー", string.Format("\"{0}\"をコピーしました。", LastResult.ResultText), ToolTipIcon.Info, false);
 			}
 			catch
 			{
-				return new ClapteCommandResult("結果コピー失敗", "結果のコピーに失敗しました。\nこのメッセージが表示されている間、再試行できます。", ToolTipIcon.Error);
+				return new ClapteCommandResult("結果コピー失敗", "結果のコピーに失敗しました。\nこのメッセージが表示されている間、再試行できます。", ToolTipIcon.Error, true);
 			}
 		}
 
