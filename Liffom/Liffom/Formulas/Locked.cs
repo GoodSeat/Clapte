@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoodSeat.Liffom.Deforms;
+using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -8,35 +9,28 @@ namespace GoodSeat.Liffom.Formulas
 	/// 編集対象とならない固定数式を初期化します。
 	/// </summary>
 	[Serializable()]
-	public class Locked : Formula
+	public class Locked : Formula, IUndeformable
 	{
 		/// <summary>
 		/// 指定数式内の全てのロックを解除した数式を取得します。
 		/// </summary>
 		/// <param name="formula"></param>
-		/// <returns></returns>
-		public static Formula UnLocked(Formula formula)
-		{
-			Formula f = formula.Copy();
-			return UnLockInner(f);
-		}
-
-		static Formula UnLockInner(Formula formula)
+		/// <returns>全てのロックを解除した数式。</returns>
+		public static Formula UnLock(Formula formula)
 		{
 			if (formula is Locked)
-				return UnLockInner((formula as Locked).Formula);
+				return UnLock((formula as Locked).Formula);
 			else
 			{
 				int i = 0;
 				while (formula[i] != null)
 				{
-					formula[i] = UnLockInner(formula[i]);
+					formula[i] = UnLock(formula[i]);
 					i++;
 				}
 				return formula;
 			}
 		}
-
 
 		Formula _formula;
 
@@ -73,5 +67,11 @@ namespace GoodSeat.Liffom.Formulas
 		/// </summary>
 		/// <returns>数式を一意に区別する文字列。</returns>
 		protected override string OnGetUniqueText() { return Formula.GetUniqueText(); }
-	}
+
+        /// <summary>
+        /// 数式がいかなるルールに対しても変形適用の対象外であるか否かを取得します。
+        /// </summary>
+        /// <returns>常に変形対象外となるか否か。</returns>
+        public bool IsUndeformable() { return true; }
+    }
 }
