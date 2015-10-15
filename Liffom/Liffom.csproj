@@ -50,6 +50,7 @@
     <Compile Include="Deforms\Histories\DeformHistory.cs" />
     <Compile Include="Deforms\Histories\DeformHistoryNode.cs" />
     <Compile Include="Deforms\Histories\MultipleOperatorIntegrateRule.cs" />
+    <Compile Include="Deforms\IUndeformable.cs" />
     <Compile Include="Deforms\NumerateToken.cs" />
     <Compile Include="Deforms\Rules\CombinationPatternRule.cs" />
     <Compile Include="Deforms\Rules\CombinationRule.cs" />
