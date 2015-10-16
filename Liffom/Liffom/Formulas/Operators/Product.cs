@@ -76,23 +76,12 @@ namespace GoodSeat.Liffom.Formulas.Operators
 				if (f.IsUnit())
 				{
 					if (!this.IsUnit())
-					{
-						var text = f.ToString();
-						if (text[0] == '[')
-							result = result.TrimEnd('*') + text + "*";
-						else
-							result += f.ToString() + "*";
-					}
+                        result = result.TrimEnd('*') + f.ToString() + "*";
 					else
-					{
 						result += f.ToString() + "･";
-					}
 				}
 				else
 				{
-//					if (f is Numeric && (f.ToString().Contains("E") || f.ToString().Contains("e")) && f.Bracket.Type == Liffom.Bracket.Kind.None)
-//						result += "(" + f.ToString() + ")*";
-//					else
 					if (f is Numeric && result.EndsWith("-")) result += "1*";
 					result += f.ToString() + "*";
 				}
@@ -100,8 +89,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
 				if (initial && f == -1) result = result.Replace("-1*", "-");
 				initial = false;
 			}
-//			string result = result.TrimEnd('*').Replace("*1/", "/").TrimEnd('･').Replace("･1/", "/"); //.Replace("-1*", "-"); //.Replace("*[","[");
-			return result.TrimEnd('*').TrimEnd('･').Replace("*1/", "/").Replace("･1/", "/"); //.Replace("-1*", "-"); //.Replace("*[","[");
+			return result.TrimEnd('*').TrimEnd('･').Replace("*1/", "/").Replace("･1/", "/");
 		}
 
 		/// <summary>

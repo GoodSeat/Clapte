@@ -49,6 +49,7 @@ namespace GoodSeat.Liffom.Deforms
 				foreach (var rule in GetApplyCandidateRules(token, target, history))
 				{
 					if (history.IsAlreadyAppliedRule(rule)) continue;
+                    RemoveBracketFormatOfTerm(target); // 変形があったら元の意味のない括弧を消す
 
 					if (rule.TryMatchRule(ref target))
 					{
@@ -70,6 +71,16 @@ namespace GoodSeat.Liffom.Deforms
 			target.LastDeformToken = token;
 			return target;
 		}
+
+        /// <summary>
+        /// 括弧がない場合にも意味の変わらない括弧を削除します。
+        /// </summary>
+        /// <param name="target">削除対象の数式。</param>
+        private static void RemoveBracketFormatOfTerm(Formula target)
+        {
+            foreach (var f in target.GetExistFactor(f => f is AtomicFormula || f is Numeric))
+                f.Format.RemoveIndividualSettingOf<Bracket>();
+        }
 
 		/// <summary>
 		/// 変形対象の数式と変形履歴をもとに、適用候補となるルールをすべて返す反復子を取得します。
