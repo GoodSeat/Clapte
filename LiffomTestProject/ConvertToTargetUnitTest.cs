@@ -75,7 +75,7 @@ namespace GoodSeat.LiffomTestProject
 		{
 			UnitConvertTableTest.RegistBasicUnitRecord();
 
-			ConvertToTargetUnit target = new ConvertToTargetUnit(Formula.SimplifyToken);
+			ConvertToTargetUnit target = new ConvertToTargetUnit();
 			var test = Formula.Parse("5[kgf] + 5[N]");
 			var targetUnit = new Unit("kN");
 			var actual = target.Do(test, targetUnit).Numerate();
