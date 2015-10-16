@@ -5,6 +5,7 @@ using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formats.Powers;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Rules
 {
@@ -46,6 +47,9 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
 			Numeric mol = (f / gcd).Numerate() as Numeric;
 			Numeric den = (1 / gcd).Numerate() as Numeric;
+
+            (mol.Data as ValidReal).Precision = (f.Data as ValidReal).Precision; // 分子の有効桁数をそのままにする
+            (den.Data as ValidReal).Precision = 100; // 分母の有効桁数を無限にする
 
 			mol.ModifyError();
 			den.ModifyError();
