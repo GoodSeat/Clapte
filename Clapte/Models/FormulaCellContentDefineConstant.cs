@@ -21,13 +21,11 @@ namespace GoodSeat.Clapte.Models
 		/// <param name="f">対象の数式。</param>
 		/// <param name="target">定義対象の変数。</param>
 		/// <param name="evaluateTarget">具体に評価対象とする数式。</param>
-		/// <param name="unitProc">目標単位を保持する単位変換処理。</param>
 		/// <param name="previous">前方に宣言されている可変数の数式セル。</param>
-		protected internal FormulaCellContentDefineConstant(string formulaText, Formula f, Variable target, Formula evaluateTarget, ConvertToSpecifiedUnitProcess unitProc, params FormulaCell[] previous)
+		protected internal FormulaCellContentDefineConstant(string formulaText, Formula f, Variable target, Formula evaluateTarget, params FormulaCell[] previous)
 			: base(formulaText, f, evaluateTarget, previous)
 		{
 			DefineTarget = target;
-            UnitProcess = unitProc;
 		}
 
 		/// <summary>
@@ -40,11 +38,6 @@ namespace GoodSeat.Clapte.Models
 		/// </summary>
 		public ConstantDefine EvaluatedDefine { get; private set; }
 
-        /// <summary>
-        /// 目標単位の検知と変換を行う処理を設定若しくは取得します。
-        /// </summary>
-        private ConvertToSpecifiedUnitProcess UnitProcess { get; set; }
-
 		/// <summary>
 		/// 指定文字列から、数式セルの内容を初期化して取得します。
 		/// </summary>
@@ -53,29 +46,34 @@ namespace GoodSeat.Clapte.Models
 		/// <param name="previous">前方に宣言されている可変数の数式セル。</param>
 		/// <returns>初期化された数式セル内容オブジェクト。</returns>
 		protected override FormulaCellContent CreateFrom(string formulaText, Solver solver, params FormulaCell[] previous)
-		{
-			if (!formulaText.Contains("=")) return null;
+        {
+            if (!formulaText.Contains("=")) return null;
             if (formulaText.TrimEnd(' ').EndsWith("=")) return null;
 
-            var unitProc = new ConvertToSpecifiedUnitProcess(solver, Formula.CombineToken);
-            unitProc.CheckInputText(ref formulaText);
+            var preText = formulaText;
+            {
+                var unitProc = new ConvertToSpecifiedUnitProcess(solver);
+                unitProc.CheckInputText(ref formulaText);
+            }
+            var targetUnitText = preText.Substring(0, preText.Length - formulaText.Length); // [cm] 等の部分
 
-			Formula f;
-			solver.TryParse(formulaText, out f);
+            Formula f;
+            solver.TryParse(formulaText, out f);
 
-			var equal = f as Equal;
-			if (equal == null) return null;
+            var equal = f as Equal;
+            if (equal == null) return null;
 
-			var target = equal.LeftHandSide as Variable;
-			if (target == null) return null;
+            var target = equal.LeftHandSide as Variable;
+            if (target == null) return null;
             if (target.Mark == SolveEquationProcess.PermanentSolveTarget) return null; // "?"は変数名として許可しない
 
-			if (equal.RightHandSide.Contains(target)) return null;
+            if (equal.RightHandSide.Contains(target)) return null;
 
             string[] split = formulaText.Split('=');
 
-			return new FormulaCellContentDefineConstant(formulaText.Substring(split[0].Length + 1), f, target, equal.RightHandSide, unitProc, previous);
-		}
+            var text = targetUnitText + formulaText.Substring(split[0].Length + 1);
+            return new FormulaCellContentDefineConstant(text, f, target, equal.RightHandSide, previous);
+        }
 
 		/// <summary>
 		/// この数式セルで定義される変数名をすべて返す反復子を取得します。
@@ -92,14 +90,12 @@ namespace GoodSeat.Clapte.Models
 			var result = solver.Solve(FormulaText);
 
 			if (result.ResultLevel == Result.Level.Success)
-			{
-				EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
-                var res = result.ResultFormula;
-                UnitProcess.CheckOutputFormula(ref res);
-				EvaluatedDefine.Define = res.ToString();
+            {
+                EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
+                EvaluatedDefine.Define = result.ResultFormula.ToString();
 
-                result.ResultText  = string.Format("{0} = {1}", DefineTarget, res.ToString());
-			}
+                result.ResultText = string.Format("{0} = {1}", DefineTarget, EvaluatedDefine.Define);
+            }
             return result;
 		}
 
