@@ -53,6 +53,8 @@ namespace GoodSeat.Clapte.Solvers
             UserFunctions = new List<FunctionDefine>();
 		}
 
+        object _lockObject = new object();
+
 		/// <summary>
 		/// 適用する処理リストを設定もしくは取得します。
 		/// </summary>
@@ -109,46 +111,49 @@ namespace GoodSeat.Clapte.Solvers
 			List<Error> errors = new List<Error>();
 			Result result = null;
 
-			try
-			{
-				result = DoProcess(Step.CheckInputText, ref input, ref formula, errors);
-				if (result != null) return result;
+            lock (_lockObject)
+            {
+                try
+                {
+                    result = DoProcess(Step.CheckInputText, ref input, ref formula, errors);
+                    if (result != null) return result;
 
-				formula = Parser.Parse(input);
+                    formula = Parser.Parse(input);
 
-				result = DoProcess(Step.CheckInputFormula, ref input, ref formula, errors);
-				if (result != null) return result;
+                    result = DoProcess(Step.CheckInputFormula, ref input, ref formula, errors);
+                    if (result != null) return result;
 
-				result = DoProcess(Step.EvaluateFormula, ref input, ref formula, errors);
-				if (result != null) return result;
+                    result = DoProcess(Step.EvaluateFormula, ref input, ref formula, errors);
+                    if (result != null) return result;
 
-				formula.Format = OutputFormat;
+                    formula.Format = OutputFormat;
 
-				result = DoProcess(Step.CheckOutputFormula, ref input, ref formula, errors);
-				if (result != null) return result;
+                    result = DoProcess(Step.CheckOutputFormula, ref input, ref formula, errors);
+                    if (result != null) return result;
 
-				output = formula.ToString();
+                    output = formula.ToString();
 
-				result = DoProcess(Step.CheckOutputText, ref output, ref formula, errors);
-				if (result != null) return result;
+                    result = DoProcess(Step.CheckOutputText, ref output, ref formula, errors);
+                    if (result != null) return result;
 
-				return new Result(Result.Level.Success, output, formula, errors.ToArray());
-			}
-			catch (FormulaParseException e)
-			{
-				errors.Add(new Error(Error.Level.Error, e.Message));
-				return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
-			}
-			catch (ClapteProcessException e)
-			{
-				errors.Add(new Error(Error.Level.Error, e.Message));
-				return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
-			}
-			catch (Exception e)
-			{
-				errors.Add(new Error(Error.Level.Error, e.Message));
-				return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
-			}
+                    return new Result(Result.Level.Success, output, formula, errors.ToArray());
+                }
+                catch (FormulaParseException e)
+                {
+                    errors.Add(new Error(Error.Level.Error, e.Message));
+                    return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
+                }
+                catch (ClapteProcessException e)
+                {
+                    errors.Add(new Error(Error.Level.Error, e.Message));
+                    return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
+                }
+                catch (Exception e)
+                {
+                    errors.Add(new Error(Error.Level.Error, e.Message));
+                    return new Result(Result.Level.Error, e.Message, null, errors.ToArray());
+                }
+            }
 		}
 
 		/// <summary>

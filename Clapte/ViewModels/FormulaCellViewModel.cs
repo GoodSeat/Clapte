@@ -112,6 +112,13 @@ namespace GoodSeat.Clapte.ViewModels
 		/// </summary>
 		private void WorkEvaluateCompleted(object sender, RunWorkerCompletedEventArgs e)
 		{
+            if (_backWorker != null)
+            {
+                _backWorker.DoWork -= new DoWorkEventHandler(WorkEvaluate);
+                _backWorker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(WorkEvaluateCompleted);
+                _backWorker.Dispose();
+            }
+
 			if (ExitEvaluate != null) ExitEvaluate(this, e);
 		}
 

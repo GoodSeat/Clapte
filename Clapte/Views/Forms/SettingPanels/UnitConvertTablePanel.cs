@@ -188,7 +188,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 				foreach (UnitConvertRecord dataConvert in _currentTable.GetAllRecords(true))
 				{
 					Formula convert = _currentTable.GetConversionRatio(data.ConvertUnit, dataConvert.ConvertUnit);
-					convert = convert.Numerate();
+//					convert = convert.Numerate();
 					convert.Format = format;
 
 					if (i+ 2 == columnNo)
@@ -202,7 +202,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 				foreach (UnitConvertRecord dataConvert in _currentTable.GetAllRecords(true))
 				{
 					Formula convert = _currentTable.GetConvertAddition(data.ConvertUnit, dataConvert.ConvertUnit);
-					convert = convert.Numerate();
+//					convert = convert.Numerate();
 					convert.Format = format;
 
 					if (i + CountOfCurrentRecord + 2 == columnNo)
