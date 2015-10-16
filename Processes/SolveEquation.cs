@@ -114,10 +114,11 @@ namespace GoodSeat.Liffom.Processes
 			var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
 			// 初期解にて計算した時の解の有効数字を取得
-			foreach (Numeric n in solution.GetExistFactor<Numeric>()) n.Precision = 100;
+            var copy = solution.Copy();
+			foreach (Numeric n in copy.GetExistFactor<Numeric>()) n.Precision = 100;
 			initialValidDigit = int.MinValue; // 初期解で計算したときの最大有効桁
 			initialPrecision = 100; // 初期解で計算したときの有効桁数
-			Formula checkDigit = f.Substituted(x, solution).DeformFormula(token);
+			Formula checkDigit = f.Substituted(x, copy).DeformFormula(token);
 
 			bool needCheckValid = false;
 			foreach (Numeric n in checkDigit.GetExistFactor<Numeric>())
@@ -155,7 +156,7 @@ namespace GoodSeat.Liffom.Processes
 				foreach (Numeric n in checkDigitResult.GetExistFactor<Numeric>()) // checkDigitResultは、0.E-3、0.E+2[kN*m^2] 等のはず
 				{
 					int validDigit = n.Data.Exponent - n.Precision + 1;
-					if (n.Data.Round(validDigit) != 0d) continue; // 左辺-右辺が0になっていないならだめ。
+					if (n.Data.Round(-validDigit) != 0d) continue; // 左辺-右辺が0になっていないならだめ。
 
 					postValidDigit = Math.Max(validDigit, postValidDigit);
 				}
@@ -163,7 +164,11 @@ namespace GoodSeat.Liffom.Processes
 
 				if (postValidDigit <= initialValidDigit)
 				{
-					foreach (Numeric n in solution.GetExistFactor<Numeric>()) n.Precision = i;
+                    foreach (Numeric n in solution.GetExistFactor<Numeric>())
+                    {
+                        if (n.Precision == 100) continue;
+                        n.Precision = i;
+                    }
 					return solution;
 				}
 			}
