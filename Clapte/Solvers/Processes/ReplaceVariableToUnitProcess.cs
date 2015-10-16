@@ -12,12 +12,12 @@ namespace GoodSeat.Clapte.Solvers.Processes
 	/// <summary>
 	/// 数式中の変数を、同名の単位に置き換える処理を表します。
 	/// </summary>
-	public class ReplaceVariableInUnitProcess : Process
+	public class ReplaceVariableToUnitProcess : Process
 	{
 		/// <summary>
 		/// 数式中の変数を、同名の単位に置き換える処理を初期化します。
 		/// </summary>
-		public ReplaceVariableInUnitProcess(Solver owner) : base(owner)
+		public ReplaceVariableToUnitProcess(Solver owner) : base(owner)
 		{
 			IgnoreVariableNames = new List<string>();
 		}
@@ -68,7 +68,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
 				if (variable.Mark == SolveEquationProcess.PermanentSolveTarget) continue; // ただし、?は常に除外
 				if (IgnoreVariableNames.Contains(variable.Mark)) continue;
 
-				input = input.Substituted(variable, new Unit(variable.Mark));
+				input = input.Substituted(variable, new Unit(variable.Mark), false);
 			}
 			return null;
 		}

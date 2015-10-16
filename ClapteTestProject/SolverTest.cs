@@ -95,10 +95,13 @@ namespace GoodSeat.ClapteTestProject
 			result.Add(new EvaluateUserDefineProcess(solver));
 			
 			// 変数を単位で置き換え
-			result.Add(new ReplaceVariableInUnitProcess(solver));
+			result.Add(new ReplaceVariableToUnitProcess(solver));
 
 			// 計算処理
 			result.Add(CreateCalculateProcess(solver, mode));
+
+            // 単位表記の調整
+            result.Add(new SetUnitFormatProcess(solver, UnitFormatType.Auto));
 
 			// 計算結果の抽出処理
 			result.Add(new SieveResultFormulaProcess(solver, false));

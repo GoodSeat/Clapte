@@ -161,9 +161,10 @@ namespace GoodSeat.Clapte.ViewModels
 		/// </summary>
         public CharaType OutputCharaType { get; set; }
 
-		// TODO:
-		// 単位の区切り スペースで区切る、[]でくくる、()でくくる、自動
-		//
+        /// <summary>
+        /// 計算結果の出力文字列における単位表記のタイプを設定若しくは取得します。
+        /// </summary>
+        public UnitFormatType OutputUnitFormatType { get; set; }
 
 		/// <summary>
 		/// 有効数値を考慮するか否かを設定もしくは取得します。
@@ -210,10 +211,13 @@ namespace GoodSeat.Clapte.ViewModels
 			result.Add(new EvaluateUserDefineProcess(solver));
 			
 			// 変数を単位で置き換え
-			result.Add(new ReplaceVariableInUnitProcess(solver));
+			result.Add(new ReplaceVariableToUnitProcess(solver));
 
 			// 計算処理
 			result.Add(CreateCalculateProcess(solver));
+
+            // 出力単位表記調整
+            result.Add(new SetUnitFormatProcess(solver, OutputUnitFormatType));
 
 			// 計算結果の抽出処理
 			result.Add(new SieveResultFormulaProcess(solver, PermitOnlySingleTermResult));
@@ -346,6 +350,7 @@ namespace GoodSeat.Clapte.ViewModels
 			XmlElement outputElement = xmlElement["OutputSetting"];
 			PermitOnlySingleTermResult = bool.Parse(outputElement.GetAttribute("PermitOnlySingleTermResult"));
 			OutputCharaType = (CharaType)Enum.Parse(typeof(CharaType), outputElement.GetAttribute("OutputCharaType"));
+            OutputUnitFormatType = (UnitFormatType)Enum.Parse(typeof(UnitFormatType), outputElement.GetAttribute("OutputUnitFormatType", "Auto"));
 			ConsiderValidDigit = bool.Parse(outputElement.GetAttribute("ConsiderValidDigit"));
 
             UpdateSetting();
@@ -385,6 +390,7 @@ namespace GoodSeat.Clapte.ViewModels
 			XmlElement outputElement = new XmlElement("OutputSetting");
 			outputElement.AddAttribute("PermitOnlySingleTermResult", PermitOnlySingleTermResult.ToString());
 			outputElement.AddAttribute("OutputCharaType", OutputCharaType.ToString());
+            outputElement.AddAttribute("OutputUnitFormatType", OutputUnitFormatType.ToString());
 			outputElement.AddAttribute("ConsiderValidDigit", ConsiderValidDigit.ToString());
 			xmlElement.AddElements(outputElement);
 		}

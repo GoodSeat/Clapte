@@ -94,7 +94,7 @@ namespace GoodSeat.Clapte.Models
 		protected override Result OnEvaluate(Solver solver)
 		{
 			var evaluateUserDefineProc = solver.GetProcessOf<EvaluateUserDefineProcess>();
-			var replaceUnitProc = solver.GetProcessOf<ReplaceVariableInUnitProcess>();
+			var replaceUnitProc = solver.GetProcessOf<ReplaceVariableToUnitProcess>();
 			foreach (var variable in DefineTarget.UseVariable)
 			{
 				ConstantDefine delete = null;

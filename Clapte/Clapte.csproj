@@ -73,7 +73,8 @@
     <Compile Include="Solvers\Processes\ProcessSet.cs" />
     <Compile Include="Solvers\Processes\Process.cs" />
     <Compile Include="Solvers\Processes\ReplaceAlternateStringProcess.cs" />
-    <Compile Include="Solvers\Processes\ReplaceVariableInUnitProcess.cs" />
+    <Compile Include="Solvers\Processes\ReplaceVariableToUnitProcess.cs" />
+    <Compile Include="Solvers\Processes\SetUnitFormatProcess.cs" />
     <Compile Include="Solvers\Processes\SieveResultFormulaProcess.cs" />
     <Compile Include="Solvers\Processes\SieveTargetInputProcess.cs" />
     <Compile Include="Solvers\Processes\SolveEquationProcess.cs" />

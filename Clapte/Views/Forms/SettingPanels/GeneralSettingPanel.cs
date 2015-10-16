@@ -72,14 +72,14 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 			    case CharaType.All: _cmbResultCharType.SelectedIndex = 2; break;
 			    default: throw new NotImplementedException(); 
 			}
-			//switch (Core.ClapteFormulaParser.UnitBracketType)
-			//{
-			//    case Core.ClapteFormulaParser.UnitBracket.Auto: _cmbOutputUnit.SelectedIndex = 0; break;
-			//    case Core.ClapteFormulaParser.UnitBracket.None: _cmbOutputUnit.SelectedIndex = 1; break;
-			//    case Core.ClapteFormulaParser.UnitBracket.Small: _cmbOutputUnit.SelectedIndex = 2; break;
-			//    case Core.ClapteFormulaParser.UnitBracket.Large: _cmbOutputUnit.SelectedIndex = 3; break;
-			//    default: throw new NotImplementedException(); 
-			//}
+			switch (TargetSolver.OutputUnitFormatType)
+			{
+                case UnitFormatType.Auto: _cmbOutputUnit.SelectedIndex = 0; break;
+                case UnitFormatType.EncloseWithSpace: _cmbOutputUnit.SelectedIndex = 1; break;
+                case UnitFormatType.EncloseWithParentheses: _cmbOutputUnit.SelectedIndex = 2; break;
+                case UnitFormatType.EncloseWithBrackets: _cmbOutputUnit.SelectedIndex = 3; break;
+			    default: throw new NotImplementedException(); 
+			}
 			switch (TargetSolver.Mode)
 			{
 			    case CalculateMode.Decimal: _cmbCalculateMode.SelectedIndex = 0; break;
@@ -121,14 +121,14 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 			    case 2: TargetSolver.OutputCharaType = CharaType.All; break;
 			    default: throw new NotImplementedException(); 
 			}
-			//switch (_cmbOutputUnit.SelectedIndex)
-			//{
-			//    case 0: Core.ClapteFormulaParser.UnitBracketType = Core.ClapteFormulaParser.UnitBracket.Auto; break;
-			//    case 1: Core.ClapteFormulaParser.UnitBracketType = Core.ClapteFormulaParser.UnitBracket.None; break;
-			//    case 2: Core.ClapteFormulaParser.UnitBracketType = Core.ClapteFormulaParser.UnitBracket.Small; break;
-			//    case 3: Core.ClapteFormulaParser.UnitBracketType = Core.ClapteFormulaParser.UnitBracket.Large; break;
-			//    default: throw new NotImplementedException(); 
-			//}
+			switch (_cmbOutputUnit.SelectedIndex)
+			{
+                case 0: TargetSolver.OutputUnitFormatType = UnitFormatType.Auto; break;
+                case 1: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithSpace; break;
+                case 2: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithParentheses; break;
+                case 3: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithBrackets; break;
+			    default: throw new NotImplementedException(); 
+			}
 			switch (_cmbCalculateMode.SelectedIndex)
 			{
 			    case 0: TargetSolver.Mode = CalculateMode.Decimal; break;
