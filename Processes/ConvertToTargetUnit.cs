@@ -70,7 +70,7 @@ namespace GoodSeat.Liffom.Processes
 
 				var result = new Product(false, coef, targetUnit);
 
-				target = target.Substitute(convert, result);
+				target = target.Substitute(convert, result, false);
 			}
 
 			return target;

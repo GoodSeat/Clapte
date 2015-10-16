@@ -177,14 +177,14 @@ namespace GoodSeat.Liffom.Formulas.Array
 			return GetAt(indexs);
 		}
 
-		protected override Formula OnSubstitute(Formula oldValue, Formula newValue)
+		protected override Formula OnSubstitute(Formula oldValue, Formula newValue, bool formatReplace)
 		{
 			if (Index != null)
 			{
 				for (int i = 1; i <= DimensionSize; i++)
-					Index[i] = Index[i].Substitute(oldValue, newValue);
+					Index[i] = Index[i].Substitute(oldValue, newValue, formatReplace);
 			}
-			return base.OnSubstitute(oldValue, newValue);
+			return base.OnSubstitute(oldValue, newValue, formatReplace);
 		}
 
 
