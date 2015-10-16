@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoodSeat.Liffom.Formats;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -30,5 +31,11 @@ namespace GoodSeat.Liffom.Parse
 			else if (Type == PunctuationType.End) return token.TargetText == "(";
 			else return false;
 		}
+
+        public override Formulas.Formula OnInnerParsed(Formulas.Formula parsed)
+        {
+			parsed.Format.SetProperty(Bracket.Parenthese);
+            return base.OnInnerParsed(parsed);
+        }
 	}
 }
