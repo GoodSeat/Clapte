@@ -42,6 +42,10 @@ namespace GoodSeat.Liffom.Formats
 			/// 括弧を使用しません。
 			/// </summary>
 			None,
+            /// <summary>
+            /// 括弧の表示を拒否します。
+            /// </summary>
+            Denial,
 			/// <summary>
 			/// "()"による括弧を表します。
 			/// </summary>
@@ -92,6 +96,7 @@ namespace GoodSeat.Liffom.Formats
 					case Kind.Parentheses: start = "("; break;
 					case Kind.Braces: start = "{"; break;
 					case Kind.Brackets: start = "["; break;
+                    case Kind.Denial: start = " "; break;
 				} return start;
 			}
 		}
@@ -109,6 +114,7 @@ namespace GoodSeat.Liffom.Formats
 					case Kind.Parentheses: end = ")"; break;
 					case Kind.Braces: end = "}"; break;
 					case Kind.Brackets: end = "]"; break;
+                    case Kind.Denial: end = " "; break;
 				} return end;
 			}
 		}

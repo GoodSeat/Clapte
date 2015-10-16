@@ -108,11 +108,8 @@ namespace GoodSeat.Liffom.Formats
 		/// OperatorType型への暗黙的変換を行います。
 		/// </summary>
 		/// <param name="property">変換対象のプロパティ。</param>
-		/// <returns>負の累乗を 1/x の形式で表示するか否か。</returns>
-		public static implicit operator OperatorType(OperatorFormatProperty property)
-		{
-			return property.Target;
-		}
+		/// <returns>演算記号を空白で囲う対象とする演算タイプ。</returns>
+		public static implicit operator OperatorType(OperatorFormatProperty property) { return property.Target; }
 
 		/// <summary>
 		/// 数式の出力文字列を修正します。ただし、一意識別用の文字列出力では、この処理は省略されます。
