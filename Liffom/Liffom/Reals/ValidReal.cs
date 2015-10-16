@@ -319,35 +319,12 @@ namespace GoodSeat.Liffom.Reals
 
 			return result;
 		}
-
-		/// <summary>
-		/// 指定実数との累乗を行います。簡易的な有効数値考慮が行われます。
-		/// </summary>
-		/// <param name="r"></param>
-		/// <returns></returns>
-		public override Real PowerWith(Real r)
-		{
-			ValidReal n1 = this;
-			ValidReal n2 = r as ValidReal;
-			if (n2 == null) n2 = new ValidReal(r.Data);
-
-            if (!double.IsInfinity(n1.BaseData) && n1.BaseData != 0)
-            {
-                if (!double.IsInfinity(n2.BaseData) && double.IsInfinity(Math.Pow(n1.BaseData, n2.BaseData)))
-                    throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
-            }
-
-			ValidReal result = new ValidReal(Math.Pow(n1.Data, n2.BaseData));
-			result.Precision = Math.Min(n1.Precision, n2.Precision);
-			
-			return result;
-		}
 		
 		/// <summary>
 		/// 指定実数との除算を行います。簡易的な有効数値考慮が行われます。
 		/// </summary>
-		/// <param name="r"></param>
-		/// <returns></returns>
+		/// <param name="r">除数。</param>
+		/// <returns>除算結果。</returns>
 		public override Real DivideBy(Real r)
 		{
 			ValidReal n1 = this;
@@ -365,6 +342,51 @@ namespace GoodSeat.Liffom.Reals
 			result.Precision = Math.Min(n1.Precision, n2.Precision);
 
 			return result;
+		}
+
+		/// <summary>
+		/// 指定実数との累乗を行います。簡易的な有効数値考慮が行われます。
+		/// </summary>
+		/// <param name="r">冪数。</param>
+		/// <returns>累乗結果。</returns>
+		public override Real PowerWith(Real r)
+		{
+			ValidReal n1 = this;
+			ValidReal n2 = r as ValidReal;
+			if (n2 == null) n2 = new ValidReal(r.Data);
+
+            if (!double.IsInfinity(n1.BaseData) && n1.BaseData != 0)
+            {
+                if (!double.IsInfinity(n2.BaseData) && double.IsInfinity(Math.Pow(n1.BaseData, n2.BaseData)))
+                    throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
+            }
+
+			ValidReal result = new ValidReal(Math.Pow(n1.Data, n2.BaseData));
+			result.Precision = Math.Min(n1.Precision, n2.Precision);
+			
+			return result;
+		}
+
+		/// <summary>
+        /// 指定実数で除した時の剰余を返します。
+        /// </summary>
+        /// <param name="r">除数。</param>
+        /// <returns>剰余。</returns>
+		public override Real ModOf(Real r)
+		{
+            ValidReal r1 = this;
+            ValidReal r2 = r as ValidReal;
+			if (r2 == null) r2 = new ValidReal(r.Data);
+
+			if (r1 < 0) r1 = r1.MultiplyTo(new ValidReal(-1)) as ValidReal;
+			if (r2 < 0) r2 = r2.MultiplyTo(new ValidReal(-1)) as ValidReal;
+
+            ValidReal s1 = ((r1 / r2 - new Real(0.5)).Round(0) * r2) as ValidReal;
+            s1.Precision = 100;
+			ValidReal surplus = (r1 - s1) as ValidReal;
+
+			if (surplus == r2) return surplus - r2;
+			return surplus;
 		}
 
 		public override bool IsEqualTo(Real r)
