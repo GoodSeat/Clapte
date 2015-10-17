@@ -69,14 +69,14 @@ namespace GoodSeat.LiffomTestProject
         /// <summary>
         ///SetDefaultProperty のテスト
         ///</summary>
-		[TestCategory("出力書式"), TestMethod()]
+        [TestCategory("出力書式"), TestMethod()]
         public void SetDefaultPropertyTest()
         {
             var test = Formula.Parse("456216.31515+4*x");
             string preUnique = test.GetUniqueText();
             Assert.AreEqual("456216.31515+4*x", test.ToString());
 
-			// MEMO:以下のテストは、他の出力系のテストと同時に実行すると悪影響がある
+            // MEMO:以下のテストは、他の出力系のテストと同時に実行すると悪影響がある
             //FormatProperty property = new SplitFormatProperty(SplitFormatProperty.SplitType.Comma);
             //Format.SetDefaultProperty(property);
             //Assert.AreEqual("456,216.31515+4*x", test.ToString());

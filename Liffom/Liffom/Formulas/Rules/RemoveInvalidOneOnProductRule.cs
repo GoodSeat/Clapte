@@ -7,29 +7,29 @@ using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Liffom.Formulas.Rules
 {
-	/// <summary>
-	/// 積算における無意味な*1、/1を削除するルールを表します。
-	/// </summary>
-	public class RemoveInvalidOneOnProductRule : CombinationRule
-	{
-		static RemoveInvalidOneOnProductRule s_entity;
+    /// <summary>
+    /// 積算における無意味な*1、/1を削除するルールを表します。
+    /// </summary>
+    public class RemoveInvalidOneOnProductRule : CombinationRule
+    {
+        static RemoveInvalidOneOnProductRule s_entity;
 
-		/// <summary>
-		/// 積算における無意味な*1、/1を削除するルールの実体を取得します。
-		/// このルールにはプロパティが存在せず、再帰呼び出しにおいても結果は不変のため、通常この静的プロパティを使用することが推奨されます。
-		/// </summary>
-		public static RemoveInvalidOneOnProductRule Entity
-		{
-			get
-			{
-				if (s_entity == null) s_entity = new RemoveInvalidOneOnProductRule();
-				return s_entity;
-			}
-		}
+        /// <summary>
+        /// 積算における無意味な*1、/1を削除するルールの実体を取得します。
+        /// このルールにはプロパティが存在せず、再帰呼び出しにおいても結果は不変のため、通常この静的プロパティを使用することが推奨されます。
+        /// </summary>
+        public static RemoveInvalidOneOnProductRule Entity
+        {
+            get
+            {
+                if (s_entity == null) s_entity = new RemoveInvalidOneOnProductRule();
+                return s_entity;
+            }
+        }
 
-		static Formula s_invalidPower = new Power(1, -1);
+        static Formula s_invalidPower = new Power(1, -1);
 
-		protected internal override bool IsTargetTypeFormula(Formula target)
+        protected internal override bool IsTargetTypeFormula(Formula target)
         {
             var fs = target as Product;
             if (fs == null) return false;
@@ -42,47 +42,47 @@ namespace GoodSeat.Liffom.Formulas.Rules
             return false;
         }
 
-		protected override bool IsTargetCouple(Formula f1, Formula f2) { return IsInvalidOne(f1); }
+        protected override bool IsTargetCouple(Formula f1, Formula f2) { return IsInvalidOne(f1); }
 
         private bool IsInvalidOne(Formula f) { return (f == s_invalidPower || f == 1); }
 
-		protected override Formula GetRuledFormula(Formula f1, Formula f2) { return f2; }
+        protected override Formula GetRuledFormula(Formula f1, Formula f2) { return f2; }
 
-		protected override IEnumerable<Type> OnGetPreDemandRules()
-		{
-			yield return typeof(ReduceFactorOfProductRule); // 約分済み
-		}
+        protected override IEnumerable<Type> OnGetPreDemandRules()
+        {
+            yield return typeof(ReduceFactorOfProductRule); // 約分済み
+        }
 
-		public override string Information
-		{
-			get { return "積算における無意味な*1、/1を削除するルールです。"; }
-		}
+        public override string Information
+        {
+            get { return "積算における無意味な*1、/1を削除するルールです。"; }
+        }
 
-		public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
-		{
-			yield return new KeyValuePair<Formula, Formula>(
-				Formula.Parse("x*2*1"),
-				Formula.Parse("2*x")
-				);
-			yield return new KeyValuePair<Formula, Formula>(
-				Formula.Parse("5*x/1"),
-				Formula.Parse("5*x")
-				);
-		}
+        public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
+        {
+            yield return new KeyValuePair<Formula, Formula>(
+                Formula.Parse("x*2*1"),
+                Formula.Parse("2*x")
+                );
+            yield return new KeyValuePair<Formula, Formula>(
+                Formula.Parse("5*x/1"),
+                Formula.Parse("5*x")
+                );
+        }
 
-		protected override IEnumerable<Rule> OnGetAllPatternSample()
-		{
-			yield return Entity;
-		}
+        protected override IEnumerable<Rule> OnGetAllPatternSample()
+        {
+            yield return Entity;
+        }
 
-		public override Rule GetClone()
-		{
-			return Entity;
-		}
-		
-		/// <summary>
-		/// 一つの組み合わせでルール適用があった場合に、再度全組み合わせについてルールの適用を試みる必要があるか否かを取得します。
-		/// </summary>
-		protected override bool RetryAll { get { return false; } }
-	}
+        public override Rule GetClone()
+        {
+            return Entity;
+        }
+        
+        /// <summary>
+        /// 一つの組み合わせでルール適用があった場合に、再度全組み合わせについてルールの適用を試みる必要があるか否かを取得します。
+        /// </summary>
+        protected override bool RetryAll { get { return false; } }
+    }
 }
