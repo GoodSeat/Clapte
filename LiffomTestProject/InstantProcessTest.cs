@@ -83,7 +83,7 @@ namespace GoodSeat.LiffomTestProject
                 var result = solve.Solve(f as Equal, x);
                 return result;
             });
-            process.ProcessCompleted += new ProcessCompletedEventHandler(ProcessTest.ProcessTestProcessCompleted);
+            process.ProcessCompleted += ProcessTest.ProcessTestProcessCompleted;
 
             var userStates = new List<object>();
             Console.WriteLine(string.Format("全プロセス開始前 : {0}", DateTime.Now));

@@ -74,7 +74,7 @@ namespace GoodSeat.LiffomTestProject
         public void BrentMethodSolveTest()
         {
             var solve = new BrentMethod();
-            solve.ProcessCompleted += new ProcessCompletedEventHandler(SolveEquationTest.SolveEquationTestProcessCompleted);
+            solve.ProcessCompleted += SolveEquationTest.SolveEquationTestProcessCompleted;
 
             var userStates = new List<object>();
             Console.WriteLine(string.Format("全プロセス開始前 : {0}", DateTime.Now));

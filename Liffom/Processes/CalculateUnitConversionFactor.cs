@@ -27,12 +27,12 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 処理対象とする数式数の下限値を取得します。
         /// </summary>
-        public override int TargetFormulasMinQty { get { return 1; } }
+        public override int TargetArgumentsMinQty { get { return 1; } }
 
         /// <summary>
         /// 処理対象とする数式数の上限値を取得します。
         /// </summary>
-        public override int TargetFormulasMaxQty { get { return 2; } }
+        public override int TargetArgumentsMaxQty { get { return 2; } }
 
 
 
