@@ -42,11 +42,13 @@
     <Compile Include="Reflector.cs" />
     <Compile Include="Xml\Serialization\ISerializable.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Xml\Serialization\IStoreSerializable.cs" />
     <Compile Include="Xml\Serialization\SerializeEventArgs.cs" />
     <Compile Include="Xml\Serialization\Serializer.cs" />
     <Compile Include="Utilities\DebugTrace.cs" />
     <Compile Include="Utilities\ListChangeEventArgs.cs" />
     <Compile Include="Utilities\ObservableList.cs" />
+    <Compile Include="Xml\Serialization\SerialzeStore.cs" />
     <Compile Include="Xml\XmlAttribute.cs" />
     <Compile Include="Xml\XmlElement.cs" />
     <Compile Include="Xml\XmlFile.cs" />
