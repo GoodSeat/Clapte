@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Liffom.Formulas.Rules
 {
@@ -28,12 +29,22 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
 		static Formula s_invalidPower = new Power(1, -1);
 
-		protected internal override bool IsTargetTypeFormula(Formula target) { return target is Product; }
+		protected internal override bool IsTargetTypeFormula(Formula target)
+        {
+            var fs = target as Product;
+            if (fs == null) return false;
 
-		protected override bool IsTargetCouple(Formula f1, Formula f2)
-		{
-			return (f1 == s_invalidPower || f1 == 1);
-		}
+            // 1kN/mなど、1を消すと数式としての意味をなくす場合には消さない。
+            foreach (var f in fs)
+            {
+                if (!f.IsUnit(true)) return true;
+            }
+            return false;
+        }
+
+		protected override bool IsTargetCouple(Formula f1, Formula f2) { return IsInvalidOne(f1); }
+
+        private bool IsInvalidOne(Formula f) { return (f == s_invalidPower || f == 1); }
 
 		protected override Formula GetRuledFormula(Formula f1, Formula f2) { return f2; }
 

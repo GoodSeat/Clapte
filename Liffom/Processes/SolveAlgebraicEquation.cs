@@ -114,6 +114,7 @@ namespace GoodSeat.Liffom.Processes
 			b.AdmitPowerOne = true;
 			b.CheckTarget = f => Numeric.IsNumericOnly(f) ;
 			Formula rule = a * (about ^ b);
+			Formula rule2 = a * ((about ^ b) ^ -1);
 
 			List<Formula> noCoefficients = new List<Formula>();
 			Formula surplus = null; // ax^2.7 + x^1.7 = 0 → ax^2 + x^1 = 0 として解くために、このケースではsurplus=0.7として記録しておく
@@ -121,9 +122,12 @@ namespace GoodSeat.Liffom.Processes
 			{
 				foreach (var f in target.LeftHandSide)
 				{
-					if (f.PatternMatch(rule))
+                    Formula n = null;
+                    if (f.PatternMatch(rule)) n = b.MatchedFormula;
+                    else if (f.PatternMatch(rule2)) n = b.MatchedFormula * -1;
+
+                    if (n != null)
 					{
-						Formula n = b.MatchedFormula;
 						if (surplus == null)
 						{
 							Numeric num = n.Numerate() as Numeric;
@@ -134,15 +138,15 @@ namespace GoodSeat.Liffom.Processes
 						if (!coef.IsInteger) throw new FormulaProcessException("対象の数式の解は、解の公式で求めることはできません。");
 						CoefficientMap.Add((int)coef, a.MatchedFormula);
 					}
-					else
-					{
-						noCoefficients.Add(f);
-					}
+                    else
+                    {
+                        noCoefficients.Add(f);
+                    }
 				}
 			}
 			else
 			{
-				if (!target.LeftHandSide.PatternMatch(rule)) throw new FormulaProcessException("対象の数式の解は、解の公式で求めることはできません。");
+				if (!target.LeftHandSide.PatternMatch(rule) && !target.LeftHandSide.PatternMatch(rule2)) throw new FormulaProcessException("対象の数式の解は、解の公式で求めることはできません。");
 
 				if (a.MatchedFormula == 0) throw new FormulaProcessException("解は不定です。");
 				noCoefficients.Add(a.MatchedFormula);

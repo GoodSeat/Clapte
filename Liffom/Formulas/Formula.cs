@@ -323,14 +323,30 @@ namespace GoodSeat.Liffom.Formulas
 		/// <param name="oldValue">代入対象とする数式。</param>
 		/// <param name="newValue">代入する数式。</param>
 		/// <returns>代入操作後の数式。</returns>
-		internal protected Formula Substitute(Formula oldValue, Formula newValue)
+        internal protected Formula Substitute(Formula oldValue, Formula newValue) { return Substitute(oldValue, newValue, true); }
+
+		/// <summary>
+		/// 指定した数式に、新しい数式を代入します。
+		/// </summary>
+		/// <param name="oldValue">代入対象とする数式。</param>
+		/// <param name="newValue">代入する数式。</param>
+		/// <param name="formatReplace">書式も置き換えるか。</param>
+		/// <returns>代入操作後の数式。</returns>
+		internal protected Formula Substitute(Formula oldValue, Formula newValue, bool formatReplace)
 		{
-			if (oldValue == newValue) return this;
-			if (this == oldValue) return newValue;
+            Formula result = null;
+            if (oldValue == newValue) result = this;
+			else if (this == oldValue) result = newValue;
+
+            if (result != null)
+            {
+                if (!formatReplace) result.Format = oldValue.Format;
+                return result;
+            }
 
 			CheckCancelOperation(this);
 
-			return OnSubstitute(oldValue, newValue);
+			return OnSubstitute(oldValue, newValue, formatReplace);
 		}
 
 		/// <summary>
@@ -338,13 +354,14 @@ namespace GoodSeat.Liffom.Formulas
 		/// </summary>
 		/// <param name="oldValue">代入対象とする数式。</param>
 		/// <param name="newValue">代入する数式。</param>
+		/// <param name="formatReplace">書式も置き換えるか。</param>
 		/// <returns>代入操作後の数式。</returns>
-		protected virtual Formula OnSubstitute(Formula oldValue, Formula newValue)
+		protected virtual Formula OnSubstitute(Formula oldValue, Formula newValue, bool formatReplace)
 		{
 			int index = 0;
 			while (this[index] != null)
 			{
-				this[index] = this[index].Substitute(oldValue, newValue);
+				this[index] = this[index].Substitute(oldValue, newValue, formatReplace);
 				index++;
 			}
 			return this;
@@ -356,18 +373,38 @@ namespace GoodSeat.Liffom.Formulas
 		/// <param name="oldValue">代入対象の数式。</param>
 		/// <param name="newValue">代入する数式。</param>
 		/// <returns>代入操作後の数式。</returns>
-		public Formula Substituted(Formula oldValue, Formula newValue) { return Copy().Substitute(oldValue, newValue); }
+		public Formula Substituted(Formula oldValue, Formula newValue) { return Substituted(oldValue, newValue, true); }
+
+		/// <summary>
+		/// 指定した数式に、新しい数式を代入して取得します。
+		/// </summary>
+		/// <param name="oldValue">代入対象の数式。</param>
+		/// <param name="newValue">代入する数式。</param>
+		/// <param name="formatReplace">書式も置き換えるか。</param>
+		/// <returns>代入操作後の数式。</returns>
+		public Formula Substituted(Formula oldValue, Formula newValue, bool formatReplace)
+        {
+            return Copy().Substitute(oldValue, newValue, formatReplace);
+        }
 
 		/// <summary>
 		/// 指定した数式に、新しい数式を代入して取得します。
 		/// </summary>
 		/// <param name="values">代入対象と代入数式を表す可変数の等式。</param>
 		/// <returns>代入操作後の数式。</returns>
-		public Formula Substituted(params Equal[] values) 
+        public Formula Substituted(params Equal[] values) { return Substituted(true, values); }
+
+		/// <summary>
+		/// 指定した数式に、新しい数式を代入して取得します。
+		/// </summary>
+		/// <param name="formatReplace">書式も置き換えるか。</param>
+		/// <param name="values">代入対象と代入数式を表す可変数の等式。</param>
+		/// <returns>代入操作後の数式。</returns>
+		public Formula Substituted(bool formatReplace, params Equal[] values) 
 		{
 			var result = Copy();
 			foreach (var value in values)
-				result = result.Substitute(value.LeftHandSide, value.RightHandSide);
+				result = result.Substitute(value.LeftHandSide, value.RightHandSide, formatReplace);
 			return result;
 		}
 

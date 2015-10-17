@@ -145,11 +145,12 @@ namespace GoodSeat.Liffom.Formulas.Operators
 		/// </summary>
 		/// <param name="oldValue">置換対象とする数式。</param>
 		/// <param name="newValue">置換後の数式。</param>
+		/// <param name="formatReplace">書式も置き換えるか。</param>
 		/// <returns>置換操作後の数式。</returns>
-		protected override Formula OnSubstitute(Formula oldValue, Formula newValue)
+		protected override Formula OnSubstitute(Formula oldValue, Formula newValue, bool formatReplace)
 		{
-			if ((Law & OperatorLaw.Commutative) != OperatorLaw.Commutative) return base.OnSubstitute(oldValue, newValue);
-			if (oldValue.GetType() != this.GetType()) return base.OnSubstitute(oldValue, newValue);
+			if ((Law & OperatorLaw.Commutative) != OperatorLaw.Commutative) return base.OnSubstitute(oldValue, newValue, formatReplace);
+			if (oldValue.GetType() != this.GetType()) return base.OnSubstitute(oldValue, newValue, formatReplace);
 		
 			OperatorMultiple old = oldValue as OperatorMultiple; // 置き換えられる数式
 
@@ -187,7 +188,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
 				if (Formulas.Count == 1) return this[0];
 			}
 
-			return base.OnSubstitute(oldValue, newValue);
+			return base.OnSubstitute(oldValue, newValue, formatReplace);
 		}
 
 		protected override void OnSort() 

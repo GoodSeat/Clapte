@@ -15,16 +15,19 @@ namespace GoodSeat.Liffom.Deforms
 	{
 		[NonSerialized()]
 		List<Rule> _additionalTryRules;
+        [NonSerialized()]
+        List<Rule> _noTryRules;
 
 		/// <summary>
 		/// 数式変形の種別を識別するトークンを初期化します。
 		/// </summary>
 		public DeformToken(params DeformToken[] children)
 		{
-            EraMaximum = 12;
+            EraMaximum = 50;
 
 			Children = new List<DeformToken>(children);
 			AdditionalTryRules = new List<Rule>();
+            NoTryRules = new List<Rule>();
 		}
 
         /// <summary>
@@ -44,6 +47,15 @@ namespace GoodSeat.Liffom.Deforms
 		{
 			get { return _additionalTryRules; }
 			private set { _additionalTryRules = value; }
+		}
+
+		/// <summary>
+		/// 常に変形試行対象外とする変形ルールリストを取得します。
+		/// </summary>
+		public List<Rule> NoTryRules 
+		{
+			get { return _noTryRules; }
+			private set { _noTryRules = value; }
 		}
 
 		/// <summary>
@@ -86,6 +98,19 @@ namespace GoodSeat.Liffom.Deforms
 		public virtual List<Rule> GetApplyRules(Formula target, DeformHistory history, List<Rule> originalRules)
 		{
 			foreach (var rule in AdditionalTryRules) originalRules.Add(rule);
+
+            List<Rule> removeList = new List<Rule>();
+            foreach (var rule in NoTryRules)
+            {
+                Type t = rule.GetType();
+                string id = rule.DistinguishedText;
+                foreach (var test in originalRules)
+                {
+                    if (test.GetType() != t) continue;
+                    if (test.DistinguishedText == id) removeList.Add(test);
+                }
+            }
+            foreach (var rule in removeList) originalRules.Remove(rule);
 
 			return originalRules;
 		}

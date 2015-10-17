@@ -18,7 +18,7 @@ namespace GoodSeat.Liffom.Formulas.Units
 	/// 単位項は、積算中以外には存在しない。
 	/// </remarks>
 	[Serializable()]
-	public class Unit : AtomicFormula
+	public class Unit : AtomicFormula, INoEvaluateAsNumeric
 	{
 		string _unitName;
 		Prefix _prefix;

@@ -72,16 +72,16 @@ namespace GoodSeat.Liffom.Parse
 				return new Vector(true, args.ToArray());
 			}
 
+            if (EvaluateAsUnit)
+            {
+                // 変数を単位で置き換え
+                foreach (var variable in parsed.GetExistFactor<Variable>())
+                {
+                    Unit unit = new Unit(variable.Mark);
+                    parsed = parsed.Substitute(variable, unit);
+                }
+            }
 			parsed.Format.SetProperty(Bracket.SquareBracket);
-
-			if (!EvaluateAsUnit) return parsed;
-
-			// 変数を単位で置き換え
-			foreach (var variable in parsed.GetExistFactor<Variable>())
-			{
-				Unit unit = new Unit(variable.Mark);
-				parsed = parsed.Substitute(variable, unit);
-			}
 			return parsed;
 		}
 	}

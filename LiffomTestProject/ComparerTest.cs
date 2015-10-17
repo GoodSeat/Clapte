@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.LiffomTestProject
 {
@@ -78,11 +79,13 @@ namespace GoodSeat.LiffomTestProject
         [TestMethod()]
         public void GetJudgeTest()
         {
+            DeformToken token = new DeformToken(Formula.CalculateToken, Formula.NumerateToken, Formula.SimplifyToken);
+
             Comparer target = Formula.Parse("5*kN < 10*kN") as Comparer;
-            Assert.AreEqual(Comparer.Judge.None, target.GetJudge()); // 変数は負の数値の可能性があるので判定不可
+            Assert.AreEqual(Comparer.Judge.None, target.GetJudge(token)); // 変数は負の数値の可能性があるので判定不可
 
             target = Formula.Parse("5[kN] < 10[kN]") as Comparer;
-            Assert.AreEqual(Comparer.Judge.True, target.GetJudge());
+            Assert.AreEqual(Comparer.Judge.True, target.GetJudge(token));
         }
     }
 }

@@ -78,7 +78,7 @@ namespace GoodSeat.LiffomTestProject
 
 			var userStates = new List<object>();
 			Console.WriteLine(string.Format("全プロセス開始前 : {0}", DateTime.Now));
-			SolveEquationTest.AddTestCaseAsync(solve, "x^9 + 7*x = 589", "x", "x=2.02588389785462", userStates);
+			SolveEquationTest.AddTestCaseAsync(solve, "x^9 + 7*x = 589", "x", "x=2.02588389785461", userStates);
 			SolveEquationTest.AddTestCaseAsync(solve, "(x+3)*(x-1)^2 = 0", "x", "x=1", userStates);
 			SolveEquationTest.AddTestCaseAsync(solve, "x*sin(x)=0.2", "x", "x=0.455052636794154", userStates);
 			Console.WriteLine(string.Format("全プロセス開始済み : {0}", DateTime.Now));

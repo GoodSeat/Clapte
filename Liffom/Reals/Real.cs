@@ -117,8 +117,8 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 指定実数との加算結果を返します。
         /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
+        /// <param name="r">加算値。</param>
+        /// <returns>加算結果。</returns>
         public virtual Real AddTo(Real r)
 		{
 			if (!double.IsInfinity(Data) && !double.IsInfinity(r.Data) && double.IsInfinity(Data + r.Data))
@@ -130,8 +130,8 @@ namespace GoodSeat.Liffom.Reals
 		/// <summary>
 		/// 指定実数との積算結果を返します。
 		/// </summary>
-		/// <param name="r"></param>
-		/// <returns></returns>
+		/// <param name="r">乗数。</param>
+		/// <returns>積算結果。</returns>
         public virtual Real MultiplyTo(Real r)
 		{
 			if (!double.IsInfinity(Data) && !double.IsInfinity(r.Data) && double.IsInfinity(Data * r.Data))
@@ -143,8 +143,8 @@ namespace GoodSeat.Liffom.Reals
 		/// <summary>
 		/// 指定実数との除算結果を返します。
 		/// </summary>
-		/// <param name="r"></param>
-		/// <returns></returns>
+		/// <param name="r">除数。</param>
+		/// <returns>除算結果。</returns>
 		public virtual Real DivideBy(Real r)
 		{
 			if (!double.IsInfinity(Data) && !double.IsInfinity(r.Data) && double.IsInfinity(Data / r.Data))
@@ -156,14 +156,32 @@ namespace GoodSeat.Liffom.Reals
 		/// <summary>
 		/// 指定実数との累乗結果を返します。
 		/// </summary>
-		/// <param name="r"></param>
-		/// <returns></returns>
+		/// <param name="r">冪数。</param>
+		/// <returns>累乗結果。</returns>
         public virtual Real PowerWith(Real r)
 		{
 			if (!double.IsInfinity(Data) && Data != 0 && !double.IsInfinity(r.Data) && double.IsInfinity(Math.Pow(Data, r.Data)))
 				throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
 
             return new Real(Math.Pow(Data, r.Data));
+        }
+
+        /// <summary>
+        /// 指定実数で除した時の剰余を返します。
+        /// </summary>
+        /// <param name="r">除数。</param>
+        /// <returns>剰余。</returns>
+        public virtual Real ModOf(Real r)
+        {
+            var r1 = this;
+            var r2 = r;
+			if (r1 < 0) r1 = r1 * new Real(-1);
+			if (r2 < 0) r2 = r2 * new Real(-1);
+
+			Real surplus = r1 - (r1 / r2 - new Real(0.5)).Round(0) * r2;
+
+			if (surplus == r2) return surplus - r2;
+			return surplus;
         }
 
 		/// <summary>
@@ -182,48 +200,48 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 加算します。
         /// </summary>
-        /// <param name="r1">実数1</param>
-        /// <param name="r2">実数2</param>
-        /// <returns>加算結果</returns>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>加算結果。</returns>
         public static Real operator +(Real r1, Real r2) { return r1.AddTo(r2); }
 
         /// <summary>
         /// 減算します。
         /// </summary>
-        /// <param name="r1">実数1</param>
-        /// <param name="r2">実数2</param>
-        /// <returns>減算結果</returns>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>減算結果。</returns>
         public static Real operator -(Real r1, Real r2) { return r1.AddTo(-r2); }
 
         /// <summary>
         /// 負数を生成します。
         /// </summary>
-        /// <param name="r1">実数</param>
-        /// <returns>負数</returns>
+        /// <param name="r1">実数。</param>
+        /// <returns>負数。</returns>
         public static Real operator -(Real r1) { return r1 * new Real(-1); }
 
         /// <summary>
         /// 乗算します。
         /// </summary>
-        /// <param name="r1">実数1</param>
-        /// <param name="r2">実数2</param>
-        /// <returns>乗算結果</returns>
+        /// <param name="r1">乗数1。</param>
+        /// <param name="r2">乗数2。</param>
+        /// <returns>乗算結果。</returns>
         public static Real operator *(Real r1, Real r2) { return r1.MultiplyTo(r2); }
 
         /// <summary>
         /// 除算します。
         /// </summary>
-        /// <param name="r1">分子</param>
-        /// <param name="r2">分母</param>
-        /// <returns>除算結果</returns>
+        /// <param name="r1">被除数。</param>
+        /// <param name="r2">除数。</param>
+        /// <returns>除算結果。</returns>
 		public static Real operator /(Real r1, Real r2) { return r1.DivideBy(r2); }
 
         /// <summary>
         /// 累乗します。
         /// </summary>
-        /// <param name="f1">基数</param>
-        /// <param name="f2">指数</param>
-        /// <returns>累乗</returns>
+        /// <param name="f1">底。</param>
+        /// <param name="f2">冪数。</param>
+        /// <returns>累乗。</returns>
         public static Real operator ^(Real r1, Real r2)
         {
             return r1.PowerWith(r2);
@@ -232,26 +250,20 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 剰余を取得します。
         /// </summary>
-        /// <param name="f1">基数</param>
-        /// <param name="f2">指数</param>
+        /// <param name="f1">被除数。</param>
+        /// <param name="f2">除数。</param>
         /// <returns>累乗</returns>
 		public static Real operator %(Real r1, Real r2)
 		{
-			if (r1 < 0) r1 = r1 * new Real(-1);
-			if (r2 < 0) r2 = r2 * new Real(-1);
-			
-			Real surplus = r1 - (r1 / r2 - new Real(0.5)).Round(0) * r2;
-
-			if (surplus == r2) return surplus - r2;
-			return surplus;
+            return r1.ModOf(r2);
 		}
 
         /// <summary>
         /// 実数の比較結果を取得します。
         /// </summary>
-        /// <param name="r1">実数1</param>
-        /// <param name="r2">実数2</param>
-        /// <returns>比較結果</returns>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>比較結果。</returns>
         public static bool operator ==(Real r1, Real r2)
         {
 			if (Object.Equals(r1, null) && Object.Equals(r2, null)) return true;
@@ -263,19 +275,19 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 数式の比較結果を返します。不一致の場合にのみtrueとなります。
         /// </summary>
-        /// <param name="r1">実数1</param>
-        /// <param name="r2">実数2</param>
-        /// <returns>比較結果</returns>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>比較結果。</returns>
         public static bool operator !=(Real r1, Real r2)
         {
             return !(r1 == r2);
         }
 
 		/// <summary>
-		/// Double型への暗黙的変換
+		/// Double型への暗黙的変換。
 		/// </summary>
-		/// <param name="r">対象の実数</param>
-		/// <returns></returns>
+		/// <param name="r">対象の実数。</param>
+		/// <returns>変換されたdouble型の実数。</returns>
 		public static implicit operator double(Real r)
 		{
 			return r.Data;
@@ -284,8 +296,8 @@ namespace GoodSeat.Liffom.Reals
 		/// <summary>
 		/// Numeric型への暗黙的変換
 		/// </summary>
-		/// <param name="r">対象の実数</param>
-		/// <returns></returns>
+		/// <param name="r">対象の実数。</param>
+		/// <returns>変換されたNumeric型のインスタンス。</returns>
 		public static implicit operator Numeric(Real r)
 		{
 			return new Numeric(r);

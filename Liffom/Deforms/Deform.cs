@@ -32,12 +32,13 @@ namespace GoodSeat.Liffom.Deforms
 		/// <returns>変形ルール適用の収束した数式、もしくはisAbourtApplyデリゲートに適合する数式。</returns>
 		public static Formula Apply(DeformToken token, Formula target, DeformHistory history, Formula.IsTargetFormula isAbortApply)
 		{
+            if (target is IUndeformable && (target as IUndeformable).IsUndeformable()) return target;
+
 			Format format = null;
 			if (target.HasFormat) format = target.Format;
 
-			if (isAbortApply == null) isAbortApply = f => false;
 			if (history == null) history = new DeformHistory(target);
-            if (history.Era > token.EraMaximum) throw new FormulaDeformException(string.Format("数式変形の世代が、許容されている最大数{0}を超過しました。", token.EraMaximum));
+            if (history.Era > token.EraMaximum) throw new FormulaDeformException(string.Format("数式変形の世代が、許容されている最大数{0}を超過しました。変形が無限ループとなっているか、もしくは数式が複雑すぎます。", token.EraMaximum));
 
 			bool ruleApplied = true;
 			while (ruleApplied)
@@ -48,13 +49,14 @@ namespace GoodSeat.Liffom.Deforms
 				foreach (var rule in GetApplyCandidateRules(token, target, history))
 				{
 					if (history.IsAlreadyAppliedRule(rule)) continue;
+                    RemoveBracketFormatOfTerm(target); // 変形があったら元の意味のない括弧を消す
 
 					if (rule.TryMatchRule(ref target))
 					{
 						ruleApplied = true;
 						history.Add(new DeformHistoryNode(target, rule)); // 変形履歴地点を登録
 
-						if (isAbortApply(target) || rule.DeformConclude)
+						if ((isAbortApply != null && isAbortApply(target)) || rule.DeformConclude)
 						{
 							target.LastDeformToken = token;
 							return target;
@@ -63,13 +65,22 @@ namespace GoodSeat.Liffom.Deforms
 					}
 				}
 			} 
-
 			if (history.Era == 1) token.Sort(target);
 
 			target.Format = format;
 			target.LastDeformToken = token;
 			return target;
 		}
+
+        /// <summary>
+        /// 括弧がない場合にも意味の変わらない括弧を削除します。
+        /// </summary>
+        /// <param name="target">削除対象の数式。</param>
+        private static void RemoveBracketFormatOfTerm(Formula target)
+        {
+            foreach (var f in target.GetExistFactor(f => f is AtomicFormula || f is Numeric))
+                f.Format.RemoveIndividualSettingOf<Bracket>();
+        }
 
 		/// <summary>
 		/// 変形対象の数式と変形履歴をもとに、適用候補となるルールをすべて返す反復子を取得します。
