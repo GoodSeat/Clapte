@@ -5,12 +5,12 @@ using System.Text;
 
 namespace GoodSeat.Liffom.Deforms
 {
-	/// <summary>
-	/// 展開変形を表す変形識別トークンを表します。
-	/// </summary>
-	[Serializable()]
-	public class ExpandToken : DeformToken
-	{
-	}
+    /// <summary>
+    /// 展開変形を表す変形識別トークンを表します。
+    /// </summary>
+    [Serializable()]
+    public class ExpandToken : DeformToken
+    {
+    }
 
 }

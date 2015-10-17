@@ -5,27 +5,27 @@ using System.Text;
 
 namespace GoodSeat.Liffom
 {
-	/// <summary>
-	/// 数式の構文解析中に発生した例外情報を表します。
-	/// </summary>
-	public class FormulaParseException : Exception
-	{
-		/// <summary>
-		/// 数式の構文解析中に発生した例外情報を初期化します。
-		/// </summary>
-		public FormulaParseException() : base() { }
+    /// <summary>
+    /// 数式の構文解析中に発生した例外情報を表します。
+    /// </summary>
+    public class FormulaParseException : Exception
+    {
+        /// <summary>
+        /// 数式の構文解析中に発生した例外情報を初期化します。
+        /// </summary>
+        public FormulaParseException() : base() { }
 
-		/// <summary>
-		/// 数式の構文解析中に発生した例外情報を初期化します。
-		/// </summary>
-		/// <param name="message">例外に関する情報。</param>
-		public FormulaParseException(string message) : base(message) { }
+        /// <summary>
+        /// 数式の構文解析中に発生した例外情報を初期化します。
+        /// </summary>
+        /// <param name="message">例外に関する情報。</param>
+        public FormulaParseException(string message) : base(message) { }
 
-		/// <summary>
-		/// 数式の構文解析中に発生した例外情報を初期化します。
-		/// </summary>
-		/// <param name="message">例外に関する情報。</param>
-		/// <param name="innerException">現在の例外の原因となる例外。</param>
-		public FormulaParseException(string message, Exception innerException) : base(message, innerException) { }
-	}
+        /// <summary>
+        /// 数式の構文解析中に発生した例外情報を初期化します。
+        /// </summary>
+        /// <param name="message">例外に関する情報。</param>
+        /// <param name="innerException">現在の例外の原因となる例外。</param>
+        public FormulaParseException(string message, Exception innerException) : base(message, innerException) { }
+    }
 }
