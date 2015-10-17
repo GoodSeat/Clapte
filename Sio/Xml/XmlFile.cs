@@ -211,7 +211,8 @@ namespace GoodSeat.Sio.Xml
 
 				xmlDoc.AppendChild(_element.ConvertToSystemXmlElement(xmlDoc));
 
-				xmlDoc.Save(_path);
+                var writer = new StreamWriter(_path, false, Encoding.Default);
+                xmlDoc.Save(writer);
 			}
 			catch { }
 		}

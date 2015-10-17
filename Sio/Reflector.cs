@@ -62,61 +62,61 @@ namespace GoodSeat.Sio
 		/// <returns>見つかったリフレクタ情報リスト。</returns>
 		public static Reflector<T>[] FindReflectors(string folderName)
 		{
-			List<Reflector<T>> plugins = new List<Reflector<T>>();
+            List<Reflector<T>> plugins = new List<Reflector<T>>();
 
-			Type[] types = new Type[] { typeof(T) };
-			
-			string folder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
-			folder += "\\" + folderName;
+            Type[] types = new Type[] { typeof(T) };
 
-			if (!Directory.Exists(folder)) throw new ApplicationException("指定されたフォルダ\"" + folder + "\"が見つかりませんでした。");
+            string folder = System.IO.Path.GetDirectoryName(Assembly.GetExecutingAssembly().Location);
+            folder += "\\" + folderName;
 
-			// *.dll及び*.exeファイルを探索対象とする
-			List<string> targetPaths = new List<string>();
-			targetPaths.AddRange(Directory.GetFiles(folder, "*.dll"));
-			targetPaths.AddRange(Directory.GetFiles(folder, "*.exe"));
+            if (!Directory.Exists(folder)) throw new ApplicationException("指定されたフォルダ\"" + folder + "\"が見つかりませんでした。");
 
-			try
-			{
-				foreach (string path in targetPaths)
-				{
-					// アセンブリとして読み込む
-					Assembly asm = Assembly.LoadFrom(path);
+            // *.dll及び*.exeファイルを探索対象とする
+            List<string> targetPaths = new List<string>();
+            targetPaths.AddRange(Directory.GetFiles(folder, "*.dll"));
+            targetPaths.AddRange(Directory.GetFiles(folder, "*.exe"));
 
-					foreach (Type t in asm.GetTypes())
-					{
-						try
-						{
-							// クラスのフルネームが一致すればOK
-							foreach (Type targetType in types)
-							{
-								if (t.FullName == targetType.FullName && !t.IsAbstract)
-								{
-									plugins.Add(new Reflector<T>(t));
-									continue;
-								}
-							}
-							if (t.IsClass && t.IsPublic && !t.IsAbstract && HasCorrectInterface(t, types))
-								plugins.Add(new Reflector<T>(t));
-						}
-						catch
-						{ }
-					}
-				}
-			}
-			catch { }
+            foreach (string path in targetPaths)
+            {
+                try
+                {
+                    // アセンブリとして読み込む
+                    Assembly asm = Assembly.LoadFrom(path);
 
-			// コレクションを配列にして返す
-			return plugins.ToArray();
-		}
+                    foreach (Type t in asm.GetTypes())
+                    {
+                        try
+                        {
+                            // クラスのフルネームが一致すればOK
+                            foreach (Type targetType in types)
+                            {
+                                if (t.FullName == targetType.FullName && !t.IsAbstract)
+                                {
+                                    plugins.Add(new Reflector<T>(t));
+                                    continue;
+                                }
+                            }
+                            if (t.IsClass && t.IsPublic && !t.IsAbstract && HasCorrectInterface(t, types))
+                                plugins.Add(new Reflector<T>(t));
+                        }
+                        catch
+                        { }
+                    }
+                }
+                catch { }
+            }
 
-		/// <summary>
-		/// 指定した型が、指定した名前のインターフェイスを全て実装しているかを返します。
-		/// </summary>
-		/// <param name="t">検証する型。</param>
-		/// <param name="iNames">実装検証する可変数の型名。</param>
-		/// <returns>iNamesで指定された型の全てを実装しているか否か。</returns>
-		protected static bool HasCorrectInterface(Type t, params string[] iNames)
+            // コレクションを配列にして返す
+            return plugins.ToArray();
+        }
+
+        /// <summary>
+        /// 指定した型が、指定した名前のインターフェイスを全て実装しているかを返します。
+        /// </summary>
+        /// <param name="t">検証する型。</param>
+        /// <param name="iNames">実装検証する可変数の型名。</param>
+        /// <returns>iNamesで指定された型の全てを実装しているか否か。</returns>
+        protected static bool HasCorrectInterface(Type t, params string[] iNames)
 		{
 			foreach (string name in iNames)
 			{
