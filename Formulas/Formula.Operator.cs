@@ -188,22 +188,12 @@ namespace GoodSeat.Liffom.Formulas
 			}
 		}
 
-		static Dictionary<double, Numeric> s_numericCache = new Dictionary<double, Numeric>();
-
 		/// <summary>
 		/// Double型の暗黙的変換を行います。
 		/// </summary>
 		/// <param name="d">対象の数値。</param>
 		/// <returns>変換されたNumeric型のオブジェクト。</returns>
-		public static implicit operator Formula(double d) 
-		{
-			if (s_numericCache.ContainsKey(d)) return s_numericCache[d];
-
-			var result = new Numeric(d);
-			s_numericCache.Add(d, result);
-
-			return result;
-		}
+		public static implicit operator Formula(double d) { return new Numeric(d); }
 
 	}
 }

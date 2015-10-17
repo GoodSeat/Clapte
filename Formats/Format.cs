@@ -149,6 +149,15 @@ namespace GoodSeat.Liffom.Formats
 		}
 
 		/// <summary>
+		/// 指定した書式属性の個別設定を削除します。
+		/// </summary>
+        public void RemoveIndividualSettingOf<T>() where T : FormatProperty
+        {
+            var type = typeof(T);
+            if (IndividualSetting.ContainsKey(type)) IndividualSetting.Remove(type);
+        }
+
+		/// <summary>
 		/// 指定書式属性の設定を取得します。
 		/// </summary>
 		public T PropertyOf<T>() where T : FormatProperty

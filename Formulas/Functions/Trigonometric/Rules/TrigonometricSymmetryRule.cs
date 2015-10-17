@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Formulas.Operators;
 
 namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 {
@@ -81,6 +83,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
 		protected override IEnumerable<Type> OnGetPreDemandRules()
 		{
+            yield return typeof(CalculateProductOfMolecularNumericRule);
 			yield return typeof(GeneralAngleOnTrigonometricRule); // 一般角の公式を適用済み
 		}
 
@@ -108,7 +111,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 				}
 			}
 
-			protected override Formula OnTryMatchRule(Formula target) { return -1 * target; }
+			protected override Formula OnTryMatchRule(Formula target) { return new Product(true, -1 * target).DeformWithRules(false, CalculateProductOfMolecularNumericRule.Entity, RemoveInvalidOneOnProductRule.Entity); }
 
 			protected internal override bool IsTargetTypeFormula(Formula target) { return target.IsNegative(); }
 

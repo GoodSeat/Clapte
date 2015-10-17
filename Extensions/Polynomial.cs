@@ -597,6 +597,9 @@ namespace GoodSeat.Liffom.Extensions
 		{
 			if (n1 == 0) return n2;
 			if (n2 == 0) return n1;
+            if (double.IsInfinity(n1.Data.Data)) return null;
+            if (double.IsInfinity(n2.Data.Data)) return null;
+
 			Numeric errorRatio = new Numeric(Math.Pow(10, -ValidReal.MaxPrecision) * 5d);
 
 			Numeric nBase = (n1 > n2) ? n1 : n2;
@@ -647,6 +650,8 @@ namespace GoodSeat.Liffom.Extensions
 		public static Formula LCM(Formula f1, Formula f2)
 		{
 			Formula gcd = GCD(f1, f2);
+            if (gcd == null) return null;
+
 			Formula rem;
 			return (f1 * f2.Divide(gcd, out rem)).Simplify();
 		}

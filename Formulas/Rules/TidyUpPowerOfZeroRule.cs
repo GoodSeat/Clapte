@@ -32,7 +32,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 			var power = target as Power;
 			if (power == null) return false;
 
-			return (power.Exponent == 0 || power.Exponent == 0);
+			return (power.Base == 0 || power.Exponent == 0);
 		}
 
 		protected override Formula OnTryMatchRule(Formula target)
@@ -48,10 +48,15 @@ namespace GoodSeat.Liffom.Formulas.Rules
 					Numeric exp = power.Exponent as Numeric;
 					if (exp > 0) return 0; // 0^n = 0
 				}
-				else // 0^a → 0 （aが負数の可能性もあるからこの変形は抑制すべきかとも考えたが、Maximaは(ratsimpさえ介さずに、勝手に)こう変形するので。
-				{
-					return 0;
-				}
+                else if (Numeric.IsNumericOnly(power.Exponent))
+                {
+                    Numeric exp = power.Exponent.Numerate() as Numeric;
+                    if (exp != null && exp > 0) return 0;
+                }
+                else // 0^a → 0 (aが負数の可能性もあるからこの変形は抑制すべきかとも考えたが、Maximaは(ratsimpさえ介さずに、勝手に)こう変形するので。)
+                {
+                    return 0;
+                }
 			}
 			return null;
 		}
@@ -63,10 +68,18 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
 		public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
 		{
-//			yield return new KeyValuePair<Formula, Formula>(
-//				Formula.Parse("0^a"),
-//				Formula.Parse("0")
-//				);
+			yield return new KeyValuePair<Formula, Formula>(
+				Formula.Parse("0^(1/2)"),
+                Formula.Parse("0")
+				);
+			yield return new KeyValuePair<Formula, Formula>(
+				Formula.Parse("0^(-1/2)"),
+                null
+				);
+			yield return new KeyValuePair<Formula, Formula>(
+				Formula.Parse("0^a"),
+				Formula.Parse("0")
+				);
 			yield return new KeyValuePair<Formula, Formula>(
 				Formula.Parse("0^0"),
 				null
