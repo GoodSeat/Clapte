@@ -4,6 +4,7 @@ using System;
 using GoodSeat.Liffom;
 using GoodSeat.Liffom.Formulas;
 using System.Collections.Generic;
+using GoodSeat.Liffom.Utilities;
 
 namespace GoodSeat.LiffomTestProject
 {
@@ -102,7 +103,7 @@ namespace GoodSeat.LiffomTestProject
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
-        public static void ProcessTestProcessCompleted(object sender, ProcessCompletedEventArgs e)
+        public static void ProcessTestProcessCompleted(object sender, EAPCompletedEventArgs<Formula> e)
         {
             Console.WriteLine(string.Format("[{0}] {1}::{2}", DateTime.Now, e.UserState, e.Result));
         }

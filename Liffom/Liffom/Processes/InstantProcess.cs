@@ -26,7 +26,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="handler">処理メソッド</param>
         public InstantProcess(InstantProcessHandler handler) { _handler = handler; }
 
-        public override int TargetFormulasMinQty
+        public override int TargetArgumentsMinQty
         {
             get { return 1; }
         }
