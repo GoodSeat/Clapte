@@ -8,6 +8,9 @@ using GoodSeat.Liffom.Deforms.Rules;
 
 namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
+    /// <summary>
+    /// 分母の単純有理化（分母の累乗根を分子に移動）を行うルールを表します。
+    /// </summary>
     public class RationalizeDenominatorRootRule : PatternRule
     {
         protected override Formula GetRulePatternFormula()
@@ -35,8 +38,8 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
                 );
         }
 
-        protected override IEnumerable<Rule> OnGetAllPatternSample() { yield return new RationalizeDenominatorRule(); }
+        protected override IEnumerable<Rule> OnGetAllPatternSample() { yield return new RationalizeDenominatorRootRule(); }
 
-        public override Rule GetClone() { return new RationalizeDenominatorRule(); }
+        public override Rule GetClone() { return new RationalizeDenominatorRootRule(); }
     }
 }
