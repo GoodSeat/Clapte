@@ -7,229 +7,229 @@ using GoodSeat.Liffom.Formulas;
 
 namespace GoodSeat.Liffom.Processes
 {
-	/// <summary>
-	/// 非同期処理をサポートする数式処理を表します。
-	/// </summary>
-	public abstract class Process
-	{
-		/// <summary>
-		/// 一意のユーザー状態の指定がない時のデフォルトユーザー状態を取得します。
-		/// </summary>
-		protected Object DefaultState { get; private set; }
+    /// <summary>
+    /// 非同期処理をサポートする数式処理を表します。
+    /// </summary>
+    public abstract class Process
+    {
+        /// <summary>
+        /// 一意のユーザー状態の指定がない時のデフォルトユーザー状態を取得します。
+        /// </summary>
+        protected Object DefaultState { get; private set; }
 
-		Dictionary<object, bool> CanceledMap { get; set; }
-		Dictionary<object, Formula> ResultMap { get; set; }
-		Dictionary<object, IAsyncResult> IAsyncResultMap { get; set; }
-		List<object> BusyStates { get; set; }
-		
+        Dictionary<object, bool> CanceledMap { get; set; }
+        Dictionary<object, Formula> ResultMap { get; set; }
+        Dictionary<object, IAsyncResult> IAsyncResultMap { get; set; }
+        List<object> BusyStates { get; set; }
+        
 
-		private delegate void WorkerEventHandler(object userState, params Formula[] targets);
-		WorkerEventHandler WorkerDelegate { get; set; }
+        private delegate void WorkerEventHandler(object userState, params Formula[] targets);
+        WorkerEventHandler WorkerDelegate { get; set; }
 
-		/// <summary>
-		/// 非同期の特性データ作成処理が進行したときに呼び出されます。
-		/// </summary>
-		public event ProgressChangedEventHandler ProgressChanged;
+        /// <summary>
+        /// 非同期の特性データ作成処理が進行したときに呼び出されます。
+        /// </summary>
+        public event ProgressChangedEventHandler ProgressChanged;
 
-		/// <summary>
-		/// 非同期の特性データ作成処理完了時に呼び出されます。
-		/// </summary>
-		public event ProcessCompletedEventHandler ProcessCompleted;
-
-
-		/// <summary>
-		/// 数式処理クラスを初期化します。
-		/// </summary>
-		public Process()
-		{
-			DefaultState = new Object();
-			CanceledMap = new Dictionary<object, bool>();
-			ResultMap = new Dictionary<object, Formula>();
-			IAsyncResultMap = new Dictionary<object, IAsyncResult>();
-			BusyStates = new List<object>();
-			WorkerDelegate = new WorkerEventHandler(DoProcessWorker);
-		}
-
-		/// <summary>
-		/// 現在、非同期処理中か否かを取得します。
-		/// </summary>
-		public bool IsBusy() { return IsBusy(DefaultState); }
-
-		/// <summary>
-		/// 現在、非同期処理中か否かを取得します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		public bool IsBusy(object userState) { return BusyStates.Contains(userState); }
-
-		/// <summary>
-		/// 処理のキャンセルが要求されたか否かを設定もしくは取得します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		public bool IsCanceled(object userState) { return CanceledMap[userState]; }
-
-		/// <summary>
-		/// 一意のユーザー情報を指定して、複数の同時呼び出しを許可するか否かを取得します。
-		/// </summary>
-		public abstract bool IsSupportMultipleConcurrentInvocations { get; }
-
-		/// <summary>
-		/// 処理対象とする数式数の下限値を取得します。
-		/// </summary>
-		public abstract int TargetFormulasMinQty { get; }
-
-		/// <summary>
-		/// 処理対象とする数式数の上限値を取得します。
-		/// </summary>
-		public virtual int TargetFormulasMaxQty { get { return TargetFormulasMinQty; } }
-
-		/// <summary>
-		/// 非同期の処理結果を取得します。
-		/// </summary>
-		/// <returns>処理結果。処理に失敗した場合、null。</returns>
-		public Formula GetAsyncResult() { return GetAsyncResult(DefaultState); }
-
-		/// <summary>
-		/// 非同期の処理結果を取得します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		/// <returns>処理結果。処理に失敗した場合、null。</returns>
-		public Formula GetAsyncResult(object userState) { return ResultMap[userState]; }
+        /// <summary>
+        /// 非同期の特性データ作成処理完了時に呼び出されます。
+        /// </summary>
+        public event ProcessCompletedEventHandler ProcessCompleted;
 
 
+        /// <summary>
+        /// 数式処理クラスを初期化します。
+        /// </summary>
+        public Process()
+        {
+            DefaultState = new Object();
+            CanceledMap = new Dictionary<object, bool>();
+            ResultMap = new Dictionary<object, Formula>();
+            IAsyncResultMap = new Dictionary<object, IAsyncResult>();
+            BusyStates = new List<object>();
+            WorkerDelegate = new WorkerEventHandler(DoProcessWorker);
+        }
 
-		/// <summary>
-		/// 数式を指定して、処理を実行します。
-		/// </summary>
-		/// <param name="targets">処理対象の数式</param>
-		public Formula Do(params Formula[] targets) { return Do(DefaultState, targets); }
+        /// <summary>
+        /// 現在、非同期処理中か否かを取得します。
+        /// </summary>
+        public bool IsBusy() { return IsBusy(DefaultState); }
 
-		/// <summary>
-		/// 数式を指定して、処理を実行します。
-		/// </summary>
-		/// <param name="targets">処理対象の数式</param>
-		public Formula Do(object userState, params Formula[] targets) 
-		{
-			if (targets.Length < TargetFormulasMinQty || targets.Length > TargetFormulasMaxQty) throw new ArgumentOutOfRangeException();
+        /// <summary>
+        /// 現在、非同期処理中か否かを取得します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        public bool IsBusy(object userState) { return BusyStates.Contains(userState); }
 
-			Formula result = null;
-			Exception e = null;
-			try { result = OnDo(userState, targets); }
-			catch (Exception exc) { e = exc; }
+        /// <summary>
+        /// 処理のキャンセルが要求されたか否かを設定もしくは取得します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        public bool IsCanceled(object userState) { return CanceledMap[userState]; }
 
-			if (ResultMap.ContainsKey(userState)) ResultMap.Remove(userState);
-			ResultMap.Add(userState, result);
+        /// <summary>
+        /// 一意のユーザー情報を指定して、複数の同時呼び出しを許可するか否かを取得します。
+        /// </summary>
+        public abstract bool IsSupportMultipleConcurrentInvocations { get; }
 
-			BusyStates.Remove(userState);
+        /// <summary>
+        /// 処理対象とする数式数の下限値を取得します。
+        /// </summary>
+        public abstract int TargetFormulasMinQty { get; }
 
-			if (e != null) throw e;
-			return result;
-		}
-		
-		/// <summary>
-		/// 数式を指定して、非同期に処理を実行します。
-		/// </summary>
-		/// <param name="targets">処理対象の数式</param>
-		public void DoAsync(params Formula[] targets) { DoAsync(DefaultState, targets); }
+        /// <summary>
+        /// 処理対象とする数式数の上限値を取得します。
+        /// </summary>
+        public virtual int TargetFormulasMaxQty { get { return TargetFormulasMinQty; } }
 
-		/// <summary>
-		/// 数式を指定して、非同期に処理を実行します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		/// <param name="targets">処理対象の数式</param>
-		public void DoAsync(object userState, params Formula[] targets)
-		{
-			if (!IsSupportMultipleConcurrentInvocations && BusyStates.Count != 0) throw new InvalidOperationException(GetType() + "は、複数の同時呼び出しをサポートしていません。");
-			if (IsBusy(userState)) throw new InvalidOperationException(string.Format("現在、ユーザー状態「{0}」に関連する処理を実行中です。同じユーザー状態に対して、同時に処理を実行することはできません。", userState));
-			BusyStates.Add(userState);
+        /// <summary>
+        /// 非同期の処理結果を取得します。
+        /// </summary>
+        /// <returns>処理結果。処理に失敗した場合、null。</returns>
+        public Formula GetAsyncResult() { return GetAsyncResult(DefaultState); }
 
-			if (!CanceledMap.ContainsKey(userState))
-			{
-				CanceledMap.Add(userState, false);
-			}
-			else
-			{
-				CanceledMap[userState] = false;
-				IAsyncResultMap.Remove(userState);
-			}
-
-			var asyncResult = WorkerDelegate.BeginInvoke(userState, targets, null, null);
-			IAsyncResultMap.Add(userState, asyncResult);
-		}
+        /// <summary>
+        /// 非同期の処理結果を取得します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        /// <returns>処理結果。処理に失敗した場合、null。</returns>
+        public Formula GetAsyncResult(object userState) { return ResultMap[userState]; }
 
 
 
-		/// <summary>
-		/// 現在実行中の非同期処理の終了を待ち、その結果を取得します。
-		/// </summary>
-		/// <returns>非同期処理の結果。失敗した場合はnull。</returns>
-		public Formula Wait() { return Wait(DefaultState); }
+        /// <summary>
+        /// 数式を指定して、処理を実行します。
+        /// </summary>
+        /// <param name="targets">処理対象の数式</param>
+        public Formula Do(params Formula[] targets) { return Do(DefaultState, targets); }
 
-		/// <summary>
-		/// 現在実行中の非同期処理の終了を待ち、その結果を取得します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		/// <returns>非同期処理の結果。失敗した場合はnull。</returns>
-		public Formula Wait(object userState)
-		{
-			if (IsBusy(userState)) WorkerDelegate.EndInvoke(IAsyncResultMap[userState]);
-			return GetAsyncResult(userState);
-		}
+        /// <summary>
+        /// 数式を指定して、処理を実行します。
+        /// </summary>
+        /// <param name="targets">処理対象の数式</param>
+        public Formula Do(object userState, params Formula[] targets) 
+        {
+            if (targets.Length < TargetFormulasMinQty || targets.Length > TargetFormulasMaxQty) throw new ArgumentOutOfRangeException();
 
-		/// <summary>
-		/// 現在実行中の非同期処理がすべて終了するまで待機します。
-		/// </summary>
-		public void WaitAll()
-		{
-			while (BusyStates.Count != 0) WorkerDelegate.EndInvoke(IAsyncResultMap[BusyStates[0]]);
-		}
+            Formula result = null;
+            Exception e = null;
+            try { result = OnDo(userState, targets); }
+            catch (Exception exc) { e = exc; }
+
+            if (ResultMap.ContainsKey(userState)) ResultMap.Remove(userState);
+            ResultMap.Add(userState, result);
+
+            BusyStates.Remove(userState);
+
+            if (e != null) throw e;
+            return result;
+        }
+        
+        /// <summary>
+        /// 数式を指定して、非同期に処理を実行します。
+        /// </summary>
+        /// <param name="targets">処理対象の数式</param>
+        public void DoAsync(params Formula[] targets) { DoAsync(DefaultState, targets); }
+
+        /// <summary>
+        /// 数式を指定して、非同期に処理を実行します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        /// <param name="targets">処理対象の数式</param>
+        public void DoAsync(object userState, params Formula[] targets)
+        {
+            if (!IsSupportMultipleConcurrentInvocations && BusyStates.Count != 0) throw new InvalidOperationException(GetType() + "は、複数の同時呼び出しをサポートしていません。");
+            if (IsBusy(userState)) throw new InvalidOperationException(string.Format("現在、ユーザー状態「{0}」に関連する処理を実行中です。同じユーザー状態に対して、同時に処理を実行することはできません。", userState));
+            BusyStates.Add(userState);
+
+            if (!CanceledMap.ContainsKey(userState))
+            {
+                CanceledMap.Add(userState, false);
+            }
+            else
+            {
+                CanceledMap[userState] = false;
+                IAsyncResultMap.Remove(userState);
+            }
+
+            var asyncResult = WorkerDelegate.BeginInvoke(userState, targets, null, null);
+            IAsyncResultMap.Add(userState, asyncResult);
+        }
 
 
 
-		/// <summary>
-		/// 非同期処理を中止します。
-		/// </summary>
-		public void CancelAsync() { CancelAsync(DefaultState); }
+        /// <summary>
+        /// 現在実行中の非同期処理の終了を待ち、その結果を取得します。
+        /// </summary>
+        /// <returns>非同期処理の結果。失敗した場合はnull。</returns>
+        public Formula Wait() { return Wait(DefaultState); }
 
-		/// <summary>
-		/// 非同期処理を中止します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		public void CancelAsync(object userState) { CanceledMap[userState] = true; }
+        /// <summary>
+        /// 現在実行中の非同期処理の終了を待ち、その結果を取得します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        /// <returns>非同期処理の結果。失敗した場合はnull。</returns>
+        public Formula Wait(object userState)
+        {
+            if (IsBusy(userState)) WorkerDelegate.EndInvoke(IAsyncResultMap[userState]);
+            return GetAsyncResult(userState);
+        }
+
+        /// <summary>
+        /// 現在実行中の非同期処理がすべて終了するまで待機します。
+        /// </summary>
+        public void WaitAll()
+        {
+            while (BusyStates.Count != 0) WorkerDelegate.EndInvoke(IAsyncResultMap[BusyStates[0]]);
+        }
 
 
 
-		/// <summary>
-		/// 設定に基づいて、一連の特性データ保持クラスに対して、特性データを初期化します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		/// <param name="targets">処理対象の数式</param>
-		private void DoProcessWorker(object userState, params Formula[] targets)
-		{
-			Formula result = null;
-			Exception e = null;
-			try { result = Do(userState, targets); }
-			catch (Exception exc) { e = exc; }
+        /// <summary>
+        /// 非同期処理を中止します。
+        /// </summary>
+        public void CancelAsync() { CancelAsync(DefaultState); }
 
-			if (ProcessCompleted != null) ProcessCompleted(this, new ProcessCompletedEventArgs(e, IsCanceled(userState), userState, result));
-		}
+        /// <summary>
+        /// 非同期処理を中止します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        public void CancelAsync(object userState) { CanceledMap[userState] = true; }
 
-		/// <summary>
-		/// 指定された数式に対して、処理を実行します。
-		/// </summary>
-		protected abstract Formula OnDo(object userState, params Formula[] targets);
 
-		/// <summary>
-		/// 数式処理の進行状況の変化を通知します。
-		/// </summary>
-		/// <param name="userState">一意のユーザー状態</param>
-		/// <param name="progressPercentage">処理の進行状況。(1～100)</param>
-		/// <param name="current">処理中の数式</param>
-		protected void OnProgressChanged(object userState, int progressPercentage, Formula current)
-		{
-			if (ProgressChanged != null) ProgressChanged(this, new ProcessProgressChangedEventArgs(progressPercentage, userState, current));
-		}
 
-	}
+        /// <summary>
+        /// 設定に基づいて、一連の特性データ保持クラスに対して、特性データを初期化します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        /// <param name="targets">処理対象の数式</param>
+        private void DoProcessWorker(object userState, params Formula[] targets)
+        {
+            Formula result = null;
+            Exception e = null;
+            try { result = Do(userState, targets); }
+            catch (Exception exc) { e = exc; }
+
+            if (ProcessCompleted != null) ProcessCompleted(this, new ProcessCompletedEventArgs(e, IsCanceled(userState), userState, result));
+        }
+
+        /// <summary>
+        /// 指定された数式に対して、処理を実行します。
+        /// </summary>
+        protected abstract Formula OnDo(object userState, params Formula[] targets);
+
+        /// <summary>
+        /// 数式処理の進行状況の変化を通知します。
+        /// </summary>
+        /// <param name="userState">一意のユーザー状態</param>
+        /// <param name="progressPercentage">処理の進行状況。(1～100)</param>
+        /// <param name="current">処理中の数式</param>
+        protected void OnProgressChanged(object userState, int progressPercentage, Formula current)
+        {
+            if (ProgressChanged != null) ProgressChanged(this, new ProcessProgressChangedEventArgs(progressPercentage, userState, current));
+        }
+
+    }
 
 
 }
