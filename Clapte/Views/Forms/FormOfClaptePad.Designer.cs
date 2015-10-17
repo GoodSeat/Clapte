@@ -261,8 +261,8 @@
 
         private Sgry.Azuki.WinForms.AzukiControl _inputTextBox;
         private System.Windows.Forms.SplitContainer _splitContainer;
-		private Sgry.Azuki.WinForms.AzukiControl _resultTextBox;
-		private System.Windows.Forms.Timer _timerDelay;
+        private Sgry.Azuki.WinForms.AzukiControl _resultTextBox;
+        private System.Windows.Forms.Timer _timerDelay;
         private System.Windows.Forms.ToolTip _toolTipHoverHelp;
         private Components.ImageButton _btnSave;
         private Components.ImageButton _btnLoad;

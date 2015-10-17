@@ -33,8 +33,8 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <summary>
         /// 出力書式における単位の表記を設定する処理を初期化します。
         /// </summary>
-		/// <param name="owner">処理の保持者となるソルバ。</param>
-		/// <param name="type">出力の表記タイプ。</param>
+        /// <param name="owner">処理の保持者となるソルバ。</param>
+        /// <param name="type">出力の表記タイプ。</param>
         public SetUnitFormatProcess(Solver owner, UnitFormatType type)
             : base(owner)
         {
@@ -42,14 +42,14 @@ namespace GoodSeat.Clapte.Solvers.Processes
             CurrentType = UnitFormatType.None;
         }
 
-		/// <summary>
-		/// 出力時の表記タイプを設定もしくは取得します。
-		/// </summary>
-		public UnitFormatType OutputType { get; set; }
+        /// <summary>
+        /// 出力時の表記タイプを設定もしくは取得します。
+        /// </summary>
+        public UnitFormatType OutputType { get; set; }
 
-		/// <summary>
-		/// 現在処理中の計算に対する表記タイプを設定もしくは取得します。
-		/// </summary>
+        /// <summary>
+        /// 現在処理中の計算に対する表記タイプを設定もしくは取得します。
+        /// </summary>
         private UnitFormatType CurrentType { get; set; }
 
         public override Error CheckInputFormula(ref Formula input)

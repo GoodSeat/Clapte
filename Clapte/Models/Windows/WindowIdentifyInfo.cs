@@ -8,11 +8,11 @@ using GoodSeat.Sio.Xml;
 
 namespace GoodSeat.Clapte.Models.Windows
 {
-	/// <summary>
-	/// ウインドウを識別する情報を表します。
-	/// </summary>
-	public class WindowIdentifyInfo : ISerializable
-	{
+    /// <summary>
+    /// ウインドウを識別する情報を表します。
+    /// </summary>
+    public class WindowIdentifyInfo : ISerializable
+    {
         /// <summary>
         /// ウインドウ情報の文字列属性を表します。
         /// </summary>

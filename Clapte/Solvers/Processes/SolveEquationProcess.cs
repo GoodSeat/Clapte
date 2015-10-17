@@ -11,50 +11,50 @@ using System.Threading;
 
 namespace GoodSeat.Clapte.Solvers.Processes
 {
-	/// <summary>
-	/// 方程式の求解処理を表します。
-	/// </summary>
-	public class SolveEquationProcess : Process
-	{
-		/// <summary>
-		/// 常に求解対象とする変数名を取得します。
-		/// </summary>
-		public static string PermanentSolveTarget { get; set; }
+    /// <summary>
+    /// 方程式の求解処理を表します。
+    /// </summary>
+    public class SolveEquationProcess : Process
+    {
+        /// <summary>
+        /// 常に求解対象とする変数名を取得します。
+        /// </summary>
+        public static string PermanentSolveTarget { get; set; }
 
-		static SolveEquationProcess() { PermanentSolveTarget = "?"; }
+        static SolveEquationProcess() { PermanentSolveTarget = "?"; }
 
-		/// <summary>
-		/// 方程式の求解処理を初期化します。
-		/// </summary>
-		/// <param name="owner">処理の保持者となるソルバ。</param>
-		/// <param name="maxTime">計算を中止する時間[ms]。</param>
-		/// <param name="solveEquations">適用を試みる可変数の求解処理。</param>
-		public SolveEquationProcess(Solver owner, double maxTime, params SolveEquation[] solveEquations)
-			: base(owner) 
-		{
-			SolveEquations = new List<SolveEquation>(solveEquations);
+        /// <summary>
+        /// 方程式の求解処理を初期化します。
+        /// </summary>
+        /// <param name="owner">処理の保持者となるソルバ。</param>
+        /// <param name="maxTime">計算を中止する時間[ms]。</param>
+        /// <param name="solveEquations">適用を試みる可変数の求解処理。</param>
+        public SolveEquationProcess(Solver owner, double maxTime, params SolveEquation[] solveEquations)
+            : base(owner) 
+        {
+            SolveEquations = new List<SolveEquation>(solveEquations);
             MaxTime = maxTime;
-		}
+        }
 
         DateTime _calcStartTime;
 
-		/// <summary>
-		/// 適用を試みる求解処理リストを取得します。
-		/// </summary>
-		public List<SolveEquation> SolveEquations { get; private set; }
+        /// <summary>
+        /// 適用を試みる求解処理リストを取得します。
+        /// </summary>
+        public List<SolveEquation> SolveEquations { get; private set; }
 
         /// <summary>
         /// 計算を中止する時間[ms]を設定若しくは取得します。
         /// </summary>
         public double MaxTime { get; set; }
 
-		/// <summary>
-		/// 計算対象となった入力数式を対象として、処理を行います。
-		/// </summary>
-		/// <param name="input">処理対象の入力数式。</param>
-		/// <returns>エラー情報。エラーのない場合、null。</returns>
-		public override Error EvaluateFormula(ref Formula input) 
-		{
+        /// <summary>
+        /// 計算対象となった入力数式を対象として、処理を行います。
+        /// </summary>
+        /// <param name="input">処理対象の入力数式。</param>
+        /// <returns>エラー情報。エラーのない場合、null。</returns>
+        public override Error EvaluateFormula(ref Formula input) 
+        {
             _calcStartTime = DateTime.Now;
             Formula.FormulaProcessing += Formula_FormulaProcessing;
             try
@@ -101,7 +101,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
             {
                 Formula.FormulaProcessing -= Formula_FormulaProcessing;
             }
-		}
+        }
 
         void Formula_FormulaProcessing(Formula sender, EventArgs e, ref bool Cancel)
         {
@@ -114,7 +114,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
             }
         }
 
-	}
+    }
 }
 
 

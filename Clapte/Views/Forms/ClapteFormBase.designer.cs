@@ -1,33 +1,33 @@
 ﻿namespace GoodSeat.Clapte.Views.Forms
 {
-	partial class ClapteFormBase
-	{
-		/// <summary>
-		/// Required designer variable.
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+    partial class ClapteFormBase
+    {
+        /// <summary>
+        /// Required designer variable.
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary>
-		/// Clean up any resources being used.
-		/// </summary>
-		/// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary>
+        /// Clean up any resources being used.
+        /// </summary>
+        /// <param name="disposing">true if managed resources should be disposed; otherwise, false.</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region Windows Form Designer generated code
+        #region Windows Form Designer generated code
 
-		/// <summary>
-		/// Required method for Designer support - do not modify
-		/// the contents of this method with the code editor.
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary>
+        /// Required method for Designer support - do not modify
+        /// the contents of this method with the code editor.
+        /// </summary>
+        private void InitializeComponent()
+        {
             this.components = new System.ComponentModel.Container();
             this._labelTitle = new System.Windows.Forms.Label();
             this._toolHelpTip = new System.Windows.Forms.ToolTip(this.components);
@@ -326,21 +326,21 @@
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		private Components.ChameleonPictureBox _frameTopLeft;
-		private Components.ChameleonPictureBox _frameLeft;
-		private Components.ChameleonPictureBox _frameBottomLeft;
-		private Components.ChameleonPictureBox _frameTop;
-		private Components.ChameleonPictureBox _frameBottom;
-		private Components.ChameleonPictureBox _frameTopRight;
-		private Components.ChameleonPictureBox _frameRight;
-		private Components.ChameleonPictureBox _frameBottomRight;
-		private Components.ImageButton _btnOK;
+        private Components.ChameleonPictureBox _frameTopLeft;
+        private Components.ChameleonPictureBox _frameLeft;
+        private Components.ChameleonPictureBox _frameBottomLeft;
+        private Components.ChameleonPictureBox _frameTop;
+        private Components.ChameleonPictureBox _frameBottom;
+        private Components.ChameleonPictureBox _frameTopRight;
+        private Components.ChameleonPictureBox _frameRight;
+        private Components.ChameleonPictureBox _frameBottomRight;
+        private Components.ImageButton _btnOK;
         private Components.ImageButton _btnCancel;
-		private System.Windows.Forms.Label _labelTitle;
+        private System.Windows.Forms.Label _labelTitle;
         private Components.ChameleonPictureBox _picTitleBar;
         protected System.Windows.Forms.ToolTip _toolHelpTip;
         private Components.ImageButton _btnTopMost;
@@ -348,5 +348,5 @@
         private Components.ImageButton _btnOption;
 
 
-	}
+    }
 }

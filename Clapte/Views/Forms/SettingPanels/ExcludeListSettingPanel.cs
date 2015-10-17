@@ -22,10 +22,10 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         Dictionary<WindowIdentifyInfo.PropertyType, CheckBox> _regexMap = new Dictionary<WindowIdentifyInfo.PropertyType,CheckBox>();
         Dictionary<WindowIdentifyInfo.PropertyType, ComboBox> _matchMap = new Dictionary<WindowIdentifyInfo.PropertyType, ComboBox>();
 
-		/// <summary>
-		/// Clapteの監視対象外リストの設定パネルを初期化します。
-		/// </summary>
-		/// <param name="clapteCore"></param>
+        /// <summary>
+        /// Clapteの監視対象外リストの設定パネルを初期化します。
+        /// </summary>
+        /// <param name="clapteCore"></param>
         public ExcludeListSettingPanel(ClapteCoreViewModel clapteCore)
         {
             InitializeComponent();

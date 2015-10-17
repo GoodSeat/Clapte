@@ -9,124 +9,124 @@ using System.Windows.Forms;
 
 namespace GoodSeat.Clapte.Views
 {
-	public static class AzukiExtension
-	{
-		static AzukiExtension()
-		{
-			FindPreCursorWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*?)\b");
-			FindCursorWordRegex = new Regex(@"^(?<target>\D\S*?)\b");
+    public static class AzukiExtension
+    {
+        static AzukiExtension()
+        {
+            FindPreCursorWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*?)\b");
+            FindCursorWordRegex = new Regex(@"^(?<target>\D\S*?)\b");
 
-			FindCaretWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*)$");
-		}
+            FindCaretWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*)$");
+        }
 
-		static Regex FindPreCursorWordRegex { get; set; }
-		static Regex FindCursorWordRegex { get; set; }
+        static Regex FindPreCursorWordRegex { get; set; }
+        static Regex FindCursorWordRegex { get; set; }
 
-		static Regex FindCaretWordRegex { get; set; }
+        static Regex FindCaretWordRegex { get; set; }
 
 
-		/// <summary>
-		/// マウスカーソルが指し示す位置に存在する単語を取得します。
-		/// </summary>
-		/// <param name="azuki">対象のAzukiControl。</param>
-		/// <param name="lineIndex">取得された単語の所属行番号。</param>
-		/// <param name="postText">見つかった単語と同じ行の後方の文字列。</param>
-		public static string GetMouseHoverWord(this AzukiControl azuki, out int lineIndex, out string postText)
-		{
-			lineIndex = 0;
-			postText = "";
+        /// <summary>
+        /// マウスカーソルが指し示す位置に存在する単語を取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <param name="lineIndex">取得された単語の所属行番号。</param>
+        /// <param name="postText">見つかった単語と同じ行の後方の文字列。</param>
+        public static string GetMouseHoverWord(this AzukiControl azuki, out int lineIndex, out string postText)
+        {
+            lineIndex = 0;
+            postText = "";
 
-			Point position = azuki.PointToClient(Cursor.Position);
-			int index = azuki.GetIndexFromPosition(position);
-			Point checkPosition = azuki.GetPositionFromIndex(index);
-			if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;
+            Point position = azuki.PointToClient(Cursor.Position);
+            int index = azuki.GetIndexFromPosition(position);
+            Point checkPosition = azuki.GetPositionFromIndex(index);
+            if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;
 
-			int columnIndex;
-			azuki.Document.GetLineColumnIndexFromCharIndex(index, out lineIndex, out columnIndex);
+            int columnIndex;
+            azuki.Document.GetLineColumnIndexFromCharIndex(index, out lineIndex, out columnIndex);
 
-			string lineContent = azuki.Document.GetLineContent(lineIndex);
-			string preFindText = lineContent.Substring(0, columnIndex);
-			var match = FindPreCursorWordRegex.Match(preFindText);
-			if (!match.Success) return null;
+            string lineContent = azuki.Document.GetLineContent(lineIndex);
+            string preFindText = lineContent.Substring(0, columnIndex);
+            var match = FindPreCursorWordRegex.Match(preFindText);
+            if (!match.Success) return null;
 
-			string findText = lineContent.Substring(match.Groups["pre"].Length);
-			match = FindCursorWordRegex.Match(findText);
-			if (!match.Success) return null;
+            string findText = lineContent.Substring(match.Groups["pre"].Length);
+            match = FindCursorWordRegex.Match(findText);
+            if (!match.Success) return null;
 
-			string targetText = match.Groups["target"].Value;
-			postText = findText.Substring(targetText.Length);
+            string targetText = match.Groups["target"].Value;
+            postText = findText.Substring(targetText.Length);
 
-			return targetText;
-		}
+            return targetText;
+        }
 
-		/// <summary>
-		/// キャレット位置から、前方の単語区切りまでの単語を取得します。
-		/// </summary>
-		/// <param name="azuki">対象のAzukiControl。</param>
-		/// <param name="startIndex">取得された単語の最初の文字位置インデックス。</param>
-		public static string GetPreCaretWord(this AzukiControl azuki, out int startIndex)
-		{
-			int caretRowIndex, caretColumnIndex;
-			azuki.Document.GetCaretIndex(out caretRowIndex, out caretColumnIndex);
+        /// <summary>
+        /// キャレット位置から、前方の単語区切りまでの単語を取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <param name="startIndex">取得された単語の最初の文字位置インデックス。</param>
+        public static string GetPreCaretWord(this AzukiControl azuki, out int startIndex)
+        {
+            int caretRowIndex, caretColumnIndex;
+            azuki.Document.GetCaretIndex(out caretRowIndex, out caretColumnIndex);
 
-			return GetPreWordOf(azuki, caretRowIndex, caretColumnIndex, out startIndex);
-		}
+            return GetPreWordOf(azuki, caretRowIndex, caretColumnIndex, out startIndex);
+        }
 
-		/// <summary>
-		/// 指定位置から、前方の単語区切りまでの単語を取得します。
-		/// </summary>
-		/// <param name="azuki">対象のAzukiControl。</param>
-		/// <param name="rowIndex">取得対象位置の行番号。</param>
-		/// <param name="columnIndex">取得対象位置の列番号。</param>
-		/// <param name="startIndex">取得された単語の最初の文字位置インデックス。</param>
-		public static string GetPreWordOf(this AzukiControl azuki, int rowIndex, int columnIndex, out int startIndex)
-		{
-			startIndex = 0;
+        /// <summary>
+        /// 指定位置から、前方の単語区切りまでの単語を取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <param name="rowIndex">取得対象位置の行番号。</param>
+        /// <param name="columnIndex">取得対象位置の列番号。</param>
+        /// <param name="startIndex">取得された単語の最初の文字位置インデックス。</param>
+        public static string GetPreWordOf(this AzukiControl azuki, int rowIndex, int columnIndex, out int startIndex)
+        {
+            startIndex = 0;
 
-			string lineContent = azuki.Document.GetLineContent(rowIndex);
-			string targetText = lineContent.Substring(0, columnIndex);
+            string lineContent = azuki.Document.GetLineContent(rowIndex);
+            string targetText = lineContent.Substring(0, columnIndex);
 
-			var match = FindCaretWordRegex.Match(targetText);
-			if (!match.Success) return null;
+            var match = FindCaretWordRegex.Match(targetText);
+            if (!match.Success) return null;
 
-			var pre = match.Groups["pre"].Value;
-			var target = match.Groups["target"].Value;
+            var pre = match.Groups["pre"].Value;
+            var target = match.Groups["target"].Value;
 
-			startIndex = azuki.Document.GetCharIndexFromLineColumnIndex(rowIndex, pre.Length);
-			return target;
-		}
+            startIndex = azuki.Document.GetCharIndexFromLineColumnIndex(rowIndex, pre.Length);
+            return target;
+        }
 
-		/// <summary>
-		/// キャレット位置が対応する関数名とその引数の順序を取得します。
-		/// </summary>
-		/// <param name="azuki">対象のAzukiControl。</param>
-		/// <param name="startIndex">取得された単語の最初の文字位置インデックス。</param>
-		/// <param name="argIndex">0から始まる引数の順序インデックス。</param>
-		public static string GetCurrentFunctionName(this AzukiControl azuki, out int startIndex, out int argIndex)
-		{
-			argIndex = 0;
-			startIndex = 0;
+        /// <summary>
+        /// キャレット位置が対応する関数名とその引数の順序を取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <param name="startIndex">取得された単語の最初の文字位置インデックス。</param>
+        /// <param name="argIndex">0から始まる引数の順序インデックス。</param>
+        public static string GetCurrentFunctionName(this AzukiControl azuki, out int startIndex, out int argIndex)
+        {
+            argIndex = 0;
+            startIndex = 0;
 
-			int caretRowIndex, caretColumnIndex;
-			azuki.Document.GetCaretIndex(out caretRowIndex, out caretColumnIndex);
+            int caretRowIndex, caretColumnIndex;
+            azuki.Document.GetCaretIndex(out caretRowIndex, out caretColumnIndex);
 
-			string lineContent = azuki.Document.GetLineContent(caretRowIndex);
+            string lineContent = azuki.Document.GetLineContent(caretRowIndex);
 
-			string target = lineContent.Substring(0, caretColumnIndex);
-			int count = 0;
-			int startBracketIndex = 0;
-			for (startBracketIndex = target.Length - 1; startBracketIndex >= 0; startBracketIndex--)
-			{
-				if (target[startBracketIndex] == ')') count--;
-				else if (target[startBracketIndex] == '(') count++;
-				else if (count == 0 && target[startBracketIndex] == ',') argIndex++;
-				
-				if (count == 1) break;
-			}
-			if (startBracketIndex <= 1) return null;
+            string target = lineContent.Substring(0, caretColumnIndex);
+            int count = 0;
+            int startBracketIndex = 0;
+            for (startBracketIndex = target.Length - 1; startBracketIndex >= 0; startBracketIndex--)
+            {
+                if (target[startBracketIndex] == ')') count--;
+                else if (target[startBracketIndex] == '(') count++;
+                else if (count == 0 && target[startBracketIndex] == ',') argIndex++;
+                
+                if (count == 1) break;
+            }
+            if (startBracketIndex <= 1) return null;
 
-			string name = GetPreWordOf(azuki, caretRowIndex, startBracketIndex, out startIndex);
-			return name;
-		}
-	}
+            string name = GetPreWordOf(azuki, caretRowIndex, startBracketIndex, out startIndex);
+            return name;
+        }
+    }
 }

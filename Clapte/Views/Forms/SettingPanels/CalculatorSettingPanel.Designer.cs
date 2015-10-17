@@ -1,33 +1,33 @@
 ﻿namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 {
-	partial class CalculatorSettingPanel
-	{
-		/// <summary> 
-		/// 必要なデザイナー変数です。
-		/// </summary>
-		private System.ComponentModel.IContainer components = null;
+    partial class CalculatorSettingPanel
+    {
+        /// <summary> 
+        /// 必要なデザイナー変数です。
+        /// </summary>
+        private System.ComponentModel.IContainer components = null;
 
-		/// <summary> 
-		/// 使用中のリソースをすべてクリーンアップします。
-		/// </summary>
-		/// <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
-		protected override void Dispose(bool disposing)
-		{
-			if (disposing && (components != null))
-			{
-				components.Dispose();
-			}
-			base.Dispose(disposing);
-		}
+        /// <summary> 
+        /// 使用中のリソースをすべてクリーンアップします。
+        /// </summary>
+        /// <param name="disposing">マネージ リソースが破棄される場合 true、破棄されない場合は false です。</param>
+        protected override void Dispose(bool disposing)
+        {
+            if (disposing && (components != null))
+            {
+                components.Dispose();
+            }
+            base.Dispose(disposing);
+        }
 
-		#region コンポーネント デザイナーで生成されたコード
+        #region コンポーネント デザイナーで生成されたコード
 
-		/// <summary> 
-		/// デザイナー サポートに必要なメソッドです。このメソッドの内容を 
-		/// コード エディターで変更しないでください。
-		/// </summary>
-		private void InitializeComponent()
-		{
+        /// <summary> 
+        /// デザイナー サポートに必要なメソッドです。このメソッドの内容を 
+        /// コード エディターで変更しないでください。
+        /// </summary>
+        private void InitializeComponent()
+        {
             Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
             this._labelConstant = new System.Windows.Forms.Label();
             this._picColorConstant = new System.Windows.Forms.PictureBox();
@@ -379,32 +379,32 @@
             this.ResumeLayout(false);
             this.PerformLayout();
 
-		}
+        }
 
-		#endregion
+        #endregion
 
-		private System.Windows.Forms.Label _labelConstant;
-		private System.Windows.Forms.PictureBox _picColorConstant;
-		private System.Windows.Forms.PictureBox _picColorFunction;
-		private System.Windows.Forms.Label _labelFunction;
-		private System.Windows.Forms.PictureBox _picColorUnit;
-		private System.Windows.Forms.Label _labelUnit;
-		private System.Windows.Forms.PictureBox _picColorOperator;
-		private System.Windows.Forms.Label _labelOperator;
-		private System.Windows.Forms.GroupBox _groupHighlight;
-		private System.Windows.Forms.ColorDialog _colorDialog;
-		private System.Windows.Forms.FontDialog _fontDialog;
-		private System.Windows.Forms.ComboBox _comboFont;
-		private Controls.NumericSlider _numFontSize;
-		private System.Windows.Forms.CheckBox _checkVisibleTab;
-		private System.Windows.Forms.PictureBox _picColorComment;
-		private System.Windows.Forms.Label _labelComment;
+        private System.Windows.Forms.Label _labelConstant;
+        private System.Windows.Forms.PictureBox _picColorConstant;
+        private System.Windows.Forms.PictureBox _picColorFunction;
+        private System.Windows.Forms.Label _labelFunction;
+        private System.Windows.Forms.PictureBox _picColorUnit;
+        private System.Windows.Forms.Label _labelUnit;
+        private System.Windows.Forms.PictureBox _picColorOperator;
+        private System.Windows.Forms.Label _labelOperator;
+        private System.Windows.Forms.GroupBox _groupHighlight;
+        private System.Windows.Forms.ColorDialog _colorDialog;
+        private System.Windows.Forms.FontDialog _fontDialog;
+        private System.Windows.Forms.ComboBox _comboFont;
+        private Controls.NumericSlider _numFontSize;
+        private System.Windows.Forms.CheckBox _checkVisibleTab;
+        private System.Windows.Forms.PictureBox _picColorComment;
+        private System.Windows.Forms.Label _labelComment;
         private System.Windows.Forms.GroupBox _groupFont;
-		private System.Windows.Forms.CheckBox _checkUnderline;
+        private System.Windows.Forms.CheckBox _checkUnderline;
         private Sgry.Azuki.WinForms.AzukiControl _textBoxSample;
         private System.Windows.Forms.CheckBox _checkAutoShowInputSupport;
         private System.Windows.Forms.CheckBox _checkAutoShowArgumentHint;
         private System.Windows.Forms.CheckBox _checkVisibleEol;
         private System.Windows.Forms.GroupBox _groupSupport;
-	}
+    }
 }
