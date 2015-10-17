@@ -6,61 +6,61 @@ using GoodSeat.Liffom.Deforms.Rules;
 
 namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
-	/// <summary>
-	/// 関数を評価、計算するルールです。
-	/// </summary>
-	public class CalculateFunctionRule : Rule
-	{
-		static CalculateFunctionRule s_entity;
+    /// <summary>
+    /// 関数を評価、計算するルールです。
+    /// </summary>
+    public class CalculateFunctionRule : Rule
+    {
+        static CalculateFunctionRule s_entity;
 
-		/// <summary>
-		/// 関数を評価、計算するルールの実体を取得します。
-		/// このルールは再帰呼び出しにおいても結果は不変のため、通常この静的プロパティを使用することが推奨されます。
-		/// </summary>
-		public static CalculateFunctionRule Entity
-		{
-			get
-			{
-				if (s_entity == null)
-				{
-					s_entity = new CalculateFunctionRule();
-				}
-				return s_entity;
-			}
-		}
+        /// <summary>
+        /// 関数を評価、計算するルールの実体を取得します。
+        /// このルールは再帰呼び出しにおいても結果は不変のため、通常この静的プロパティを使用することが推奨されます。
+        /// </summary>
+        public static CalculateFunctionRule Entity
+        {
+            get
+            {
+                if (s_entity == null)
+                {
+                    s_entity = new CalculateFunctionRule();
+                }
+                return s_entity;
+            }
+        }
 
-		protected internal override bool IsTargetTypeFormula(Formula target) { return target is Function; }
+        protected internal override bool IsTargetTypeFormula(Formula target) { return target is Function; }
 
-		protected override Formula OnTryMatchRule(Formula target) 
-		{
-			var previousType = target.GetType();
-			var result =  (target as Function).CalculateFunction();
+        protected override Formula OnTryMatchRule(Formula target) 
+        {
+            var previousType = target.GetType();
+            var result =  (target as Function).CalculateFunction();
 
-			if (result.GetType() != previousType) return result;
-			return null;
-		}
+            if (result.GetType() != previousType) return result;
+            return null;
+        }
 
-		public override string Information
-		{
-			get { return "関数を評価、計算するルールです。"; }
-		}
+        public override string Information
+        {
+            get { return "関数を評価、計算するルールです。"; }
+        }
 
-		public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
-		{
-			yield return new KeyValuePair<Formula, Formula>(
-				Formula.Parse("sin(π)"),
-				Formula.Parse("0")
-				);
-		}
+        public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
+        {
+            yield return new KeyValuePair<Formula, Formula>(
+                Formula.Parse("sin(π)"),
+                Formula.Parse("0")
+                );
+        }
 
-		protected override IEnumerable<Rule> OnGetAllPatternSample()
-		{
-			yield return Entity;
-		}
+        protected override IEnumerable<Rule> OnGetAllPatternSample()
+        {
+            yield return Entity;
+        }
 
-		public override Rule GetClone()
-		{
-			return Entity;
-		}
-	}
+        public override Rule GetClone()
+        {
+            return Entity;
+        }
+    }
 }
