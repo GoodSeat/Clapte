@@ -4,23 +4,23 @@ using System.Text;
 
 namespace GoodSeat.Sio.Xml.Serialization
 {
-	/// <summary>
-	/// オブジェクト参照を含むオブジェクトのシリアライズ管理を表します。
-	/// </summary>
+    /// <summary>
+    /// オブジェクト参照を含むオブジェクトのシリアライズ管理を表します。
+    /// </summary>
     public sealed class SerializeStore
     {
-		/// <summary>
-		/// オブジェクト参照を含むオブジェクトのシリアライズ管理を初期化します。
-		/// </summary>
+        /// <summary>
+        /// オブジェクト参照を含むオブジェクトのシリアライズ管理を初期化します。
+        /// </summary>
         public SerializeStore()
         {
             Store = new Dictionary<Type, Dictionary<string, IStoreSerializable>>();
             KeyMap = new Dictionary<IStoreSerializable, string>();
         }
 
-		/// <summary>
-		/// 内部のオブジェクトストア情報を設定もしくは取得します。
-		/// </summary>
+        /// <summary>
+        /// 内部のオブジェクトストア情報を設定もしくは取得します。
+        /// </summary>
         Dictionary<Type, Dictionary<string, IStoreSerializable>> Store { get; set; }
 
         /// <summary>
@@ -28,12 +28,12 @@ namespace GoodSeat.Sio.Xml.Serialization
         /// </summary>
         Dictionary<IStoreSerializable, string> KeyMap { get; set; }
 
-		/// <summary>
-		/// 指定オブジェクトをシリアライズしたXmlElementオブジェクトを取得します。
-		/// </summary>
-		/// <param name="obj">シリアライズ対象のオブジェクト。</param>
-		/// <param name="name">シリアライズされたXmlElementにつける名前。</param>
-		/// <returns>シリアライズされたXmlElementオブジェクト。</returns>
+        /// <summary>
+        /// 指定オブジェクトをシリアライズしたXmlElementオブジェクトを取得します。
+        /// </summary>
+        /// <param name="obj">シリアライズ対象のオブジェクト。</param>
+        /// <param name="name">シリアライズされたXmlElementにつける名前。</param>
+        /// <returns>シリアライズされたXmlElementオブジェクト。</returns>
         public XmlElement GetSerialized(IStoreSerializable obj, string name)
         {
             var elem = new XmlElement(name);
@@ -56,12 +56,12 @@ namespace GoodSeat.Sio.Xml.Serialization
             return elem;
         }
 
-		/// <summary>
-		/// 指定XmlElementからオブジェクトを復元して取得します。
-		/// </summary>
-		/// <param name="elem">デシリアライズ対象のXmlElementオブジェクト。</param>
-		/// <param name="args">オブジェクトの初期化に用いる引数。</param>
-		/// <returns>復元されたオブジェクト。</returns>
+        /// <summary>
+        /// 指定XmlElementからオブジェクトを復元して取得します。
+        /// </summary>
+        /// <param name="elem">デシリアライズ対象のXmlElementオブジェクト。</param>
+        /// <param name="args">オブジェクトの初期化に用いる引数。</param>
+        /// <returns>復元されたオブジェクト。</returns>
         public T GetDeserialized<T>(XmlElement elem, params object[] args)
             where T : class, IStoreSerializable
         {
