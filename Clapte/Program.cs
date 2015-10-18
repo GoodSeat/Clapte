@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Windows.Forms;
+using System.Runtime.InteropServices;
 using GoodSeat.Clapte.Views.Forms;
 
 namespace GoodSeat.Clapte
@@ -8,6 +9,13 @@ namespace GoodSeat.Clapte
 	static class Program
 	{
 		static FormOfMain s_mainForm;
+		static System.Threading.Mutex s_mutex;
+
+		[DllImport("User32.dll", EntryPoint = "FindWindow", CharSet = CharSet.Auto)]
+		private static extern IntPtr FindWindow(String lpClassName, String lpWindowName);
+
+		[DllImport("User32.dll", EntryPoint = "SendMessage")]
+		private static extern Int32 SendMessage(IntPtr hWnd, uint Msg, Int32 wParam, Int32 lParam);
 
 		/// <summary>
 		/// アプリケーションのメイン エントリ ポイントです。
@@ -19,11 +27,28 @@ namespace GoodSeat.Clapte
 			Application.ThreadException += new System.Threading.ThreadExceptionEventHandler(OnThreadException);
 			AppDomain.CurrentDomain.UnhandledException += new UnhandledExceptionEventHandler(CurrentDomain_UnhandledException);
 #endif
-			Application.EnableVisualStyles();
-			Application.SetCompatibleTextRenderingDefault(false);
+			// Mutexクラスの作成
+			bool createdNew;
+			s_mutex = new System.Threading.Mutex(true, "Clapte", out createdNew);
+			if (!createdNew)
+			{
+				IntPtr hWnd = FindWindow(null, "Clapte_FormOfMain");
+                SendMessage(hWnd, FormOfMain.WM_CLAPTE, 0, 0); 
+			}
+			else
+			{
+                Application.EnableVisualStyles();
+                Application.SetCompatibleTextRenderingDefault(false);
 
-			s_mainForm = new FormOfMain();
-			Application.Run(s_mainForm);
+                s_mainForm = new FormOfMain();
+                Application.Run(s_mainForm);
+
+				try
+				{
+					s_mutex.ReleaseMutex(); // ミューテックスを解放する
+				}
+				catch { }
+			}
 		}
 
 		static void CurrentDomain_UnhandledException(object sender, UnhandledExceptionEventArgs e)

@@ -28,6 +28,10 @@ namespace GoodSeat.Clapte.Views.Forms
         FormOfSetting _formOfSetting;
         FormOfClaptePad _formOfClaptePad;
 
+        /// <summary>
+        /// Clapte多重起動を表すメッセージ
+        /// </summary>
+        public static uint WM_CLAPTE = 0x0400;
 
         /// <summary>
         /// Clapteの常駐メインフォームを初期化します。
@@ -225,18 +229,7 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         // 設定画面を開く
-        private void _menuSetting_Click(object sender, EventArgs e)
-        {
-            if (_formOfSetting == null || _formOfSetting.IsDisposed)
-            {
-                _formOfSetting = new FormOfSetting(this);
-                _formOfSetting.Show();
-            }
-            else
-            {
-                _formOfSetting.Focus();
-            }
-        }
+        private void _menuSetting_Click(object sender, EventArgs e) { OpenSetting(); }
 
         // 計算機を開く
         private void _menuCalculator_Click(object sender, EventArgs e)
@@ -335,7 +328,12 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         public void OpenSetting()
         {
-            _menuSetting_Click(this, EventArgs.Empty);
+            if (_formOfSetting == null || _formOfSetting.IsDisposed)
+            {
+                _formOfSetting = new FormOfSetting(this);
+                _formOfSetting.Show();
+            }
+            _formOfSetting.Focus();
         }
 
         /// <summary>
@@ -344,7 +342,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <param name="target">対象の数式。</param>
         public void OpenDefine(Formula target)
         {
-            _menuSetting_Click(this, EventArgs.Empty);
+            OpenSetting();
             _formOfSetting.OpenDefine(target);
         }
 
@@ -498,6 +496,7 @@ namespace GoodSeat.Clapte.Views.Forms
             base.WndProc(ref message);
 
             if (_hotkeyManager != null) _hotkeyManager.OnWndProc(message);
+            if (message.Msg == WM_CLAPTE) _menuCalculator_Click(null, EventArgs.Empty);
         }
 
     }
