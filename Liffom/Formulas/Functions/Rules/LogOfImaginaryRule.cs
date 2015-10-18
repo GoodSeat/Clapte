@@ -42,11 +42,8 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             if (a is Numeric && a < 0) return true;
 
             Formula aR, aE, bR, bE;
-            Imaginary.GetRealAndImaginary(a, out aR, out aE);
-            Imaginary.GetRealAndImaginary(b, out bR, out bE);
-
-            var i = Imaginary.i;
-            if (aR.Contains(i) || aE.Contains(i) || bR.Contains(i) || bE.Contains(i)) return false;
+            if (!Imaginary.GetRealAndImaginary(a, out aR, out aE)) return false;
+            if (!Imaginary.GetRealAndImaginary(b, out bR, out bE)) return false;
 
             return (aE != 0 || bE != 0);
         }
@@ -61,8 +58,10 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
             if (b == Napiers.e || b == Napiers.e.Value)
             {
-                var r = Imaginary.Abs(a);
-                var t = Imaginary.Arg(a).ClearUnit();
+                Formula R, E;
+                Imaginary.GetRealAndImaginary(a, out R, out E);
+                var r = Imaginary.Abs(R, E);
+                var t = Imaginary.Arg(R, E);
                 return new Ln(r) + i * t;
             }
             else

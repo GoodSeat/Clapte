@@ -36,11 +36,9 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
             if (pow == null) return false;
             if (pow.Base != Napiers.e && pow.Base != Napiers.e.Value) return false;
 
-            var i = Imaginary.i;
             Formula R, E;
-            Imaginary.GetRealAndImaginary(pow.Exponent, out R, out E);
+            if (!Imaginary.GetRealAndImaginary(pow.Exponent, out R, out E)) return false;
             if (E == 0) return false;
-            if (R.Contains(i) || E.Contains(i)) return false;
 
             return true;
         }
