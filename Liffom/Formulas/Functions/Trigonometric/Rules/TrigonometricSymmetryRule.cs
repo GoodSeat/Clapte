@@ -216,7 +216,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
         {
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("sin(-θ)"),
-                Formula.Parse("-sin(-(-θ))")
+                Formula.Parse("-sin(θ)")
                 );
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("sin(pi/2-θ)"),
