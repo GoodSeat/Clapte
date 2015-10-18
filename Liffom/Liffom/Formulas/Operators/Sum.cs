@@ -58,11 +58,22 @@ namespace GoodSeat.Liffom.Formulas.Operators
 
         public override string GetText()
         {
-            string result = string.Join("+", this);
+            string result = "";
+            bool initial = true;
+            foreach (Formula f in Formulas)
+            {
+                if (initial) 
+                {
+                    initial = false;
+                    result = f.ToString();
+                    continue;
+                }
 
-//            result = ret.TrimEnd('+').Replace("+-1*", "-").Replace("+-", "-");
-            result = result.TrimEnd('+').Replace("+-", "-");
-            return result;
+                var text = f.ToString();
+                if (!(f is Power) && text.StartsWith("-")) result += text;
+                else result += "+" + text;
+            }
+            return result.TrimEnd('+');
         }
 
         /// <summary>
