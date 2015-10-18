@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Formats.Powers;
 using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas
 {
@@ -100,7 +101,12 @@ namespace GoodSeat.Liffom.Formulas
             if (!CheckSameChildCount(f1, f2, out count)) return false;
 
             //    数値との比較に対する速度向上のための例外処理
-            if (f1 is Numeric && f2 is Numeric) return (f1 as Numeric).Data == (f2 as Numeric).Data;
+            if (f1 is Numeric && f2 is Numeric)
+            {
+                ValidReal r1 = (f1 as Numeric).Data as ValidReal;
+                ValidReal r2 = (f2 as Numeric).Data as ValidReal;
+                return r1.BaseData.ToString() == r2.BaseData.ToString();
+            }
 
             if (f1.GetUniqueText() == f2.GetUniqueText()) return true;
 
