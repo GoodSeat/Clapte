@@ -86,6 +86,7 @@
     <Compile Include="Formulas\Constants\Imaginary.cs" />
     <Compile Include="Formulas\Constants\Napiers.cs" />
     <Compile Include="Formulas\Constants\Pi.cs" />
+    <Compile Include="Formulas\Constants\Rules\CalculatePowerOfImaginaryRule.cs" />
     <Compile Include="Formulas\Constants\Rules\CombineComplexSectionSumRule.cs" />
     <Compile Include="Formulas\Constants\Rules\ConstantNumerateRule.cs" />
     <Compile Include="Formulas\Constants\Rules\EulersFormulaRule.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Formulas\Functions\Rules\ExpandDifferentiateProductRule.cs" />
     <Compile Include="Formulas\Functions\Rules\ExpandDifferentiateSumRule.cs" />
     <Compile Include="Formulas\Functions\Rules\FactorOutInnerRootRule.cs" />
+    <Compile Include="Formulas\Functions\Rules\LogOfImaginaryRule.cs" />
     <Compile Include="Formulas\Functions\Rules\PowerInnerRootRule.cs" />
     <Compile Include="Formulas\Functions\Rules\ProductRootRule.cs" />
     <Compile Include="Formulas\Functions\Rules\RationalizeDenominatorRootRule.cs" />

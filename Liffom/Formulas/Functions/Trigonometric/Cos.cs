@@ -5,6 +5,7 @@ using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Functions.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Constants;
 
 namespace GoodSeat.Liffom.Formulas.Functions
 {
@@ -42,10 +43,14 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// <returns>計算された三角関数値。</returns>
         public override Formula CalculateTrigonometric(Formula arg)
         {
-            if (arg is Numeric)
-                return new Numeric((arg as Numeric).Data.Cos());
-            else
-                return this;
+            if (arg is Numeric) return new Numeric((arg as Numeric).Data.Cos());
+
+            Numeric R, E;
+            if (!Imaginary.IsComplexNumber(arg, false, out R, out E)) return this;
+
+            var e = Napiers.e;
+            var i = Imaginary.i;
+            return ((e ^ (arg * i)) + (e ^ (-arg * i))) / 2;
         }
 
         /// <summary>
