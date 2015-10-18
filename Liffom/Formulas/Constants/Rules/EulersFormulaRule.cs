@@ -11,20 +11,48 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 {
     /// <summary>
     /// オイラーの公式を規定するルールを表します。
-    /// e^(ix) → cos(x) + i*sin(x)
+    /// e^(R + iE) → e^R * (cos(E) + i*sin(E))
     /// </summary>
-    public class EulersFormulaRule : PatternRule
+    public class EulersFormulaRule : Rule
     {
-        protected override Formula GetRulePatternFormula()
+        static EulersFormulaRule s_entity;
+
+        /// <summary>
+        /// オイラーの公式を規定するルールの実体を取得します。
+        /// このルールにはプロパティが存在せず、再帰呼び出しにおいても結果は不変のため、通常この静的プロパティを使用することが推奨されます。
+        /// </summary>
+        public static EulersFormulaRule Entity
         {
-            Formula rule = Napiers.e ^ (Imaginary.i * a);
-            (a as RulePatternVariable).AdmitMultiplyOne = true;
-            return rule;
+            get
+            {
+                if (s_entity == null) s_entity = new EulersFormulaRule();
+                return s_entity;
+            }
         }
 
-        protected override Formula GetRuledFormula() { return new Cos(a) + Imaginary.i * new Sin(a); }
+        protected internal override bool IsTargetTypeFormula(Formula target)
+        { 
+            var pow = target as Power;
+            if (pow == null) return false;
+            if (pow.Base != Napiers.e && pow.Base != Napiers.e.Value) return false;
 
-        protected internal override bool IsTargetTypeFormula(Formula target) { return target is Power; }
+            Formula R, E;
+            if (!Imaginary.GetRealAndImaginary(pow.Exponent, out R, out E)) return false;
+            if (E == 0) return false;
+
+            return true;
+        }
+
+        protected override Formula OnTryMatchRule(Formula target)
+        {
+            var pow = target as Power;
+            Formula R, E;
+            Imaginary.GetRealAndImaginary(pow.Exponent, out R, out E);
+
+            var e = Napiers.e;
+            var i = Imaginary.i;
+            return (e ^ R) * (new Cos(E) + i * new Sin(E));
+        }
 
         protected override IEnumerable<Type> OnGetPostDemandRules()
         {
@@ -45,7 +73,11 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
         {
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("e^(i*x)"),
-                Formula.Parse("cos(x)+i*sin(x)")
+                Formula.Parse("e^0 * (cos(x)+i*sin(x))")
+                );
+            yield return new KeyValuePair<Formula, Formula>(
+                Formula.Parse("e^(5+3i)"),
+                Formula.Parse("e^5*(cos(3) + i*sin(3))")
                 );
         }
 

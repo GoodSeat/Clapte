@@ -98,8 +98,14 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
                 // 分母の最小公倍数
                 Formula lcm = Polynomial.LCM(b, d);
 
-                Formula postA = a * (lcm / b);
-                Formula postC = c * (lcm / d);
+                Formula r;
+                var ap = lcm.Divide(b, out r);
+                if (r != 0) ap = lcm / b; // cm^4 と mm^2 などでr = 0とならないケースがあるため
+                Formula postA = a * ap;
+
+                var cp = lcm.Divide(d, out r);
+                if (r != 0) cp = lcm / d; // cm^4 と mm^2 などでr = 0とならないケースがあるため
+                Formula postC = c * cp;
 
                 return (postA + postC) / lcm;
             }
@@ -125,7 +131,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
         {
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("5/z+5/x"),
-                Formula.Parse("(5*((x*z)/x)+5*((x*z)/z))/(x*z)")
+                Formula.Parse("(5*z+5*x)/(x*z)")
                 );
         }
 

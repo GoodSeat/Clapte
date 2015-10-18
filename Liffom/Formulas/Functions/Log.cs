@@ -59,15 +59,19 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         public override Formula CalculateFunction()
         {
-            Numeric n = Argument[0] as Numeric;
-            Numeric newBase = Argument.Count > 1 ? Argument[1] as Numeric : null;
+            Formula a = Argument[0];
+            Formula b = Argument.Count > 1 ? Argument[1] : null;
 
-            if (n != null && (Argument.Count == 1 || newBase == null))
-                return new Numeric(n.Data.Log(new Numeric(10d)));
-            else if (n != null && newBase != null)
-                return new Numeric(n.Data.Log(newBase));
-            else
-                return this;
+            if (a == 1) return 0;
+            if (a == b) return 1;
+
+            Numeric an = a as Numeric;
+            if (an != null && an > 0 && b == null) return new Numeric(an.Data.Log(new Numeric(10d)));
+
+            Numeric bn = b as Numeric;
+            if (an != null && an > 0 && bn != null) return new Numeric(an.Data.Log(bn));
+
+            return this;
         }
 
         public override int MinimumArgumentQty
@@ -97,6 +101,10 @@ namespace GoodSeat.Liffom.Formulas.Functions
         {
             foreach (var rule in base.GetRelatedRulesOf(deformToken, sender, history)) yield return rule;
 
+            if (sender is Log && (deformToken.Has<NumerateToken>() || deformToken.Has<CalculateToken>()))
+            {
+                yield return LogOfImaginaryRule.Entity;
+            }
             if ((deformToken.Has<CalculateToken>() || deformToken.Has<DifferentiateToken>()) && sender is Differentiate)
             {
                 var x = new RulePatternVariable("x");

@@ -7,6 +7,9 @@ using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 using GoodSeat.Liffom.Formulas.Constants.Rules;
 using GoodSeat.Liffom.Formulas.Rules;
+using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Reals;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Liffom.Formulas.Constants
 {
@@ -29,9 +32,9 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <summary>
         /// 指定数式が複素数の数値であるか否かを取得します。R+Ei、もしくはEi+Rの形式でのみtrueを返します。
         /// </summary>
-        /// <param name="f">判定対象の数式</param>
-        /// <param name="alsoReal">実数のみの場合をtrueとするか否か</param>
-        /// <returns></returns>
+        /// <param name="f">判定対象の数式。</param>
+        /// <param name="alsoReal">実数のみの場合をtrueとするか否か。</param>
+        /// <returns>判定対象の数式が複素数であるか否か。</returns>
         public static bool IsComplexNumber(Formula f, bool alsoReal)
         {
             Numeric R, E;
@@ -41,11 +44,11 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <summary>
         /// 指定数式が複素数の数値であるか否かを取得します。R+Ei、もしくはEi+Rの形式でのみtrueを返します。
         /// </summary>
-        /// <param name="f">判定対象の数式</param>
-        /// <param name="alsoReal">実数のみの場合をtrueとするか否か</param>
-        /// <param name="R">実数部</param>
-        /// <param name="E">虚数部</param>
-        /// <returns></returns>
+        /// <param name="f">判定対象の数式。</param>
+        /// <param name="alsoReal">実数のみの場合をtrueとするか否か。</param>
+        /// <param name="R">実数部。</param>
+        /// <param name="E">虚数部。</param>
+        /// <returns>判定対象の数式が複素数であるか否か。</returns>
         public static bool IsComplexNumber(Formula f, bool alsoReal, out Numeric R, out Numeric E)
         {
             R = null;
@@ -74,9 +77,9 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <summary>
         /// 複素数の数値の誤差値を切り捨てて取得します。
         /// </summary>
-        /// <param name="f">複素数</param>
-        /// <param name="precision">実数部と虚数部間で許容する桁数精度差</param>
-        /// <returns></returns>
+        /// <param name="f">複素数。</param>
+        /// <param name="precision">実数部と虚数部間で許容する桁数精度差。</param>
+        /// <returns>誤差値を切り捨てた複素数。</returns>
         public static Formula RoundImaginary(Formula f, int precision)
         {
             Numeric R, E;
@@ -93,10 +96,15 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <summary>
         /// 指定数式の実数部と虚数部をそれぞれ取得します。
         /// </summary>
-        /// <param name="f">対象の数式</param>
-        /// <param name="R">実数部</param>
-        /// <param name="E">虚数部（iは含まない）</param>
-        public static void GetRealAndImaginary(Formula f, out Formula R, out Formula E)
+        /// <remarks>
+        /// iを含む定義となる可能性がある変数を含む場合や、-1^(1/2)等が対象の数式に含まれる場合に、正しい結果とならない可能性があります。
+        /// そのような場合(RやEに虚数が含まれる可能性がある場合)、戻り値としてfalseを返します。
+        /// </remarks>
+        /// <param name="f">対象の数式。</param>
+        /// <param name="R">実数部。</param>
+        /// <param name="E">虚数部（iは含まない）。</param>
+        /// <returns>対象数式の実数部、虚数部にiが含まれる可能性がある場合、false。</returns>
+        public static bool GetRealAndImaginary(Formula f, out Formula R, out Formula E)
         {
             Imaginary i = Imaginary.i;
             CollectToken collect = new CollectToken(i);
@@ -118,7 +126,108 @@ namespace GoodSeat.Liffom.Formulas.Constants
                 R = f;
                 E = 0;
             }
+
+            if (!(R.Numerate() is Numeric)) return false;
+            if (!(E.Numerate() is Numeric)) return false;
+            return true;
         }
+
+
+        /// <summary>
+        /// 複素数aの|a|を取得します。
+        /// </summary>
+        /// <param name="R">対象の複素数の実数部。</param>
+        /// <param name="E">対象の複素数の虚数部。</param>
+        /// <returns>|a|。</returns>
+        public static Formula Abs(Formula R, Formula E) { return Norm(R, E) ^ (new Numeric(1) / new Numeric(2)); }
+
+        /// <summary>
+        /// 複素数aの|a|を取得します。
+        /// </summary>
+        /// <param name="R">対象の複素数の実数部。</param>
+        /// <param name="E">対象の複素数の虚数部。</param>
+        /// <returns>|a|。</returns>
+        public static Numeric Abs(Numeric R, Numeric E)
+        {
+            return new Numeric(Norm(R, E).Data ^ new Real(0.5));
+        }
+
+        /// <summary>
+        /// 複素数aのノルム|a|^2を取得します。
+        /// </summary>
+        /// <param name="R">対象の複素数の実数部。</param>
+        /// <param name="E">対象の複素数の虚数部。</param>
+        /// <returns>|a|^2。</returns>
+        public static Formula Norm(Formula R, Formula E)
+        {
+            var n2 = new Numeric(2.0);
+            return (R ^ n2) + (E ^ n2);
+        }
+
+        /// <summary>
+        /// 複素数aのノルム|a|^2を取得します。
+        /// </summary>
+        /// <param name="R">対象の複素数の実数部。</param>
+        /// <param name="E">対象の複素数の虚数部。</param>
+        /// <returns>|a|^2。</returns>
+        public static Numeric Norm(Numeric R, Numeric E)
+        {
+            var r2 = new Reals.Real(2.0);
+            return new Numeric((R.Data ^ r2) + (E.Data ^ r2));
+        }
+
+        /// <summary>
+        /// 複素数aの偏角を取得します。
+        /// </summary>
+        /// <param name="R">対象の複素数の実数部。</param>
+        /// <param name="E">対象の複素数の虚数部。</param>
+        /// <returns>偏角。</returns>
+        public static Formula Arg(Formula R, Formula E)
+        {
+            var sin = (E / Abs(R, E)).Simplify();
+            var asin = new ArcSin(sin);
+
+            var rad = asin.Calculate();
+            Numeric radn = rad.Numerate() as Numeric;
+            if (R is Numeric && radn != null && R < 0) rad = rad + Pi.pi;
+
+            while (radn != null && radn > Math.PI)
+            {
+                rad = (rad - 2 * Pi.pi).Simplify();
+                radn = rad.Numerate() as Numeric;
+            }
+            while (radn != null && radn < -Math.PI)
+            {
+                rad = (rad + 2 * Pi.pi).Simplify();
+                radn = rad.Numerate() as Numeric;
+            }
+
+            return rad;
+        }
+
+        /// <summary>
+        /// 複素数aの偏角を取得します。
+        /// </summary>
+        /// <param name="R">対象の複素数の実数部。</param>
+        /// <param name="E">対象の複素数の虚数部。</param>
+        /// <returns>偏角。</returns>
+        public static Numeric Arg(Numeric R, Numeric E)
+        {
+            Numeric asin = E.Data * (Abs(R, E).Data ^ new Numeric(-1d));
+            if (asin > 1) asin = new Numeric(1);
+            if (asin < -1) asin = new Numeric(-1);
+
+            Numeric rad = new Numeric(asin.Data.Asin());
+            if (R < 0) rad = new Numeric(rad.Data + Math.PI);
+
+            while (rad > Math.PI) rad = new Numeric(rad.Data - 2 * Math.PI);
+            while (rad < -Math.PI) rad = new Numeric(rad.Data + 2 * Math.PI);
+
+            return rad;
+        }
+
+
+
 
         /// <summary>
         /// この定数として識別する文字列を取得します。
@@ -156,6 +265,12 @@ namespace GoodSeat.Liffom.Formulas.Constants
             if (deformToken.Has<CombineToken>())
             {
                 yield return IntegerPowerOfImaginaryRule.Entity;
+            }
+
+            if (deformToken.Has<ExpandToken>() || deformToken.Has<NumerateToken>())
+            {
+                yield return CalculatePowerOfImaginaryRule.Entity;
+                yield return EulersFormulaRule.Entity;
             }
         }
 

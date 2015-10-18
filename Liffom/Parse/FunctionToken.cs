@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GoodSeat.Liffom.Formats;
 using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Liffom.Formulas.Operators;
 
@@ -39,6 +40,7 @@ namespace GoodSeat.Liffom.Parse
             if (formulaToken == null) return false;
 
             var f = formulaToken.ParsedFormula;
+            f.Format.RemoveIndividualSettingOf<Bracket>();
             var argument = f as Argument;
             if (argument == null) argument = new Argument(f);
 

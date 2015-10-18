@@ -86,6 +86,7 @@
     <Compile Include="Formulas\Constants\Imaginary.cs" />
     <Compile Include="Formulas\Constants\Napiers.cs" />
     <Compile Include="Formulas\Constants\Pi.cs" />
+    <Compile Include="Formulas\Constants\Rules\CalculatePowerOfImaginaryRule.cs" />
     <Compile Include="Formulas\Constants\Rules\CombineComplexSectionSumRule.cs" />
     <Compile Include="Formulas\Constants\Rules\ConstantNumerateRule.cs" />
     <Compile Include="Formulas\Constants\Rules\EulersFormulaRule.cs" />
@@ -113,6 +114,7 @@
     <Compile Include="Formulas\Functions\Rules\ExpandDifferentiateProductRule.cs" />
     <Compile Include="Formulas\Functions\Rules\ExpandDifferentiateSumRule.cs" />
     <Compile Include="Formulas\Functions\Rules\FactorOutInnerRootRule.cs" />
+    <Compile Include="Formulas\Functions\Rules\LogOfImaginaryRule.cs" />
     <Compile Include="Formulas\Functions\Rules\PowerInnerRootRule.cs" />
     <Compile Include="Formulas\Functions\Rules\ProductRootRule.cs" />
     <Compile Include="Formulas\Functions\Rules\RationalizeDenominatorRootRule.cs" />
@@ -268,8 +270,6 @@
     <Compile Include="Processes\InstantProcess.cs" />
     <Compile Include="Processes\NewtonMethod.cs" />
     <Compile Include="Processes\Process.cs" />
-    <Compile Include="Processes\ProcessCompletedEventArgs.cs" />
-    <Compile Include="Processes\ProcessProgressChangedEventArgs.cs" />
     <Compile Include="Processes\SolveAlgebraicEquation.cs" />
     <Compile Include="Processes\SolveEquation.cs" />
     <Compile Include="Processes\SquareFreeDecomposition.cs" />
@@ -279,6 +279,9 @@
     <Compile Include="Reals\ValidReal.cs" />
     <Compile Include="Utilities\Clone.cs" />
     <Compile Include="Utilities\Combination.cs" />
+    <Compile Include="Utilities\EAP.cs" />
+    <Compile Include="Utilities\EAPCompletedEventHandler.cs" />
+    <Compile Include="Utilities\EAPProgressChangedEventHandler.cs" />
     <Compile Include="Utilities\Reflector.cs" />
     <Compile Include="Utilities\Sort.cs" />
     <Compile Include="Utilities\TestForm.cs">
