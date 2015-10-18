@@ -28,7 +28,6 @@ namespace GoodSeat.Clapte.Views.Forms
         FormOfSetting _formOfSetting;
         FormOfClaptePad _formOfClaptePad;
 
-        FormulaCellListViewModel _claptePad;
 
         /// <summary>
         /// Clapteの常駐メインフォームを初期化します。
@@ -65,8 +64,7 @@ namespace GoodSeat.Clapte.Views.Forms
             ClapteCore.Solver.Target.UserFunctions = UserFunctions.Target;
             ClapteCore.Solver.SettingUpdated += new EventHandler(Solver_SettingUpdated);
 
-            _claptePad = new FormulaCellListViewModel(ClapteCore.Solver, UserConstants, UserFunctions);
-            _formOfClaptePad = new FormOfClaptePad(_claptePad);
+            _formOfClaptePad = new FormOfClaptePad(this);
         }
 
         #region プロパティ
@@ -120,10 +118,6 @@ namespace GoodSeat.Clapte.Views.Forms
 
 #if DEBUG
             _menuCalculator_Click(sender, e);
-
-            ToolStripMenuItem testMenu = new ToolStripMenuItem("テストケース作成(&T)");
-            _menuClapte.Items.Add(testMenu);
-//            testMenu.Click += (testSender, testE) => { ClapteTest.CreateTestCase(_clapteWatcher.Solver); };
 
             ToolStripMenuItem testFormuMenu = new ToolStripMenuItem("テストフォーム起動(&F)");
             _menuClapte.Items.Add(testFormuMenu);
@@ -227,6 +221,7 @@ namespace GoodSeat.Clapte.Views.Forms
             else _clipBoradWatcher.DrawClipBoard += new EventHandler(_clipBoradWatcher_DrawClipBoard);
 
             _menuEnable.Checked = !_menuEnable.Checked;
+            _notifyIconClapte.Icon = _menuEnable.Enabled ? Properties.Resources.Icon_Clapte_Notify : Properties.Resources.Icon_Clapte_Notify_Deactive;
         }
 
         // 設定画面を開く
@@ -334,6 +329,14 @@ namespace GoodSeat.Clapte.Views.Forms
         #endregion
 
         #region 操作
+
+        /// <summary>
+        /// 設定画面を開きます。
+        /// </summary>
+        public void OpenSetting()
+        {
+            _menuSetting_Click(this, EventArgs.Empty);
+        }
 
         /// <summary>
         /// 指定数式の定義を開きます。

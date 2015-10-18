@@ -31,6 +31,7 @@ namespace GoodSeat.Clapte.Views
         /// <param name="azuki">対象のAzukiControl。</param>
         /// <param name="lineIndex">取得された単語の所属行番号。</param>
         /// <param name="postText">見つかった単語と同じ行の後方の文字列。</param>
+        /// <returns>マウスカーソル位置の単語。</returns>
         public static string GetMouseHoverWord(this AzukiControl azuki, out int lineIndex, out string postText)
         {
             lineIndex = 0;
@@ -40,6 +41,33 @@ namespace GoodSeat.Clapte.Views
             int index = azuki.GetIndexFromPosition(position);
             Point checkPosition = azuki.GetPositionFromIndex(index);
             if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;
+
+            return azuki.GetWordFromIndex(index, out lineIndex, out postText);
+        }
+
+        /// <summary>
+        /// キャレット位置に存在する単語を取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <param name="lineIndex">取得された単語の所属行番号。</param>
+        /// <param name="postText">見つかった単語と同じ行の後方の文字列。</param>
+        /// <returns>キャレット位置の単語。</returns>
+        public static string GetCaretWord(this AzukiControl azuki, out int lineIndex, out string postText)
+        {
+            return azuki.GetWordFromIndex(azuki.CaretIndex, out lineIndex, out postText);
+        }
+
+        /// <summary>
+        /// 指定インデックス位置に存在する単語を取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <param name="index">インデックス。</param>
+        /// <param name="lineIndex">取得された単語の所属行番号。</param>
+        /// <param name="postText">見つかった単語と同じ行の後方の文字列。</param>
+        /// <returns>指定インデックス位置の単語。</returns>
+        public static string GetWordFromIndex(this AzukiControl azuki, int index, out int lineIndex, out string postText)
+        {
+            postText = "";
 
             int columnIndex;
             azuki.Document.GetLineColumnIndexFromCharIndex(index, out lineIndex, out columnIndex);

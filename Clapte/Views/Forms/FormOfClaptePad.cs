@@ -36,14 +36,15 @@ namespace GoodSeat.Clapte.Views.Forms
         /// ClaptePadフォームを初期化します。
         /// </summary>
         /// <param name="target">表示対象のFormulaCellListViewModelオブジェクト。</param>
-        public FormOfClaptePad(FormulaCellListViewModel target)
+        public FormOfClaptePad(FormOfMain mainForm)
         {
             InitializeComponent();
 
             ShowOKButton = false;
             ShowCancelButton = false;
 
-            _target = target;
+            OwnerMainForm = mainForm;
+            Target = new FormulaCellListViewModel(mainForm.ClapteCore.Solver, mainForm.UserConstants, mainForm.UserFunctions);
             Target.ResultChanged += new EventHandler(Target_ResultChanged);
             Target.SolversUpdated += new EventHandler(Target_SolversUpdated);
             Target.EvaluateStarted += Target_EvaluateStarted;
@@ -63,8 +64,6 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         #region プロパティ
-
-        FormulaCellListViewModel _target;
 
         /// <summary>
         /// カラースキーマを設定もしくは取得します。
@@ -166,12 +165,14 @@ namespace GoodSeat.Clapte.Views.Forms
 
 
         /// <summary>
+        /// 親となるClapteの常駐メインフォームを取得します。
+        /// </summary>
+        public FormOfMain OwnerMainForm { get; private set; }
+
+        /// <summary>
         /// 対象の数式セルリストビューモデルを取得します。
         /// </summary>
-        public FormulaCellListViewModel Target
-        {
-            get { return _target; }
-        }
+        public FormulaCellListViewModel Target { get; private set; }
 
         /// <summary>
         /// シンタックスハイライトオブジェクトを設定もしくは取得します。
@@ -200,6 +201,8 @@ namespace GoodSeat.Clapte.Views.Forms
         private ClaptePadInputSupportEnumerator InputSupportEnumerator { get; set; }
 
         #endregion
+
+        #region 処理
 
         /// <summary>
         /// 入力テキストボックス及び結果テキストボックスの設定を初期化します。
@@ -278,6 +281,40 @@ namespace GoodSeat.Clapte.Views.Forms
             ColorScheme.SetColor(Highlighter.GetCharClassOf(target), color, Color.White);
         }
 
+        /// <summary>
+        /// 指定文字列から引き当てられる最初の入力補助候補を取得します。
+        /// </summary>
+        /// <param name="targetText">引き当てに用いる文字列。</param>
+        /// <param name="lineIndex">対象とする行番号。</param>
+        /// <param name="postText">対象単語と同じ行の後方の文字列。</param>
+        /// <returns>引き当てられる入力補助候補。</returns>
+        public InputSupportCandidate GetInputSupportCandidateFromText(string targetText, int lineIndex, string postText)
+        {
+            InputSupportEnumerator.CurrentCaretLineNumber = lineIndex;
+            var list = new List<InputSupportCandidate>(InputSupportEnumerator.GetAllCandidates(targetText).Where(
+                        def => def != null && def.ReplaceText == targetText));
+            if (list.Count == 0) return null;
+
+            var helpTarget = list[0];
+            if (list.Count > 1)
+            {
+                if (postText.StartsWith("("))
+                {
+                    foreach (var candidate in list)
+                        if (candidate.Tag is FunctionDefine) helpTarget = candidate;
+                }
+                else
+                {
+                    foreach (var candidate in list)
+                        if (!(candidate.Tag is FunctionDefine)) helpTarget = candidate;
+                }
+            }
+            return helpTarget;
+        }
+
+        #endregion
+
+        #region イベント対応
 
         /// <summary>
         /// 評価結果の変更時に呼び出されます。
@@ -300,8 +337,6 @@ namespace GoodSeat.Clapte.Views.Forms
 
             Highlighter.Renew(_inputTextBox.Text);
         }
-
-        #region イベント対応
 
         /// <summary>
         /// 数式セルの評価ソルバの設定変更が完了した時に呼び出されます。
@@ -394,25 +429,9 @@ namespace GoodSeat.Clapte.Views.Forms
             string targetText = _inputTextBox.GetMouseHoverWord(out lineIndex, out postText);
             if (targetText == null) return;
 
-            InputSupportEnumerator.CurrentCaretLineNumber = lineIndex;
-            var list = new List<InputSupportCandidate>(InputSupportEnumerator.GetAllCandidates(targetText).Where(
-                        def => def.ReplaceText == targetText));
-            if (list.Count == 0) return;
+            var helpTarget = GetInputSupportCandidateFromText(targetText, lineIndex, postText);
+            if (helpTarget == null) return;
 
-            var helpTarget = list[0];
-            if (list.Count > 1)
-            {
-                if (postText.StartsWith("("))
-                {
-                    foreach (var candidate in list)
-                        if (candidate.Tag is FunctionDefine) helpTarget = candidate;
-                }
-                else
-                {
-                    foreach (var candidate in list)
-                        if (!(candidate.Tag is FunctionDefine)) helpTarget = candidate;
-                }
-            }
             Point position = _inputTextBox.PointToClient(Cursor.Position);
             position.Offset(0, _inputTextBox.View.LineHeight);
             _toolHelpTip.Show(helpTarget.Information, _inputTextBox, position, 5000);
@@ -432,9 +451,19 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.Text = File.ReadAllText(_openFileDialog.FileName, Encoding.Default);
         }
 
+        private void _btnSetting_Click(object sender, EventArgs e)
+        {
+            OwnerMainForm.OpenSetting();
+        }
+
         private void _btnAbort_Click(object sender, EventArgs e)
         {
             Target.AbortEvaluate();
+        }
+
+        private void _btnAllDelete_Click(object sender, EventArgs e)
+        {
+            _inputTextBox.Text = "";
         }
 
         private void _btnSave_MouseEnter(object sender, EventArgs e)
@@ -446,6 +475,130 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             _btnAbort.Visible = _picStatus.Visible;
         }
+
+        #region コンテキストメニュー
+
+        private void _contextMenuEdit_Opening(object sender, CancelEventArgs e)
+        {
+            _menuUndo.Enabled = _inputTextBox.CanUndo;
+            _menuRedo.Enabled = _inputTextBox.CanRedo;
+
+            _menuCopy.Enabled = _inputTextBox.CanCopy;
+            _menuCut.Enabled = _inputTextBox.CanCut;
+            _menuPaste.Enabled = _inputTextBox.CanPaste;
+            _menuDelete.Enabled = _inputTextBox.CanCut;
+        }
+
+        private void _menuUndo_Click(object sender, EventArgs e)
+        {
+            if (_inputTextBox.CanUndo) _inputTextBox.Undo();
+        }
+
+        private void _menuRedo_Click(object sender, EventArgs e)
+        {
+            if (_inputTextBox.CanRedo) _inputTextBox.Redo();
+        }
+
+        private void _menuCut_Click(object sender, EventArgs e)
+        {
+            if (_inputTextBox.CanCut) _inputTextBox.Cut();
+        }
+
+        private void _menuCopy_Click(object sender, EventArgs e)
+        {
+            if (_inputTextBox.CanCopy) _inputTextBox.Copy();
+        }
+
+        private void _menuPaste_Click(object sender, EventArgs e)
+        {
+            if (_inputTextBox.CanPaste) _inputTextBox.Paste();
+        }
+
+        private void _menuDelete_Click(object sender, EventArgs e)
+        {
+            _inputTextBox.Delete();
+        }
+
+        private void _menuSelectAll_Click(object sender, EventArgs e)
+        {
+            _inputTextBox.SelectAll();
+        }
+
+        private void _menuJumpDefine_Click(object sender, EventArgs e)
+        {
+            JumpDefine(_inputTextBox);
+        }
+
+        private void _menuAddUserDefine_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void _menuCopyResult_Click(object sender, EventArgs e)
+        {
+            if (_resultTextBox.CanCopy) _resultTextBox.Copy();
+        }
+
+        private void _menuSelectAllResult_Click(object sender, EventArgs e)
+        {
+            _resultTextBox.SelectAll();
+        }
+
+        private void _menuJumpDefineResult_Click(object sender, EventArgs e)
+        {
+            JumpDefine(_resultTextBox);
+        }
+
+        private void _menuAddUserDefineResult_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void JumpDefine(Sgry.Azuki.WinForms.AzukiControl azuki)
+        {
+            string targetText = azuki.GetSelectedText();
+
+            string postText;
+            int lineIndex;
+            string txt = azuki.GetCaretWord(out lineIndex, out postText);
+            if (string.IsNullOrEmpty(targetText)) targetText = txt;
+            if (targetText == null) return;
+
+            var helpTarget = GetInputSupportCandidateFromText(targetText, lineIndex, postText);
+            if (helpTarget == null) return;
+
+            if (helpTarget.Tag is FunctionDefine)
+            {
+                var def = helpTarget.Tag as FunctionDefine;
+
+                int line = 0;
+                int jump = -1;
+                foreach (var cell in Target)
+                {
+                    if (cell.Target.Content.GetAllDefinedFunctionNames().Contains(def.Name)) jump = line;
+                    line++;
+                }
+                if (jump >= 0) azuki.Document.SetCaretIndex(jump, 0);
+                else OwnerMainForm.OpenDefine(def.Target);
+            }
+            else if (helpTarget.Tag is ConstantDefine)
+            {
+                var def = helpTarget.Tag as ConstantDefine;
+
+                int line = 0;
+                int jump = -1;
+                foreach (var cell in Target)
+                {
+                    if (cell.Target.Content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
+                    line++;
+                }
+                if (jump >= 0) azuki.Document.SetCaretIndex(jump, 0);
+                else OwnerMainForm.OpenDefine(def.Target);
+            }
+        }
+
+
+        #endregion
 
         #endregion
 
@@ -511,8 +664,7 @@ namespace GoodSeat.Clapte.Views.Forms
             xmlElement.AddElements(colorScheme);
         }
 
-        #endregion
 
-        
+        #endregion
     }
 }

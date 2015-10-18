@@ -38,19 +38,23 @@ namespace GoodSeat.Clapte.Views.InputSupports
                 if (Target[i] == null) continue;
                 var cell = Target[i].Target;
 
-                List<ConstantDefine> list = new List<ConstantDefine>(cell.Content.GetAllConstantDefines().Where(def => def.Name.StartsWith(startsWith)));
+                var list = new List<ConstantDefine>(cell.Content.GetAllConstantDefines().Where(def =>
+                            def != null && def.Name.StartsWith(startsWith)));
                 if (cell.CommentText.Contains(startsWith)) list = new List<ConstantDefine>(cell.Content.GetAllConstantDefines());
 
                 foreach (var def in list)
                 {
+                    if (def == null) continue;
                     def.Information = cell.CacheText; // cell.CommentText.TrimStart(' ', '#');
                     yield return def;
                 }
             }
 
-            foreach (var def in Target.ConstantList.Target.Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
+            foreach (var def in Target.ConstantList.Target.Where(def =>
+                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
                 yield return def;
-            foreach (var def in Target.ConstantList.GetSystemConstants().Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
+            foreach (var def in Target.ConstantList.GetSystemConstants().Where(def =>
+                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
                 yield return def;
         }
 
@@ -61,19 +65,23 @@ namespace GoodSeat.Clapte.Views.InputSupports
                 if (Target[i] == null) continue;
                 var cell = Target[i].Target;
 
-                List<FunctionDefine> list = new List<FunctionDefine>(cell.Content.GetAllFunctionDefines().Where(def => def.Name.StartsWith(startsWith)));
+                List<FunctionDefine> list = new List<FunctionDefine>(cell.Content.GetAllFunctionDefines().Where(def =>
+                            def != null && def.Name.StartsWith(startsWith)));
                 if (cell.CommentText.Contains(startsWith)) list = new List<FunctionDefine>(cell.Content.GetAllFunctionDefines());
 
                 foreach (var def in list)
                 {
+                    if (def == null) continue;
                     def.Information = cell.CacheText; // cell.CommentText.TrimStart(' ', '#');
                     yield return def;
                 }
             }
 
-            foreach (var def in Target.FunctionList.Target.Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
+            foreach (var def in Target.FunctionList.Target.Where(def =>
+                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
                 yield return def;
-            foreach (var def in Target.FunctionList.GetSystemFunctions().Where(def => def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith)))
+            foreach (var def in Target.FunctionList.GetSystemFunctions().Where(def =>
+                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
                 yield return def;
         }
 
@@ -89,6 +97,8 @@ namespace GoodSeat.Clapte.Views.InputSupports
 
             foreach (var def in GetAllConstantDefines(startWith))
             {
+                if (def == null) continue;
+
                 string title = def.Name + "：定数";
                 var candidate = new InputSupportCandidate(title, def.Name, def.Information, def);
 
@@ -97,6 +107,8 @@ namespace GoodSeat.Clapte.Views.InputSupports
             }
             foreach (var def in GetAllFunctionDefines(startWith))
             {
+                if (def == null) continue;
+
                 string title = def.Name + "：関数";
                 var candidate = new InputSupportCandidate(title, def.Name, def.Information, def);
 
