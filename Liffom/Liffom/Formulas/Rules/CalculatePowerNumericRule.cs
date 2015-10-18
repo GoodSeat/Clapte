@@ -39,32 +39,20 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Formula formula = test.Base;
 
             Numeric expNumeric = exponent as Numeric;
-            if (!Imaginary.IsComplexNumber(formula, true) || expNumeric == null) return null;
-
-            // 実数部と虚数部を取得
-            Formula realTmp, imaginaryTmp;
-            Imaginary.GetRealAndImaginary(formula, out realTmp, out imaginaryTmp);            
-
-            Numeric real = realTmp as Numeric;
-            Numeric imaginary = imaginaryTmp as Numeric;
-            if (real == null || imaginary == null) throw new FormulaAssertionException();
+            Numeric R, E;
+            if (!Imaginary.IsComplexNumber(formula, true, out R, out E) || expNumeric == null) return null;
 
             // 元の複素数の絶対値
-            Numeric length = ((real.Data ^ new Numeric(2d)) + (imaginary.Data ^ new Numeric(2d))) ^ new Numeric(0.5d);
-            if (length == 0)
+            Numeric abs = Imaginary.Abs(R, E);
+            if (abs == 0)
             {
-                if (expNumeric as Numeric >= 0) return 0;
+                if (expNumeric >= 0) return 0;
                 else return null;        // 0^-1など、0の負数累乗は定義できない。
             }
-            // 元の角度radを算出
-            Numeric asin = imaginary.Data * (length.Data ^ new Numeric(-1d));
-            if (asin > 1) asin = new Numeric(1);
-            if (asin < -1) asin = new Numeric(-1);
-            Numeric rad = new Numeric(asin.Data.Asin());
-            if (real < 0) rad = (rad + new Numeric(Math.PI)).Numerate() as Numeric;
+            Numeric rad = Imaginary.Arg(R, E); // 元の偏角
 
             // 累乗計算後の複素数の絶対値
-            Numeric newLength = length.Data ^ expNumeric.Data;
+            Numeric newAbs = abs.Data ^ expNumeric.Data;
 
             // 角度を取得
             Numeric newRad = new Numeric((rad * expNumeric).Numerate());
@@ -78,8 +66,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             cos = new Numeric(cos.Data.Round(15)); 
             sin = new Numeric(sin.Data.Round(15)); 
 
-            Numeric newReal = new Numeric(cos).Data * newLength.Data;
-            Numeric newImag = new Numeric(sin).Data * newLength.Data;
+            Numeric newReal = new Numeric(cos).Data * newAbs.Data;
+            Numeric newImag = new Numeric(sin).Data * newAbs.Data;
             if (newReal == 0)
             {
                 if (newImag == 1) return Imaginary.i;
