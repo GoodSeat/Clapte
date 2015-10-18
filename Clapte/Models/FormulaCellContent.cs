@@ -111,9 +111,9 @@ namespace GoodSeat.Clapte.Models
         protected Formula EvaluateTargetFormula { get; private set; }
 
         /// <summary>
-        /// 評価結果を表す文字列を取得します。
+        /// 評価結果を表す文字列を設定もしくは取得します。
         /// </summary>
-        public string ResultText { get; protected set; }
+        public string ResultText { get; set; }
 
         /// <summary>
         /// 元の数式を結果のテキストに含めるか否かを設定もしくは取得します。

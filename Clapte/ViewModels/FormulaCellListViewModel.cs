@@ -45,10 +45,6 @@ namespace GoodSeat.Clapte.ViewModels
             BaseSolver.SettingUpdated += new EventHandler(BaseSolver_SettingUpdated);
 
             Formula.FormulaProcessing += Formula_FormulaProcessing;
-
-            // TODO: 定数、関数リストの追加、削除、変更時に対応するフックを用意。
-            // 非同期の評価計画に基づいて再評価。
-            // constantList.Target.
         }
 
         object _evaluateLockObject = new object();
@@ -57,7 +53,7 @@ namespace GoodSeat.Clapte.ViewModels
         bool _recreateFlag = false;
         string _targetText;
         SolverViewModel _baseSolver;
-        bool _abortFlag = false;
+        int _abortFlag = 0;
 
         #region イベント
 
@@ -174,10 +170,19 @@ namespace GoodSeat.Clapte.ViewModels
 
                 if (!evaluateWorker.CancellationPending)
                 {
-                    _abortFlag = true;
+                    _abortFlag++;
                     evaluateWorker.CancelAsync();
                 }
             }
+
+            foreach (var targetViewModel in FormulaCellList)
+            {
+                var target = targetViewModel.Target;
+
+                if (target.Content.ResultText == null) target.Content.ResultText = "";
+            }
+            if (ResultChanged != null) ResultChanged(this, EventArgs.Empty);
+            if (EvaluateFinished != null) EvaluateFinished(null, EventArgs.Empty);
         }
 
 
@@ -294,6 +299,7 @@ namespace GoodSeat.Clapte.ViewModels
         /// </summary>
         private void CreateFormulaCellListCreated(object sender, RunWorkerCompletedEventArgs e)
         {
+            _abortFlag = 0;
             if (e.Cancelled) return;
             if (ResultChanged != null) ResultChanged(this, e);
 
@@ -468,10 +474,10 @@ namespace GoodSeat.Clapte.ViewModels
         /// </summary>
         void Formula_FormulaProcessing(Formula sender, EventArgs e, ref bool Cancel)
         {
-            if (_abortFlag)
+            if (_abortFlag > 0)
             {
                 Cancel = true;
-                _abortFlag = false;
+                _abortFlag--;
             }
         }
         
