@@ -35,10 +35,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
             if (pow == null) return false;
 
             Formula R, E;
-            Imaginary.GetRealAndImaginary(pow.Exponent, out R, out E);
-
-            var i = Imaginary.i;
-            if (R.Contains(i) || E.Contains(i)) return false;
+            if (!Imaginary.GetRealAndImaginary(pow.Exponent, out R, out E)) return false;
 
             return (E != 0);
         }

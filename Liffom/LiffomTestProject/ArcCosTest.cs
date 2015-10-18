@@ -72,7 +72,7 @@ namespace GoodSeat.LiffomTestProject
         public void CalculateFunctionTest()
         {
             ArcCos target = new ArcCos(Formula.Parse("1/2"));
-            Formula expected = Formula.Parse("(1/3*pi)[rad]");
+            Formula expected = Formula.Parse("1/3*pi");
             Formula actual;
             actual = target.CalculateFunction();
             Assert.AreEqual(expected, actual);

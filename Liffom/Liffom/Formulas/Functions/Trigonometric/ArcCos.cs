@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Constants;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Functions.Rules;
 using GoodSeat.Liffom.Formulas.Units;
@@ -38,14 +39,20 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         public override Formula CalculateFunction()
         {
+            var z = Argument[0];
             foreach (Formula rad in TrigonometricFunction.GetTriRads(0, 180))
             {
                 Formula checkCos = new Cos(rad);
-                if (checkCos.Calculate() == Argument[0]) return rad * new Unit("rad");
+                if (checkCos.Calculate() == z) return rad;
             }
 
-            if (Argument[0] is Numeric)
-                return new Numeric((Argument[0] as Numeric).Data.Acos()) * new Unit("rad");
+            if (z is Numeric && Math.Abs(z) <= 1.0)
+                return new Numeric((z as Numeric).Data.Acos());
+            else if (Imaginary.IsComplexNumber(z, true))
+            {
+                var i = Imaginary.i;
+                return -i * new Ln(z + i * new Sqrt(1 - (z ^ 2)));
+            }
             else
                 return this;
         }
