@@ -118,7 +118,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 内部に保持されたdouble型の数値を直接取得します。
         /// </summary>
-        protected double BaseData { get { return base.Data; } }
+        public double BaseData { get { return base.Data; } }
 
         /// <summary>
         /// 内部保持するdouble型の元データから判定される正規化時の指数部を取得します。
