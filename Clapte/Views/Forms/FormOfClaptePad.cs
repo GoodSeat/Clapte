@@ -565,9 +565,16 @@ namespace GoodSeat.Clapte.Views.Forms
             if (targetText == null) return;
 
             var helpTarget = GetInputSupportCandidateFromText(targetText, lineIndex, postText);
-            if (helpTarget == null) return;
+            if (helpTarget == null)
+            {
+                var target = Target.BaseSolver.Target.Parser.Parse(targetText);
 
-            if (helpTarget.Tag is FunctionDefine)
+                if (target is GoodSeat.Liffom.Formulas.Variable) target = new GoodSeat.Liffom.Formulas.Units.Unit(targetText);
+
+                var unit = target as GoodSeat.Liffom.Formulas.Units.Unit;
+                if (unit != null && unit.UnitType != null) OwnerMainForm.OpenDefine(target);
+            }
+            else if (helpTarget.Tag is FunctionDefine)
             {
                 var def = helpTarget.Tag as FunctionDefine;
 
@@ -576,7 +583,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 foreach (var cell in Target)
                 {
                     if (cell.Target.Content.GetAllDefinedFunctionNames().Contains(def.Name)) jump = line;
-                    line++;
+                    if (line++ >= lineIndex) break;
                 }
                 if (jump >= 0) azuki.Document.SetCaretIndex(jump, 0);
                 else OwnerMainForm.OpenDefine(def.Target);
@@ -590,7 +597,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 foreach (var cell in Target)
                 {
                     if (cell.Target.Content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
-                    line++;
+                    if (line++ >= lineIndex) break;
                 }
                 if (jump >= 0) azuki.Document.SetCaretIndex(jump, 0);
                 else OwnerMainForm.OpenDefine(def.Target);
