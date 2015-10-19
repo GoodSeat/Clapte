@@ -90,6 +90,7 @@ namespace GoodSeat.Clapte.Models
         {
             foreach (var def in Content.GetAllConstantDefines())
             {
+                if (def == null) continue;
                 if (def.Name == name) return def;
             }
             return null;

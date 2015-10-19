@@ -115,6 +115,7 @@ namespace GoodSeat.Clapte.Models
                 EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
                 if (equal.LeftHandSide == DefineTarget)
                 {
+                    equal.RightHandSide.Format = solver.OutputFormat;
                     EvaluatedDefine.Define = equal.RightHandSide.ToString();
                     result.ResultText = string.Format("{0} = {1}", DefineTarget, EvaluatedDefine.Define);
                 }
