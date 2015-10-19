@@ -14,6 +14,8 @@ using Sgry.Azuki.Highlighter;
 using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Sio.Xml;
 using System.IO;
+using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -569,38 +571,46 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 var target = Target.BaseSolver.Target.Parser.Parse(targetText);
 
-                if (target is GoodSeat.Liffom.Formulas.Variable) target = new GoodSeat.Liffom.Formulas.Units.Unit(targetText);
+                if (target is Variable) target = new Unit(targetText);
 
-                var unit = target as GoodSeat.Liffom.Formulas.Units.Unit;
+                var unit = target as Unit;
                 if (unit != null && unit.UnitType != null) OwnerMainForm.OpenDefine(target);
+
+                return;
             }
-            else if (helpTarget.Tag is FunctionDefine)
+
+            int jump = -1;
+            if (helpTarget.Tag is FunctionDefine)
             {
                 var def = helpTarget.Tag as FunctionDefine;
 
                 int line = 0;
-                int jump = -1;
                 foreach (var cell in Target)
                 {
                     if (cell.Target.Content.GetAllDefinedFunctionNames().Contains(def.Name)) jump = line;
                     if (line++ >= lineIndex) break;
                 }
-                if (jump >= 0) azuki.Document.SetCaretIndex(jump, 0);
-                else OwnerMainForm.OpenDefine(def.Target);
+
+                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
             }
             else if (helpTarget.Tag is ConstantDefine)
             {
                 var def = helpTarget.Tag as ConstantDefine;
 
                 int line = 0;
-                int jump = -1;
                 foreach (var cell in Target)
                 {
                     if (cell.Target.Content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
                     if (line++ >= lineIndex) break;
                 }
-                if (jump >= 0) azuki.Document.SetCaretIndex(jump, 0);
-                else OwnerMainForm.OpenDefine(def.Target);
+
+                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
+            }
+
+            if (jump >= 0)
+            {
+                azuki.Document.SetCaretIndex(jump, 0);
+                azuki.ScrollToCaret();
             }
         }
 
