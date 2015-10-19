@@ -1,0 +1,15 @@
+obj/
+bin/
+TestResults/
+*.files
+*.out
+*.stackdump
+*.opt
+*.clw
+*.ncb
+*.aps
+*.mak
+*.suo
+*.pdb
+*.user
+tags
