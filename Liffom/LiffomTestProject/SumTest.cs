@@ -90,6 +90,10 @@ namespace GoodSeat.LiffomTestProject
             token = new SimplifyToken();
             token.AdditionalTryRules.Add(ConvertToFractionRule.Entity);
             DeformTokenTest.DeformTest(token, "(5.5+25/15)/73.7+12/15", "9919/11055");
+
+            token = new DeformToken(new SimplifyToken(), new CalculateToken());
+            DeformTokenTest.DeformTest(token, "(7.19 / 26.4) ^ 2 + (20.07 / ?) ^ 2 = 2.2",
+                "(70184725776 + 12924025*?^2) / (174240000*?^2) = 2.2");
         }
     }
 }

@@ -306,6 +306,9 @@ namespace GoodSeat.Liffom.Extensions
         /// <exception cref="Liffom.FormulaProcessException">被除数、もしくは除数が整数多項式でない場合にスローされます。</exception>
         public static Formula Divide(this Formula f, Formula g, AtomicFormula x, out Formula r, bool admitFraction)
         {
+            f.ResetError();
+            g.ResetError();
+
             if (g == 1)
             {
                 r = 0;
@@ -417,6 +420,22 @@ namespace GoodSeat.Liffom.Extensions
                     r = 0;
                     return q;
                 }
+            }
+        }
+
+        /// <summary>
+        /// 指定数式に含まれる数値の数値誤差をリセットします。
+        /// </summary>
+        /// <param name="f">対象の数式。</param>
+        public static void ResetError(this Formula f)
+        {
+            if (f is Numeric)
+            {
+                ((f as Numeric).Data as ValidReal).ModifyError();
+            }
+            else
+            {
+                foreach (var child in f) ResetError(child);
             }
         }
 
