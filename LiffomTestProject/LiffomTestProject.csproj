@@ -82,6 +82,7 @@
     <Compile Include="SumTest.cs" />
     <Compile Include="TrigonometricFunctionTest.cs" />
     <Compile Include="UnitConvertTableTest.cs" />
+    <Compile Include="SolveSimultaneousEquationTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <Shadow Include="テストの参照\Liffom.accessor" />
