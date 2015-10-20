@@ -95,6 +95,8 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
                 return (a + c) / b;
             else
             {
+                if (!b.IsPolynomial() || !d.IsPolynomial()) return null;
+
                 // 分母の最小公倍数
                 Formula lcm = Polynomial.LCM(b, d);
 
