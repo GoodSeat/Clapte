@@ -60,6 +60,7 @@ namespace GoodSeat.Clapte.Models
         /// <returns>初期化された数式セル内容オブジェクト。</returns>
         protected override FormulaCellContent CreateFrom(string formulaText, Solver solver, params FormulaCell[] previous)
         {
+            formulaText = formulaText.Replace("＝", "=");
             var match = DefineRegex.Match(formulaText);
             if (!match.Success) return null;
 

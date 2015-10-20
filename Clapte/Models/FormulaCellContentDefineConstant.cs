@@ -47,6 +47,7 @@ namespace GoodSeat.Clapte.Models
         /// <returns>初期化された数式セル内容オブジェクト。</returns>
         protected override FormulaCellContent CreateFrom(string formulaText, Solver solver, params FormulaCell[] previous)
         {
+            formulaText = formulaText.Replace("＝", "=");
             if (!formulaText.Contains("=")) return null;
             if (formulaText.TrimEnd(' ').EndsWith("=")) return null;
 
