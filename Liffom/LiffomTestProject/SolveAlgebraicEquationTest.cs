@@ -73,7 +73,7 @@ namespace GoodSeat.LiffomTestProject
         /// SolveAlgebraicEquationのSolve のテスト
         /// </summary>
         [TestCategory("方程式"), TestMethod()]
-        public void AlgebraicSolveTest()
+        public void SolveAlgebraicTest()
         {
             SolveAlgebraicEquation target = new SolveAlgebraicEquation();
             SolveEquationTest.AddTestCase(target, "(x+2[cm])^3 = 45[cm^3]", "x", "x=1.55689330449006[cm]");
@@ -83,6 +83,8 @@ namespace GoodSeat.LiffomTestProject
             SolveEquationTest.AddTestCase(target, "y^3 - 10*y^2 + 31*y - 30 = 0", "y", "y=(2,3,5)");
             SolveEquationTest.AddTestCase(target, "(7.19 / 26.4) ^ 2 + (20.07 / ?) ^ 2 = 2.2", "?",
                 "?=(2331331200*root(14816159*1936000000^-1, 2)*14816159^-1, -2331331200*root(14816159*1936000000^-1, 2)*14816159^-1)");
+            SolveEquationTest.AddTestCase(target, "x^100 + 3 = 0", "x", "x=(-3)^(1/100)");
+            SolveEquationTest.AddTestCase(target, "x^9 - 6*x^6 + 11*x^3 - 6 = 0", "x", "x=(1^(1/3),2^(1/3),3^(1/3))");
         }
 
         /// <summary>

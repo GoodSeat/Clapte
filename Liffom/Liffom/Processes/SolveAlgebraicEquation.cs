@@ -4,6 +4,7 @@ using System.Text;
 using GoodSeat.Liffom.Reals;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Extensions;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Liffom.Formulas.Constants;
@@ -62,7 +63,12 @@ namespace GoodSeat.Liffom.Processes
 
             var solutions = new List<Formula>(); // 解リスト
             if (MinExponent > 0) solutions.Add(0); // ax^2 + bx = 0 など
-            ModifyCoefficientMap();
+            ModifyCoefficientMap(); // MinExponent を0にする
+
+            int gcd = 0;
+            var result = TryReduceDegree(about, ref target, out gcd);
+            if (result != null) return new Equal(about, result);
+            SetExponentInformation();
 
             if (MaxExponent < 1)
                 throw new FormulaProcessException("対象の数式の解は、解の公式で求めることはできません。");
@@ -73,15 +79,77 @@ namespace GoodSeat.Liffom.Processes
             else if (MaxExponent == 3) // 3次式
                 solutions.AddRange(GetSolution(GetFactor(3), GetFactor(2), GetFactor(1), GetFactor(0)));
             else if (MaxExponent == 4)
-                throw new FormulaProcessException("4次式の解の公式による求解はサポートされていません。"); // 4次式            
+                throw new FormulaProcessException("解の公式による4次式の求解はサポートされていません。"); // 4次式            
             else 
-                throw new FormulaProcessException("5次以上の高次式を、解の公式によって求解することはできません");
-            
+                throw new FormulaProcessException("解の公式によって5次以上の高次式を求解することはできません。");
+
             solutions = GetFormalSolutions(target, about, solutions);
 
             if (solutions.Count == 0) throw new FormulaProcessException("解は見つかりませんでした。");
-            if (solutions.Count == 1) return new Equal(about, solutions[0]);
-            else return new Equal(about, new Argument(solutions.ToArray()));
+
+            if (gcd == 1)
+            {
+                if (solutions.Count == 1) return new Equal(about, solutions[0]);
+                else return new Equal(about, new Argument(solutions.ToArray()));
+            }
+            else // 求められた解 y について、 x^gcd = y である
+            {
+                var list = new List<Formula>();
+                foreach (var sol in solutions)
+                {
+                    var solver = new SolveAlgebraicEquation();
+                    var s = solver.Solve(new Equal(about ^ new Numeric(gcd), sol), about).RightHandSide;
+
+                    if (s is Argument) list.AddRange(s);
+                    else list.Add(s);
+                }
+                if (list.Count == 1) return new Equal(about, list[0]);
+                else return new Equal(about, new Argument(list.ToArray()));
+            }
+        }
+
+        /// <summary>
+        /// 求解対象の方程式の次元を下げることを試みます。
+        /// </summary>
+        /// <param name="about">求解対象の変数。</param>
+        /// <param name="target">求解対象の等式。次元を下げることに成功した場合、次元を下げた後の等式。</param>
+        /// <param name="gcd">次元を除すことのできる最大公約数。次元を下げることができない場合、1。</param>
+        /// <returns>明らかな解が見つかった場合はその解。それ以外の場合、null。</returns>
+        private Formula TryReduceDegree(Variable about, ref Equal target, out int gcd)
+        {
+            gcd = MaxExponent;
+            for (int i = 1; i < MaxExponent; i++)
+            {
+                if (GetFactor(i) == 0) continue;
+                gcd = (int)Polynomial.GCD(new Numeric(gcd), new Numeric(i));
+                if (gcd == 1) return null;
+            }
+
+            // いくら高次でも、a x^n + b = 0 は、 x = (-b/a)^(1/n)とできる
+            if (gcd == MaxExponent)
+            {
+                if (gcd <= 2)
+                {
+                    gcd = 1;
+                    return null; // ただし3次以下は普通に解く
+                }
+                else
+                {
+                    return (-GetFactor(0) / GetFactor(MaxExponent)).Simplify() ^ (1 / new Numeric(MaxExponent));
+                }
+            }
+
+            // x^6 + 3 x^3 - 9 = 0 は、y^2 + 3y - 9 = 0 where y = x^3 として解くくことができる
+            for (int i = 1; i <= MaxExponent / gcd; i++)
+            {
+                var factor = GetFactor(i * gcd);
+                CoefficientMap.Remove(i * gcd);
+                CoefficientMap.Add(i, factor);
+            }
+            var lhs = GetFactor(0);
+            for (int i = 1; i <= MaxExponent / gcd; i++) lhs += GetFactor(i) * (about ^ new Numeric(i));
+            target.LeftHandSide = lhs.Simplify();
+            return null;
         }
 
         ///
