@@ -86,6 +86,10 @@ namespace GoodSeat.LiffomTestProject
             DeformTokenTest.DeformTest(token, "a+a/(1+a)", "(a^2 + 2*a)/(1 + a)");
             DeformTokenTest.DeformTest(token, "(1+a)*b/(1+a)", "b");
 
+            DeformTokenTest.DeformTest(token, "x+x", "2x");
+            DeformTokenTest.DeformTest(token, "e^x*(e^x + e^y)", "e^(2x) + e^(x+y)");
+            DeformTokenTest.DeformTest(token, "1/(e^x*(e^y+e^(-x))) - (e^(x+y)-1)/((e^(x+y))^2-1)", "0"); 
+
             // 数値の分数化のテスト
             token = new SimplifyToken();
             token.AdditionalTryRules.Add(ConvertToFractionRule.Entity);

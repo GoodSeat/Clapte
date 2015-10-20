@@ -5,6 +5,7 @@ using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Sums;
 using GoodSeat.Liffom.Utilities;
+using GoodSeat.Liffom.Formulas.Rules;
 
 namespace GoodSeat.Liffom.Formulas.Operators
 {
@@ -106,6 +107,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
         {
             if (deformToken.Has<CombineToken>())
             {
+                yield return new CombineNumericSectionSumRule();
                 yield return new ReduceCommonDenominatorRule(); // 通分 (a/b) + c → (a + c*b) / b
                 yield return new ReduceCommonDenominatorRuleLCM(); // 通分 (a/b) + (c/d) → (a*d + b*c) / (b*d)
             }
