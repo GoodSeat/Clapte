@@ -71,7 +71,7 @@ namespace GoodSeat.LiffomTestProject
         /// ブレント法のSolve のテスト
         /// </summary>
         [TestCategory("方程式"), TestMethod()]
-        public void BrentMethodSolveTest()
+        public void SolveBrentMethodTest()
         {
             var solve = new BrentMethod();
             solve.ProcessCompleted += SolveEquationTest.SolveEquationTestProcessCompleted;

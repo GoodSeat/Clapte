@@ -34,6 +34,7 @@ namespace GoodSeat.Liffom.Processes
         /// </summary>
         /// <param name="target">求解対象の等式。</param>
         /// <param name="about">求解対象の変数。</param>
+        /// <returns>方程式の解を表す等式。解が複数の場合は、x=(x1,x2)のように、引数を解として表現します。</returns>
         public Equal Solve(Equal target, Variable about)
         {
             return Solve(DefaultState, target, about);
@@ -45,7 +46,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="target">求解対象の等式。</param>
         /// <param name="about">求解対象の変数。</param>
         /// <param name="userState">一意のユーザー状態。</param>
-        /// <returns>方程式の解を表す等式。解が複数の場合は、x=(x1,x2)のように、引数を解として表現する。</returns>
+        /// <returns>方程式の解を表す等式。解が複数の場合は、x=(x1,x2)のように、引数を解として表現します。</returns>
         public abstract Equal Solve(object userState, Equal target, Variable about);
 
 

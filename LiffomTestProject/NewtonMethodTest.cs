@@ -71,7 +71,7 @@ namespace GoodSeat.LiffomTestProject
         /// ニュートン・ラフソン法のSolve のテスト
         /// </summary>
         [TestCategory("方程式"), TestMethod()]
-        public void NewtonMethodSolveTest()
+        public void SolveNewtonMethodTest()
         {
             var solve = new NewtonMethod();
             solve.ProcessCompleted += SolveEquationTest.SolveEquationTestProcessCompleted;
