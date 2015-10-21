@@ -21,11 +21,12 @@ namespace LiffomTestProject
             SolveSimultaneousTest(solver, "x=7/2, y= -1/2",
                 "x+y=3", "x-y=4",
                 "x,y");
+
             SolveSimultaneousTest(solver, "x=7/3, y=(-5-3*z)/3",
                 "2*x+y+z=3", "x-y-z=4",
                 "x,y,z");
 
-            SolveSimultaneousTest(solver, "x= -1*(y-4)*2^-1",
+            SolveSimultaneousTest(solver, "x= (4-y)/2",
                 "2*x+y=4", "4*x+2*y=5",
                 "x,y");
 
@@ -37,8 +38,8 @@ namespace LiffomTestProject
                 "T - m*g = m*a", "2*m*g - T = 2*m*a",
                 "a,T");
 
-            SolveSimultaneousTest(solver,"x= -1*(y-4)*2^-1",
-                "x-2+(y-3)^2=36", "x^2+y^2=36",
+            SolveSimultaneousTest(solver,"(x=3*sqrt(15)/2, y=3/2),(x=-3*sqrt(15)/2, y=3/2)",
+                "x^2+(y-3)^2=36", "x^2+y^2=36",
                 "x,y");
         }
 
