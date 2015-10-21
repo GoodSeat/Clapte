@@ -6,11 +6,11 @@ using GoodSeat.Liffom.Formulas;
 namespace GoodSeat.Liffom.Reals
 {
     /// <summary>
-    /// 有効数値を考慮した実数を表します。
+    /// 有効数値の考慮、及び誤差の自動修正が可能な実数(double型)を表します。
     /// </summary>
     /// <remark>double型による文字化時の誤差処理と、内部による最小有意桁の追跡により誤差処理を行います。</remark>
     [Serializable()]
-    public class ValidReal : Real
+    public class PrecisionDouble : PrecisionReal
     {
         static int s_maxPrecision = 14;
 
@@ -52,10 +52,7 @@ namespace GoodSeat.Liffom.Reals
         public static PrecisionType PrecisionConsiderd
         {
             get { return s_precisionConsiderd; }
-            set 
-            {
-                s_precisionConsiderd = value;
-            }
+            set { s_precisionConsiderd = value; }
         }
 
         int _precision = 100;    //    有効桁数
@@ -64,8 +61,8 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 有効数字を考慮した数値を初期化します。
         /// </summary>
-        /// <param name="value"></param>
-        public ValidReal(string value)
+        /// <param name="value">初期化数値を表す文字列。</param>
+        public PrecisionDouble(string value)
             : base()
         {
             Data = double.Parse(value);
@@ -81,22 +78,13 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 有効数値を無限大として数値を初期化します。
         /// </summary>
-        /// <param name="data"></param>
-        public ValidReal(double data)
-            : base(data)
-        {
-            ResetMinimumDigit();
-        }
+        /// <param name="data">初期化数値。</param>
+        public PrecisionDouble(double data) : base(data) { ResetMinimumDigit(); }
 
         /// <summary>
         /// 有効数値を無限大として数値を初期化します。
         /// </summary>
-        /// <param name="data"></param>
-        public ValidReal()
-            : base()
-        {
-            ResetMinimumDigit();
-        }
+        public PrecisionDouble() : base() { ResetMinimumDigit(); }
 
 
         /// <summary>
@@ -104,10 +92,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         public override double Data
         {
-            get 
-            {
-                return GetErrorModifiedData();
-            }
+            get { return GetErrorModifiedData(); }
             set
             {
                 base.Data = value;
@@ -150,7 +135,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 有効桁数を設定もしくは取得します。
         /// </summary>
-        public int Precision
+        public override int Precision
         {
             get { return _precision; }
             set
@@ -168,7 +153,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// このインスタンスの有効桁数が無限大と判断されるか否かを取得します。
         /// </summary>
-        public bool IsInfinityPrecision { get { return Precision > MaxPrecision; } }
+        public override bool IsInfinityPrecision { get { return Precision > MaxPrecision; } }
 
         /// <summary>
         /// 計算時の最小有効点位置を設定もしくは取得します。
@@ -211,15 +196,15 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 最善推定値からの誤差範囲の振幅値を取得します。
         /// </summary>
-        private ValidReal PrecisionUnit
+        private PrecisionDouble PrecisionUnit
         {
             get
             {
-                ValidReal unit = (new ValidReal(10d) ^ new ValidReal(Exponent - Precision + 1)) as ValidReal;
+                PrecisionDouble unit = (new PrecisionDouble(10d) ^ new PrecisionDouble(Exponent - Precision + 1)) as PrecisionDouble;
                 switch (PrecisionConsiderd)
                 {
                     case PrecisionType.One: break;
-                    case PrecisionType.Half: unit = (unit / new ValidReal(2d)) as ValidReal; break;
+                    case PrecisionType.Half: unit = (unit / new PrecisionDouble(2d)) as PrecisionDouble; break;
                     default: throw new NotImplementedException();
                 }
                 return unit;
@@ -229,17 +214,25 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 内部保持の数値を、内部誤差を修正した数値に置き換えます。
         /// </summary>
-        public void ModifyError()
-        {
-            Data = GetErrorModifiedData();
-        }
+        public override void ModifyError() { Data = GetErrorModifiedData(); }
 
+        /// <summary>
+        /// 無効桁数をもとに、誤差を修正した有効な数字を取得します。
+        /// </summary>
+        /// <returns>誤差修正した後のdouble型の数値。</returns>
+        private double GetErrorModifiedData()
+        {
+            if (!double.IsInfinity(base.Data) && !double.IsNaN(base.Data))
+                return Round(base.Data, - MinimumDigit);
+            else
+                return base.Data;
+        }
 
         /// <summary>
         /// 最小有効点位置を、現在の数値に基づいてリセットします。
         /// </summary>
-        /// <example>32.005 → -3</example>
-        protected void ResetMinimumDigit()
+        /// <example>32.005 → -3。</example>
+        protected virtual void ResetMinimumDigit()
         {
             // 32.005に対する例
             MinimumDigit = 0;
@@ -253,28 +246,15 @@ namespace GoodSeat.Liffom.Reals
         }
 
         /// <summary>
-        /// 無効桁数をもとに、誤差を修正した有効な数字を取得します。
-        /// </summary>
-        /// <returns></returns>
-        private double GetErrorModifiedData()
-        {
-            if (!double.IsInfinity(base.Data) && !double.IsNaN(base.Data))
-                return Round(base.Data, - MinimumDigit);
-            else
-                return base.Data;
-        }
-
-
-        /// <summary>
         /// 指定実数との和算を行います。簡易的な有効数値考慮が行われます。
         /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
+        /// <param name="r">加算値。</param>
+        /// <returns>加算結果。</returns>
         public override Real AddTo(Real r)
         {
-            ValidReal n1 = this;
-            ValidReal n2 = r as ValidReal;
-            if (n2 == null) n2 = new ValidReal(r.Data);
+            PrecisionDouble n1 = this;
+            PrecisionDouble n2 = r as PrecisionDouble;
+            if (n2 == null) n2 = new PrecisionDouble(r.Data);
 
             var n1d = n1.Data;
             var n2d = n2.Data;
@@ -285,7 +265,7 @@ namespace GoodSeat.Liffom.Reals
             int minPrecision2 = (int)n2.Exponent - n2.Precision + 1; // 有効最小桁数
 
             int postMinPrecision = Math.Max(minPrecision1, minPrecision2);
-            ValidReal result = new ValidReal(n1d + n2d);
+            PrecisionDouble result = new PrecisionDouble(n1d + n2d);
                         
             result.MinimumDigit = Math.Min(n1.MinimumDigit, n2.MinimumDigit);
 
@@ -298,13 +278,13 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 指定実数との積算を行います。簡易的な有効数値考慮が行われます。
         /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
+        /// <param name="r">乗数。</param>
+        /// <returns>積算結果。</returns>
         public override Real MultiplyTo(Real r)
         {
-            ValidReal n1 = this;
-            ValidReal n2 = r as ValidReal;
-            if (n2 == null) n2 = new ValidReal(r.Data);
+            PrecisionDouble n1 = this;
+            PrecisionDouble n2 = r as PrecisionDouble;
+            if (n2 == null) n2 = new PrecisionDouble(r.Data);
 
             if (!double.IsInfinity(n1.BaseData))
             {
@@ -312,7 +292,7 @@ namespace GoodSeat.Liffom.Reals
                     throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
             }
 
-            ValidReal result = new ValidReal(n1.BaseData * n2.BaseData);
+            PrecisionDouble result = new PrecisionDouble(n1.BaseData * n2.BaseData);
 
             result.Precision = Math.Min(n1.Precision, n2.Precision);
             result.MinimumDigit = n1.MinimumDigit + n2.MinimumDigit;
@@ -327,9 +307,9 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>除算結果。</returns>
         public override Real DivideBy(Real r)
         {
-            ValidReal n1 = this;
-            ValidReal n2 = r as ValidReal;
-            if (n2 == null) n2 = new ValidReal(r.Data);
+            PrecisionDouble n1 = this;
+            PrecisionDouble n2 = r as PrecisionDouble;
+            if (n2 == null) n2 = new PrecisionDouble(r.Data);
 
             if (!double.IsInfinity(n1.BaseData) && n1.BaseData != 0)
             {
@@ -338,7 +318,7 @@ namespace GoodSeat.Liffom.Reals
                     throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
             }
 
-            ValidReal result = new ValidReal(n1.BaseData / n2.BaseData);
+            PrecisionDouble result = new PrecisionDouble(n1.BaseData / n2.BaseData);
             result.Precision = Math.Min(n1.Precision, n2.Precision);
 
             return result;
@@ -351,9 +331,9 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>累乗結果。</returns>
         public override Real PowerWith(Real r)
         {
-            ValidReal n1 = this;
-            ValidReal n2 = r as ValidReal;
-            if (n2 == null) n2 = new ValidReal(r.Data);
+            PrecisionDouble n1 = this;
+            PrecisionDouble n2 = r as PrecisionDouble;
+            if (n2 == null) n2 = new PrecisionDouble(r.Data);
 
             if (!double.IsInfinity(n1.BaseData) && n1.BaseData != 0)
             {
@@ -361,7 +341,7 @@ namespace GoodSeat.Liffom.Reals
                     throw new OverflowException("演算によって得られた数値が過大もしくは過小です。");
             }
 
-            ValidReal result = new ValidReal(Math.Pow(n1.Data, n2.BaseData));
+            PrecisionDouble result = new PrecisionDouble(Math.Pow(n1.Data, n2.BaseData));
             result.Precision = Math.Min(n1.Precision, n2.Precision);
             
             return result;
@@ -374,32 +354,41 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>剰余。</returns>
         public override Real ModOf(Real r)
         {
-            ValidReal r1 = this;
-            ValidReal r2 = r as ValidReal;
-            if (r2 == null) r2 = new ValidReal(r.Data);
+            PrecisionDouble r1 = this;
+            PrecisionDouble r2 = r as PrecisionDouble;
+            if (r2 == null) r2 = new PrecisionDouble(r.Data);
 
-            if (r1 < 0) r1 = r1.MultiplyTo(new ValidReal(-1)) as ValidReal;
-            if (r2 < 0) r2 = r2.MultiplyTo(new ValidReal(-1)) as ValidReal;
+            if (r1 < 0) r1 = r1.MultiplyTo(new PrecisionDouble(-1)) as PrecisionDouble;
+            if (r2 < 0) r2 = r2.MultiplyTo(new PrecisionDouble(-1)) as PrecisionDouble;
 
-            ValidReal s1 = ((r1 / r2 - new Real(0.5)).Round(0) * r2) as ValidReal;
+            PrecisionDouble s1 = ((r1 / r2 - new Real(0.5)).Round(0) * r2) as PrecisionDouble;
             s1.Precision = 100;
-            ValidReal surplus = (r1 - s1) as ValidReal;
+            PrecisionDouble surplus = (r1 - s1) as PrecisionDouble;
 
             if (surplus == r2) return surplus - r2;
             return surplus;
         }
 
+        /// <summary>
+        /// 指定実数と等しいか否かを返します。
+        /// </summary>
+        /// <param name="r">比較対象の実数。</param>
+        /// <returns>比較結果。</returns>
         public override bool IsEqualTo(Real r)
         {
             double d1 = BaseData;
             
             double d2 = 0d;
-            if (r is ValidReal) d2 = (r as ValidReal).BaseData;
+            if (r is PrecisionDouble) d2 = (r as PrecisionDouble).BaseData;
             else d2 = r.Data;
 
             return d1 == d2;
         }
 
+        /// <summary>
+        /// このインスタンスの実数を、それと等価な文字列に変換して取得します。
+        /// </summary>
+        /// <returns>変換された文字列。</returns>
         public override string ToString()
         {
             string result = Data.ToString("G", Numeric.BaseCulture);
@@ -446,11 +435,11 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 指定された最大推定値と、最小推定値から有効数字考慮の実数を生成して取得します。
         /// </summary>
-        /// <param name="bestEstimate">最善推定値</param>
-        /// <param name="maxEstimate">最大推定値</param>
-        /// <param name="minEstimate">最小推定値</param>
-        /// <returns></returns>
-        protected virtual ValidReal GetEstimated(double bestEstimate, double maxEstimate, double minEstimate)
+        /// <param name="bestEstimate">最善推定値。</param>
+        /// <param name="maxEstimate">最大推定値。</param>
+        /// <param name="minEstimate">最小推定値。</param>
+        /// <returns>有効数字を考慮した実数。</returns>
+        protected virtual PrecisionDouble GetEstimated(double bestEstimate, double maxEstimate, double minEstimate)
         {
             if (maxEstimate < minEstimate)
             {
@@ -473,9 +462,9 @@ namespace GoodSeat.Liffom.Reals
                 int modMin = min.Exponent - best.Exponent;
                 for (int i = 0; i < MaxPrecision; i++)
                 {
-                    ValidReal bestRound = new ValidReal(Math.Round(best.Mantissa, i, MidpointRound));
-                    ValidReal maxRound = new ValidReal(Math.Round(max.Mantissa * Math.Pow(10, modMax), i, MidpointRound));
-                    ValidReal minRound = new ValidReal(Math.Round(min.Mantissa * Math.Pow(10, modMin), i, MidpointRound));
+                    PrecisionDouble bestRound = new PrecisionDouble(Math.Round(best.Mantissa, i, MidpointRound));
+                    PrecisionDouble maxRound = new PrecisionDouble(Math.Round(max.Mantissa * Math.Pow(10, modMax), i, MidpointRound));
+                    PrecisionDouble minRound = new PrecisionDouble(Math.Round(min.Mantissa * Math.Pow(10, modMin), i, MidpointRound));
 
                     bool isDiff = false;
 
@@ -493,7 +482,7 @@ namespace GoodSeat.Liffom.Reals
                     }
                 }
             }
-            ValidReal newReal = new ValidReal(bestEstimate);
+            PrecisionDouble newReal = new PrecisionDouble(bestEstimate);
             newReal.Precision = newPrecision;
             return newReal;
         }
@@ -501,16 +490,16 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 指定された関数により評価される有効数字考慮の実数を生成して取得します。
         /// </summary>
-        /// <param name="function">評価対象の関数</param>
-        /// <returns></returns>
+        /// <param name="function">評価対象の関数。</param>
+        /// <returns>評価後の有効数字を考慮した実数。</returns>
         protected Real GetEstimated(DoubleFunction function)
         {
             if (IsInfinityPrecision)
             {
-                ValidReal answer = new ValidReal(function(Data));
+                PrecisionDouble answer = new PrecisionDouble(function(Data));
                 if (double.IsNaN(answer.Data) || double.IsInfinity(answer.Data)) return answer;
 
-                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new ValidReal(0) * this;
+                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new PrecisionDouble(0) * this;
                 else return answer;
             }
             else
@@ -528,20 +517,23 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// doubleを引数とし、doubleを返す関数を表します。
         /// </summary>
-        /// <param name="arg">引数</param>
-        /// <returns></returns>
+        /// <param name="arg">引数。</param>
+        /// <returns>評価後の値。</returns>
          protected delegate double DoubleFunction(double arg);
 
 
-
+        /// <summary>
+        /// このインスタンスの角度のサインを返します。
+        /// </summary>
+        /// <returns>評価後の実数。</returns>
         public override Real Sin()
         {
             if (IsInfinityPrecision)
             {
                 double pi = Math.PI;
                 Numeric n = new Numeric(pi);
-                ValidReal answer = new ValidReal(Math.Sin(Data));
-                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new ValidReal(0) * this;
+                PrecisionDouble answer = new PrecisionDouble(Math.Sin(Data));
+                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new PrecisionDouble(0) * this;
                 else return answer;
             }
             else
@@ -572,12 +564,16 @@ namespace GoodSeat.Liffom.Reals
             }
         }
 
+        /// <summary>
+        /// このインスタンスの角度のコサインを返します。
+        /// </summary>
+        /// <returns>評価後の実数。</returns>
         public override Real Cos()
         {
             if (IsInfinityPrecision)
             {
-                ValidReal answer = new ValidReal(Math.Cos(Data));
-                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new ValidReal(0) * this;
+                PrecisionDouble answer = new PrecisionDouble(Math.Cos(Data));
+                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new PrecisionDouble(0) * this;
                 else return answer;
             }
             else
@@ -608,12 +604,16 @@ namespace GoodSeat.Liffom.Reals
             }
         }
 
+        /// <summary>
+        /// このインスタンスの角度のタンジェントを返します。
+        /// </summary>
+        /// <returns>評価後の実数。</returns>
         public override Real Tan()
         {
             if (IsInfinityPrecision)
             {
-                ValidReal answer = new ValidReal(Math.Tan(Data));
-                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new ValidReal(0) * this;
+                PrecisionDouble answer = new PrecisionDouble(Math.Tan(Data));
+                if (answer.Exponent < -MaxPrecision && answer.Exponent < Exponent - MaxPrecision) return new PrecisionDouble(0) * this;
                 else return answer;
             }
             else
@@ -636,36 +636,45 @@ namespace GoodSeat.Liffom.Reals
                     return GetEstimated(bestEstimate, maxEstimate, minEstimate);
                 else
                 {
-                    ValidReal newReal = new ValidReal(bestEstimate);
+                    PrecisionDouble newReal = new PrecisionDouble(bestEstimate);
                     newReal.Precision = 0;
                     return newReal;
                 }
             }
         }
 
-        public override Real Asin()
-        {
-            return GetEstimated((data) => Math.Asin(data));
-        }
 
-        public override Real Acos()
-        {
-            return GetEstimated((data) => Math.Acos(data));
-        }
+        /// <summary>
+        /// このインスタンスをサインとする角度の主値を取得します。
+        /// </summary>
+        /// <returns>評価後の実数。</returns>
+        public override Real Asin() { return GetEstimated((data) => Math.Asin(data)); }
 
-        public override Real Atan()
-        {
-            return GetEstimated((data) => Math.Atan(data));
-        }
+        /// <summary>
+        /// このインスタンスをコサインとする角度の主値を取得します。
+        /// </summary>
+        /// <returns>評価後の実数。</returns>
+        public override Real Acos() { return GetEstimated((data) => Math.Acos(data)); }
 
-        public override Real Log(Real newBase)
-        {
-            return GetEstimated((data) => Math.Log(data, newBase));
-        }
+        /// <summary>
+        /// このインスタンスをタンジェントとする角度の主値を取得します。
+        /// </summary>
+        /// <returns>評価後の実数。</returns>
+        public override Real Atan() { return GetEstimated((data) => Math.Atan(data)); }
 
-        public override Real Round(int round)
-        {
-            return GetEstimated((data) => Round(data, round));
-        }
+        /// <summary>
+        /// 指定した数値を底とする対数を返します。
+        /// </summary>
+        /// <param name="newBase"></param>
+        /// <returns>評価後の実数。</returns>
+        public override Real Log(Real newBase) { return GetEstimated((data) => Math.Log(data, newBase)); }
+
+        /// <summary>
+        /// 指定した小数部桁数に丸めます。
+        /// </summary>
+        /// <param name="round">丸める小数桁数。負数の指定も有効で、10^(-decimals)の桁に丸めます。</param>
+        /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
+        public override Real Round(int round) { return GetEstimated((data) => Round(data, round)); }
+
     }
 }

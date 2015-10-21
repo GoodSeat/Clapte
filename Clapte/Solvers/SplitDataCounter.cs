@@ -86,7 +86,7 @@ namespace GoodSeat.Clapte.Solvers
         {
             string[] split = targetText.Split(_splitCharList.ToArray());
 
-            List<ValidReal> valueList = new List<ValidReal>();
+            List<PrecisionDouble> valueList = new List<PrecisionDouble>();
             for (int i = 0; i < split.Length; i++)
             {
                 if (split[i].Length == 0) continue;
@@ -94,7 +94,7 @@ namespace GoodSeat.Clapte.Solvers
                 double value = 0;
                 if (!double.TryParse(split[i], out value)) return false;
 
-                valueList.Add(new ValidReal(value));
+                valueList.Add(new PrecisionDouble(value));
             }
 
             int count = valueList.Count;
@@ -102,7 +102,7 @@ namespace GoodSeat.Clapte.Solvers
             double sum = 0;
             double max = double.MinValue;
             double min = double.MaxValue;
-            foreach (ValidReal data in valueList)
+            foreach (PrecisionDouble data in valueList)
             {
                 sum += data;
                 max = Math.Max(max, data);

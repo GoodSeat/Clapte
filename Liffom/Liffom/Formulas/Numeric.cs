@@ -62,9 +62,23 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public static Numeric Zero { get; private set; }
 
+        /// <summary>
+        /// 考慮する最大有効桁数を設定もしくは取得します。この値より大きな有効桁数を有する場合、当該数値の有効桁数を無限と判定します。
+        /// </summary>
+        public static int MaxPrecision { get { return PrecisionDouble.MaxPrecision; } }
+
+        /// <summary>
+        /// 2つの数値を比較し、一致するか否かを判定します。
+        /// </summary>
+        public static bool AreEqual(Numeric n1, Numeric n2)
+        {
+            PrecisionDouble r1 = n1.Data as PrecisionDouble;
+            PrecisionDouble r2 = n2.Data as PrecisionDouble;
+            return r1.BaseData.ToString() == r2.BaseData.ToString();
+        }
 
 
-        Real _num; // 保持数値
+        PrecisionReal _num; // 保持数値
 
         /// <summary>
         /// 数値を初期化します。
@@ -72,18 +86,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="s">初期値を指定する文字列。</param>
         public Numeric(string s)
         {
-            Data = new ValidReal(s);
-//            Data = new PrecisionValidReal(s);
-        }
-
-        /// <summary>
-        /// 数値を作成します。
-        /// </summary>
-        /// <param name="d">初期値を指定する数値。</param>
-        public Numeric(double d)
-        {
-            Data = new ValidReal(d);
-//            Data = new PrecisionValidReal(d);
+            Data = new PrecisionDouble(s);
         }
 
         /// <summary>
@@ -92,14 +95,14 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="r">初期値を指定する数値。</param>
         public Numeric(Real r)
         {
-            if (r is ValidReal) Data = r;
-            else Data = new ValidReal(r);
+            if (r is PrecisionReal) Data = r as PrecisionReal;
+            else Data = new PrecisionDouble(r);
         }
 
         /// <summary>
         /// 内部数値を設定もしくは取得します。
         /// </summary>
-        public Real Data
+        public PrecisionReal Data
         {
             get { return _num; }
             set { _num = value; }
@@ -110,15 +113,8 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public int Precision
         {
-            get
-            {
-                if (Data is ValidReal) return (Data as ValidReal).Precision;
-                else return 100;
-            }
-            set
-            {
-                if (Data is ValidReal) (Data as ValidReal).Precision = value;
-            }
+            get { return Data.Precision; }
+            set { Data.Precision = value; }
         }
 
         /// <summary>
@@ -126,10 +122,7 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public bool IsInteger
         {
-            get
-            {
-                return (Data.Data % 1 == 0); // && (Precision > 50);
-            }
+            get { return (Data.ModOf(1) == 0); }
         }
 
         /// <summary>
@@ -142,7 +135,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 内部保持の数値を、内部誤差を修正した数値に置き換えます。
         /// </summary>
-        public void ModifyError() { (Data as ValidReal).ModifyError(); }
+        public void ModifyError() { Data.ModifyError(); }
 
 
         public override string GetText()

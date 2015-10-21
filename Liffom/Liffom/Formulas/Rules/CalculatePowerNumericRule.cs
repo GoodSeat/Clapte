@@ -55,7 +55,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric newAbs = abs.Data ^ expNumeric.Data;
 
             // 角度を取得
-            Numeric newRad = new Numeric((rad * expNumeric).Numerate());
+            Numeric newRad = new Numeric((rad * expNumeric).Numerate() as Numeric);
             if (newRad > Math.PI * 2) newRad = new Numeric(newRad % (2 * Math.PI));
             if (newRad < 0) newRad = (newRad + 2 * Math.PI).Numerate() as Numeric;
 

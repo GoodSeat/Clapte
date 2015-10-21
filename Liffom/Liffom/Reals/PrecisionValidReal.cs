@@ -8,9 +8,9 @@ namespace GoodSeat.Liffom.Reals
     /// 最大推定値と最小推定値を追跡する有効桁数考慮実数を表します。
     /// </summary>
     [Serializable()]
-    public class PrecisionValidReal : ValidReal
+    public class PrecisionValidReal : PrecisionDouble
     {
-        ValidReal _maximum, _minimum;
+        PrecisionDouble _maximum, _minimum;
 
         /// <summary>
         /// 最大推定値と最小推定値ともに0として有効桁数考慮実数を初期化します。
@@ -18,8 +18,8 @@ namespace GoodSeat.Liffom.Reals
         public PrecisionValidReal()
             : base()
         {
-            _maximum = new ValidReal();
-            _minimum = new ValidReal();
+            _maximum = new PrecisionDouble();
+            _minimum = new PrecisionDouble();
         }
 
         /// <summary>
@@ -28,8 +28,8 @@ namespace GoodSeat.Liffom.Reals
         public PrecisionValidReal(double data)
             : base(data)
         {
-            _maximum = new ValidReal(data);
-            _minimum = new ValidReal(data);
+            _maximum = new PrecisionDouble(data);
+            _minimum = new PrecisionDouble(data);
         }
 
         /// <summary>
@@ -39,8 +39,8 @@ namespace GoodSeat.Liffom.Reals
         public PrecisionValidReal(string value)
             : base(value)
         {
-            _maximum = new ValidReal(base.Maximum);
-            _minimum = new ValidReal(base.Minimum);
+            _maximum = new PrecisionDouble(base.Maximum);
+            _minimum = new PrecisionDouble(base.Minimum);
         }
 
         public override double Maximum
@@ -67,7 +67,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="value">推定最大値</param>
         public void SetMaximum(double value)
         {
-             _maximum = new ValidReal(value); 
+             _maximum = new PrecisionDouble(value); 
         }
 
         /// <summary>
@@ -76,12 +76,12 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="value">推定最小値</param>
         public void SetMinimum(double value)
         {
-            _minimum = new ValidReal(value);
+            _minimum = new PrecisionDouble(value);
         }
 
-        protected override ValidReal GetEstimated(double bestEstimate, double maxEstimate, double minEstimate)
+        protected override PrecisionDouble GetEstimated(double bestEstimate, double maxEstimate, double minEstimate)
         {
-            ValidReal baseReal = base.GetEstimated(bestEstimate, maxEstimate, minEstimate);
+            PrecisionDouble baseReal = base.GetEstimated(bestEstimate, maxEstimate, minEstimate);
 
             PrecisionValidReal newValue = new PrecisionValidReal(baseReal.Data);
             newValue.Precision = baseReal.Precision;

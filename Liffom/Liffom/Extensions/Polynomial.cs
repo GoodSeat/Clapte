@@ -431,7 +431,7 @@ namespace GoodSeat.Liffom.Extensions
         {
             if (f is Numeric)
             {
-                ((f as Numeric).Data as ValidReal).ModifyError();
+                (f as Numeric).ModifyError();
             }
             else
             {
@@ -619,7 +619,7 @@ namespace GoodSeat.Liffom.Extensions
             if (double.IsInfinity(n1.Data.Data)) return null;
             if (double.IsInfinity(n2.Data.Data)) return null;
 
-            Numeric errorRatio = new Numeric(Math.Pow(10, -ValidReal.MaxPrecision) * 5d);
+            Numeric errorRatio = new Numeric(Math.Pow(10, -Numeric.MaxPrecision) * 5d);
 
             Numeric nBase = (n1 > n2) ? n1 : n2;
         
@@ -632,7 +632,7 @@ namespace GoodSeat.Liffom.Extensions
             {
                 if (n1 > n2)
                 {
-                    Reals.Real baseReal = n1.Data;
+                    Real baseReal = n1.Data;
                     n1 = new Numeric(n1.Data % n2.Data);
                     error = (n2 * errorRatio).Numerate() as Numeric;
 
@@ -640,7 +640,7 @@ namespace GoodSeat.Liffom.Extensions
                 }
                 else
                 {
-                    Reals.Real baseReal = n2.Data;
+                    Real baseReal = n2.Data;
                     n2 = new Numeric(n2.Data % n1.Data);
                     error = (n1 * errorRatio).Numerate() as Numeric;
 

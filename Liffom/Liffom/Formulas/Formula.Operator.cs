@@ -93,20 +93,15 @@ namespace GoodSeat.Liffom.Formulas
             if (Object.Equals(f1, null) && Object.Equals(f2, null)) return true;
             if (Object.Equals(f1, null) || Object.Equals(f2, null)) return false;
 
+            // 数値との比較に対する速度向上のための例外処理
+            if (f1 is Numeric && f2 is Numeric) return Numeric.AreEqual(f1 as Numeric, f2 as Numeric);
+
             // タイプを比較
             if (f1.GetEqualBaseType() != f2.GetEqualBaseType()) return false;
 
             // 子数式数を比較
             int count;
             if (!CheckSameChildCount(f1, f2, out count)) return false;
-
-            //    数値との比較に対する速度向上のための例外処理
-            if (f1 is Numeric && f2 is Numeric)
-            {
-                ValidReal r1 = (f1 as Numeric).Data as ValidReal;
-                ValidReal r2 = (f2 as Numeric).Data as ValidReal;
-                return r1.BaseData.ToString() == r2.BaseData.ToString();
-            }
 
             if (f1.GetUniqueText() == f2.GetUniqueText()) return true;
 

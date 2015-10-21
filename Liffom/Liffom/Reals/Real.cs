@@ -25,8 +25,8 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 指定数値の絶対値に対する10の対数を取得します。ただし、0に対しては0を返します。
         /// </summary>
-        /// <param name="n"></param>
-        /// <returns></returns>
+        /// <param name="n">対象とする数値。</param>
+        /// <returns>対象数値の10の対数。</returns>
         private static double GetLog10(double n)
         {
             if (n == 0) return 0;
@@ -79,7 +79,7 @@ namespace GoodSeat.Liffom.Reals
         }
         
         /// <summary>
-        /// 内部保持する数値データを設定もしくは取得します。
+        /// 内部保持する数値データをdouble型実数で設定もしくは取得します。
         /// </summary>
         public virtual double Data
         {
@@ -187,12 +187,9 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 指定実数と等しいか否かを返します。
         /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
-        public virtual bool IsEqualTo(Real r)
-        {
-            return Data == r.Data;
-        }
+        /// <param name="r">比較対象の実数。</param>
+        /// <returns>比較結果。</returns>
+        public virtual bool IsEqualTo(Real r) { return Data == r.Data; }
 
 
         #region 演算子
@@ -242,10 +239,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f1">底。</param>
         /// <param name="f2">冪数。</param>
         /// <returns>累乗。</returns>
-        public static Real operator ^(Real r1, Real r2)
-        {
-            return r1.PowerWith(r2);
-        }
+        public static Real operator ^(Real r1, Real r2) { return r1.PowerWith(r2); }
         
         /// <summary>
         /// 剰余を取得します。
@@ -253,10 +247,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f1">被除数。</param>
         /// <param name="f2">除数。</param>
         /// <returns>累乗</returns>
-        public static Real operator %(Real r1, Real r2)
-        {
-            return r1.ModOf(r2);
-        }
+        public static Real operator %(Real r1, Real r2) { return r1.ModOf(r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -278,31 +269,42 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator !=(Real r1, Real r2)
-        {
-            return !(r1 == r2);
-        }
+        public static bool operator !=(Real r1, Real r2) { return !(r1 == r2); }
+
+
+        /// <summary>
+        /// Int型からの暗黙的変換。
+        /// </summary>
+        /// <param name="n">対象の整数。</param>
+        /// <returns>変換された実数。</returns>
+        public static implicit operator Real(int n) { return new Real(n); }
+
+        /// <summary>
+        /// Double型からの暗黙的変換。
+        /// </summary>
+        /// <param name="r">対象の実数。</param>
+        /// <returns>変換された実数。</returns>
+        public static implicit operator Real(double r) { return new Real(r); }
 
         /// <summary>
         /// Double型への暗黙的変換。
         /// </summary>
         /// <param name="r">対象の実数。</param>
         /// <returns>変換されたdouble型の実数。</returns>
-        public static implicit operator double(Real r)
-        {
-            return r.Data;
-        }
+        public static implicit operator double(Real r) { return r.Data; }
 
         /// <summary>
         /// Numeric型への暗黙的変換
         /// </summary>
         /// <param name="r">対象の実数。</param>
         /// <returns>変換されたNumeric型のインスタンス。</returns>
-        public static implicit operator Numeric(Real r)
-        {
-            return new Numeric(r);
-        }
+        public static implicit operator Numeric(Real r) { return new Numeric(r); }
 
+        /// <summary>
+        /// 対象のインスタンスが、指定したオブジェクトに等しいかどうかを示す値を返します。
+        /// </summary>
+        /// <param name="obj">このインスタンスと比較するオブジェクト。</param>
+        /// <returns>obj が System.Double のインスタンスで、このインスタンスの値に等しい場合は true。それ以外の場合は false。</returns>
         public override bool Equals(object obj)
         {
             if (obj is Real)
@@ -311,38 +313,34 @@ namespace GoodSeat.Liffom.Reals
                 return base.Equals(obj);
         }
 
-        public override int GetHashCode()
-        {
-            return Data.GetHashCode();
-        }
+        /// <summary>
+        /// このインスタンスのハッシュコードを返します。
+        /// </summary>
+        public override int GetHashCode() { return Data.GetHashCode(); }
 
         /// <summary>
         /// このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <returns>このインスタンスの値の文字列形式。</returns>
-        public override string ToString()
-        {
-            return Data.ToString("G", Numeric.BaseCulture);
-        }
+        public override string ToString() { return Data.ToString("G", Numeric.BaseCulture); }
 
         /// <summary>
         /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public virtual string ToString(string format)
-        {
-            return Data.ToString(format);
-        }
+        public virtual string ToString(string format) { return Data.ToString(format); }
 
         #endregion
 
         #region IComparable<Real> メンバー
 
-        public int CompareTo(Real other)
-        {
-            return Math.Sign(this.Data - other.Data);
-        }
+        /// <summary>
+        /// 現在のオブジェクトを同じ型の別のオブジェクトと比較します。
+        /// </summary>
+        /// <param name="other">このオブジェクトと比較するオブジェクト。</param>
+        /// <returns>比較対象オブジェクトの相対順序を示す値。</returns>
+        public int CompareTo(Real other) { return Math.Sign(this.Data - other.Data); }
 
         #endregion
         
@@ -350,60 +348,52 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// このインスタンスの角度のサインを返します。
         /// </summary>
-        /// <returns></returns>
-        public virtual Real Sin()
-        { return new Real(Math.Sin(Data)); }
+        /// <returns>評価後の実数。</returns>
+        public virtual Real Sin() { return new Real(Math.Sin(Data)); }
 
         /// <summary>
         /// このインスタンスをサインとする角度の主値を取得します。
         /// </summary>
-        /// <returns></returns>
-        public virtual Real Asin()
-        { return new Real(Math.Asin(Data)); }
+        /// <returns>評価後の実数。</returns>
+        public virtual Real Asin() { return new Real(Math.Asin(Data)); }
 
         /// <summary>
         /// このインスタンスの角度のコサインを返します。
         /// </summary>
-        /// <returns></returns>
-        public virtual Real Cos()
-        { return new Real(Math.Cos(Data)); }
+        /// <returns>評価後の実数。</returns>
+        public virtual Real Cos() { return new Real(Math.Cos(Data)); }
 
         /// <summary>
         /// このインスタンスをコサインとする角度の主値を取得します。
         /// </summary>
-        /// <returns></returns>
-        public virtual Real Acos()
-        { return new Real(Math.Acos(Data)); }
+        /// <returns>評価後の実数。</returns>
+        public virtual Real Acos() { return new Real(Math.Acos(Data)); }
 
         /// <summary>
         /// このインスタンスの角度のタンジェントを返します。
         /// </summary>
-        /// <returns></returns>
-        public virtual Real Tan()
-        { return new Real(Math.Tan(Data)); }
+        /// <returns>評価後の実数。</returns>
+        public virtual Real Tan() { return new Real(Math.Tan(Data)); }
 
         /// <summary>
         /// このインスタンスをタンジェントとする角度の主値を取得します。
         /// </summary>
-        /// <returns></returns>
-        public virtual Real Atan()
-        { return new Real(Math.Atan(Data)); }
+        /// <returns>評価後の実数。</returns>
+        public virtual Real Atan() { return new Real(Math.Atan(Data)); }
 
         /// <summary>
         /// 指定した数値を底とする対数を返します。
         /// </summary>
         /// <param name="newBase"></param>
-        /// <returns></returns>
-        public virtual Real Log(Real newBase)
-        { return new Real(Math.Log(Data, newBase)); }
+        /// <returns>評価後の実数。</returns>
+        public virtual Real Log(Real newBase) { return new Real(Math.Log(Data, newBase)); }
 
         /// <summary>
         /// 指定した小数部桁数に丸めます。
         /// </summary>
         /// <param name="round">丸める小数桁数。負数の指定も有効で、10^(-decimals)の桁に丸めます。</param>
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
-        public virtual Real Round(int round)
-        { return new Real(Round(Data, round)); }
+        public virtual Real Round(int round) { return new Real(Round(Data, round)); }
 
     }
 }

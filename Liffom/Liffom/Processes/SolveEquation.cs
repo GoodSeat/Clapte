@@ -3,10 +3,10 @@ using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
-using GoodSeat.Liffom.Reals;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formulas.Rules;
 using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Processes
 {
@@ -93,7 +93,7 @@ namespace GoodSeat.Liffom.Processes
             for (int test = testDigit; test >= minExponent; test--)
             {
                 Formula checkSolve = solution.Copy();
-                foreach (Numeric n in checkSolve.GetExistFactor<Numeric>()) n.Data = n.Data.Round(-test);
+                foreach (Numeric n in checkSolve.GetExistFactor<Numeric>()) n.Data = n.Data.Round(-test) as PrecisionReal;
 
                 Formula ans = f.Substituted(x, checkSolve).DeformFormula(token);
                 if (ans == 0) return checkSolve;
@@ -124,7 +124,7 @@ namespace GoodSeat.Liffom.Processes
             bool needCheckValid = false;
             foreach (Numeric n in checkDigit.GetExistFactor<Numeric>())
             {
-                if (n.Precision <= ValidReal.MaxPrecision) needCheckValid = true;
+                if (n.Precision <= Numeric.MaxPrecision) needCheckValid = true;
                 initialValidDigit = Math.Max(n.Data.Exponent - n.Precision + 1, initialValidDigit);
                 initialPrecision = Math.Min(n.Precision, initialPrecision);
             }
@@ -143,7 +143,7 @@ namespace GoodSeat.Liffom.Processes
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
-            for (int i = 1; i <= ValidReal.MaxPrecision; i++)
+            for (int i = 1; i <= Numeric.MaxPrecision; i++)
             {
                 Formula checkSolution = solution.Copy();
                 foreach (Numeric n in checkSolution.GetExistFactor<Numeric>())
