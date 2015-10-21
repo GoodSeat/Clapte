@@ -70,12 +70,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 2つの数値を比較し、一致するか否かを判定します。
         /// </summary>
-        public static bool AreEqual(Numeric n1, Numeric n2)
-        {
-            PrecisionDouble r1 = n1.Data as PrecisionDouble;
-            PrecisionDouble r2 = n2.Data as PrecisionDouble;
-            return r1.BaseData.ToString() == r2.BaseData.ToString();
-        }
+        public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Data == n2.Data; }
 
 
         PrecisionReal _num; // 保持数値

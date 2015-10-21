@@ -382,7 +382,7 @@ namespace GoodSeat.Liffom.Reals
             if (r is PrecisionDouble) d2 = (r as PrecisionDouble).BaseData;
             else d2 = r.Data;
 
-            return d1 == d2;
+            return d1.ToString() == d2.ToString();
         }
 
         /// <summary>
