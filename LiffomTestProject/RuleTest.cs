@@ -74,10 +74,10 @@ namespace GoodSeat.LiffomTestProject
         }
 
         /// <summary>
-        ///SelfCheckTest のテスト
-        ///</summary>
+        /// SelfCheckTest のテスト
+        /// </summary>
         [TestCategory("ルール"), TestMethod()]
-        public void SelfCheckTestTest()
+        public void RuleSelfCheckTest()
         {
             UnitConvertTableTest.RegistBasicUnitRecord();
 

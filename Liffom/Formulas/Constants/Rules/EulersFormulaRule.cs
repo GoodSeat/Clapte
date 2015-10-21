@@ -72,8 +72,8 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {
             yield return new KeyValuePair<Formula, Formula>(
-                Formula.Parse("e^(i*x)"),
-                Formula.Parse("e^0 * (cos(x)+i*sin(x))")
+                Formula.Parse("e^(i*pi)"),
+                Formula.Parse("e^0 * (cos(pi)+i*sin(pi))")
                 );
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("e^(5+3i)"),
