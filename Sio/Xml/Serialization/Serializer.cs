@@ -74,10 +74,10 @@ namespace GoodSeat.Sio.Xml.Serialization
                 loadedObject.OnDeserialize(xmlElement);
                 OnDeserialized(loadedObject);
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 if (loadedObject is IDisposable) (loadedObject as IDisposable).Dispose();
-                throw e;
+                throw;
             }
             return loadedObject;
         }

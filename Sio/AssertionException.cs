@@ -7,6 +7,7 @@ namespace GoodSeat.Sio
 	/// <summary>
 	/// 想定と異なる状況が発生しました。
 	/// </summary>
+    [Serializable()]
 	public class AssertionException : Exception
 	{
 		/// <summary>
