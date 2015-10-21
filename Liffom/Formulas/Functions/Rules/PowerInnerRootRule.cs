@@ -4,6 +4,7 @@ using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Extensions;
 
 namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
@@ -19,7 +20,13 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             return new Root(a, b) ^ c;
         }
 
-        protected override Formula GetRuledFormula() { return new Root(a ^ c, b); }
+        protected override Formula GetRuledFormula()
+        {
+            if (!b.IsPolynomial() || !c.IsPolynomial()) return new Root(a ^ c, b);
+
+            var gcd = Polynomial.GCD(b, c);
+            return new Root(a ^ (c / gcd), b / gcd);
+        }
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Power; }
 
@@ -29,7 +36,11 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
         {
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("root(a, 3)^3"),
-                Formula.Parse("root(a ^ 3, 3)")
+                Formula.Parse("root(a ^ (3/3), 3/3)")
+                );
+            yield return new KeyValuePair<Formula, Formula>(
+                Formula.Parse("root(a, 3)^x"),
+                Formula.Parse("root(a ^ (x / 1), (3 / 1))")
                 );
         }
 
