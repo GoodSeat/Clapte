@@ -163,7 +163,7 @@ namespace GoodSeat.Liffom.Processes
                 }
 
                 Real tol1 = (new Numeric(0.5 * ErrorTolerance)).Data;
-                Real xm = new ValidReal(0.5 * (c - b));
+                Real xm = new PrecisionDouble(0.5 * (c - b));
                 if (Math.Abs(xm) <= tol1 || fb == 0) return b;
                 if (Math.Abs(e) >= tol1 && Math.Abs(fa) > Math.Abs(fb))
                 {
@@ -171,21 +171,21 @@ namespace GoodSeat.Liffom.Processes
                     Real p, q;
                     if (a == c)
                     {
-                        p = new ValidReal(2d * xm * s);
-                        q = new ValidReal(1d - s);
+                        p = new PrecisionDouble(2d * xm * s);
+                        q = new PrecisionDouble(1d - s);
                     }
                     else
                     {
                         q = fa / fc;
                         var r = fb / fc;
-                        p = new ValidReal(s * (2 * xm * q * (q - r) - (b - a) * (r - 1)));
-                        q = new ValidReal((q - 1) * (r - 1) * (s - 1));
+                        p = new PrecisionDouble(s * (2 * xm * q * (q - r) - (b - a) * (r - 1)));
+                        q = new PrecisionDouble((q - 1) * (r - 1) * (s - 1));
                     }
                     if (p > 0) q = -q; // 区間内かどうかチェック
 
-                    p = new ValidReal(Math.Abs(p));
-                    Real min1 = new ValidReal(3 * xm * q - Math.Abs(tol1 * q));
-                    Real min2 = new ValidReal(Math.Abs(e * q));
+                    p = new PrecisionDouble(Math.Abs(p));
+                    Real min1 = new PrecisionDouble(3 * xm * q - Math.Abs(tol1 * q));
+                    Real min2 = new PrecisionDouble(Math.Abs(e * q));
                     if (2 * p < (min1 < min2 ? min1 : min2)) // 補間値を採用
                     {
                         e = d;

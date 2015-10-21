@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.Text;
-using GoodSeat.Liffom.Reals;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Extensions;
@@ -389,7 +388,7 @@ namespace GoodSeat.Liffom.Processes
                 // 虚数解で、実数部と虚数部で1.E+13以上の桁数差がある場合、小さい桁の方を誤差として切り捨てる。
                 Formula solRounded = sol;
                 foreach (Formula imaginary in sol.GetExistFactor(test=>Imaginary.IsComplexNumber(test, false)))
-                    solRounded = solRounded.Substitute(imaginary, Imaginary.RoundImaginary(imaginary, ValidReal.MaxPrecision));
+                    solRounded = solRounded.Substitute(imaginary, Imaginary.RoundImaginary(imaginary, Numeric.MaxPrecision));
 
                 if (!AdmitImaginary && solRounded.Contains(Imaginary.i)) continue;
 

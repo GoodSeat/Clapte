@@ -4,7 +4,6 @@ using System.IO;
 using System.Text;
 using System.Reflection;
 using GoodSeat.Liffom.Processes;
-using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Units
 {
@@ -343,12 +342,12 @@ namespace GoodSeat.Liffom.Formulas.Units
             Formula convert = fromConvert / toConvert;
             Formula result = convert.Combine();
             foreach (Numeric n in result.GetExistFactor<Numeric>())
-                if (n.Precision > ValidReal.MaxPrecision) n.Precision = 100;
+                if (n.Precision > Numeric.MaxPrecision) n.Precision = 100;
 
             if (from == to)
             {
 #if DEBUG
-//                if (!(result is Numeric) || Math.Round(result, Math.Min((result as Numeric).Precision + 1, ValidReal.MaxPrecision)) != 1) throw new FormulaAssertionException("同単位間の変換倍率が1となりませんでした。");
+//                if (!(result is Numeric) || Math.Round(result, Math.Min((result as Numeric).Precision + 1, Numeric.MaxPrecision)) != 1) throw new FormulaAssertionException("同単位間の変換倍率が1となりませんでした。");
 #endif
                 return 1;
             }
@@ -404,12 +403,12 @@ namespace GoodSeat.Liffom.Formulas.Units
             Formula toConvert = toData.ConversionAddition * toModify; // 基準単位
             Formula addition = (fromConvert - toConvert) / toData.ConversionRatio; // 変換後単位
             Formula result = addition.Combine();
-            foreach (Numeric n in result.GetExistFactor<Numeric>()) if (n.Precision > ValidReal.MaxPrecision) n.Precision = 100;
+            foreach (Numeric n in result.GetExistFactor<Numeric>()) if (n.Precision > Numeric.MaxPrecision) n.Precision = 100;
 
             if (from == to)
             {
 #if DEBUG
-                if (!(result is Numeric) || Math.Round(result, Math.Min((result as Numeric).Precision + 1, ValidReal.MaxPrecision)) != 0) throw new FormulaAssertionException("同単位間の変換加算が0となりませんでした。");
+                if (!(result is Numeric) || Math.Round(result, Math.Min((result as Numeric).Precision + 1, Numeric.MaxPrecision)) != 0) throw new FormulaAssertionException("同単位間の変換加算が0となりませんでした。");
 #endif
                 return 0;
             }
