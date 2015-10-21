@@ -127,7 +127,7 @@ namespace GoodSeat.Liffom.Parse
                 formula = Parse(text);
                 return true;
             }
-            catch (FormulaParseException e)
+            catch (FormulaParseException)
             {
                 return false;
             }
