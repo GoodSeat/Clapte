@@ -139,7 +139,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
                 if (UseCache) s_ruledCache.Add(formulaText, result);
                 return result;
             }
-            catch (FormulaRuleException e) { throw e; }
+            catch (FormulaRuleException) { throw; }
             finally {}
         }
 

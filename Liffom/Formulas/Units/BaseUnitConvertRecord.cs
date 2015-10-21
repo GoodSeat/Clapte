@@ -8,6 +8,7 @@ namespace GoodSeat.Liffom.Formulas.Units
     /// <summary>
     /// 単位変換テーブルにおける基準単位データを表します。
     /// </summary>
+    [Serializable()]
     public class BaseUnitConvertRecord : UnitConvertRecord
     {        
         /// <summary>
