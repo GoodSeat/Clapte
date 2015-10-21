@@ -178,15 +178,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <returns></returns>
         public static implicit operator double(Formula f)
         {
-            if (f is Numeric)
-                return (f as Numeric).Data;
-            else
-            {
-                Formula n = f.Numerate();
-
-                if (n is Numeric) return (n as Numeric).Data;
-                else return double.NaN;
-            }
+            return (f is Numeric) ? (f as Numeric).Data : double.NaN;
         }
 
         /// <summary>
