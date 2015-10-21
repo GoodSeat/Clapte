@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Globalization;
 using System.Text;
 using GoodSeat.Liffom.Formats.Numerics;
 using GoodSeat.Liffom.Reals;
@@ -14,28 +13,12 @@ using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 namespace GoodSeat.Liffom.Formulas
 {
     /// <summary>
-    /// 数値データ（最小単位）
+    /// 数値データ（最小単位）を表します。
     /// </summary>
     [Serializable()]
     public class Numeric : Formula
     {
-        static Numeric()
-        {
-            Zero = new Numeric(0d);
-        }
-
-        static CultureInfo s_cultureInfo = CultureInfo.CreateSpecificCulture("ja-JP");
-
-        /// <summary>
-        /// Liffomで前提としているCultureInfo(ja-JP)を取得します。
-        /// </summary>
-        /// <remarks>
-        /// Liffomでは、ja-JPの書式を前提にしています。<see cref="s_cultureInfo"/>をja-JP以外に変更しないでください。
-        /// </remarks>
-        public static CultureInfo BaseCulture
-        {
-            get { return s_cultureInfo; }
-        }
+        static Numeric() { Zero = new Numeric(0d); }
 
         /// <summary>
         /// 中間値の丸め方法を設定もしくは取得します。
@@ -142,7 +125,7 @@ namespace GoodSeat.Liffom.Formulas
             if (considerDigit)
                 result = Data.ToString();
             else
-                result = Data.Data.ToString("G", BaseCulture);
+                result = Data.Data.ToString("G");
 
             // 小数点表記
             result = Format.PropertyOf<RadixPointFormatProperty>().SetRadixPoint(result);
@@ -157,7 +140,7 @@ namespace GoodSeat.Liffom.Formulas
         /// 数式の一意性評価に用いる文字列で、同じ型の数式同士の一意性を表す文字列を取得します。
         /// </summary>
         /// <returns>数式を一意に区別する文字列。</returns>
-        protected override string OnGetUniqueText() { return Data.Data.ToString("G", BaseCulture); }
+        protected override string OnGetUniqueText() { return Data.Data.ToString("G"); }
 
         protected override CompareResult IsLargerThan(Formula other)
         {
@@ -165,8 +148,8 @@ namespace GoodSeat.Liffom.Formulas
             if (other is Numeric)
             {
                 Real delta = Data - (other as Numeric).Data;
-                if (delta > 0) compare = 1;
-                else if (delta < 0) compare = -1;
+                if (delta > 0.0) compare = 1;
+                else if (delta < 0.0) compare = -1;
                 else compare = 0;
             }
 

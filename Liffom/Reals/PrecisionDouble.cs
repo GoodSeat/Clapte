@@ -391,7 +391,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>変換された文字列。</returns>
         public override string ToString()
         {
-            string result = Data.ToString("G", Numeric.BaseCulture);
+            string result = Data.ToString("G", BaseCulture);
 
             if (Precision <= 0)  // 加算結果が有効桁範囲では0になる場合 7.3E+3 - 7.3E+3 の結果など、0.E+2となる 
             {
@@ -400,7 +400,7 @@ namespace GoodSeat.Liffom.Reals
             else if (!IsInfinityPrecision)
             {
                 double mantissa = Round(Mantissa, Math.Max(1, Precision) - 1);
-                string partOfValid = mantissa.ToString("G", Numeric.BaseCulture);
+                string partOfValid = mantissa.ToString("G", BaseCulture);
                 while (partOfValid.Replace(".", "").Replace("-","").Length < Precision)
                 {
                     if (!partOfValid.Contains(".")) partOfValid += ".";

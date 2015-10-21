@@ -136,7 +136,7 @@ namespace GoodSeat.Liffom.Processes
 
             // if f(a) f(b) >= 0 then error-exit
             Real calculated = fa * fb;
-            if (calculated == null || double.IsNaN(calculated.Data)) throw new FormulaProcessException("区間の上限と下限を正しく設定できませんでした。");
+            if (calculated == null || calculated.IsNaN) throw new FormulaProcessException("区間の上限と下限を正しく設定できませんでした。");
             if (fa * fb >= 0)
             {
                 throw new FormulaProcessException(
@@ -241,7 +241,7 @@ namespace GoodSeat.Liffom.Processes
                 Numeric fb = f.Substituted(x, upperLimit).DeformFormula(token) as Numeric;
 
                 Numeric calculated = (fa * fb).Numerate() as Numeric;
-                while ((calculated == null || double.IsInfinity(calculated.Data.Data) || double.IsNaN(calculated.Data.Data) || calculated > 0) && count++ < 20)
+                while ((calculated == null || calculated.Data.IsInfinity || calculated.Data.IsNaN || calculated > 0) && count++ < 20)
                 {
                     if (i == 0)
                     {
@@ -285,7 +285,7 @@ namespace GoodSeat.Liffom.Processes
                 }
 
                 calculated = (fa * fb).Numerate() as Numeric;
-                if (calculated != null && !double.IsInfinity(calculated.Data.Data) && !double.IsNaN(calculated.Data.Data) && calculated <= 0) break;
+                if (calculated != null && !calculated.Data.IsInfinity && !calculated.Data.IsNaN && calculated <= 0) break;
             }
         }
     }
