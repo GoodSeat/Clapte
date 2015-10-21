@@ -7,6 +7,7 @@ namespace GoodSeat.Liffom
     /// <summary>
     /// 数式処理がユーザーによりキャンセルされたことを表す例外です。
     /// </summary>
+    [Serializable()]
     public class FormulaOperationCanceledExceptions : OperationCanceledException
     {
         /// <summary>

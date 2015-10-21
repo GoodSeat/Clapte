@@ -8,6 +8,7 @@ namespace GoodSeat.Liffom
     /// <summary>
     /// Formula内で想定と異なる状況が発生した時の例外を表します。
     /// </summary>
+    [Serializable()]
     public class FormulaAssertionException : Exception
     {
         /// <summary>

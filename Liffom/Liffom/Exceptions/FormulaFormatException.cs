@@ -8,6 +8,7 @@ namespace GoodSeat.Liffom
     /// <summary>
     /// Formula内の表記規定に抵触する例外を表します。
     /// </summary>
+    [Serializable()]
     public class FormulaFormatException : Exception
     {
         /// <summary>
