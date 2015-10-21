@@ -17,6 +17,8 @@
             {
                 components.Dispose();
             }
+            _clipBoradWatcher.Dispose();
+            _hotkeyManager.Dispose();
             base.Dispose(disposing);
         }
 

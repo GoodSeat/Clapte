@@ -13,7 +13,7 @@ namespace GoodSeat.Clapte.Views
     /// <summary>
     /// Azukiコントロールを対象とした、関数の引数ヘルプ機能を表します。
     /// </summary>
-    public class FunctionArgumentHelp : IDisposable
+    public sealed class FunctionArgumentHelp : IDisposable
     {
         /// <summary>
         /// Azukiコントロールを対象とした、関数の引数ヘルプ機能を初期化します。

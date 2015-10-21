@@ -11,7 +11,7 @@ namespace GoodSeat.Clapte.Views
     /// <summary>
     /// ホットキー登録の管理を行うクラスです。
     /// </summary>
-    public class HotkeyManager : ISerializable, IDisposable
+    public sealed class HotkeyManager : ISerializable, IDisposable
     {
         //
         // モディファイアキー

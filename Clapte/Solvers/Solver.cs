@@ -169,7 +169,7 @@ namespace GoodSeat.Clapte.Solvers
             {
                 f = Parse(input);
             }
-            catch (FormulaParseException e)
+            catch (FormulaParseException)
             {
                 return false;
             }

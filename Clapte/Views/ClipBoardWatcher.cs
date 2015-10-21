@@ -10,7 +10,7 @@ namespace GoodSeat.Clapte.Views
     /// クリップボードを監視するクラス。
     /// 使用後は必ずDispose()メソッドを呼び出して下さい。
     /// </summary>
-    public class ClipBoardWatcher : IDisposable
+    public sealed class ClipBoardWatcher : IDisposable
     {
         ClipBoardWatcherForm _form;
 

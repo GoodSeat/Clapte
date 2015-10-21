@@ -143,8 +143,6 @@ namespace GoodSeat.Clapte.Views.Forms
 
         void FormOfMain_Disposed(object sender, EventArgs e)
         {
-            _clipBoradWatcher.Dispose();
-            _hotkeyManager.Dispose();
         }
 
         #endregion
@@ -161,7 +159,7 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 ClapteCore.InformAction();
             }
-            catch (Exception e)
+            catch (Exception)
             {
                 TaskTrayIcon.ShowBalloonTip(ClapteCore.LimitTime * 1000,
                         "処理失敗",

@@ -65,10 +65,10 @@ namespace GoodSeat.Clapte
 		{
 			try
 			{
-				System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.StartupPath + "\\error.txt", false, System.Text.Encoding.Default);
-				sw.Write(errorInfomation);
-				sw.Close();
-				sw.Dispose();
+                using (System.IO.StreamWriter sw = new System.IO.StreamWriter(Application.StartupPath + "\\error.txt", false, System.Text.Encoding.Default))
+                {
+                    sw.Write(errorInfomation);
+                }
 
 				// クラッシュ直前にデータを保存！！
 				string filepath = s_mainForm.SaveCrashData();

@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+            _installedFonts.Dispose();
             base.Dispose(disposing);
         }
 

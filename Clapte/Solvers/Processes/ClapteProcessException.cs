@@ -8,6 +8,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
     /// <summary>
     /// Clapteのソルバにおける処理において発生する例外を表します。
     /// </summary>
+    [Serializable()]
     public class ClapteProcessException : Exception
     {
         /// <summary>

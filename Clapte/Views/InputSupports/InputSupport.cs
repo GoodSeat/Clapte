@@ -12,7 +12,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
     /// <summary>
     /// Azukiコントロールを対象とした入力補助機能を表します。
     /// </summary>
-    public class InputSupport : IDisposable
+    public sealed class InputSupport : IDisposable
     {
         /// <summary>
         /// Azukiコントロールを対象とした入力補助機能を初期化します。

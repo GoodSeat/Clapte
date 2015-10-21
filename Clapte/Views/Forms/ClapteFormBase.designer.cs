@@ -17,6 +17,7 @@
             {
                 components.Dispose();
             }
+            _titleBrush.Dispose();
             base.Dispose(disposing);
         }
 

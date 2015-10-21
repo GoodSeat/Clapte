@@ -17,6 +17,8 @@
             {
                 components.Dispose();
             }
+            _backbarBrush.Dispose();
+            _brush.Dispose();
             base.Dispose(disposing);
         }
 

@@ -13,7 +13,7 @@ namespace GoodSeat.Clapte.ViewModels
     /// <summary>
     /// 数式セルのビューモデルを表します。
     /// </summary>
-    public class FormulaCellViewModel
+    public class FormulaCellViewModel : IDisposable
     {
         /// <summary>
         /// 数式セルのビューモデルを初期化します。
@@ -117,6 +117,7 @@ namespace GoodSeat.Clapte.ViewModels
                 _backWorker.DoWork -= new DoWorkEventHandler(WorkEvaluate);
                 _backWorker.RunWorkerCompleted -= new RunWorkerCompletedEventHandler(WorkEvaluateCompleted);
                 _backWorker.Dispose();
+                _backWorker = null;
             }
 
             if (ExitEvaluate != null) ExitEvaluate(this, e);
@@ -135,5 +136,9 @@ namespace GoodSeat.Clapte.ViewModels
             return "ViewModel::" + Target.ToString();
         }
 
+        public void Dispose()
+        {
+            if (_backWorker != null) _backWorker.Dispose();
+        }
     }
 }
