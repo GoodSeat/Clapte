@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Formulas;
+using System.Globalization;
 
 namespace GoodSeat.Liffom.Reals
 {
@@ -11,6 +12,16 @@ namespace GoodSeat.Liffom.Reals
     [Serializable()]
     public class Real : IComparable<Real>
     {
+        static CultureInfo s_cultureInfo = CultureInfo.CreateSpecificCulture("ja-JP");
+
+        /// <summary>
+        /// Liffomで前提としているCultureInfo(ja-JP)を取得します。
+        /// </summary>
+        /// <remarks>
+        /// Liffomでは、ja-JPの書式を前提にしています。<see cref="s_cultureInfo"/>をja-JP以外に変更しないでください。
+        /// </remarks>
+        public static CultureInfo BaseCulture { get { return s_cultureInfo; } }
+
         static MidpointRounding s_midpointRound = MidpointRounding.AwayFromZero;
 
         /// <summary>
@@ -113,6 +124,27 @@ namespace GoodSeat.Liffom.Reals
             }
         }
 
+        /// <summary>
+        /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
+        /// </summary>
+        public virtual bool IsInfinity { get { return double.IsInfinity(Data); } }
+
+        /// <summary>
+        /// インスタンスの表す数値が正の無限大と評価されるかどうかを示す値を返します。
+        /// </summary>
+        public virtual bool IsPositiveInfinity { get { return double.IsPositiveInfinity(Data); } }
+
+        /// <summary>
+        /// インスタンスの表す数値が負の無限大と評価されるかどうかを示す値を返します。
+        /// </summary>
+        public virtual bool IsNegativeInfinity { get { return double.IsNegativeInfinity(Data); } }
+
+        /// <summary>
+        /// インスタンスの表す数値が非数であると評価されるかどうかを示す値を返します。
+        /// </summary>
+        public virtual bool IsNaN { get { return double.IsNaN(Data); } }
+
+        #region 演算
 
         /// <summary>
         /// 指定実数との加算結果を返します。
@@ -191,6 +223,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>比較結果。</returns>
         public virtual bool IsEqualTo(Real r) { return Data == r.Data; }
 
+        #endregion
 
         #region 演算子
 
@@ -322,14 +355,14 @@ namespace GoodSeat.Liffom.Reals
         /// このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <returns>このインスタンスの値の文字列形式。</returns>
-        public override string ToString() { return Data.ToString("G", Numeric.BaseCulture); }
+        public override string ToString() { return Data.ToString("G", BaseCulture); }
 
         /// <summary>
         /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public virtual string ToString(string format) { return Data.ToString(format); }
+        public virtual string ToString(string format) { return Data.ToString(format, BaseCulture); }
 
         #endregion
 
@@ -344,6 +377,7 @@ namespace GoodSeat.Liffom.Reals
 
         #endregion
         
+        #region 関数評価
 
         /// <summary>
         /// このインスタンスの角度のサインを返します。
@@ -394,6 +428,8 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="round">丸める小数桁数。負数の指定も有効で、10^(-decimals)の桁に丸めます。</param>
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
         public virtual Real Round(int round) { return new Real(Round(Data, round)); }
+
+        #endregion
 
     }
 }

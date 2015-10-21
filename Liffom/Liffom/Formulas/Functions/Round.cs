@@ -50,7 +50,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             if (n != null && (Argument.Count == 1 || round == null))
                 return new Numeric(n.Data.Round(0));
             else if (n != null && round != null && round.IsInteger)
-                return new Numeric(n.Data.Round((int)round.Data.Data));
+                return new Numeric(n.Data.Round((int)round.Data));
             else
                 return this;
         }
