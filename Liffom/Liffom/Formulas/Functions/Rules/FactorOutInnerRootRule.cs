@@ -5,6 +5,7 @@ using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Extensions;
 
 namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
@@ -28,6 +29,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             }
         }
 
+
         protected internal override bool IsTargetTypeFormula(Formula target)
         {
             var root = target as Root;
@@ -44,114 +46,184 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             var root = target as Root;
             var exp = root[1] as Numeric;
 
-            int pow = (int)exp.Data;
-            if (pow == 1) return root[0];
-            if (pow == 0) return 1;
-            if (pow < 0) return 1 / new Root(root[0], -1 * pow);
+            int exponent = (int)exp.Data;
+            if (exponent == 1) return root[0];
+            if (exponent == 0) return 1; // TODO:これは明確な間違え
+            if (exponent < 0) return 1 / new Root(root[0], -1 * exponent);
 
-            KeyValuePair<Formula, Formula> inout = GetInOut(root[0], pow);
+            var io = SieveIOFrom(root[0], exponent);
+            if (io == null) return null;
+            if (io.Item2 == 1) return io.Item1;
+            return io.Item1 * new Root(io.Item2, exp);
+        }
 
-            if (inout.Key == 1) return null;
-            if (inout.Value == 1) return inout.Key;
 
-            return inout.Key * new Root(inout.Value, exp);
+        /// <summary>
+        /// <see cref="exp"/>√<see cref="f"/>において、ルートの外に括りだされる数式と中に残る数式からなる組を取得します。
+        /// ただし、外に括りだせる数式がない場合には、nullを返します。
+        /// </summary>
+        /// <param name="f">ルートの中の数式。</param>
+        /// <param name="exp">ルートの基数。</param>
+        /// <returns>ルートの外に括りだされる数式と、中に残る数式の組。ただし、外に括りだせる数式がない場合には、null。</returns>
+        private Tuple<Formula, Formula> SieveIOFrom(Formula f, int exp)
+        {
+            if (f is Sum) return SieveIOfromSum(f as Sum, exp);
+            else return SieveIOfromTerm(f, exp);
         }
 
         /// <summary>
-        /// 指定した√の中の値を、指定した√基数の元、√外に括りだす数式と括りださない数式に分けて取得します。
+        /// <see cref="exp"/>√<see cref="sum"/>において、ルートの外に括りだされる数式と中に残る数式からなる組を取得します。
+        /// ただし、外に括りだせる数式がない場合には、nullを返します。
         /// </summary>
-        /// <param name="innerRoot">√の中の数値</param>
-        /// <param name="pow">√基数。自然数のみ。</param>
-        /// <returns>外に括りだす数式をキー、中に括りだす数値を値とした値セット</returns>
-        KeyValuePair<Formula, Formula> GetInOut(Formula innerRoot, int pow)
+        /// <param name="sum">ルートの中の加算。</param>
+        /// <param name="exp">ルートの基数。</param>
+        /// <returns>ルートの外に括りだされる数式と、中に残る数式の組。ただし、外に括りだせる数式がない場合には、null。</returns>
+        private Tuple<Formula, Formula> SieveIOfromSum(Sum sum, int exp)
         {
-            if (pow <= 0) throw new FormulaAssertionException("GetInOutメソッドでは、自然数の√基数のみを対象としています。");
-
-            Numeric innerExponent = null; // ルート内部の乗算の数値指数
-            if (innerRoot is Power)
+            Formula gcd = null;
+            foreach (var f in sum)
             {
-                var innerPower = innerRoot as Power;
-                innerExponent = innerPower.Exponent as Numeric;
-            }
+                if (gcd == null) gcd = f;
+                else gcd = Polynomial.GCD(f, gcd);
 
-            if (innerRoot is Product)
+                if (gcd == 1 || gcd == null) break;
+            }
+            if (gcd == 1 || gcd == null) return null;
+
+            var io = SieveIOfromTerm(gcd, exp);
+            if (io == null) return null; // outされるものがない
+
+            if (io.Item2 != 1) gcd = (gcd / io.Item2).Combine(); 
+
+            var list = new List<Formula>();
+            foreach (var f in sum) list.Add((f / gcd).Combine());
+
+            return Tuple.Create(io.Item1, new Sum(list.ToArray()) as Formula);
+        }
+
+        /// <summary>
+        /// <see cref="exp"/>√<see cref="f"/>において、ルートの外に括りだされる数式と中に残る数式からなる組を取得します。
+        /// ただし、外に括りだせる数式がない場合には、nullを返します。
+        /// </summary>
+        /// <param name="f">ルートの中の(加算でない)数式。</param>
+        /// <param name="exp">ルートの基数。</param>
+        /// <returns>ルートの外に括りだされる数式と、中に残る数式の組。ただし、外に括りだせる数式がない場合には、null。</returns>
+        private Tuple<Formula, Formula> SieveIOfromTerm(Formula f, int exp)
+        {
+            var factors = GetFactorsFrom(f);
+
+            var mapOut = new Dictionary<Formula, int>();
+            var mapIn = new Dictionary<Formula, int>();
+            var done = new List<Formula>();
+
+            foreach (var t in factors)
             {
-                List<Formula> outList = new List<Formula>();
-                List<Formula> inList = new List<Formula>();
-                foreach (Formula f in innerRoot)
-                {
-                    var inout = GetInOut(f, pow);
-                    outList.Add(inout.Key);
-                    inList.Add(inout.Value);
-                }
-                return new KeyValuePair<Formula, Formula>(new Product(outList.ToArray()).Combine(), new Product(inList.ToArray()).Combine());
+                if (done.Contains(t)) continue;
+                int n = factors.Count(c => c == t);
+                int eOut = n / exp;
+                int eIn = n % exp;
+
+                if (eOut != 0) mapOut.Add(t, eOut);
+                if (eIn != 0) mapIn.Add(t, eIn);
+                done.Add(t);
             }
-            else if (innerExponent != null && innerExponent.IsInteger)
+            if (mapOut.Count == 0) return null;
+
+            Formula fOut = BuildFormulaFromMap(mapOut);
+            Formula fIn = BuildFormulaFromMap(mapIn);
+
+            return Tuple.Create(fOut, fIn);
+        }
+
+        /// <summary>
+        /// 数式-指数マップから数式を構成して取得します。
+        /// </summary>
+        /// <param name="map">対象の数式-指数マップ。</param>
+        /// <returns>構成された数式。</returns>
+        private static Formula BuildFormulaFromMap(Dictionary<Formula, int> map)
+        {
+            var list = new List<Formula>();
+            foreach (var o in map)
             {
-                int outpow = (int)(innerExponent.Data) / pow;
-                int inpow = (int)(innerExponent.Data) % pow;
-
-                Formula outer = 0;
-                if (outpow == 1) outer = innerRoot[0];
-                else if (outpow == 0) outer = 1;
-                else outer = innerRoot[0] ^ outpow;
-
-                Formula inner = 0;
-                if (inpow == 1) inner = innerRoot[0];
-                else if (inpow == 0) inner = 1;
-                else inner = innerRoot[0] ^ inpow;
-
-                return new KeyValuePair<Formula, Formula>(outer, inner);
+                if (o.Value == 1) list.Add(o.Key);
+                else list.Add(o.Key ^ o.Value);
             }
-            else if (innerRoot is Numeric && (innerRoot as Numeric).IsInteger)
-                return GetInOut((double)innerRoot, pow);
+            Formula f = 1;
+            if (list.Count == 1) f = list[0];
+            else if (list.Count > 1) f = new Product(list.ToArray());
+
+            return f;
+        }
+
+        /// <summary>
+        /// 指定した数式を構成する全ての因子リストを取得します。係数となる整数については、素因数分解して因子リストを構成します。
+        /// </summary>
+        /// <param name="gcd">因子リストを取得する対象の数式。</param>
+        /// <returns>因子リスト。</returns>
+        private List<Formula> GetFactorsFrom(Formula gcd)
+        {
+            var result = new List<Formula>();
+            if (gcd is Numeric)
+            {
+                result.AddRange(GetFactorsFromNumeric(gcd as Numeric));
+            }
             else
-                return new KeyValuePair<Formula, Formula>(1, innerRoot);
+            {
+                var a = new RulePatternVariable("a");
+                a.AdmitMultiplyOne = true;
+                a.CheckTarget = (f => f is Numeric);
+
+                var b = new RulePatternVariable("b");
+                b.CheckTarget = (f => !(f is Numeric));
+
+                var rule = a * b;
+                if (!gcd.PatternMatch(rule)) result.Add(gcd);
+                else
+                {
+                    result.AddRange(GetFactorsFromNumeric(a.MatchedFormula as Numeric));
+                    result.AddRange(GetFactorsFromNonNumeric(b.MatchedFormula));
+                }
+            }
+            return result;
         }
 
-        /// <summary>
-        /// 指定した√の中の整数値を、指定した√基数の元、√外に括りだす整数と括りださない整数に分けて取得します。
-        /// </summary>
-        /// <param name="num">√中の整数値</param>
-        /// <param name="pow">√基数。自然数のみ。</param>
-        /// <returns></returns>
-        KeyValuePair<Formula, Formula> GetInOut(double num, int pow)
+        private IEnumerable<Formula> GetFactorsFromNumeric(Numeric n)
         {
-            if (pow <= 0) throw new FormulaAssertionException("GetInOutメソッドでは、自然数の√基数のみを対象としています。");
-
-            Formula fc = PrimeFactor.PrimeFactorize(num, false);
-            double inner = 1;
-            Formula outer = 1;
-
-            // √8
-            Dictionary<Formula, int> notOutList = new Dictionary<Formula, int>(); // √3, 数式とその乗数のマップ
-            List<Formula> outList = new List<Formula>(); // 2
-
-            if (fc is Product)
+            if (!n.IsInteger) yield return n;
+            else
             {
-                foreach (Formula f in fc)
+                var fc = PrimeFactor.PrimeFactorize(n, false);
+                if (fc is Product) foreach (var c in fc) yield return c;
+                else yield return fc;
+            }
+        }
+
+        private IEnumerable<Formula> GetFactorsFromNonNumeric(Formula f)
+        {
+            if (f is Power)
+            {
+                Numeric exp = (f as Power).Exponent as Numeric;
+                if (exp == null) yield return f;
+                else
                 {
-                    if (notOutList.ContainsKey(f))
+                    var b = (f as Power).Base;
+                    foreach (var c in GetFactorsFrom(b))
                     {
-                        notOutList[f]++;
-                        if (notOutList[f] == Math.Abs(pow))
+                        for (int i = 0; i < Math.Abs(exp); i++)
                         {
-                            outList.Add(f);
-                            notOutList[f] = 0;
+                            if (exp < 0) yield return c ^ -1;
+                            else yield return c;
                         }
                     }
-                    else
-                        notOutList.Add(f, 1);
                 }
-
-                foreach (KeyValuePair<Formula, int> k in notOutList) inner *= Math.Pow(k.Key, k.Value);
             }
-            else { inner = num; }
-
-            if (outList.Count == 1) outer = outList[0];
-            else if (outList.Count > 1) outer = new Product(outList.ToArray());
-
-            return new KeyValuePair<Formula, Formula>(outer, inner);
+            else if (f is Product)
+            {
+                foreach (var t in f)
+                    foreach (var c in GetFactorsFromNonNumeric(t)) yield return c;
+            }
+            else
+                yield return f;
         }
 
 
@@ -181,6 +253,10 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("sqrt(8*a^3)"),
                 Formula.Parse("(2*a)*sqrt(2*a)")
+                );
+            yield return new KeyValuePair<Formula, Formula>(
+                Formula.Parse("sqrt(120*a+80)"),
+                Formula.Parse("2*sqrt(30*a+20)")
                 );
         }
 

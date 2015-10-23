@@ -33,7 +33,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <summary>
         /// ルールパターン変数を初期化します。
         /// </summary>
-        /// <param name="mark"></param>
+        /// <param name="mark">ルールパターン変数の表示時に用いる変数名。</param>
         public RulePatternVariable(string mark) : base(mark){}
 
         /// <summary>
