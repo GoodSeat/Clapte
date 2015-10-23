@@ -298,7 +298,7 @@ namespace GoodSeat.Clapte.Models
             // 結果をセット
             var result = OnEvaluate(solver);
             ResultText = result.ResultText;
-            if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText;
+            if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText.Replace("\n", " ").Replace("\r", "");
             else if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
         }
 

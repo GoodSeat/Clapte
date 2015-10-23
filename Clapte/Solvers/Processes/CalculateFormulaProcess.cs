@@ -52,9 +52,10 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
             try
             {
+                DeformHistory history;
                 Formula result = input;
                 for (int i = 0; i < Tokens.Count; i++)
-                    result = result.DeformFormula(Tokens[i]);
+                    result = result.DeformFormula(Tokens[i], out history);
 
                 input = result;
                 return null;

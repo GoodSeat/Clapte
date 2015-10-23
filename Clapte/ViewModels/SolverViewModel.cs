@@ -14,6 +14,7 @@ using GoodSeat.Liffom.Formulas.Rules;
 using GoodSeat.Liffom.Parse;
 using GoodSeat.Liffom.Processes;
 using GoodSeat.Liffom.Formats.Powers;
+using GoodSeat.Liffom.Formulas.Constants.Rules;
 
 namespace GoodSeat.Clapte.ViewModels
 {
@@ -255,10 +256,13 @@ namespace GoodSeat.Clapte.ViewModels
             }
             else
             {
+                // tan(pi/2)やe^ix 等を正しくルール変形するため、piやe等の定数と、累乗の数値化は後回しにする。
                 var token1 = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
-                token1.NoTryRules.Add(CalculatePowerNumericRule.Entity);
+                token1.NoTryRules.Add(CalculatePowerNumericRule.Entity); // 累乗の数値化を除外
+                token1.NoTryRules.Add(ConstantNumerateRule.Entity); // 定数の数値化を除外
                 tokenList.Add(token1);
 
+                // その後、小数まで計算しきる。
                 var token2 = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
                 tokenList.Add(token2);
             }
