@@ -31,7 +31,7 @@
         {
             this.components = new System.ComponentModel.Container();
             this._labelTitle = new System.Windows.Forms.Label();
-            this._toolHelpTip = new System.Windows.Forms.ToolTip(this.components);
+            this._toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
             this._btnOption = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnClose = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnTopMost = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
@@ -78,7 +78,7 @@
             // 
             // _toolHelpTip
             // 
-            this._toolHelpTip.BackColor = System.Drawing.Color.White;
+            this._toolTipHelp.BackColor = System.Drawing.Color.White;
             // 
             // _btnOption
             // 
@@ -93,7 +93,7 @@
             this._btnOption.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnOption.TabIndex = 15;
             this._btnOption.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnOption, "オプションを表示します");
+            this._toolTipHelp.SetToolTip(this._btnOption, "オプションを表示します");
             this._btnOption.UnFocusImage = null;
             this._btnOption.Visible = false;
             this._btnOption.Click += new System.EventHandler(this._btnOption_Click);
@@ -112,7 +112,7 @@
             this._btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnClose.TabIndex = 12;
             this._btnClose.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnClose, "閉じる");
+            this._toolTipHelp.SetToolTip(this._btnClose, "閉じる");
             this._btnClose.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
             this._btnClose.Click += new System.EventHandler(this._btnClose_Click);
             // 
@@ -130,7 +130,7 @@
             this._btnTopMost.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnTopMost.TabIndex = 11;
             this._btnTopMost.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnTopMost, "最前面表示の有効化／無効化");
+            this._toolTipHelp.SetToolTip(this._btnTopMost, "最前面表示の有効化／無効化");
             this._btnTopMost.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
             this._btnTopMost.Click += new System.EventHandler(this._btnTopMost_Click);
             // 
@@ -343,7 +343,7 @@
         private Components.ImageButton _btnCancel;
         private System.Windows.Forms.Label _labelTitle;
         private Components.ChameleonPictureBox _picTitleBar;
-        protected System.Windows.Forms.ToolTip _toolHelpTip;
+        protected System.Windows.Forms.ToolTip _toolTipHelp;
         private Components.ImageButton _btnTopMost;
         private Components.ImageButton _btnClose;
         private Components.ImageButton _btnOption;

@@ -61,7 +61,6 @@
             this._btnLoad = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnSave = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._timerDelay = new System.Windows.Forms.Timer(this.components);
-            this._toolTipHoverHelp = new System.Windows.Forms.ToolTip(this.components);
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this._btnSetting = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
@@ -111,7 +110,7 @@
             this._inputTextBox.CaretMoved += new System.EventHandler(this._inputTextBox_CaretMoved);
             this._inputTextBox.VScroll += new System.EventHandler(this._inputTextBox_VScroll);
             this._inputTextBox.TextChanged += new System.EventHandler(this._inputTextBox_TextChanged);
-            this._inputTextBox.MouseHover += new System.EventHandler(this._inputTextBox_MouseHover);
+            this._inputTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._inputTextBox_MouseMove);
             // 
             // _contextMenuEdit
             // 
@@ -129,85 +128,85 @@
             this._menuJumpDefine,
             this._menuAddUserDefine});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(184, 220);
+            this._contextMenuEdit.Size = new System.Drawing.Size(204, 220);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
             // 
             this._menuUndo.Name = "_menuUndo";
-            this._menuUndo.Size = new System.Drawing.Size(183, 22);
+            this._menuUndo.Size = new System.Drawing.Size(203, 22);
             this._menuUndo.Text = "元に戻す(&U)";
             this._menuUndo.Click += new System.EventHandler(this._menuUndo_Click);
             // 
             // _menuRedo
             // 
             this._menuRedo.Name = "_menuRedo";
-            this._menuRedo.Size = new System.Drawing.Size(183, 22);
+            this._menuRedo.Size = new System.Drawing.Size(203, 22);
             this._menuRedo.Text = "やり直す(&R)";
             this._menuRedo.Click += new System.EventHandler(this._menuRedo_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuCut
             // 
             this._menuCut.Name = "_menuCut";
-            this._menuCut.Size = new System.Drawing.Size(183, 22);
+            this._menuCut.Size = new System.Drawing.Size(203, 22);
             this._menuCut.Text = "切り取り(&T)";
             this._menuCut.Click += new System.EventHandler(this._menuCut_Click);
             // 
             // _menuCopy
             // 
             this._menuCopy.Name = "_menuCopy";
-            this._menuCopy.Size = new System.Drawing.Size(183, 22);
+            this._menuCopy.Size = new System.Drawing.Size(203, 22);
             this._menuCopy.Text = "コピー(&C)";
             this._menuCopy.Click += new System.EventHandler(this._menuCopy_Click);
             // 
             // _menuPaste
             // 
             this._menuPaste.Name = "_menuPaste";
-            this._menuPaste.Size = new System.Drawing.Size(183, 22);
+            this._menuPaste.Size = new System.Drawing.Size(203, 22);
             this._menuPaste.Text = "貼り付け(&P)";
             this._menuPaste.Click += new System.EventHandler(this._menuPaste_Click);
             // 
             // _menuDelete
             // 
             this._menuDelete.Name = "_menuDelete";
-            this._menuDelete.Size = new System.Drawing.Size(183, 22);
+            this._menuDelete.Size = new System.Drawing.Size(203, 22);
             this._menuDelete.Text = "削除(&D)";
             this._menuDelete.Click += new System.EventHandler(this._menuDelete_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuSelectAll
             // 
             this._menuSelectAll.Name = "_menuSelectAll";
-            this._menuSelectAll.Size = new System.Drawing.Size(183, 22);
+            this._menuSelectAll.Size = new System.Drawing.Size(203, 22);
             this._menuSelectAll.Text = "すべて選択(&A)";
             this._menuSelectAll.Click += new System.EventHandler(this._menuSelectAll_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuJumpDefine
             // 
             this._menuJumpDefine.Name = "_menuJumpDefine";
             this._menuJumpDefine.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefine.Size = new System.Drawing.Size(183, 22);
+            this._menuJumpDefine.Size = new System.Drawing.Size(203, 22);
             this._menuJumpDefine.Text = "定義を参照(&J)";
             this._menuJumpDefine.Click += new System.EventHandler(this._menuJumpDefine_Click);
             // 
             // _menuAddUserDefine
             // 
             this._menuAddUserDefine.Name = "_menuAddUserDefine";
-            this._menuAddUserDefine.Size = new System.Drawing.Size(183, 22);
+            this._menuAddUserDefine.Size = new System.Drawing.Size(203, 22);
             this._menuAddUserDefine.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefine.Click += new System.EventHandler(this._menuAddUserDefine_Click);
             // 
@@ -246,7 +245,7 @@
             this._btnAllDelete.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._btnAllDelete.TabIndex = 22;
             this._btnAllDelete.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnAllDelete, "テキストを全削除");
+            this._toolTipHelp.SetToolTip(this._btnAllDelete, "テキストを全削除");
             this._btnAllDelete.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
             this._btnAllDelete.Click += new System.EventHandler(this._btnAllDelete_Click);
             // 
@@ -291,44 +290,44 @@
             this._menuJumpDefineResult,
             this._menuAddUserDefineResult});
             this._contextMenuResult.Name = "_contextMenuEdit";
-            this._contextMenuResult.Size = new System.Drawing.Size(184, 104);
+            this._contextMenuResult.Size = new System.Drawing.Size(204, 104);
             // 
             // _menuCopyResult
             // 
             this._menuCopyResult.Name = "_menuCopyResult";
-            this._menuCopyResult.Size = new System.Drawing.Size(183, 22);
+            this._menuCopyResult.Size = new System.Drawing.Size(203, 22);
             this._menuCopyResult.Text = "コピー(&C)";
             this._menuCopyResult.Click += new System.EventHandler(this._menuCopyResult_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuSelectAllResult
             // 
             this._menuSelectAllResult.Name = "_menuSelectAllResult";
-            this._menuSelectAllResult.Size = new System.Drawing.Size(183, 22);
+            this._menuSelectAllResult.Size = new System.Drawing.Size(203, 22);
             this._menuSelectAllResult.Text = "すべて選択(&A)";
             this._menuSelectAllResult.Click += new System.EventHandler(this._menuSelectAllResult_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuJumpDefineResult
             // 
             this._menuJumpDefineResult.Name = "_menuJumpDefineResult";
             this._menuJumpDefineResult.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefineResult.Size = new System.Drawing.Size(183, 22);
+            this._menuJumpDefineResult.Size = new System.Drawing.Size(203, 22);
             this._menuJumpDefineResult.Text = "定義を参照(&J)";
             this._menuJumpDefineResult.Click += new System.EventHandler(this._menuJumpDefineResult_Click);
             // 
             // _menuAddUserDefineResult
             // 
             this._menuAddUserDefineResult.Name = "_menuAddUserDefineResult";
-            this._menuAddUserDefineResult.Size = new System.Drawing.Size(183, 22);
+            this._menuAddUserDefineResult.Size = new System.Drawing.Size(203, 22);
             this._menuAddUserDefineResult.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefineResult.Click += new System.EventHandler(this._menuAddUserDefineResult_Click);
             // 
@@ -357,7 +356,7 @@
             this._btnAbort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._btnAbort.TabIndex = 20;
             this._btnAbort.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnAbort, "評価の中止");
+            this._toolTipHelp.SetToolTip(this._btnAbort, "評価の中止");
             this._btnAbort.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
             this._btnAbort.Visible = false;
             this._btnAbort.Click += new System.EventHandler(this._btnAbort_Click);
@@ -376,7 +375,7 @@
             this._btnLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnLoad.TabIndex = 19;
             this._btnLoad.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnLoad, "テキストファイルの読込");
+            this._toolTipHelp.SetToolTip(this._btnLoad, "テキストファイルの読込");
             this._btnLoad.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
             this._btnLoad.Click += new System.EventHandler(this._btnLoad_Click);
             this._btnLoad.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
@@ -395,7 +394,7 @@
             this._btnSave.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnSave.TabIndex = 18;
             this._btnSave.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnSave, "テキストファイルに保存");
+            this._toolTipHelp.SetToolTip(this._btnSave, "テキストファイルに保存");
             this._btnSave.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
             this._btnSave.Click += new System.EventHandler(this._btnSave_Click);
             this._btnSave.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
@@ -432,7 +431,7 @@
             this._btnSetting.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnSetting.TabIndex = 21;
             this._btnSetting.TabStop = false;
-            this._toolHelpTip.SetToolTip(this._btnSetting, "設定を開く");
+            this._toolTipHelp.SetToolTip(this._btnSetting, "設定を開く");
             this._btnSetting.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Setting_Unfocus;
             this._btnSetting.Click += new System.EventHandler(this._btnSetting_Click);
             this._btnSetting.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
@@ -485,7 +484,6 @@
         private System.Windows.Forms.SplitContainer _splitContainer;
         private Sgry.Azuki.WinForms.AzukiControl _resultTextBox;
         private System.Windows.Forms.Timer _timerDelay;
-        private System.Windows.Forms.ToolTip _toolTipHoverHelp;
         private Components.ImageButton _btnSave;
         private Components.ImageButton _btnLoad;
         private System.Windows.Forms.OpenFileDialog _openFileDialog;

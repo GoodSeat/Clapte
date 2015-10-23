@@ -55,7 +55,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
             var other = obj as InputSupportCandidate;
             if (other == null) return false;
 
-            return Title == other.Title;
+            return ReplaceText == other.ReplaceText;
         }
 
         public override int GetHashCode()

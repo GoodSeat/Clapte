@@ -221,6 +221,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _inputTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
             _inputTextBox.ShowsHScrollBar = false;
+            _inputTextBox.MouseWheel += _inputTextBox_MouseMove;
 
             _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => Support.ShowInputSupport(true));
             _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
@@ -294,7 +295,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             InputSupportEnumerator.CurrentCaretLineNumber = lineIndex;
             var list = new List<InputSupportCandidate>(InputSupportEnumerator.GetAllCandidates(targetText).Where(
-                        def => def != null && def.ReplaceText == targetText));
+                        def => def != null && def.ReplaceText.TrimEnd('(') == targetText));
             if (list.Count == 0) return null;
 
             var helpTarget = list[0];
@@ -422,21 +423,36 @@ namespace GoodSeat.Clapte.Views.Forms
             InputSupportEnumerator.CurrentCaretLineNumber = line;
         }
 
-        private void _inputTextBox_MouseHover(object sender, EventArgs e)
+        private void _inputTextBox_MouseMove(object sender, MouseEventArgs e)
         {
-            _toolHelpTip.Hide(_inputTextBox);
-
             int lineIndex;
             string postText;
             string targetText = _inputTextBox.GetMouseHoverWord(out lineIndex, out postText);
-            if (targetText == null) return;
+            if (targetText == null)
+            {
+                hideTooltipHelp();
+                return;
+            }
 
             var helpTarget = GetInputSupportCandidateFromText(targetText, lineIndex, postText);
-            if (helpTarget == null) return;
+            if (helpTarget == null)
+            {
+                hideTooltipHelp();
+                return;
+            }
+
+            if (_toolTipHelp.Tag is string && (string)_toolTipHelp.Tag == helpTarget.Information) return;
 
             Point position = _inputTextBox.PointToClient(Cursor.Position);
             position.Offset(0, _inputTextBox.View.LineHeight);
-            _toolHelpTip.Show(helpTarget.Information, _inputTextBox, position, 5000);
+            _toolTipHelp.Tag = helpTarget.Information;
+            _toolTipHelp.Show(helpTarget.Information, _inputTextBox, position, 5000);
+        }
+
+        private void hideTooltipHelp()
+        {
+            _toolTipHelp.Hide(_inputTextBox);
+            _toolTipHelp.Tag = null;
         }
 
         private void _btnSave_Click(object sender, EventArgs e)
@@ -605,6 +621,10 @@ namespace GoodSeat.Clapte.Views.Forms
                 }
 
                 if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
+            }
+            else if (helpTarget.Tag is UnitConvertRecord)
+            {
+                OwnerMainForm.OpenDefine((helpTarget.Tag as UnitConvertRecord).ConvertUnit);
             }
 
             if (jump >= 0)

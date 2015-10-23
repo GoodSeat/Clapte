@@ -94,7 +94,7 @@ namespace GoodSeat.Clapte.Views
             if (currentFunctionName == null) return;
 
             var list = new List<InputSupportCandidate>(InputSupportEnumerator.GetAllCandidates(currentFunctionName).Where(
-                        item => item.ReplaceText == currentFunctionName && item.Tag is FunctionDefine)
+                        item => item.ReplaceText.TrimEnd('(') == currentFunctionName && item.Tag is FunctionDefine)
                     );
             if (list.Count != 1) return;
 
