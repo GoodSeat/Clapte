@@ -11,7 +11,6 @@ namespace GoodSeat.Liffom.Formulas
     /// <summary>
     /// 変数を表します。
     /// </summary>
-    /// <remarks>TODO:現在、変数を数値で置き換えるルールなどが存在しない。Replaceメソッドでとりあえず代替してもらうこととする。</remarks>
     [Serializable()]
     public class Variable : AtomicFormula
     {
