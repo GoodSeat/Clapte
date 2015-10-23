@@ -130,7 +130,7 @@ namespace GoodSeat.Liffom.Formulas.Units
     {
         public override IEnumerable<Prefix> GetAllPrefixs()
         {
-            yield break;
+            yield return new NullPrefix();
         }
 
         public override string Mark
