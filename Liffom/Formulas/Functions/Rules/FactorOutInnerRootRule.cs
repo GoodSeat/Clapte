@@ -163,10 +163,8 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
         private List<Formula> GetFactorsFrom(Formula gcd)
         {
             var result = new List<Formula>();
-            if (gcd is Numeric)
-            {
-                result.AddRange(GetFactorsFromNumeric(gcd as Numeric));
-            }
+            if (gcd is Numeric) result.AddRange(GetFactorsFromNumeric(gcd as Numeric));
+            else if (gcd is AtomicFormula) result.Add(gcd);
             else
             {
                 var a = new RulePatternVariable("a");

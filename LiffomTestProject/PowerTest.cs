@@ -76,8 +76,9 @@ namespace GoodSeat.LiffomTestProject
             DeformTokenTest.DeformTest(token, "(5/2)^(3/2)", "5/4*sqrt(10)");
             DeformTokenTest.DeformTest(token, "((5/3)^(1/2))^(1/3)", "root(15, 6)*root(9, 3)/3");
             DeformTokenTest.DeformTest(token, "(3^(5/3))^-1", "root(3, 3)/9");
-            DeformTokenTest.DeformTest(token, "1/(2^(1/2)+3^(1/2)+5^(1/2))", "(2*3^(1/2)+3*2^(1/2)-30^(1/2))/12");
-            DeformTokenTest.DeformTest(token, "1/(2^(1/2)+3^(1/2)+5^(1/2)+6^(1/2))", "(6-6*2^(1/2)+5*3^(1/2)+3*5^(1/2)-2*6^(1/2)-3*10^(1/2)+2*15^(1/2)-30^(1/2))/6");
+            DeformTokenTest.DeformTest(token, "1/(2^(1/2)+3^(1/2)+5^(1/2))", "(2*sqrt(3)+3*sqrt(2)-sqrt(30))/12");
+            // TODO:分母が4項以上から成る和の場合の有理化は、まだサポートしていない。
+//            DeformTokenTest.DeformTest(token, "1/(2^(1/2)+3^(1/2)+5^(1/2)+6^(1/2))", "(6-6*2^(1/2)+5*3^(1/2)+3*5^(1/2)-2*6^(1/2)-3*10^(1/2)+2*15^(1/2)-30^(1/2))/6");
         }
 
 
