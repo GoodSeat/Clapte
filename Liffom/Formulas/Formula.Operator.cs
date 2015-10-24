@@ -172,17 +172,34 @@ namespace GoodSeat.Liffom.Formulas
         }
 
         /// <summary>
-        /// Double型への暗黙的変換（変換できない場合、double.NaNを返します）
+        /// RealBase型への暗黙的変換。
         /// </summary>
         /// <param name="f">対象の数式。</param>
-        /// <returns></returns>
-        public static implicit operator double(Formula f)
+        /// <returns>変換された実数。</returns>
+        public static implicit operator Real(Formula f)
         {
-            return (f is Numeric) ? (f as Numeric).Data : double.NaN;
+            return (f is Numeric) ? (f as Numeric).Data : new Numeric(double.NaN).Data;
         }
 
+         /// <summary>
+         /// Double型への暗黙的変換（変換できない場合、double.NaNを返します）
+         /// </summary>
+         /// <param name="f">対象の数式。</param>
+         /// <returns>変換された実数。</returns>
+         public static implicit operator double(Formula f)
+         {
+             return (f is Numeric) ? (f as Numeric).Data : double.NaN;
+         }
+
         /// <summary>
-        /// Double型の暗黙的変換を行います。
+        /// RealBase型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="r">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Formula(Real r) { return new Numeric(r); }
+
+        /// <summary>
+        /// double型の暗黙的変換を行います。
         /// </summary>
         /// <param name="d">対象の数値。</param>
         /// <returns>変換されたNumeric型のオブジェクト。</returns>

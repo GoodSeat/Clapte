@@ -162,7 +162,7 @@ namespace GoodSeat.Liffom.Processes
 
                 // 非数値や無限大ならリセット
                 if (solution == null || solution.IsNaN || solution.IsInfinity) 
-                    solution = GetRandomShift(new Numeric(0), random);
+                    solution = GetRandomShift(0d, random);
 
                 // 無限ループを検知、もしくは導関数が0となったら、解を適当にずらす
                 fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Data;

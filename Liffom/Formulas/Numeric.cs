@@ -25,8 +25,8 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public static MidpointRounding MidpointRound
         {
-            get { return Real.MidpointRound; }
-            set { Real.MidpointRound = value; }
+            get { return RealData.MidpointRound; }
+            set { RealData.MidpointRound = value; }
         }
 
         /// <summary>
@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 考慮する最大有効桁数を設定もしくは取得します。この値より大きな有効桁数を有する場合、当該数値の有効桁数を無限と判定します。
         /// </summary>
-        public static int MaxPrecision { get { return PrecisionDouble.MaxPrecision; } }
+        public static int MaxPrecision { get { return 15; } }
 
         /// <summary>
         /// 2つの数値を比較し、一致するか否かを判定します。
@@ -56,40 +56,37 @@ namespace GoodSeat.Liffom.Formulas
         public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Data == n2.Data; }
 
 
-        PrecisionReal _num; // 保持数値
+        Real _num; // 保持数値
 
         /// <summary>
         /// 数値を初期化します。
         /// </summary>
         /// <param name="s">初期値を指定する文字列。</param>
-        public Numeric(string s)
+        public Numeric(string s) : this(double.Parse(s))
         {
-            Data = new PrecisionDouble(s);
+            // TODO:
+//            Data = new PrecisionDouble(s);
         }
 
         /// <summary>
         /// 数値を作成します。
         /// </summary>
         /// <param name="r">初期値を指定する数値。</param>
-        public Numeric(RealBase r)
-        {
-            throw new NotImplementedException();
-        }
+        public Numeric(Real r) { Data = r; }
 
         /// <summary>
         /// 数値を作成します。
         /// </summary>
-        /// <param name="r">初期値を指定する数値。</param>
-        public Numeric(Real r)
+        /// <param name="d">初期値を指定する数値。</param>
+        public Numeric(double d)
         {
-            if (r is PrecisionReal) Data = r as PrecisionReal;
-            else Data = new PrecisionDouble(r);
+            Data = new PrecisionReal(new RDoubleModified(d));
         }
 
         /// <summary>
         /// 内部数値を設定もしくは取得します。
         /// </summary>
-        public PrecisionReal Data
+        public Real Data
         {
             get { return _num; }
             set { _num = value; }
@@ -100,8 +97,15 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public int Precision
         {
-            get { return Data.Precision; }
-            set { Data.Precision = value; }
+            get
+            {
+                if (Data is PrecisionReal) return (Data as PrecisionReal).Precision;
+                return Data.Data.MaxValidDigit;
+            }
+            set
+            {
+                if (Data is PrecisionReal) (Data as PrecisionReal).Precision = value;
+            }
         }
 
         /// <summary>
@@ -109,7 +113,7 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public bool IsInteger
         {
-            get { return (Data.ModOf(1) == 0); }
+            get { return Data % 1.0 == 0.0; }
         }
 
         /// <summary>
@@ -118,6 +122,13 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="f">対象の数式。</param>
         /// <returns>変換されたRealオブジェクト。</returns>
         public static implicit operator Real(Numeric n) { return n.Data; }
+
+        /// <summary>
+        /// double型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="d">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(double d) { return new Numeric(d); }
 
 
         public override string GetText()
@@ -149,13 +160,7 @@ namespace GoodSeat.Liffom.Formulas
         protected override CompareResult IsLargerThan(Formula other)
         {
             int compare = -1;
-            if (other is Numeric)
-            {
-                Real delta = Data - (other as Numeric).Data;
-                if (delta > 0.0) compare = 1;
-                else if (delta < 0.0) compare = -1;
-                else compare = 0;
-            }
+            if (other is Numeric) compare = Data.CompareTo((other as Numeric).Data);
 
             if (compare > 0) return CompareResult.Larger;
             else if (compare < 0) return CompareResult.Smaller;

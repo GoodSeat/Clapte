@@ -99,7 +99,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
                 if (a is Numeric && a != 0)
                 {
                     var add = a as Numeric;
-                    coef += add.Data / new Real(Math.PI);
+                    coef += add.Data / add.Data.GetPi();
                     aRemoved = true;
                 }
 

@@ -149,7 +149,7 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <returns>|a|。</returns>
         public static Numeric Abs(Numeric R, Numeric E)
         {
-            return new Numeric(Norm(R, E).Data ^ new Real(0.5));
+            return new Numeric(Norm(R, E).Data ^ new Numeric(0.5));
         }
 
         /// <summary>
@@ -172,7 +172,7 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <returns>|a|^2。</returns>
         public static Numeric Norm(Numeric R, Numeric E)
         {
-            var r2 = new Reals.Real(2.0);
+            var r2 = new Numeric(2.0);
             return new Numeric((R.Data ^ r2) + (E.Data ^ r2));
         }
 

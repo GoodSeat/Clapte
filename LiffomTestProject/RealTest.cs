@@ -98,8 +98,10 @@ namespace GoodSeat.LiffomTestProject
                         expected = 2.36E-20;
                         break;
                 }
+                var dr = new RDoubleModified(d);
+
                 double actual;
-                actual = Real.Round(d, decimals);
+                actual = dr.Round(decimals).ToDouble();
                 Assert.AreEqual(expected, actual);
             }
         }

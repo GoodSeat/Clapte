@@ -276,11 +276,10 @@
     <Compile Include="Processes\SquareFreeDecomposition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Reals\PrecisionReal.cs" />
-    <Compile Include="Reals\PrecisionValidReal.cs" />
     <Compile Include="Reals\Real.cs" />
-    <Compile Include="Reals\RealBase.cs" />
     <Compile Include="Reals\RealData.cs" />
-    <Compile Include="Reals\PrecisionDouble.cs" />
+    <Compile Include="Reals\RDouble.cs" />
+    <Compile Include="Reals\RDoubleModified.cs" />
     <Compile Include="Utilities\Clone.cs" />
     <Compile Include="Utilities\Combination.cs" />
     <Compile Include="Utilities\EAP.cs" />

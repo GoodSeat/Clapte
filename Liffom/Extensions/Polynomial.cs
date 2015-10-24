@@ -395,7 +395,9 @@ namespace GoodSeat.Liffom.Extensions
         {
             if (f is Numeric && g is Numeric)
             {
-                r = f % g;
+                var nf = f as Numeric;
+                var ng = g as Numeric;
+                r = nf.Data % ng.Data;
                 return ((f - r) / g).Simplify();
             }
             else

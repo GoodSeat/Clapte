@@ -12,6 +12,18 @@ namespace GoodSeat.Liffom.Reals
     [Serializable()]
     public abstract class RealData : IComparable<RealData>
     {
+        static MidpointRounding s_midpointRound = MidpointRounding.AwayFromZero;
+
+        /// <summary>
+        /// 中間値の丸め方法を設定もしくは取得します。
+        /// </summary>
+        public static MidpointRounding MidpointRound
+        {
+            get { return s_midpointRound; }
+            set { s_midpointRound = value; }
+        }
+
+
         /// <summary>
         /// 計算用実数を初期化します。
         /// </summary>
@@ -38,6 +50,11 @@ namespace GoodSeat.Liffom.Reals
         public abstract int MaxValidExponent { get; }
 
         /// <summary>
+        /// このインスタンスの型で考慮可能な最小数値の正規化時の指数を取得します。
+        /// </summary>
+        public abstract int MinValidExponent { get; }
+
+        /// <summary>
         /// このインスタンスの型で考慮可能な最大桁数を取得します。
         /// </summary>
         public abstract int MaxValidDigit { get; }
@@ -46,6 +63,11 @@ namespace GoodSeat.Liffom.Reals
         /// 正規化した時の指数部を取得します。
         /// </summary>
         public abstract int Exponent { get; }
+
+        /// <summary>
+        /// 正規化した時の仮数部を取得します。
+        /// </summary>
+        public abstract RealData Mantissa { get; }
 
         /// <summary>
         /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
@@ -124,54 +146,7 @@ namespace GoodSeat.Liffom.Reals
         #region 演算
 
         /// <summary>
-        /// 指定実数との加算結果を返します。
-        /// </summary>
-        /// <param name="r">加算値。</param>
-        /// <returns>加算結果。</returns>
-        public abstract RealData AddTo(RealData r);
-
-        /// <summary>
-        /// 指定実数との積算結果を返します。
-        /// </summary>
-        /// <param name="r">乗数。</param>
-        /// <returns>積算結果。</returns>
-        public abstract RealData MultiplyTo(RealData r);
-        
-        /// <summary>
-        /// 指定実数との除算結果を返します。
-        /// </summary>
-        /// <param name="r">除数。</param>
-        /// <returns>除算結果。</returns>
-        public abstract RealData DivideBy(RealData r);
-
-        /// <summary>
-        /// 指定実数との累乗結果を返します。
-        /// </summary>
-        /// <param name="r">冪数。</param>
-        /// <returns>累乗結果。</returns>
-        public abstract RealData PowerWith(RealData r);
-
-        /// <summary>
-        /// 指定実数で除した時の剰余を返します。
-        /// </summary>
-        /// <param name="r">除数。</param>
-        /// <returns>剰余。</returns>
-        public abstract RealData ModOf(RealData r);
-
-        /// <summary>
-        /// 指定実数と等しいか否かを返します。
-        /// </summary>
-        /// <param name="r">比較対象の実数。</param>
-        /// <returns>比較結果。</returns>
-        public abstract bool IsEqualTo(RealData r);
-
-        #endregion
-
-        #region 演算子
-
-
-        /// <summary>
-        /// 二項演算子の処理を表します。
+        /// 実数を返す二項演算子の処理を表します。
         /// </summary>
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
@@ -179,7 +154,7 @@ namespace GoodSeat.Liffom.Reals
         delegate RealData Operate2(RealData r1, RealData r2);
 
         /// <summary>
-        /// 二項演算子を処理します。
+        /// 実数を返す二項演算子を処理します。二つの型で有効桁数が異なる場合、表現可能な最大値の大きい方の型に統一して計算します。
         /// </summary>
         /// <param name="op">実行する演算関数。</param>
         /// <param name="r1">実数1。</param>
@@ -196,7 +171,7 @@ namespace GoodSeat.Liffom.Reals
         }
 
         /// <summary>
-        /// 二項演算子の処理を表します。
+        /// 真偽値を返す二項演算子の処理を表します。
         /// </summary>
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
@@ -204,7 +179,7 @@ namespace GoodSeat.Liffom.Reals
         delegate bool BoolOperate2(RealData r1, RealData r2);
 
         /// <summary>
-        /// 二項演算子を処理します。
+        /// 真偽値を返す二項演算子を処理します。二つの型で有効桁数が異なる場合、表現可能な最大値の大きい方の型に統一して計算します。
         /// </summary>
         /// <param name="op">実行する演算関数。</param>
         /// <param name="r1">実数1。</param>
@@ -220,6 +195,52 @@ namespace GoodSeat.Liffom.Reals
             return op(r1, r2);
         }
 
+
+        /// <summary>
+        /// 指定実数との加算結果を返します。
+        /// </summary>
+        /// <param name="r">加算値。</param>
+        /// <returns>加算結果。</returns>
+        protected abstract RealData AddTo(RealData r);
+
+        /// <summary>
+        /// 指定実数との積算結果を返します。
+        /// </summary>
+        /// <param name="r">乗数。</param>
+        /// <returns>積算結果。</returns>
+        protected abstract RealData MultiplyTo(RealData r);
+        
+        /// <summary>
+        /// 指定実数との除算結果を返します。
+        /// </summary>
+        /// <param name="r">除数。</param>
+        /// <returns>除算結果。</returns>
+        protected abstract RealData DivideBy(RealData r);
+
+        /// <summary>
+        /// 指定実数との累乗結果を返します。
+        /// </summary>
+        /// <param name="r">冪数。</param>
+        /// <returns>累乗結果。</returns>
+        protected abstract RealData PowerWith(RealData r);
+
+        /// <summary>
+        /// 指定実数で除した時の剰余を返します。
+        /// </summary>
+        /// <param name="r">除数。</param>
+        /// <returns>剰余。</returns>
+        protected abstract RealData ModOf(RealData r);
+
+        /// <summary>
+        /// 指定実数と等しいか否かを返します。
+        /// </summary>
+        /// <param name="r">比較対象の実数。</param>
+        /// <returns>比較結果。</returns>
+        protected abstract bool IsEqualTo(RealData r);
+
+        #endregion
+
+        #region 演算子
 
         /// <summary>
         /// 加算します。

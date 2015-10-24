@@ -5,6 +5,7 @@ using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
+using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.Liffom.Formulas.Rules
 {
@@ -40,7 +41,9 @@ namespace GoodSeat.Liffom.Formulas.Rules
         {
             if (!(f1 is Numeric)) return false;
             if (!(f2 is Power)) return false;
+
             var power = f2 as Power;
+            if (power.Base == 0) return false; // 0による除算は回避
             return power.Base is Numeric && power.Exponent == -1;
         }
 
@@ -55,8 +58,12 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         protected override IEnumerable<Type> OnGetPreDemandRules()
         {
-            yield return typeof(CalculateProductOfMolecularNumericRule); // 積算の数値は計算済み
-            yield return typeof(CombineSameExponentProductRule); // 分母の数値も計算済み
+            yield break;
+        }
+
+        protected override IEnumerable<Type> OnGetPostDemandRules()
+        {
+            yield return typeof(DeformChildrenRule);
         }
 
         public override string Information
