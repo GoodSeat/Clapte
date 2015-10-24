@@ -322,7 +322,7 @@ namespace GoodSeat.Liffom.Processes
         /// <returns></returns>
         static List<Formula> GetSolution(Formula a, Formula b, Formula c, Formula d)
         {
-            var deformToken = new DeformToken(Formula.SimplifyToken, Formula.NumerateToken);
+            var deformToken = new DeformToken(Formula.SimplifyToken, Formula.NumerateToken, Formula.CalculateToken);
 
             Formula i = Imaginary.i;
             Numeric n2 = new Numeric(2d);
@@ -341,14 +341,14 @@ namespace GoodSeat.Liffom.Processes
 
             Formula mid = (((q ^ 2) + (p ^ 3)) ^ 0.5).DeformFormula(deformToken);
 
-            Formula uBase = (-q + mid) ^ (1d / 3d);
-            uBase = uBase.DeformFormula(deformToken);
+            Formula uBase = (-q + mid) ^ (n3 ^ -1);
+            uBase = uBase.Simplify().DeformFormula(deformToken);
             Formula u1 = (w1 * uBase).DeformFormula(deformToken);
             Formula u2 = (w2 * uBase).DeformFormula(deformToken);
             Formula u3 = (w3 * uBase).DeformFormula(deformToken);
 
-            Formula vBase = (-q - mid) ^ (1d / 3d);
-            vBase = vBase.DeformFormula(deformToken);
+            Formula vBase = (-q - mid) ^ (n3 ^ -1);
+            vBase = vBase.Simplify().DeformFormula(deformToken);
 
             Formula v1 = (w1 * vBase).DeformFormula(deformToken);
             Formula v2 = (w2 * vBase).DeformFormula(deformToken);

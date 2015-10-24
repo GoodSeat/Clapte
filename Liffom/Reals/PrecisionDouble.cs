@@ -87,16 +87,27 @@ namespace GoodSeat.Liffom.Reals
         public PrecisionDouble() : base() { ResetMinimumDigit(); }
 
 
+        bool _errorModified = false;
+
         /// <summary>
         /// 有効数値桁数を変化させずに、内部数値を設定もしくは取得します。取得時は、自動的に誤差を修正した有効な数値を取得します。
         /// </summary>
         public override double Data
         {
-            get { return GetErrorModifiedData(); }
+            get
+            {
+                if (!_errorModified)
+                {
+                    base.Data = GetErrorModifiedData(); 
+                    _errorModified = true;
+                }
+                return base.Data;
+            }
             set
             {
                 base.Data = value;
                 ResetMinimumDigit();
+                _errorModified = false;
             }
         }
 
@@ -210,11 +221,6 @@ namespace GoodSeat.Liffom.Reals
                 return unit;
             }
         }
-
-        /// <summary>
-        /// 内部保持の数値を、内部誤差を修正した数値に置き換えます。
-        /// </summary>
-        public override void ModifyError() { Data = GetErrorModifiedData(); }
 
         /// <summary>
         /// 無効桁数をもとに、誤差を修正した有効な数字を取得します。

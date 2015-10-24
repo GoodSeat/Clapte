@@ -33,11 +33,5 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         public abstract bool IsInfinityPrecision { get; }
 
-        /// <summary>
-        /// 数値の内部誤差をリセットします。
-        /// MEMO:この奇妙なメソッドは、将来的には削除する予定です。
-        /// </summary>
-        public abstract void ModifyError();
-
     }
 }
