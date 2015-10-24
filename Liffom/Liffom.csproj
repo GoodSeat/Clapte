@@ -278,6 +278,8 @@
     <Compile Include="Reals\PrecisionReal.cs" />
     <Compile Include="Reals\PrecisionValidReal.cs" />
     <Compile Include="Reals\Real.cs" />
+    <Compile Include="Reals\RealBase.cs" />
+    <Compile Include="Reals\RealData.cs" />
     <Compile Include="Reals\PrecisionDouble.cs" />
     <Compile Include="Utilities\Clone.cs" />
     <Compile Include="Utilities\Combination.cs" />

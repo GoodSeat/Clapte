@@ -71,6 +71,15 @@ namespace GoodSeat.Liffom.Formulas
         /// 数値を作成します。
         /// </summary>
         /// <param name="r">初期値を指定する数値。</param>
+        public Numeric(RealBase r)
+        {
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// 数値を作成します。
+        /// </summary>
+        /// <param name="r">初期値を指定する数値。</param>
         public Numeric(Real r)
         {
             if (r is PrecisionReal) Data = r as PrecisionReal;
