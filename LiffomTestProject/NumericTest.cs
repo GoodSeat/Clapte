@@ -120,8 +120,19 @@ namespace GoodSeat.LiffomTestProject
                 actual = target.GetText();
                 Assert.AreEqual("53,000.02", actual);
             }
+        }
 
+        /// <summary>
+        /// 数値誤差 のテスト
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void NumericalOperateModifyTest()
+        {
+            var f = Formula.Parse("(10000000000.9 - 1E10) * 1E10 - 9E9");
+            Assert.AreEqual("0", f.Numerate().ToString());
 
+            f = Formula.Parse("((1E10+5/9)-1E10-5/9) * 1E10");
+            Assert.AreEqual("0", f.Numerate().ToString());
         }
     }
 }

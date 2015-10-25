@@ -76,7 +76,7 @@ namespace GoodSeat.LiffomTestProject
         /// <summary>
         ///GetJudge のテスト
         ///</summary>
-        [TestMethod()]
+        [TestCategory("演算"), TestMethod()]
         public void GetJudgeTest()
         {
             DeformToken token = new DeformToken(Formula.CalculateToken, Formula.NumerateToken, Formula.SimplifyToken);
