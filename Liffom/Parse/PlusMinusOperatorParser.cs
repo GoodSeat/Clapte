@@ -36,13 +36,13 @@ namespace GoodSeat.Liffom.Parse
             else if (mark == "-")
             {
                 var num = target as Numeric;
-                if (num != null && num > 0) return new Numeric(num.Data * -1);
+                if (num != null && num > 0) return new Numeric(num.Figure * -1);
 
                 var product = target as Product;
                 if (product != null && product[0] is Numeric && product[0] > 0)
                 {
                     var numTop = product[0] as Numeric;
-                    product[0] = new Numeric(numTop.Data * -1);
+                    product[0] = new Numeric(numTop.Figure * -1);
                     return product;
                 }
                 else

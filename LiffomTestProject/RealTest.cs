@@ -98,7 +98,7 @@ namespace GoodSeat.LiffomTestProject
                         expected = 2.36E-20;
                         break;
                 }
-                var dr = new RDoubleModified(d);
+                var dr = new DoubleValueModified(d);
 
                 double actual;
                 actual = dr.Round(decimals).ToDouble();

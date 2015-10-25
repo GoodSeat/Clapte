@@ -10,25 +10,25 @@ namespace GoodSeat.Liffom.Reals
     /// 数値計算用の実数の内部数値を表します。
     /// </summary>
     [Serializable()]
-    public class RDoubleModified : RDouble
+    public class DoubleValueModified : DoubleValue
     {
         /// <summary>
         /// 計算用実数を初期化します。
         /// </summary>
-        public RDoubleModified() : base() { }
+        public DoubleValueModified() : base() { }
 
         /// <summary>
         /// 計算用実数を初期化します。
         /// </summary>
         /// <param name="data">初期化に使用するdouble型数値。</param>
-        public RDoubleModified(double data) : base(data) { }
+        public DoubleValueModified(double data) : base(data) { }
 
         /// <summary>
         /// 指定したdouble型数値から、計算用実数を初期化して取得します。
         /// </summary>
         /// <param name="data">初期化に使用するdouble型数値。</param>
         /// <returns>初期化された内部数値。</returns>
-        public override RealData CreateFrom(double data) { return new RDoubleModified(data); }
+        public override Value CreateFrom(double data) { return new DoubleValueModified(data); }
 
         public override void FromDouble(double data) { InnerData = data; }
 
@@ -102,7 +102,7 @@ namespace GoodSeat.Liffom.Reals
         private double GetErrorModifiedData()
         {
             if (!double.IsInfinity(base.InnerData) && !double.IsNaN(base.InnerData))
-                return new RDouble(base.InnerData).Round(-MinimumDigit).ToDouble();
+                return new DoubleValue(base.InnerData).Round(-MinimumDigit).ToDouble();
             else
                 return base.InnerData;
         }
@@ -121,14 +121,14 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="n">対象の整数。</param>
         /// <returns>変換された実数。</returns>
-        public static implicit operator RDoubleModified(int n) { return new RDoubleModified((double)n); }
+        public static implicit operator DoubleValueModified(int n) { return new DoubleValueModified((double)n); }
 
         /// <summary>
         /// Double型からの暗黙的変換。
         /// </summary>
         /// <param name="r">対象の実数。</param>
         /// <returns>変換された実数。</returns>
-        public static implicit operator RDoubleModified(double r) { return new RDoubleModified(r); }
+        public static implicit operator DoubleValueModified(double r) { return new DoubleValueModified(r); }
 
         #endregion
 
@@ -139,12 +139,12 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">加算値。</param>
         /// <returns>加算結果。</returns>
-        protected override RealData AddTo(RealData r)
+        protected override Value AddTo(Value r)
         {
-            RDoubleModified n1 = this;
-            RDoubleModified n2 = r as RDoubleModified;
+            DoubleValueModified n1 = this;
+            DoubleValueModified n2 = r as DoubleValueModified;
 
-            RDoubleModified result = new RDoubleModified(n1.InnerData + n2.InnerData);
+            DoubleValueModified result = new DoubleValueModified(n1.InnerData + n2.InnerData);
             result.MinimumDigit = Math.Min(n1.MinimumDigit, n2.MinimumDigit);
 
             return result;
@@ -155,12 +155,12 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">乗数。</param>
         /// <returns>積算結果。</returns>
-        protected override RealData MultiplyTo(RealData r)
+        protected override Value MultiplyTo(Value r)
         {
-            RDoubleModified n1 = this;
-            RDoubleModified n2 = r as RDoubleModified;
+            DoubleValueModified n1 = this;
+            DoubleValueModified n2 = r as DoubleValueModified;
 
-            RDoubleModified result = new RDoubleModified(n1.InnerData * n2.InnerData);
+            DoubleValueModified result = new DoubleValueModified(n1.InnerData * n2.InnerData);
             result.MinimumDigit = n1.MinimumDigit + n2.MinimumDigit;
 
             return result;
@@ -171,17 +171,17 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">除数。</param>
         /// <returns>剰余。</returns>
-        protected override RealData ModOf(RealData r)
+        protected override Value ModOf(Value r)
         {
-            RDoubleModified r1 = this;
-            RDoubleModified r2 = r as RDoubleModified;
+            DoubleValueModified r1 = this;
+            DoubleValueModified r2 = r as DoubleValueModified;
 
-            var r0 = new RDoubleModified(0d);
-            if (r1 < r0) r1 = -r1 as RDoubleModified;
-            if (r2 < r0) r2 = -r2 as RDoubleModified;
+            var r0 = new DoubleValueModified(0d);
+            if (r1 < r0) r1 = -r1 as DoubleValueModified;
+            if (r2 < r0) r2 = -r2 as DoubleValueModified;
 
-            var s1 = ((r1 / r2 - CreateFrom(0.5)).Round(0) * r2) as RDoubleModified;
-            var surplus = (r1 - s1) as RDoubleModified;
+            var s1 = ((r1 / r2 - CreateFrom(0.5)).Round(0) * r2) as DoubleValueModified;
+            var surplus = (r1 - s1) as DoubleValueModified;
 
             surplus.InnerData = surplus.GetErrorModifiedData();
             if (surplus == r2) return surplus - r2;
@@ -193,7 +193,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">比較対象の実数。</param>
         /// <returns>比較結果。</returns>
-        protected override bool IsEqualTo(RealData r) { return GetErrorModifiedData() == r.ToDouble(); }
+        protected override bool IsEqualTo(Value r) { return GetErrorModifiedData() == r.ToDouble(); }
 
         #endregion
 
@@ -204,7 +204,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="other">このオブジェクトと比較するオブジェクト。</param>
         /// <returns>比較対象オブジェクトの相対順序を示す値。</returns>
-        public override int CompareTo(RealData other) { return Math.Sign(GetErrorModifiedData() - other.ToDouble()); }
+        public override int CompareTo(Value other) { return Math.Sign(GetErrorModifiedData() - other.ToDouble()); }
 
         #endregion
 

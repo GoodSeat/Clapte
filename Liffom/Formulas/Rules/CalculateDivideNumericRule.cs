@@ -51,7 +51,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
         {
             Numeric molecular = f1 as Numeric;
             Numeric denominator = (f2 as Power).Base as Numeric;
-            return new Numeric(molecular.Data / denominator.Data);
+            return new Numeric(molecular.Figure / denominator.Figure);
         }
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Product; }

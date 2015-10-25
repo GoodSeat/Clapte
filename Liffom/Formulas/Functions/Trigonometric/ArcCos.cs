@@ -47,7 +47,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             }
 
             if (z is Numeric && Math.Abs(z) <= 1.0)
-                return new Numeric((z as Numeric).Data.Acos());
+                return new Numeric((z as Numeric).Figure.Acos());
             else if (Imaginary.IsComplexNumber(z, true))
             {
                 var i = Imaginary.i;

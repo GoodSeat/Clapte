@@ -10,25 +10,25 @@ namespace GoodSeat.Liffom.Reals
     /// 数値計算用の実数の内部数値を表します。
     /// </summary>
     [Serializable()]
-    public class RDouble : RealData
+    public class DoubleValue : Value
     {
         /// <summary>
         /// 計算用実数を初期化します。
         /// </summary>
-        public RDouble() : base() { }
+        public DoubleValue() : base() { }
 
         /// <summary>
         /// 計算用実数を初期化します。
         /// </summary>
         /// <param name="data">初期化に使用するdouble型数値。</param>
-        public RDouble(double data) : base(data) { }
+        public DoubleValue(double data) : base(data) { }
 
         /// <summary>
         /// 指定したdouble型数値から、計算用実数を初期化して取得します。
         /// </summary>
         /// <param name="data">初期化に使用するdouble型数値。</param>
         /// <returns>初期化された内部数値。</returns>
-        public override RealData CreateFrom(double data) { return new RDouble(data); }
+        public override Value CreateFrom(double data) { return new DoubleValue(data); }
 
         #region プロパティ
 
@@ -67,7 +67,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 正規化した時の仮数部を取得します。
         /// </summary>
-        public override RealData Mantissa
+        public override Value Mantissa
         {
             get
             {
@@ -123,14 +123,14 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="n">対象の整数。</param>
         /// <returns>変換された実数。</returns>
-        public static implicit operator RDouble(int n) { return new RDouble((double)n); }
+        public static implicit operator DoubleValue(int n) { return new DoubleValue((double)n); }
 
         /// <summary>
         /// Double型からの暗黙的変換。
         /// </summary>
         /// <param name="r">対象の実数。</param>
         /// <returns>変換された実数。</returns>
-        public static implicit operator RDouble(double r) { return new RDouble(r); }
+        public static implicit operator DoubleValue(double r) { return new DoubleValue(r); }
 
         /// <summary>
         /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
@@ -148,42 +148,42 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">加算値。</param>
         /// <returns>加算結果。</returns>
-        protected override RealData AddTo(RealData r) { return CreateFrom(InnerData + r.ToDouble()); }
+        protected override Value AddTo(Value r) { return CreateFrom(InnerData + r.ToDouble()); }
 
         /// <summary>
         /// 指定実数との積算結果を返します。
         /// </summary>
         /// <param name="r">乗数。</param>
         /// <returns>積算結果。</returns>
-        protected override RealData MultiplyTo(RealData r) { return CreateFrom(InnerData * r.ToDouble()); }
+        protected override Value MultiplyTo(Value r) { return CreateFrom(InnerData * r.ToDouble()); }
         
         /// <summary>
         /// 指定実数との除算結果を返します。
         /// </summary>
         /// <param name="r">除数。</param>
         /// <returns>除算結果。</returns>
-        protected override RealData DivideBy(RealData r) { return CreateFrom(InnerData / r.ToDouble()); }
+        protected override Value DivideBy(Value r) { return CreateFrom(InnerData / r.ToDouble()); }
 
         /// <summary>
         /// 指定実数との累乗結果を返します。
         /// </summary>
         /// <param name="r">冪数。</param>
         /// <returns>累乗結果。</returns>
-        protected override RealData PowerWith(RealData r) { return CreateFrom(Math.Pow(InnerData, r.ToDouble())); }
+        protected override Value PowerWith(Value r) { return CreateFrom(Math.Pow(InnerData, r.ToDouble())); }
 
         /// <summary>
         /// 指定実数で除した時の剰余を返します。
         /// </summary>
         /// <param name="r">除数。</param>
         /// <returns>剰余。</returns>
-        protected override RealData ModOf(RealData r) { return CreateFrom(InnerData % r.ToDouble()); }
+        protected override Value ModOf(Value r) { return CreateFrom(InnerData % r.ToDouble()); }
 
         /// <summary>
         /// 指定実数と等しいか否かを返します。
         /// </summary>
         /// <param name="r">比較対象の実数。</param>
         /// <returns>比較結果。</returns>
-        protected override bool IsEqualTo(RealData r) { return InnerData == r.ToDouble(); }
+        protected override bool IsEqualTo(Value r) { return InnerData == r.ToDouble(); }
 
         #endregion
 
@@ -194,7 +194,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="other">このオブジェクトと比較するオブジェクト。</param>
         /// <returns>比較対象オブジェクトの相対順序を示す値。</returns>
-        public override int CompareTo(RealData other) { return Math.Sign(InnerData - other.ToDouble()); }
+        public override int CompareTo(Value other) { return Math.Sign(InnerData - other.ToDouble()); }
 
         #endregion
 
@@ -204,13 +204,13 @@ namespace GoodSeat.Liffom.Reals
         /// 円周率πに相当する数値を生成して取得します。
         /// </summary>
         /// <returns>円周率を表す数値。</returns>
-        public override RealData GetPi() { return CreateFrom(Math.PI); }
+        public override Value GetPi() { return CreateFrom(Math.PI); }
 
         /// <summary>
         /// 自然対数の底eに相当する数値を生成して取得します。
         /// </summary>
         /// <returns>自然対数の底eを表す数値。</returns>
-        public override RealData GetNapiers() { return CreateFrom(Math.E); }
+        public override Value GetNapiers() { return CreateFrom(Math.E); }
 
         #endregion
         
@@ -220,51 +220,51 @@ namespace GoodSeat.Liffom.Reals
         /// このインスタンスの角度のサインを返します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public override RealData Sin() { return CreateFrom(Math.Sin(InnerData)); }
+        public override Value Sin() { return CreateFrom(Math.Sin(InnerData)); }
 
         /// <summary>
         /// このインスタンスをサインとする角度の主値を取得します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public override RealData Asin() { return CreateFrom(Math.Asin(InnerData)); }
+        public override Value Asin() { return CreateFrom(Math.Asin(InnerData)); }
 
         /// <summary>
         /// このインスタンスの角度のコサインを返します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public override RealData Cos() { return CreateFrom(Math.Cos(InnerData)); }
+        public override Value Cos() { return CreateFrom(Math.Cos(InnerData)); }
 
         /// <summary>
         /// このインスタンスをコサインとする角度の主値を取得します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public override RealData Acos() { return CreateFrom(Math.Acos(InnerData)); }
+        public override Value Acos() { return CreateFrom(Math.Acos(InnerData)); }
 
         /// <summary>
         /// このインスタンスの角度のタンジェントを返します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public override RealData Tan() { return CreateFrom(Math.Tan(InnerData)); }
+        public override Value Tan() { return CreateFrom(Math.Tan(InnerData)); }
 
         /// <summary>
         /// このインスタンスをタンジェントとする角度の主値を取得します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public override RealData Atan() { return CreateFrom(Math.Atan(InnerData)); }
+        public override Value Atan() { return CreateFrom(Math.Atan(InnerData)); }
 
         /// <summary>
         /// 指定した数値を底とする対数を返します。
         /// </summary>
         /// <param name="b">底。</param>
         /// <returns>評価後の実数。</returns>
-        public override RealData Log(RealData b) { return CreateFrom(Math.Log(InnerData, b.ToDouble())); }
+        public override Value Log(Value b) { return CreateFrom(Math.Log(InnerData, b.ToDouble())); }
 
         /// <summary>
         /// 指定した小数部桁数に丸めます。
         /// </summary>
         /// <param name="round">丸める小数桁数。負数の指定も有効で、10^(-decimals)の桁に丸めます。</param>
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
-        public override RealData Round(int round)
+        public override Value Round(int round)
         {
             double data = InnerData * Math.Pow(10, round);
             double rounded = Math.Round(data, MidpointRound);

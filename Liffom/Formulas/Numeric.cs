@@ -25,8 +25,8 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public static MidpointRounding MidpointRound
         {
-            get { return RealData.MidpointRound; }
-            set { RealData.MidpointRound = value; }
+            get { return Value.MidpointRound; }
+            set { Value.MidpointRound = value; }
         }
 
         /// <summary>
@@ -53,7 +53,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 2つの数値を比較し、一致するか否かを判定します。
         /// </summary>
-        public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Data == n2.Data; }
+        public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Figure == n2.Figure; }
 
 
         Real _num; // 保持数値
@@ -72,7 +72,7 @@ namespace GoodSeat.Liffom.Formulas
         /// 数値を作成します。
         /// </summary>
         /// <param name="r">初期値を指定する数値。</param>
-        public Numeric(Real r) { Data = r; }
+        public Numeric(Real r) { Figure = r; }
 
         /// <summary>
         /// 数値を作成します。
@@ -80,13 +80,13 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="d">初期値を指定する数値。</param>
         public Numeric(double d)
         {
-            Data = new PrecisionReal(new RDoubleModified(d));
+            Figure = new SignificantReal(new DoubleValueModified(d));
         }
 
         /// <summary>
         /// 内部数値を設定もしくは取得します。
         /// </summary>
-        public Real Data
+        public Real Figure
         {
             get { return _num; }
             set { _num = value; }
@@ -99,12 +99,12 @@ namespace GoodSeat.Liffom.Formulas
         {
             get
             {
-                if (Data is PrecisionReal) return (Data as PrecisionReal).Precision;
-                return Data.Data.MaxValidDigit;
+                if (Figure is SignificantReal) return (Figure as SignificantReal).Precision;
+                return Figure.Value.MaxValidDigit;
             }
             set
             {
-                if (Data is PrecisionReal) (Data as PrecisionReal).Precision = value;
+                if (Figure is SignificantReal) (Figure as SignificantReal).Precision = value;
             }
         }
 
@@ -113,7 +113,7 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public bool IsInteger
         {
-            get { return Data % 1.0 == 0.0; }
+            get { return Figure % 1.0 == 0.0; }
         }
 
         /// <summary>
@@ -121,7 +121,7 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         /// <param name="f">対象の数式。</param>
         /// <returns>変換されたRealオブジェクト。</returns>
-        public static implicit operator Real(Numeric n) { return n.Data; }
+        public static implicit operator Real(Numeric n) { return n.Figure; }
 
         /// <summary>
         /// double型の暗黙的変換を行います。
@@ -138,9 +138,9 @@ namespace GoodSeat.Liffom.Formulas
             // 有効桁数考慮表記
             bool considerDigit = Format.PropertyOf<ConsiderDigitFormatProperty>();
             if (considerDigit)
-                result = Data.ToString();
+                result = Figure.ToString();
             else
-                result = Data.Data.ToString("G");
+                result = Figure.Value.ToString("G");
 
             // 小数点表記
             result = Format.PropertyOf<RadixPointFormatProperty>().SetRadixPoint(result);
@@ -155,12 +155,12 @@ namespace GoodSeat.Liffom.Formulas
         /// 数式の一意性評価に用いる文字列で、同じ型の数式同士の一意性を表す文字列を取得します。
         /// </summary>
         /// <returns>数式を一意に区別する文字列。</returns>
-        protected override string OnGetUniqueText() { return Data.Data.ToString("G"); }
+        protected override string OnGetUniqueText() { return Figure.Value.ToString("G"); }
 
         protected override CompareResult IsLargerThan(Formula other)
         {
             int compare = -1;
-            if (other is Numeric) compare = Data.CompareTo((other as Numeric).Data);
+            if (other is Numeric) compare = Figure.CompareTo((other as Numeric).Figure);
 
             if (compare > 0) return CompareResult.Larger;
             else if (compare < 0) return CompareResult.Smaller;

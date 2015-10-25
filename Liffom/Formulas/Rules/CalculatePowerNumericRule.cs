@@ -52,22 +52,22 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric rad = Imaginary.Arg(R, E); // 元の偏角
 
             // 累乗計算後の複素数の絶対値
-            Numeric newAbs = abs.Data ^ expNumeric.Data;
+            Numeric newAbs = abs.Figure ^ expNumeric.Figure;
 
             // 角度を取得
             Numeric newRad = new Numeric((rad * expNumeric).Numerate() as Numeric);
             if (newRad > Math.PI * 2) newRad = new Numeric(newRad % (2 * Math.PI));
             if (newRad < 0) newRad = (newRad + 2 * Math.PI).Numerate() as Numeric;
 
-            Numeric cos = new Numeric(newRad.Data.Cos());
-            Numeric sin = new Numeric(newRad.Data.Sin());
+            Numeric cos = new Numeric(newRad.Figure.Cos());
+            Numeric sin = new Numeric(newRad.Figure.Sin());
             if (Math.Abs(cos) < 5E-15 || Math.Abs(sin) == 1) cos = new Numeric(0);
             if (Math.Abs(sin) < 5E-15 || Math.Abs(cos) == 1) sin = new Numeric(0);
-            cos = new Numeric(cos.Data.Round(15)); 
-            sin = new Numeric(sin.Data.Round(15)); 
+            cos = new Numeric(cos.Figure.Round(15)); 
+            sin = new Numeric(sin.Figure.Round(15)); 
 
-            Numeric newReal = new Numeric(cos).Data * newAbs.Data;
-            Numeric newImag = new Numeric(sin).Data * newAbs.Data;
+            Numeric newReal = new Numeric(cos).Figure * newAbs.Figure;
+            Numeric newImag = new Numeric(sin).Figure * newAbs.Figure;
             if (newReal == 0)
             {
                 if (newImag == 1) return Imaginary.i;

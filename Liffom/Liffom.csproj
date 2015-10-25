@@ -275,11 +275,11 @@
     <Compile Include="Processes\SolveSimultaneousEquation.cs" />
     <Compile Include="Processes\SquareFreeDecomposition.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Reals\PrecisionReal.cs" />
+    <Compile Include="Reals\SignificantReal.cs" />
     <Compile Include="Reals\Real.cs" />
-    <Compile Include="Reals\RealData.cs" />
-    <Compile Include="Reals\RDouble.cs" />
-    <Compile Include="Reals\RDoubleModified.cs" />
+    <Compile Include="Reals\Value.cs" />
+    <Compile Include="Reals\DoubleValue.cs" />
+    <Compile Include="Reals\DoubleValueModified.cs" />
     <Compile Include="Utilities\Clone.cs" />
     <Compile Include="Utilities\Combination.cs" />
     <Compile Include="Utilities\EAP.cs" />

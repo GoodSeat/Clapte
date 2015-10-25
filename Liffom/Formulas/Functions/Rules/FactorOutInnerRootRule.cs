@@ -46,7 +46,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             var root = target as Root;
             var exp = root[1] as Numeric;
 
-            int exponent = (int)exp.Data;
+            int exponent = (int)exp.Figure;
             if (exponent == 1) return root[0];
             if (exponent == 0) return 1; // TODO:これは明確な間違え
             if (exponent < 0) return 1 / new Root(root[0], -1 * exponent);

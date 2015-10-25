@@ -76,8 +76,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             }
             else
             {
-                newMolecular = new Numeric((molecular.Data / gcd.Data).Round(0));
-                newDenominator = new Numeric((denominator.Data / gcd.Data).Round(0));
+                newMolecular = new Numeric((molecular.Figure / gcd.Figure).Round(0));
+                newDenominator = new Numeric((denominator.Figure / gcd.Figure).Round(0));
             }
         }
 

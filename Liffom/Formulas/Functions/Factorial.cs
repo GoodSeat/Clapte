@@ -61,11 +61,11 @@ namespace GoodSeat.Liffom.Formulas.Functions
         public override Formula CalculateFunction()
         {
             Numeric n = Argument[0] as Numeric;
-            if (n == null || !n.IsInteger || n.Data < 0) return this; // 対象が自然数でない
+            if (n == null || !n.IsInteger || n.Figure < 0) return this; // 対象が自然数でない
             Numeric m = Argument[1] as Numeric;
-            if (m != null && (!m.IsInteger || m.Data < 0)) return this; // 階乗数が自然数でない
+            if (m != null && (!m.IsInteger || m.Figure < 0)) return this; // 階乗数が自然数でない
 
-            if (n.Data == 0) return 1;
+            if (n.Figure == 0) return 1;
 
             double result = n;
             double multiple = 1;

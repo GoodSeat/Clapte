@@ -38,7 +38,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
         public override Formula CalculateFunction()
         {
             if (Argument[0] is Numeric && (Argument[0] as Numeric).IsInteger)
-                return PrimeFactorize((int)(Argument[0] as Numeric).Data);
+                return PrimeFactorize((int)(Argument[0] as Numeric).Figure);
             else
                 return this;
         }

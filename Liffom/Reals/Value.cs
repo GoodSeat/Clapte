@@ -10,7 +10,7 @@ namespace GoodSeat.Liffom.Reals
     /// 数値計算用の実数の内部数値を表します。
     /// </summary>
     [Serializable()]
-    public abstract class RealData : IComparable<RealData>
+    public abstract class Value : IComparable<Value>
     {
         static MidpointRounding s_midpointRound = MidpointRounding.AwayFromZero;
 
@@ -27,20 +27,20 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 計算用実数を初期化します。
         /// </summary>
-        public RealData() : this(0d) { }
+        public Value() : this(0d) { }
 
         /// <summary>
         /// 計算用実数を初期化します。
         /// </summary>
         /// <param name="data">初期化に使用するdouble型数値。</param>
-        public RealData(double data) { FromDouble(data); }
+        public Value(double data) { FromDouble(data); }
 
         /// <summary>
         /// 指定したdouble型数値から、計算用実数を初期化して取得します。
         /// </summary>
         /// <param name="data">初期化に使用するdouble型数値。</param>
         /// <returns>初期化された内部数値。</returns>
-        public abstract RealData CreateFrom(double data);
+        public abstract Value CreateFrom(double data);
 
         #region プロパティ
 
@@ -67,7 +67,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 正規化した時の仮数部を取得します。
         /// </summary>
-        public abstract RealData Mantissa { get; }
+        public abstract Value Mantissa { get; }
 
         /// <summary>
         /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
@@ -151,7 +151,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>演算結果。</returns>
-        delegate RealData Operate2(RealData r1, RealData r2);
+        delegate Value Operate2(Value r1, Value r2);
 
         /// <summary>
         /// 実数を返す二項演算子を処理します。二つの型で有効桁数が異なる場合、表現可能な最大値の大きい方の型に統一して計算します。
@@ -160,7 +160,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>演算結果。</returns>
-        static RealData DoOperate2(Operate2 op, RealData r1, RealData r2)
+        static Value DoOperate2(Operate2 op, Value r1, Value r2)
         {
             if (r1.GetType() != r2.GetType())
             {
@@ -176,7 +176,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>演算結果。</returns>
-        delegate bool BoolOperate2(RealData r1, RealData r2);
+        delegate bool BoolOperate2(Value r1, Value r2);
 
         /// <summary>
         /// 真偽値を返す二項演算子を処理します。二つの型で有効桁数が異なる場合、表現可能な最大値の大きい方の型に統一して計算します。
@@ -185,7 +185,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>演算結果。</returns>
-        static bool DoBoolOperate2(BoolOperate2 op, RealData r1, RealData r2)
+        static bool DoBoolOperate2(BoolOperate2 op, Value r1, Value r2)
         {
             if (r1.GetType() != r2.GetType())
             {
@@ -201,42 +201,42 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">加算値。</param>
         /// <returns>加算結果。</returns>
-        protected abstract RealData AddTo(RealData r);
+        protected abstract Value AddTo(Value r);
 
         /// <summary>
         /// 指定実数との積算結果を返します。
         /// </summary>
         /// <param name="r">乗数。</param>
         /// <returns>積算結果。</returns>
-        protected abstract RealData MultiplyTo(RealData r);
+        protected abstract Value MultiplyTo(Value r);
         
         /// <summary>
         /// 指定実数との除算結果を返します。
         /// </summary>
         /// <param name="r">除数。</param>
         /// <returns>除算結果。</returns>
-        protected abstract RealData DivideBy(RealData r);
+        protected abstract Value DivideBy(Value r);
 
         /// <summary>
         /// 指定実数との累乗結果を返します。
         /// </summary>
         /// <param name="r">冪数。</param>
         /// <returns>累乗結果。</returns>
-        protected abstract RealData PowerWith(RealData r);
+        protected abstract Value PowerWith(Value r);
 
         /// <summary>
         /// 指定実数で除した時の剰余を返します。
         /// </summary>
         /// <param name="r">除数。</param>
         /// <returns>剰余。</returns>
-        protected abstract RealData ModOf(RealData r);
+        protected abstract Value ModOf(Value r);
 
         /// <summary>
         /// 指定実数と等しいか否かを返します。
         /// </summary>
         /// <param name="r">比較対象の実数。</param>
         /// <returns>比較結果。</returns>
-        protected abstract bool IsEqualTo(RealData r);
+        protected abstract bool IsEqualTo(Value r);
 
         #endregion
 
@@ -248,7 +248,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>加算結果。</returns>
-        public static RealData operator +(RealData r1, RealData r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r2); }
+        public static Value operator +(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r2); }
 
         /// <summary>
         /// 減算します。
@@ -256,14 +256,14 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>減算結果。</returns>
-        public static RealData operator -(RealData r1, RealData r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, -r2); }
+        public static Value operator -(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, -r2); }
 
         /// <summary>
         /// 負数を生成します。
         /// </summary>
         /// <param name="r1">実数。</param>
         /// <returns>負数。</returns>
-        public static RealData operator -(RealData r1) { return r1 * r1.CreateFrom(-1d); }
+        public static Value operator -(Value r1) { return r1 * r1.CreateFrom(-1d); }
 
         /// <summary>
         /// 乗算します。
@@ -271,7 +271,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">乗数1。</param>
         /// <param name="r2">乗数2。</param>
         /// <returns>乗算結果。</returns>
-        public static RealData operator *(RealData r1, RealData r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r1, r2); }
+        public static Value operator *(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r1, r2); }
 
         /// <summary>
         /// 除算します。
@@ -279,7 +279,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">被除数。</param>
         /// <param name="r2">除数。</param>
         /// <returns>除算結果。</returns>
-        public static RealData operator /(RealData r1, RealData r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r1, r2); }
+        public static Value operator /(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r1, r2); }
 
         /// <summary>
         /// 累乗します。
@@ -287,7 +287,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f1">底。</param>
         /// <param name="f2">冪数。</param>
         /// <returns>累乗。</returns>
-        public static RealData operator ^(RealData r1, RealData r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r2); }
+        public static Value operator ^(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r2); }
         
         /// <summary>
         /// 剰余を取得します。
@@ -295,7 +295,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f1">被除数。</param>
         /// <param name="f2">除数。</param>
         /// <returns>累乗。</returns>
-        public static RealData operator %(RealData r1, RealData r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r1, r2); }
+        public static Value operator %(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r1, r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -303,7 +303,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator ==(RealData r1, RealData r2)
+        public static bool operator ==(Value r1, Value r2)
         {
             if (Object.Equals(r1, null) && Object.Equals(r2, null)) return true;
             if (Object.Equals(r1, null) || Object.Equals(r2, null)) return false;
@@ -317,7 +317,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator !=(RealData r1, RealData r2) { return !(r1 == r2); }
+        public static bool operator !=(Value r1, Value r2) { return !(r1 == r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -325,7 +325,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator >(RealData r1, RealData r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) > 0, r1, r2); }
+        public static bool operator >(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) > 0, r1, r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -333,7 +333,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator >=(RealData r1, RealData r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) >= 0, r1, r2); }
+        public static bool operator >=(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) >= 0, r1, r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -341,7 +341,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator <(RealData r1, RealData r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) < 0, r1, r2); }
+        public static bool operator <(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) < 0, r1, r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -349,7 +349,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator <=(RealData r1, RealData r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) <= 0, r1, r2); }
+        public static bool operator <=(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) <= 0, r1, r2); }
 
         /// <summary>
         /// 対象のインスタンスが、指定したオブジェクトに等しいかどうかを示す値を返します。
@@ -358,8 +358,8 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>obj が System.Double のインスタンスで、このインスタンスの値に等しい場合は true。それ以外の場合は false。</returns>
         public override bool Equals(object obj)
         {
-            if (obj is RealData)
-                return (this == obj as RealData);
+            if (obj is Value)
+                return (this == obj as Value);
             else
                 return base.Equals(obj);
         }
@@ -373,7 +373,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="other">このオブジェクトと比較するオブジェクト。</param>
         /// <returns>比較対象オブジェクトの相対順序を示す値。</returns>
-        public abstract int CompareTo(RealData other);
+        public abstract int CompareTo(Value other);
 
         #endregion
 
@@ -383,13 +383,13 @@ namespace GoodSeat.Liffom.Reals
         /// 円周率πに相当する数値を生成して取得します。
         /// </summary>
         /// <returns>円周率を表す数値。</returns>
-        public abstract RealData GetPi();
+        public abstract Value GetPi();
 
         /// <summary>
         /// 自然対数の底eに相当する数値を生成して取得します。
         /// </summary>
         /// <returns>自然対数の底eを表す数値。</returns>
-        public abstract RealData GetNapiers();
+        public abstract Value GetNapiers();
 
         #endregion
         
@@ -399,51 +399,51 @@ namespace GoodSeat.Liffom.Reals
         /// このインスタンスの角度のサインを返します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public abstract RealData Sin();
+        public abstract Value Sin();
 
         /// <summary>
         /// このインスタンスをサインとする角度の主値を取得します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public abstract RealData Asin();
+        public abstract Value Asin();
 
         /// <summary>
         /// このインスタンスの角度のコサインを返します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public abstract RealData Cos();
+        public abstract Value Cos();
 
         /// <summary>
         /// このインスタンスをコサインとする角度の主値を取得します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public abstract RealData Acos();
+        public abstract Value Acos();
 
         /// <summary>
         /// このインスタンスの角度のタンジェントを返します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public abstract RealData Tan();
+        public abstract Value Tan();
 
         /// <summary>
         /// このインスタンスをタンジェントとする角度の主値を取得します。
         /// </summary>
         /// <returns>評価後の実数。</returns>
-        public abstract RealData Atan();
+        public abstract Value Atan();
 
         /// <summary>
         /// 指定した数値を底とする対数を返します。
         /// </summary>
         /// <param name="b">底。</param>
         /// <returns>評価後の実数。</returns>
-        public abstract RealData Log(RealData b);
+        public abstract Value Log(Value b);
 
         /// <summary>
         /// 指定した小数部桁数に丸めます。
         /// </summary>
         /// <param name="round">丸める小数桁数。負数の指定も有効で、10^(-decimals)の桁に丸めます。</param>
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
-        public abstract RealData Round(int round);
+        public abstract Value Round(int round);
 
         #endregion
 

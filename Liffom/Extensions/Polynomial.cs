@@ -397,7 +397,7 @@ namespace GoodSeat.Liffom.Extensions
             {
                 var nf = f as Numeric;
                 var ng = g as Numeric;
-                r = nf.Data % ng.Data;
+                r = nf.Figure % ng.Figure;
                 return ((f - r) / g).Simplify();
             }
             else
@@ -599,8 +599,8 @@ namespace GoodSeat.Liffom.Extensions
         {
             if (n1 == 0) return n2;
             if (n2 == 0) return n1;
-            if (n1.Data.IsInfinity) return null;
-            if (n2.Data.IsInfinity) return null;
+            if (n1.Figure.IsInfinity) return null;
+            if (n2.Figure.IsInfinity) return null;
 
             Numeric errorRatio = new Numeric(Math.Pow(10, -Numeric.MaxPrecision) * 5d);
 
@@ -615,19 +615,19 @@ namespace GoodSeat.Liffom.Extensions
             {
                 if (n1 > n2)
                 {
-                    Real baseReal = n1.Data;
-                    n1 = new Numeric(n1.Data % n2.Data);
+                    Real baseReal = n1.Figure;
+                    n1 = new Numeric(n1.Figure % n2.Figure);
                     error = (n2 * errorRatio).Numerate() as Numeric;
 
-                    if (n1.Data == baseReal) break;
+                    if (n1.Figure == baseReal) break;
                 }
                 else
                 {
-                    Real baseReal = n2.Data;
-                    n2 = new Numeric(n2.Data % n1.Data);
+                    Real baseReal = n2.Figure;
+                    n2 = new Numeric(n2.Figure % n1.Figure);
                     error = (n1 * errorRatio).Numerate() as Numeric;
 
-                    if (n2.Data == baseReal) break;
+                    if (n2.Figure == baseReal) break;
                 }
 
                 if (count++ > 1000)

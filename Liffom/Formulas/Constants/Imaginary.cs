@@ -85,9 +85,9 @@ namespace GoodSeat.Liffom.Formulas.Constants
             Numeric R, E;
             if (!IsComplexNumber(f, true, out R, out E)) return f;
 
-            if (R.Data.Exponent >= E.Data.Exponent + precision)
+            if (R.Figure.Exponent >= E.Figure.Exponent + precision)
                 return R;
-            else if (E.Data.Exponent >= R.Data.Exponent + precision)
+            else if (E.Figure.Exponent >= R.Figure.Exponent + precision)
                 return E * new Imaginary();
             else
                 return f;
@@ -149,7 +149,7 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <returns>|a|。</returns>
         public static Numeric Abs(Numeric R, Numeric E)
         {
-            return new Numeric(Norm(R, E).Data ^ new Numeric(0.5));
+            return new Numeric(Norm(R, E).Figure ^ new Numeric(0.5));
         }
 
         /// <summary>
@@ -173,7 +173,7 @@ namespace GoodSeat.Liffom.Formulas.Constants
         public static Numeric Norm(Numeric R, Numeric E)
         {
             var r2 = new Numeric(2.0);
-            return new Numeric((R.Data ^ r2) + (E.Data ^ r2));
+            return new Numeric((R.Figure ^ r2) + (E.Figure ^ r2));
         }
 
         /// <summary>
@@ -213,15 +213,15 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <returns>偏角。</returns>
         public static Numeric Arg(Numeric R, Numeric E)
         {
-            Numeric asin = E.Data * (Abs(R, E).Data ^ new Numeric(-1d));
+            Numeric asin = E.Figure * (Abs(R, E).Figure ^ new Numeric(-1d));
             if (asin > 1) asin = new Numeric(1);
             if (asin < -1) asin = new Numeric(-1);
 
-            Numeric rad = new Numeric(asin.Data.Asin());
-            if (R < 0) rad = new Numeric(rad.Data + Math.PI);
+            Numeric rad = new Numeric(asin.Figure.Asin());
+            if (R < 0) rad = new Numeric(rad.Figure + Math.PI);
 
-            while (rad > Math.PI) rad = new Numeric(rad.Data - 2 * Math.PI);
-            while (rad < -Math.PI) rad = new Numeric(rad.Data + 2 * Math.PI);
+            while (rad > Math.PI) rad = new Numeric(rad.Figure - 2 * Math.PI);
+            while (rad < -Math.PI) rad = new Numeric(rad.Figure + 2 * Math.PI);
 
             return rad;
         }

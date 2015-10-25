@@ -9,7 +9,7 @@ namespace GoodSeat.Liffom.Reals
     /// 有効数値の考慮、及び誤差の自動修正が可能な実数を表します。
     /// </summary>
     [Serializable()]
-    public class PrecisionReal : Real
+    public class SignificantReal : Real
     {
         /// <summary>
         /// 誤差の考慮範囲を表します。
@@ -42,14 +42,14 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 有効数字を考慮した数値を初期化します。
         /// </summary>
-        public PrecisionReal(RealData data) : base(data) { Precision = data.MaxValidDigit + 1; }
+        public SignificantReal(Value data) : base(data) { Precision = data.MaxValidDigit + 1; }
 
         /// <summary>
         /// 
         /// </summary>
         /// <param name="r"></param>
         /// <returns></returns>
-        public override Real CreateFrom(RealData r) { return new PrecisionReal(r); }
+        public override Real CreateFrom(Value r) { return new SignificantReal(r); }
 
         /// <summary>
         /// 有効桁数を設定もしくは取得します。
@@ -59,20 +59,20 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// このインスタンスの有効桁数が無限大と判断されるか否かを取得します。
         /// </summary>
-        public bool IsInfinityPrecision { get { return Precision > Data.MaxValidDigit; } }
+        public bool IsInfinityPrecision { get { return Precision > Value.MaxValidDigit; } }
 
         /// <summary>
         /// 最善推定値からの誤差範囲の振幅値を取得します。
         /// </summary>
-        private RealData PrecisionUnit
+        private Value PrecisionUnit
         {
             get
             {
-                RealData unit = Data.CreateFrom(10d) ^ Data.CreateFrom(Data.Exponent - Precision + 1);
+                Value unit = Value.CreateFrom(10d) ^ Value.CreateFrom(Value.Exponent - Precision + 1);
                 switch (PrecisionConsiderd)
                 {
                     case PrecisionType.One: break;
-                    case PrecisionType.Half: unit = (unit / Data.CreateFrom(2d)); break;
+                    case PrecisionType.Half: unit = (unit / Value.CreateFrom(2d)); break;
                     default: throw new NotImplementedException();
                 }
                 return unit;
@@ -82,24 +82,24 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 誤差範囲内の最大値を取得します。
         /// </summary>
-        public virtual RealData Maximum
+        public virtual Value Maximum
         {
             get
             {
-                if (IsInfinityPrecision) return Data;
-                return Data + PrecisionUnit;
+                if (IsInfinityPrecision) return Value;
+                return Value + PrecisionUnit;
             }
         }
 
         /// <summary>
         /// 誤差範囲内の最小値を取得します。
         /// </summary>
-        public virtual RealData Minimum
+        public virtual Value Minimum
         {
             get
             {
-                if (IsInfinityPrecision) return Data;
-                return Data - PrecisionUnit;
+                if (IsInfinityPrecision) return Value;
+                return Value - PrecisionUnit;
             }
         }
 
@@ -110,17 +110,17 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>変換された文字列。</returns>
         public override string ToString()
         {
-            string result = Data.ToString("G");
+            string result = Value.ToString("G");
 
             if (Precision <= 0)  // 加算結果が有効桁範囲では0になる場合 7.3E+3 - 7.3E+3 の結果など、0.E+2となる 
             {
-                int exp = Data.Exponent;
+                int exp = Value.Exponent;
                 result = String.Format(exp - Precision + 1 > 0 ? "0.E+{0}" : "0.E{0}", (exp - Precision + 1).ToString());
             }
             else if (!IsInfinityPrecision)
             {
-                int exp = Data.Exponent;
-                var mantissa = Data.Mantissa.Round(Math.Max(1, Precision) - 1);
+                int exp = Value.Exponent;
+                var mantissa = Value.Mantissa.Round(Math.Max(1, Precision) - 1);
                 string partOfValid = mantissa.ToString("G");
                 while (partOfValid.Replace(".", "").Replace("-","").Length < Precision)
                 {
@@ -160,9 +160,9 @@ namespace GoodSeat.Liffom.Reals
         {
             if (IsInfinityPrecision) return base.OnFunction(f);
 
-            RealData bestEstimate = f(Data);
-            RealData maxEstimate = f(Maximum);
-            RealData minEstimate = f(Minimum);
+            Value bestEstimate = f(Value);
+            Value maxEstimate = f(Maximum);
+            Value minEstimate = f(Minimum);
             return GetEstimated(bestEstimate, maxEstimate, minEstimate);
         }
 
@@ -171,13 +171,13 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">引数となる実数。</param>
         /// <returns>評価結果。</returns>
-        protected override Real OnFunction2(RealFunction2 f2, RealData r)
+        protected override Real OnFunction2(RealFunction2 f2, Value r)
         {
             if (IsInfinityPrecision) return base.OnFunction2(f2, r);
 
-            RealData bestEstimate = f2(Data, r);
-            RealData maxEstimate = f2(Maximum, r);
-            RealData minEstimate = f2(Minimum, r);
+            Value bestEstimate = f2(Value, r);
+            Value maxEstimate = f2(Maximum, r);
+            Value minEstimate = f2(Minimum, r);
             return GetEstimated(bestEstimate, maxEstimate, minEstimate);
         }
 
@@ -188,11 +188,11 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="maxEstimate">最大推定値。</param>
         /// <param name="minEstimate">最小推定値。</param>
         /// <returns>有効数字を考慮した実数。</returns>
-        protected virtual PrecisionReal GetEstimated(RealData bestEstimate, RealData maxEstimate, RealData minEstimate)
+        protected virtual SignificantReal GetEstimated(Value bestEstimate, Value maxEstimate, Value minEstimate)
         {
             if (maxEstimate < minEstimate)
             {
-                RealData forSwap = maxEstimate;
+                Value forSwap = maxEstimate;
                 maxEstimate = minEstimate;
                 minEstimate = forSwap;
             }
@@ -205,19 +205,19 @@ namespace GoodSeat.Liffom.Reals
             {
                 int modMax = maxEstimate.Exponent - bestEstimate.Exponent;
                 int modMin = minEstimate.Exponent - bestEstimate.Exponent;
-                for (int i = 0; i < Data.MaxValidDigit; i++)
+                for (int i = 0; i < Value.MaxValidDigit; i++)
                 {
                     var bestRound = bestEstimate.Mantissa.Round(i);
-                    var maxRound = (maxEstimate.Mantissa * Data.CreateFrom(Math.Pow(10, modMax))).Round(i);
-                    var minRound = (minEstimate.Mantissa * Data.CreateFrom(Math.Pow(10, modMin))).Round(i);
+                    var maxRound = (maxEstimate.Mantissa * Value.CreateFrom(Math.Pow(10, modMax))).Round(i);
+                    var minRound = (minEstimate.Mantissa * Value.CreateFrom(Math.Pow(10, modMin))).Round(i);
 
                     bool isDiff = false;
 
                     if (PrecisionConsiderd == PrecisionType.Half)
                         isDiff = (maxRound != bestRound || bestRound != minRound);
                     else if (PrecisionConsiderd == PrecisionType.One)
-                        isDiff = (maxRound - bestRound > Data.CreateFrom(Math.Pow(10, -i)) ||
-                                  bestRound - minRound > Data.CreateFrom(Math.Pow(10, -i)));
+                        isDiff = (maxRound - bestRound > Value.CreateFrom(Math.Pow(10, -i)) ||
+                                  bestRound - minRound > Value.CreateFrom(Math.Pow(10, -i)));
                     else
                         throw new NotImplementedException();
 
@@ -228,7 +228,7 @@ namespace GoodSeat.Liffom.Reals
                     }
                 }
             }
-            PrecisionReal newReal = new PrecisionReal(bestEstimate);
+            SignificantReal newReal = new SignificantReal(bestEstimate);
             newReal.Precision = newPrecision;
             return newReal;
         }

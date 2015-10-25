@@ -122,14 +122,14 @@ namespace GoodSeat.Liffom.Processes
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
-            Real a = lowerLimit.Data;
-            Real b = upperLimit.Data;
+            Real a = lowerLimit.Figure;
+            Real b = upperLimit.Figure;
             Real c = b;
-            Real d = new Numeric(0).Data;
-            Real e = new Numeric(0).Data;
+            Real d = new Numeric(0).Figure;
+            Real e = new Numeric(0).Figure;
 
-            Real fa = (f.Substituted(x, a).DeformFormula(token) as Numeric).Data;
-            Real fb = (f.Substituted(x, b).DeformFormula(token) as Numeric).Data;
+            Real fa = (f.Substituted(x, a).DeformFormula(token) as Numeric).Figure;
+            Real fb = (f.Substituted(x, b).DeformFormula(token) as Numeric).Figure;
 
             if (fa == 0) return a;
             if (fb == 0) return b;
@@ -162,7 +162,7 @@ namespace GoodSeat.Liffom.Processes
                     fa = fb; fb = fc; fc = fa;
                 }
 
-                Real tol1 = (new Numeric(0.5 * ErrorTolerance)).Data;
+                Real tol1 = (new Numeric(0.5 * ErrorTolerance)).Figure;
                 Real xm = new Numeric(0.5 * (c - b));
                 if (Math.Abs(xm) <= tol1 || fb == 0) return b;
                 if (Math.Abs(e) >= tol1 && Math.Abs(fa) > Math.Abs(fb))
@@ -206,7 +206,7 @@ namespace GoodSeat.Liffom.Processes
                 fa = fb;
                 if (Math.Abs(d) > tol1) b = b + d;
                 else b = b + (xm > 0 ? tol1 : -tol1);
-                fb = (f.Substituted(x, b).DeformFormula(token) as Numeric).Data;
+                fb = (f.Substituted(x, b).DeformFormula(token) as Numeric).Figure;
 #if DEBUG
                 Console.WriteLine(string.Format("{0}回目の試行:a={1}, b={2}", i, a, b));
 #endif
@@ -241,7 +241,7 @@ namespace GoodSeat.Liffom.Processes
                 Numeric fb = f.Substituted(x, upperLimit).DeformFormula(token) as Numeric;
 
                 Numeric calculated = (fa * fb).Numerate() as Numeric;
-                while ((calculated == null || calculated.Data.IsInfinity || calculated.Data.IsNaN || calculated > 0) && count++ < 20)
+                while ((calculated == null || calculated.Figure.IsInfinity || calculated.Figure.IsNaN || calculated > 0) && count++ < 20)
                 {
                     if (i == 0)
                     {
@@ -285,7 +285,7 @@ namespace GoodSeat.Liffom.Processes
                 }
 
                 calculated = (fa * fb).Numerate() as Numeric;
-                if (calculated != null && !calculated.Data.IsInfinity && !calculated.Data.IsNaN && calculated <= 0) break;
+                if (calculated != null && !calculated.Figure.IsInfinity && !calculated.Figure.IsNaN && calculated <= 0) break;
             }
         }
     }

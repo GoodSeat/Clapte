@@ -27,53 +27,53 @@ namespace GoodSeat.Liffom.Reals
         /// 計算用実数を初期化します。
         /// </summary>
         /// <param name="data">初期化に使用する数値。</param>
-        public Real(RealData data) { Data = data; }
+        public Real(Value data) { Value = data; }
 
         /// <summary>
         /// 指定した内部数値から、計算用実数を初期化して取得します。
         /// </summary>
         /// <param name="r">初期化元とする内部数値。</param>
         /// <returns>初期化された計算用実数。</returns>
-        public virtual Real CreateFrom(RealData r) { return new Real(r); }
+        public virtual Real CreateFrom(Value r) { return new Real(r); }
 
         /// <summary>
         /// 指定した数値から、計算用実数を初期化して取得します。
         /// </summary>
         /// <param name="d">初期化元とする数値。</param>
         /// <returns>初期化された計算用実数。</returns>
-        public Real CreateFrom(double d) { return CreateFrom(Data.CreateFrom(d)); }
+        public Real CreateFrom(double d) { return CreateFrom(Value.CreateFrom(d)); }
 
         #region プロパティ
 
         /// <summary>
         /// 内部保持数値を設定もしくは取得します。
         /// </summary>
-        public RealData Data { get; set; }
+        public Value Value { get; set; }
 
         /// <summary>
         /// 正規化した時の指数部を取得します。
         /// </summary>
-        public int Exponent { get { return Data.Exponent; } }
+        public int Exponent { get { return Value.Exponent; } }
 
         /// <summary>
         /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
         /// </summary>
-        public bool IsInfinity { get { return Data.IsInfinity; } }
+        public bool IsInfinity { get { return Value.IsInfinity; } }
 
         /// <summary>
         /// インスタンスの表す数値が正の無限大と評価されるかどうかを示す値を返します。
         /// </summary>
-        public bool IsPositiveInfinity { get { return Data.IsPositiveInfinity; } }
+        public bool IsPositiveInfinity { get { return Value.IsPositiveInfinity; } }
 
         /// <summary>
         /// インスタンスの表す数値が負の無限大と評価されるかどうかを示す値を返します。
         /// </summary>
-        public bool IsNegativeInfinity { get { return Data.IsNegativeInfinity; } }
+        public bool IsNegativeInfinity { get { return Value.IsNegativeInfinity; } }
 
         /// <summary>
         /// インスタンスの表す数値が非数であると評価されるかどうかを示す値を返します。
         /// </summary>
-        public bool IsNaN { get { return Data.IsNaN; } }
+        public bool IsNaN { get { return Value.IsNaN; } }
 
         #endregion
 
@@ -84,7 +84,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">対象の実数。</param>
         /// <returns>変換されたdouble型の実数。</returns>
-        public static implicit operator double(Real r) { return r.Data.ToDouble(); }
+        public static implicit operator double(Real r) { return r.Value.ToDouble(); }
 
         /// <summary>
         /// Numeric型への暗黙的変換
@@ -98,7 +98,7 @@ namespace GoodSeat.Liffom.Reals
         /// 円周率を初期化して取得します。
         /// </summary>
         /// <returns>円周率。</returns>
-        public Real GetPi() { return CreateFrom(Data.GetPi()); }
+        public Real GetPi() { return CreateFrom(Value.GetPi()); }
 
         #endregion
 
@@ -109,42 +109,42 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">加算値。</param>
         /// <returns>加算結果。</returns>
-        public virtual Real AddTo(Real r) { return CreateFrom(Data + r.Data); }
+        public virtual Real AddTo(Real r) { return CreateFrom(Value + r.Value); }
 
         /// <summary>
         /// 指定実数との積算結果を返します。
         /// </summary>
         /// <param name="r">乗数。</param>
         /// <returns>積算結果。</returns>
-        public virtual Real MultiplyTo(Real r) { return CreateFrom(Data * r.Data); }
+        public virtual Real MultiplyTo(Real r) { return CreateFrom(Value * r.Value); }
         
         /// <summary>
         /// 指定実数との除算結果を返します。
         /// </summary>
         /// <param name="r">除数。</param>
         /// <returns>除算結果。</returns>
-        public virtual Real DivideBy(Real r) { return CreateFrom(Data / r.Data); }
+        public virtual Real DivideBy(Real r) { return CreateFrom(Value / r.Value); }
 
         /// <summary>
         /// 指定実数との累乗結果を返します。
         /// </summary>
         /// <param name="r">冪数。</param>
         /// <returns>累乗結果。</returns>
-        public virtual Real PowerWith(Real r) { return CreateFrom(Data ^ r.Data); }
+        public virtual Real PowerWith(Real r) { return CreateFrom(Value ^ r.Value); }
 
         /// <summary>
         /// 指定実数で除した時の剰余を返します。
         /// </summary>
         /// <param name="r">除数。</param>
         /// <returns>剰余。</returns>
-        public virtual Real ModOf(Real r) { return CreateFrom(Data % r.Data); }
+        public virtual Real ModOf(Real r) { return CreateFrom(Value % r.Value); }
 
         /// <summary>
         /// 指定実数と等しいか否かを返します。
         /// </summary>
         /// <param name="r">比較対象の実数。</param>
         /// <returns>比較結果。</returns>
-        public virtual bool IsEqualTo(Real r) { return Data == r.Data; }
+        public virtual bool IsEqualTo(Real r) { return Value == r.Value; }
 
         #endregion
 
@@ -175,7 +175,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r1">実数。</param>
         /// <returns>負数。</returns>
-        public static Real operator -(Real r1) { return r1 * r1.CreateFrom(r1.Data.CreateFrom(-1d)); }
+        public static Real operator -(Real r1) { return r1 * r1.CreateFrom(r1.Value.CreateFrom(-1d)); }
 
         /// <summary>
         /// 乗算します。
@@ -227,7 +227,7 @@ namespace GoodSeat.Liffom.Reals
         {
             if (object.Equals(r1, null) && object.Equals(r2, null)) return true;
             if (object.Equals(r1, null) || object.Equals(r2, null)) return false;
-            return r1.Data == r2.Data;
+            return r1.Value == r2.Value;
         }
         public static bool operator ==(double r1, Real r2)
         { 
@@ -266,14 +266,14 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// このインスタンスのハッシュコードを返します。
         /// </summary>
-        public override int GetHashCode() { return Data.GetHashCode(); }
+        public override int GetHashCode() { return Value.GetHashCode(); }
 
         /// <summary>
         /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public string ToString(string format) { return Data.ToString(format); }
+        public string ToString(string format) { return Value.ToString(format); }
 
         #endregion
 
@@ -284,7 +284,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="other">このオブジェクトと比較するオブジェクト。</param>
         /// <returns>比較対象オブジェクトの相対順序を示す値。</returns>
-        public int CompareTo(Real other) { return Data.CompareTo(other.Data); }
+        public int CompareTo(Real other) { return Value.CompareTo(other.Value); }
 
         #endregion
         
@@ -295,7 +295,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">引数となる実数。</param>
         /// <returns>評価結果。</returns>
-        protected delegate RealData RealFunction(RealData r);
+        protected delegate Value RealFunction(Value r);
 
         /// <summary>
         /// 実数を二つ受け取って実数を返す関数を表します。
@@ -303,21 +303,21 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>評価結果。</returns>
-        protected delegate RealData RealFunction2(RealData r1, RealData r2);
+        protected delegate Value RealFunction2(Value r1, Value r2);
 
 
         /// <summary>
         /// 実数を一つ受け取って実数を返す関数の評価を実行します。
         /// </summary>
         /// <returns>評価結果。</returns>
-        protected virtual Real OnFunction(RealFunction f) { return CreateFrom(f(Data)); }
+        protected virtual Real OnFunction(RealFunction f) { return CreateFrom(f(Value)); }
 
         /// <summary>
         /// 実数を二つ受け取って実数を返す関数の評価を実行します。
         /// </summary>
         /// <param name="r">引数となる実数。</param>
         /// <returns>評価結果。</returns>
-        protected virtual Real OnFunction2(RealFunction2 f2, RealData r) { return CreateFrom(f2(Data, r)); }
+        protected virtual Real OnFunction2(RealFunction2 f2, Value r) { return CreateFrom(f2(Value, r)); }
 
 
         /// <summary>
@@ -361,14 +361,14 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="b">底。</param>
         /// <returns>評価後の実数。</returns>
-        public Real Log(Real b) { return OnFunction2((r1, r2) => r1.Log(r2), b.Data); }
+        public Real Log(Real b) { return OnFunction2((r1, r2) => r1.Log(r2), b.Value); }
 
         /// <summary>
         /// 指定した小数部桁数に丸めます。
         /// </summary>
         /// <param name="round">丸める小数桁数。負数の指定も有効で、10^(-decimals)の桁に丸めます。</param>
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
-        public Real Round(int round) { return CreateFrom(Data.Round(round)); }
+        public Real Round(int round) { return CreateFrom(Value.Round(round)); }
 
         #endregion
 

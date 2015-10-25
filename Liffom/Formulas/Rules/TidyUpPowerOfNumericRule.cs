@@ -39,9 +39,9 @@ namespace GoodSeat.Liffom.Formulas.Rules
             var power = target as Power;
             Numeric formula = power.Base as Numeric;
             Numeric exponent = power.Exponent as Numeric;
-            Numeric result = new Numeric(formula.Data ^ exponent.Data);
+            Numeric result = new Numeric(formula.Figure ^ exponent.Figure);
 
-            if (result.Data.IsNaN || result.Data.IsInfinity) return null;
+            if (result.Figure.IsNaN || result.Figure.IsInfinity) return null;
             if (result.IsInteger) return result;
             return null;
         }

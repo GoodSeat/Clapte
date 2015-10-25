@@ -33,7 +33,7 @@ namespace GoodSeat.Liffom.Formulas
         public static Formula operator -(Formula f1) 
         {
             var num = f1 as Numeric;
-            if (num != null && num.Data > 0)
+            if (num != null && num.Figure > 0)
             {
                 return (-1 * f1).Numerate();
             }
@@ -178,7 +178,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <returns>変換された実数。</returns>
         public static implicit operator Real(Formula f)
         {
-            return (f is Numeric) ? (f as Numeric).Data : new Numeric(double.NaN).Data;
+            return (f is Numeric) ? (f as Numeric).Figure : new Numeric(double.NaN).Figure;
         }
 
          /// <summary>
@@ -188,7 +188,7 @@ namespace GoodSeat.Liffom.Formulas
          /// <returns>変換された実数。</returns>
          public static implicit operator double(Formula f)
          {
-             return (f is Numeric) ? (f as Numeric).Data : double.NaN;
+             return (f is Numeric) ? (f as Numeric).Figure : double.NaN;
          }
 
         /// <summary>

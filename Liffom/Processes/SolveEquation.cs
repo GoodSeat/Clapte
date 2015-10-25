@@ -85,15 +85,15 @@ namespace GoodSeat.Liffom.Processes
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
-            int testDigit = (new Numeric(error)).Data.Exponent + 1; // 許容誤差値の正規化時の指数
+            int testDigit = (new Numeric(error)).Figure.Exponent + 1; // 許容誤差値の正規化時の指数
             int minExponent = testDigit;
             foreach (Numeric n in solution.GetExistFactor<Numeric>())
-                minExponent = Math.Min(minExponent, n.Data.Exponent - 15);
+                minExponent = Math.Min(minExponent, n.Figure.Exponent - 15);
 
             for (int test = testDigit; test >= minExponent; test--)
             {
                 Formula checkSolve = solution.Copy();
-                foreach (Numeric n in checkSolve.GetExistFactor<Numeric>()) n.Data = n.Data.Round(-test) as PrecisionReal;
+                foreach (Numeric n in checkSolve.GetExistFactor<Numeric>()) n.Figure = n.Figure.Round(-test) as SignificantReal;
 
                 Formula ans = f.Substituted(x, checkSolve).DeformFormula(token);
                 if (ans == 0) return checkSolve;
@@ -125,7 +125,7 @@ namespace GoodSeat.Liffom.Processes
             foreach (Numeric n in checkDigit.GetExistFactor<Numeric>())
             {
                 if (n.Precision <= Numeric.MaxPrecision) needCheckValid = true;
-                initialValidDigit = Math.Max(n.Data.Exponent - n.Precision + 1, initialValidDigit);
+                initialValidDigit = Math.Max(n.Figure.Exponent - n.Precision + 1, initialValidDigit);
                 initialPrecision = Math.Min(n.Precision, initialPrecision);
             }
             return needCheckValid;
@@ -149,15 +149,15 @@ namespace GoodSeat.Liffom.Processes
                 foreach (Numeric n in checkSolution.GetExistFactor<Numeric>())
                 {
                     n.Precision = i;
-                    n.Data = new Numeric(double.Parse(n.Data.ToString())).Data;
+                    n.Figure = new Numeric(double.Parse(n.Figure.ToString())).Figure;
                 }
 
                 Formula checkDigitResult = f.Substituted(x, checkSolution).DeformFormula(token);
                 int postValidDigit = int.MinValue;
                 foreach (Numeric n in checkDigitResult.GetExistFactor<Numeric>()) // checkDigitResultは、0.E-3、0.E+2[kN*m^2] 等のはず
                 {
-                    int validDigit = n.Data.Exponent - n.Precision + 1;
-                    if (n.Data.Round(-validDigit) != 0d) continue; // 左辺-右辺が0になっていないならだめ。
+                    int validDigit = n.Figure.Exponent - n.Precision + 1;
+                    if (n.Figure.Round(-validDigit) != 0d) continue; // 左辺-右辺が0になっていないならだめ。
 
                     postValidDigit = Math.Max(validDigit, postValidDigit);
                 }

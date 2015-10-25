@@ -29,7 +29,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         protected override bool IsTargetCouple(Formula f1, Formula f2) { return f1 is Numeric && f2 is Numeric; }
 
-        protected override Formula GetRuledFormula(Formula f1, Formula f2) { return new Numeric((f1 as Numeric).Data + (f2 as Numeric).Data); }
+        protected override Formula GetRuledFormula(Formula f1, Formula f2) { return new Numeric((f1 as Numeric).Figure + (f2 as Numeric).Figure); }
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Sum; }
 

@@ -51,8 +51,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             mol.Precision = f.Precision; // 分子の有効桁数をそのままにする
             den.Precision = 100; // 分母の有効桁数を無限にする
 
-            mol.Data = mol.Data.Round(0);
-            den.Data = den.Data.Round(0);
+            mol.Figure = mol.Figure.Round(0);
+            den.Figure = den.Figure.Round(0);
 
             if (den == 1) return mol;
             else if (mol == 1)

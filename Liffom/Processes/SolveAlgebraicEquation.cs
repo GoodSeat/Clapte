@@ -198,7 +198,7 @@ namespace GoodSeat.Liffom.Processes
                         if (surplus == null)
                         {
                             Numeric num = n.Numerate() as Numeric;
-                            int round = (int)num.Data;
+                            int round = (int)num.Figure;
                             surplus = (n - round).Combine();
                         }
                         Numeric coef = (n - surplus).Numerate() as Numeric;

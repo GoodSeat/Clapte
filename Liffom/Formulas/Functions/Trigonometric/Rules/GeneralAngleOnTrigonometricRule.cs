@@ -93,13 +93,13 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
             protected override Formula GetRuledFormula()
             {
-                Real coef = (b.Numerate() as Numeric).Data;
+                Real coef = (b.Numerate() as Numeric).Figure;
 
                 bool aRemoved = false;
                 if (a is Numeric && a != 0)
                 {
                     var add = a as Numeric;
-                    coef += add.Data / add.Data.GetPi();
+                    coef += add.Figure / add.Figure.GetPi();
                     aRemoved = true;
                 }
 

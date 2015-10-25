@@ -84,7 +84,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
                     }
                 }
 
-                for (int i = (int)((Numeric)start.RightHandSide).Data; i <= (int)end.Data; i++)
+                for (int i = (int)((Numeric)start.RightHandSide).Figure; i <= (int)end.Figure; i++)
                 {
                     if (notList.Contains(i)) continue; // 禁止条件にある
                     else
