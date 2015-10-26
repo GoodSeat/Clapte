@@ -136,6 +136,9 @@ namespace GoodSeat.Clapte.Views
             HelpBox.Size = new Size((int)(HelpBox.PreferredSize.Width * 1.2), (int)(HelpBox.PreferredSize.Height * 1.5));
         }
 
+        /// <summary>
+        //  アンマネージ リソースの解放およびリセットに関連付けられているアプリケーション定義のタスクを実行します。
+        /// </summary>
         public void Dispose()
         {
             Azuki.FontChanged -= new EventHandler(azuki_FontChanged);

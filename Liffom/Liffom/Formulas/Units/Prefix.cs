@@ -16,9 +16,9 @@ namespace GoodSeat.Liffom.Formulas.Units
         static List<Prefix> s_prefixList;
 
         /// <summary>
-        /// 存在する全ての接頭辞系の既定接頭辞を取得します。
+        /// 存在する全ての接頭辞系の既定接頭辞を返す反復子を取得します。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>存在する全ての接頭辞系の既定接頭辞を返す反復子。</returns>
         public static IEnumerable<Prefix> GetAllBasePrefix()
         {
             if (s_prefixList == null)
@@ -33,17 +33,20 @@ namespace GoodSeat.Liffom.Formulas.Units
         }
 
         /// <summary>
-        /// 存在する全ての接頭辞を取得します。
+        /// 存在する全ての接頭辞を返す反復子を取得します。
         /// </summary>
         /// <param name="containNull">NullPrefixを含めるか否か</param>
-        /// <returns></returns>
+        /// <returns>存在する全ての接頭辞を返す反復子。</returns>
         public static IEnumerable<Prefix> GetAllPrefix(bool containNull)
         {
-            if (containNull) yield return new NullPrefix();
-
             foreach (Prefix p in GetAllBasePrefix())
+            {
                 foreach (Prefix prefix in p.GetAllPrefixs())
+                {
+                    if (!containNull && prefix is NullPrefix) continue;
                     yield return prefix;
+                }
+            }
         }
 
         /// <summary>

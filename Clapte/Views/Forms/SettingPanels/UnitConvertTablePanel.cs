@@ -103,7 +103,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         /// <summary>
         /// カレントテーブルの基準単位を含むレコード数を取得します。
         /// </summary>
-        /// <returns></returns>
         int CountOfCurrentRecord
         {
             get

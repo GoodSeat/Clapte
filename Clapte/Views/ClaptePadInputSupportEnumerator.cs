@@ -5,7 +5,6 @@ using System.Text;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Liffom.Formulas.Units;
-using GoodSeat.Sio;
 
 namespace GoodSeat.Clapte.Views.InputSupports
 {
@@ -41,7 +40,6 @@ namespace GoodSeat.Clapte.Views.InputSupports
             All = Constant | Function | UnitAllPrefix
         }
 
-        List<Prefix> _allPrefixList;
 
         /// <summary>
         /// ClaptePadにおける入力補助候補の列挙クラスを初期化します。
@@ -50,13 +48,6 @@ namespace GoodSeat.Clapte.Views.InputSupports
         public ClaptePadInputSupportEnumerator(FormulaCellListViewModel target)
         {
             Target = target;
-
-            _allPrefixList = new List<Prefix>();
-            foreach (var rf in Reflector<Prefix>.FindReflectors())
-            {
-                var sample = rf.CreateInstance();
-                _allPrefixList.AddRange(sample.GetAllPrefixs());
-            }
         }
 
         /// <summary>
@@ -139,7 +130,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
                     var unitName = u.UnitName;
                     var basePrefix = u.Prefix;
 
-                    foreach (var prefix in _allPrefixList)
+                    foreach (var prefix in Prefix.GetAllPrefix(true))
                     {
                         if (prefix.Mark != "" && !bAllPrefix) continue;
 
@@ -148,7 +139,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
 
                         var helpText = ReplacePrefixNameFrom(def.UnitComment, prefix);
                         var ratio = "";
-                        if (basePrefix.Name != prefix.Name) ratio = "*" + prefix.GetModify(basePrefix).ToString();
+                        if (basePrefix.Name != prefix.Name) ratio = "×" + prefix.Base.ToString() + "E" + (prefix.Power - basePrefix.Power).ToString();
 
                         helpText += " (" + def.ConversionRatio + "[" + baseDef + "]" + ratio + ")";
 
@@ -162,7 +153,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
         private string ReplacePrefixNameFrom(string text, Prefix postPrefix)
         {
             bool replaced = false;
-            foreach (var prefix in _allPrefixList)
+            foreach (var prefix in Prefix.GetAllPrefix(false))
             {
                 if (!text.Contains(prefix.Name)) continue;
                 if (prefix == postPrefix) return text;
