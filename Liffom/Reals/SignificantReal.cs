@@ -42,25 +42,15 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 有効数字を考慮した数値を初期化します。
         /// </summary>
+        /// <param name="value">内部実数。</param>
         public SignificantReal(Value value) : base(value) { SignificantDigits = value.MaxValidDigits + 1; }
 
         /// <summary>
         /// 有効数字を考慮した数値を初期化します。
         /// </summary>
-        public SignificantReal(Value value, string text) : this(value) { SignificantDigits = value.MaxValidDigits + 1; }
-
-        private void SetSignificantDigitsFrom(string text)
-        {
-            if (text.Contains("."))
-            {
-                string check = text.Split('E')[0].Replace(".", "").Replace("-", "").TrimStart('0');
-                SignificantDigits = check.Length;
-            }
-            else
-            {
-                SignificantDigits = Value.MaxValidDigits + 100;
-            }
-        }
+        /// <param name="value">内部実数。</param>
+        /// <param name="text">内部実数を表す文字列。</param>
+        public SignificantReal(Value value, string text) : this(value) { SignificantDigits = GetSignificantDigitsFrom(text); }
 
         /// <summary>
         /// 指定した内部数値を用いて、実数を初期化して取得します。
@@ -121,6 +111,24 @@ namespace GoodSeat.Liffom.Reals
             }
         }
 
+
+        /// <summary>
+        /// 数値を表す指定文字列から有効桁数を判定して取得します。
+        /// </summary>
+        /// <param name="text">数値を表す文字列。</param>
+        /// <returns>判定された有効桁数。</returns>
+        private int GetSignificantDigitsFrom(string text)
+        {
+            if (text.Contains("."))
+            {
+                string check = text.Split('E')[0].Replace(".", "").Replace("-", "").TrimStart('0');
+                return check.Length;
+            }
+            else
+            {
+                return Value.MaxValidDigits + 100;
+            }
+        }
 
         /// <summary>
         /// このインスタンスの実数を、それと等価な文字列に変換して取得します。

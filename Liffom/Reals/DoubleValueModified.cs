@@ -8,6 +8,7 @@ namespace GoodSeat.Liffom.Reals
 {
     /// <summary>
     /// 数値計算用の実数の内部数値を表します。
+    /// double型により内部数値を保持しますが、2進数と10進数間の変換に伴う自動修正します。
     /// </summary>
     [Serializable()]
     public class DoubleValueModified : DoubleValue

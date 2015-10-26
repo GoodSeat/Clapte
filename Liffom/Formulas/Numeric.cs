@@ -13,7 +13,7 @@ using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 namespace GoodSeat.Liffom.Formulas
 {
     /// <summary>
-    /// 数値データ（最小単位）を表します。
+    /// 数値を表します。
     /// </summary>
     [Serializable()]
     public class Numeric : Formula
@@ -56,16 +56,14 @@ namespace GoodSeat.Liffom.Formulas
         public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Figure == n2.Figure; }
 
 
-        Real _figure; // 保持数値
-
         /// <summary>
         /// 数値を初期化します。
         /// </summary>
         /// <param name="s">初期値を指定する文字列。</param>
-        public Numeric(string s) : this(double.Parse(s))
+        public Numeric(string s)
         {
-            // TODO:
-//            Data = new SignificantReal(s);
+            var d = double.Parse(s);
+            Figure = new SignificantReal(new DoubleValueModified(d), s);
         }
 
         /// <summary>
@@ -86,11 +84,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 内部数値を設定もしくは取得します。
         /// </summary>
-        public Real Figure
-        {
-            get { return _figure; }
-            set { _figure = value; }
-        }
+        public Real Figure { get; set; }
 
         /// <summary>
         /// 有効桁数を設定もしくは取得します。
@@ -130,7 +124,10 @@ namespace GoodSeat.Liffom.Formulas
         /// <returns>変換されたNumeric型のオブジェクト。</returns>
         public static implicit operator Numeric(double d) { return new Numeric(d); }
 
-
+        /// <summary>
+        /// 数式を認識可能な文字列に変換して取得します。
+        /// </summary>
+        /// <returns>数式を表す文字列。</returns>
         public override string GetText()
         {
             string result = null;
@@ -157,6 +154,15 @@ namespace GoodSeat.Liffom.Formulas
         /// <returns>数式を一意に区別する文字列。</returns>
         protected override string OnGetUniqueText() { return Figure.Value.ToString("G"); }
 
+        /// <summary>
+        /// 数式の基本的な並び順を定義する比較結果を取得します。
+        /// </summary>
+        /// <remarks>
+        /// 通常、次の順に従います。
+        /// 数値 ＜ その他(文字列長比較順) ＜ 負の累乗 ＜ 単位
+        /// </remarks>
+        /// <param name="other">比較対象とする数式。</param>
+        /// <returns>比較結果。</returns>
         protected override CompareResult IsLargerThan(Formula other)
         {
             int compare = -1;
@@ -183,7 +189,13 @@ namespace GoodSeat.Liffom.Formulas
             if (sender is Sum) foreach (var rule in GetSumRelatedRulesOf(sender as Sum, deformToken)) yield return rule;
         }
 
-        public IEnumerable<Rule> GetPowerRelatedRulesOf(Power sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が累乗の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetPowerRelatedRulesOf(Power sender, DeformToken deformToken)
         {
             if (deformToken.Has<NumerateToken>())
             {
@@ -206,7 +218,13 @@ namespace GoodSeat.Liffom.Formulas
             }
         }
 
-        public IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が乗算の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
         {
             if (deformToken.Has<CombineToken>())
             {
@@ -227,7 +245,13 @@ namespace GoodSeat.Liffom.Formulas
         
         }
 
-        public IEnumerable<Rule> GetSumRelatedRulesOf(Sum sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が和算の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetSumRelatedRulesOf(Sum sender, DeformToken deformToken)
         {
             if (deformToken.Has<CombineToken>())
             {
