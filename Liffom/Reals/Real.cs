@@ -37,10 +37,10 @@ namespace GoodSeat.Liffom.Reals
         public virtual Real CreateFrom(Value r) { return new Real(r); }
 
         /// <summary>
-        /// 指定した数値から、計算用実数を初期化して取得します。
+        /// 指定した内部数値を用いて、実数を初期化して取得します。
         /// </summary>
-        /// <param name="d">初期化元とする数値。</param>
-        /// <returns>初期化された計算用実数。</returns>
+        /// <param name="r">内部数値。</param>
+        /// <returns>初期化された実数。</returns>
         public Real CreateFrom(double d) { return CreateFrom(Value.CreateFrom(d)); }
 
         #region プロパティ

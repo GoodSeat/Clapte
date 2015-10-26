@@ -48,8 +48,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric mol = (f / gcd).Numerate() as Numeric;
             Numeric den = (1 / gcd).Numerate() as Numeric;
 
-            mol.Precision = f.Precision; // 分子の有効桁数をそのままにする
-            den.Precision = 100; // 分母の有効桁数を無限にする
+            mol.SignificantDigits = f.SignificantDigits; // 分子の有効桁数をそのままにする
+            den.SignificantDigits = 100; // 分母の有効桁数を無限にする
 
             mol.Figure = mol.Figure.Round(0);
             den.Figure = den.Figure.Round(0);

@@ -42,24 +42,42 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 有効数字を考慮した数値を初期化します。
         /// </summary>
-        public SignificantReal(Value data) : base(data) { Precision = data.MaxValidDigit + 1; }
+        public SignificantReal(Value value) : base(value) { SignificantDigits = value.MaxValidDigits + 1; }
 
         /// <summary>
-        /// 
+        /// 有効数字を考慮した数値を初期化します。
         /// </summary>
-        /// <param name="r"></param>
-        /// <returns></returns>
+        public SignificantReal(Value value, string text) : this(value) { SignificantDigits = value.MaxValidDigits + 1; }
+
+        private void SetSignificantDigitsFrom(string text)
+        {
+            if (text.Contains("."))
+            {
+                string check = text.Split('E')[0].Replace(".", "").Replace("-", "").TrimStart('0');
+                SignificantDigits = check.Length;
+            }
+            else
+            {
+                SignificantDigits = Value.MaxValidDigits + 100;
+            }
+        }
+
+        /// <summary>
+        /// 指定した内部数値を用いて、実数を初期化して取得します。
+        /// </summary>
+        /// <param name="r">内部数値。</param>
+        /// <returns>初期化された実数。</returns>
         public override Real CreateFrom(Value r) { return new SignificantReal(r); }
 
         /// <summary>
         /// 有効桁数を設定もしくは取得します。
         /// </summary>
-        public int Precision { get; set; }
+        public int SignificantDigits { get; set; }
 
         /// <summary>
         /// このインスタンスの有効桁数が無限大と判断されるか否かを取得します。
         /// </summary>
-        public bool IsInfinityPrecision { get { return Precision > Value.MaxValidDigit; } }
+        public bool IsInfinityPrecision { get { return SignificantDigits > Value.MaxValidDigits; } }
 
         /// <summary>
         /// 最善推定値からの誤差範囲の振幅値を取得します。
@@ -68,7 +86,7 @@ namespace GoodSeat.Liffom.Reals
         {
             get
             {
-                Value unit = Value.CreateFrom(10d) ^ Value.CreateFrom(Value.Exponent - Precision + 1);
+                Value unit = Value.CreateFrom(10d) ^ Value.CreateFrom(Value.Exponent - SignificantDigits + 1);
                 switch (PrecisionConsiderd)
                 {
                     case PrecisionType.One: break;
@@ -112,17 +130,17 @@ namespace GoodSeat.Liffom.Reals
         {
             string result = Value.ToString("G");
 
-            if (Precision <= 0)  // 加算結果が有効桁範囲では0になる場合 7.3E+3 - 7.3E+3 の結果など、0.E+2となる 
+            if (SignificantDigits <= 0)  // 加算結果が有効桁範囲では0になる場合 7.3E+3 - 7.3E+3 の結果など、0.E+2となる 
             {
                 int exp = Value.Exponent;
-                result = String.Format(exp - Precision + 1 > 0 ? "0.E+{0}" : "0.E{0}", (exp - Precision + 1).ToString());
+                result = String.Format(exp - SignificantDigits + 1 > 0 ? "0.E+{0}" : "0.E{0}", (exp - SignificantDigits + 1).ToString());
             }
             else if (!IsInfinityPrecision)
             {
                 int exp = Value.Exponent;
-                var mantissa = Value.Mantissa.Round(Math.Max(1, Precision) - 1);
+                var mantissa = Value.Mantissa.Round(Math.Max(1, SignificantDigits) - 1);
                 string partOfValid = mantissa.ToString("G");
-                while (partOfValid.Replace(".", "").Replace("-","").Length < Precision)
+                while (partOfValid.Replace(".", "").Replace("-","").Length < SignificantDigits)
                 {
                     if (!partOfValid.Contains(".")) partOfValid += ".";
                     partOfValid += "0";
@@ -199,13 +217,13 @@ namespace GoodSeat.Liffom.Reals
             if (bestEstimate > maxEstimate) maxEstimate = bestEstimate;
             if (bestEstimate < minEstimate) minEstimate = bestEstimate;
 
-            int newPrecision = bestEstimate.MaxValidDigit + 100; // 有効桁数無限の意
+            int newPrecision = bestEstimate.MaxValidDigits + 100; // 有効桁数無限の意
 
             if (bestEstimate != maxEstimate || bestEstimate != minEstimate)
             {
                 int modMax = maxEstimate.Exponent - bestEstimate.Exponent;
                 int modMin = minEstimate.Exponent - bestEstimate.Exponent;
-                for (int i = 0; i < Value.MaxValidDigit; i++)
+                for (int i = 0; i < Value.MaxValidDigits; i++)
                 {
                     var bestRound = bestEstimate.Mantissa.Round(i);
                     var maxRound = (maxEstimate.Mantissa * Value.CreateFrom(Math.Pow(10, modMax))).Round(i);
@@ -229,7 +247,7 @@ namespace GoodSeat.Liffom.Reals
                 }
             }
             SignificantReal newReal = new SignificantReal(bestEstimate);
-            newReal.Precision = newPrecision;
+            newReal.SignificantDigits = newPrecision;
             return newReal;
         }
     }

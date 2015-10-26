@@ -57,7 +57,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// このインスタンスの型で考慮可能な最大桁数を取得します。
         /// </summary>
-        public abstract int MaxValidDigit { get; }
+        public abstract int MaxValidDigits { get; }
 
         /// <summary>
         /// 正規化した時の指数部を取得します。
@@ -164,7 +164,7 @@ namespace GoodSeat.Liffom.Reals
         {
             if (r1.GetType() != r2.GetType())
             {
-                if (r1.MaxValidDigit < r2.MaxValidDigit) r1 = r2.CreateFrom(r1.ToDouble());
+                if (r1.MaxValidDigits < r2.MaxValidDigits) r1 = r2.CreateFrom(r1.ToDouble());
                 else r2 = r1.CreateFrom(r2.ToDouble());
             }
             return op(r1, r2);
@@ -189,7 +189,7 @@ namespace GoodSeat.Liffom.Reals
         {
             if (r1.GetType() != r2.GetType())
             {
-                if (r1.MaxValidDigit < r2.MaxValidDigit) r1 = r2.CreateFrom(r1.ToDouble());
+                if (r1.MaxValidDigits < r2.MaxValidDigits) r1 = r2.CreateFrom(r1.ToDouble());
                 else r2 = r1.CreateFrom(r2.ToDouble());
             }
             return op(r1, r2);

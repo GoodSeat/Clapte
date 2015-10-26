@@ -140,7 +140,7 @@ namespace GoodSeat.LiffomTestProject
 
             Numeric actual;
             actual = SolveEquation_Accessor.GetPrecisionModifiedSolution(f, x, solution, initialValidDigit) as Numeric;
-            Assert.AreEqual(3, actual.Precision);
+            Assert.AreEqual(3, actual.SignificantDigits);
         }
 
 

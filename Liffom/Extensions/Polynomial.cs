@@ -602,7 +602,7 @@ namespace GoodSeat.Liffom.Extensions
             if (n1.Figure.IsInfinity) return null;
             if (n2.Figure.IsInfinity) return null;
 
-            Numeric errorRatio = new Numeric(Math.Pow(10, -Numeric.MaxPrecision) * 5d);
+            Numeric errorRatio = new Numeric(Math.Pow(10, -Numeric.MaxValidDigits) * 5d);
 
             Numeric nBase = (n1 > n2) ? n1 : n2;
         

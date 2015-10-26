@@ -45,7 +45,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// このインスタンスの型で考慮可能な最大桁数を取得します。
         /// </summary>
-        public override int MaxValidDigit { get { return 15;} }
+        public override int MaxValidDigits { get { return 15;} }
 
 
         /// <summary>
@@ -137,7 +137,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public override string ToString(string format) { return InnerData.ToString(format); }
+        public override string ToString(string format) { return ToDouble().ToString(format); }
 
         #endregion
 

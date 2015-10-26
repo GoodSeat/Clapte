@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 考慮する最大有効桁数を設定もしくは取得します。この値より大きな有効桁数を有する場合、当該数値の有効桁数を無限と判定します。
         /// </summary>
-        public static int MaxPrecision { get { return 15; } }
+        public static int MaxValidDigits { get { return 15; } }
 
         /// <summary>
         /// 2つの数値を比較し、一致するか否かを判定します。
@@ -56,7 +56,7 @@ namespace GoodSeat.Liffom.Formulas
         public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Figure == n2.Figure; }
 
 
-        Real _num; // 保持数値
+        Real _figure; // 保持数値
 
         /// <summary>
         /// 数値を初期化します。
@@ -65,7 +65,7 @@ namespace GoodSeat.Liffom.Formulas
         public Numeric(string s) : this(double.Parse(s))
         {
             // TODO:
-//            Data = new PrecisionDouble(s);
+//            Data = new SignificantReal(s);
         }
 
         /// <summary>
@@ -88,23 +88,23 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public Real Figure
         {
-            get { return _num; }
-            set { _num = value; }
+            get { return _figure; }
+            set { _figure = value; }
         }
 
         /// <summary>
         /// 有効桁数を設定もしくは取得します。
         /// </summary>
-        public int Precision
+        public int SignificantDigits
         {
             get
             {
-                if (Figure is SignificantReal) return (Figure as SignificantReal).Precision;
-                return Figure.Value.MaxValidDigit;
+                if (Figure is SignificantReal) return (Figure as SignificantReal).SignificantDigits;
+                return Figure.Value.MaxValidDigits;
             }
             set
             {
-                if (Figure is SignificantReal) (Figure as SignificantReal).Precision = value;
+                if (Figure is SignificantReal) (Figure as SignificantReal).SignificantDigits = value;
             }
         }
 

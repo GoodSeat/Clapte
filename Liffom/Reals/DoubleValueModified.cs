@@ -62,7 +62,7 @@ namespace GoodSeat.Liffom.Reals
             set 
             {
                 _minDigit = value; 
-                if (Exponent - MinimumDigit > MaxValidDigit) _minDigit = Exponent - MaxValidDigit;
+                if (Exponent - MinimumDigit > MaxValidDigits) _minDigit = Exponent - MaxValidDigits;
             }
         }
 

@@ -116,7 +116,7 @@ namespace GoodSeat.Liffom.Processes
 
             // 初期解にて計算した時の解の有効数字を取得
             var copy = solution.Copy();
-            foreach (Numeric n in copy.GetExistFactor<Numeric>()) n.Precision = 100;
+            foreach (Numeric n in copy.GetExistFactor<Numeric>()) n.SignificantDigits = 100;
             initialValidDigit = int.MinValue; // 初期解で計算したときの最大有効桁
             initialPrecision = 100; // 初期解で計算したときの有効桁数
             Formula checkDigit = f.Substituted(x, copy).DeformFormula(token);
@@ -124,9 +124,9 @@ namespace GoodSeat.Liffom.Processes
             bool needCheckValid = false;
             foreach (Numeric n in checkDigit.GetExistFactor<Numeric>())
             {
-                if (n.Precision <= Numeric.MaxPrecision) needCheckValid = true;
-                initialValidDigit = Math.Max(n.Figure.Exponent - n.Precision + 1, initialValidDigit);
-                initialPrecision = Math.Min(n.Precision, initialPrecision);
+                if (n.SignificantDigits <= Numeric.MaxValidDigits) needCheckValid = true;
+                initialValidDigit = Math.Max(n.Figure.Exponent - n.SignificantDigits + 1, initialValidDigit);
+                initialPrecision = Math.Min(n.SignificantDigits, initialPrecision);
             }
             return needCheckValid;
         }
@@ -143,12 +143,12 @@ namespace GoodSeat.Liffom.Processes
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
-            for (int i = 1; i <= Numeric.MaxPrecision; i++)
+            for (int i = 1; i <= Numeric.MaxValidDigits; i++)
             {
                 Formula checkSolution = solution.Copy();
                 foreach (Numeric n in checkSolution.GetExistFactor<Numeric>())
                 {
-                    n.Precision = i;
+                    n.SignificantDigits = i;
                     n.Figure = new Numeric(double.Parse(n.Figure.ToString())).Figure;
                 }
 
@@ -156,7 +156,7 @@ namespace GoodSeat.Liffom.Processes
                 int postValidDigit = int.MinValue;
                 foreach (Numeric n in checkDigitResult.GetExistFactor<Numeric>()) // checkDigitResultは、0.E-3、0.E+2[kN*m^2] 等のはず
                 {
-                    int validDigit = n.Figure.Exponent - n.Precision + 1;
+                    int validDigit = n.Figure.Exponent - n.SignificantDigits + 1;
                     if (n.Figure.Round(-validDigit) != 0d) continue; // 左辺-右辺が0になっていないならだめ。
 
                     postValidDigit = Math.Max(validDigit, postValidDigit);
@@ -167,8 +167,8 @@ namespace GoodSeat.Liffom.Processes
                 {
                     foreach (Numeric n in solution.GetExistFactor<Numeric>())
                     {
-                        if (n.Precision == 100) continue;
-                        n.Precision = i;
+                        if (n.SignificantDigits == 100) continue;
+                        n.SignificantDigits = i;
                     }
                     return solution;
                 }
