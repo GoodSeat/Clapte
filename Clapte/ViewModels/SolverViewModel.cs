@@ -260,6 +260,7 @@ namespace GoodSeat.Clapte.ViewModels
                 var token1 = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
                 token1.NoTryRules.Add(CalculatePowerNumericRule.Entity); // 累乗の数値化を除外
                 token1.NoTryRules.Add(ConstantNumerateRule.Entity); // 定数の数値化を除外
+                token1.NoTryRules.Add(CalculateDivideNumericRule.Entity); // 数値の除算を除外
                 tokenList.Add(token1);
 
                 // その後、小数まで計算しきる。
