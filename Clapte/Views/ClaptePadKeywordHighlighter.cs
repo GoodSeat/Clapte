@@ -64,6 +64,7 @@ namespace GoodSeat.Clapte.Views
         public void Renew(string targetText)
         {
             ClearKeywords();
+            ClearRegex();
 
             List<string> constantNames = new List<string>();
             constantNames.AddRange(GetAllConstantsDefinedInCell().Select(def => def.Name).Where(name => !constantNames.Contains(name)));
@@ -87,7 +88,7 @@ namespace GoodSeat.Clapte.Views
                     var addName = name;
                     if (!unitNames.Contains(addName) && !constantNames.Contains(addName) && targetText.Contains(addName)) unitNames.Add(addName);
 
-                    foreach (var prefix in SIPrefix.GetAllPrefix(false))
+                    foreach (var prefix in Prefix.GetAllPrefix(false))
                     {
                         addName = prefix.Mark + name;
                         if (!unitNames.Contains(addName) && !constantNames.Contains(addName) && targetText.Contains(addName)) unitNames.Add(addName);
