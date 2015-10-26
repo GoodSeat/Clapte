@@ -75,7 +75,7 @@ namespace GoodSeat.Liffom.Reals
         /// <example>32.005 → -3。</example>
         protected void ResetMinimumDigit()
         {
-            string d = InnerData.ToString().ToLower();
+            string d = InnerData.ToString().ToLower().TrimStart('-');
 
             int delta = 0;
             if (d.Contains("e"))
@@ -85,12 +85,14 @@ namespace GoodSeat.Liffom.Reals
                 d = split[0];
             }
 
-            d = d.TrimEnd('0', '.');
+            d = d.TrimEnd('.');
             if (d.Contains("."))
             {
+                d = d.TrimEnd('0');
                 string[] split = d.Split('.');
                 delta -= split[1].Length;
             }
+            delta += d.Length - d.TrimEnd('0').Length;
 
             MinimumDigit = delta;
         }
