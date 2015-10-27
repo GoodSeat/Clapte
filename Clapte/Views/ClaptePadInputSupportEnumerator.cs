@@ -232,5 +232,37 @@ namespace GoodSeat.Clapte.Views.InputSupports
         }
 
         #endregion
+
+        /// <summary>
+        /// 指定文字列から引き当てられる最初の入力補助候補を取得します。
+        /// </summary>
+        /// <param name="targetText">引き当てに用いる文字列。</param>
+        /// <param name="lineIndex">対象とする行番号。</param>
+        /// <param name="postText">対象単語と同じ行の後方の文字列。</param>
+        /// <returns>引き当てられる入力補助候補。</returns>
+        public InputSupportCandidate GetInputSupportCandidateFromText(string targetText, int lineIndex, string postText)
+        {
+            int saveLine = CurrentCaretLineNumber;
+            try
+            {
+                CurrentCaretLineNumber = lineIndex;
+                var list = new List<InputSupportCandidate>(GetAllCandidates(targetText).Where(def => def != null && def.ReplaceText.TrimEnd('(') == targetText));
+                if (list.Count == 0) return null;
+
+                var helpTarget = list[0];
+                if (list.Count > 1)
+                {
+                    if (postText.StartsWith("("))
+                        helpTarget = list.Find(c => c.Tag is FunctionDefine);
+                    else
+                        helpTarget = list.Find(c => !(c.Tag is FunctionDefine));
+                }
+                return helpTarget;
+            }
+            finally
+            {
+                CurrentCaretLineNumber = saveLine;
+            }
+        }
     }
 }

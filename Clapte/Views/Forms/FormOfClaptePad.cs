@@ -3,17 +3,16 @@ using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using Sgry.Azuki;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.Views.InputSupports;
 using GoodSeat.Clapte.ViewModels;
-using Sgry.Azuki;
-using Sgry.Azuki.Highlighter;
 using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Sio.Xml;
-using System.IO;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
 
@@ -251,6 +250,15 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         /// <summary>
+        /// ツールチップヘルプ表示を終了します。
+        /// </summary>
+        private void hideTooltipHelp()
+        {
+            _toolTipHelp.Hide(_inputTextBox);
+            _toolTipHelp.Tag = null;
+        }
+
+        /// <summary>
         /// 入力されているテキストに応じて、スクロールバーの表示有無を切り替えます。
         /// </summary>
         private void SetVisibleOfScrollBar()
@@ -260,6 +268,66 @@ namespace GoodSeat.Clapte.Views.Forms
 
             _resultTextBox.ShowsVScrollBar = (_inputTextBox.LineCount > visibleLineCount);
             _resultTextBox.UpdateScrollBarRange();
+        }
+
+        /// <summary>
+        /// 現在のキャレット位置、もしくは選択範囲に基づいて、その定義元にジャンプします。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiコントロール。</param>
+        private void JumpDefine(Sgry.Azuki.WinForms.AzukiControl azuki)
+        {
+            string targetText = azuki.GetSelectedText();
+            string postText;
+            int lineIndex;
+            string txt = azuki.GetCaretWord(out lineIndex, out postText);
+            if (string.IsNullOrEmpty(targetText)) targetText = txt;
+            if (targetText == null) return;
+
+            var helpTarget = InputSupportEnumerator.GetInputSupportCandidateFromText(targetText, lineIndex, postText);
+            if (helpTarget == null)
+            {
+                var target = Target.BaseSolver.Target.Parser.Parse(targetText);
+                if (target is Variable) target = new Unit(targetText);
+
+                var unit = target as Unit;
+                if (unit != null && unit.UnitType != null) OwnerMainForm.OpenDefine(target);
+
+                return;
+            }
+
+            int jump = -1;
+            if (helpTarget.Tag is FunctionDefine)
+            {
+                var def = helpTarget.Tag as FunctionDefine;
+
+                int line = 0;
+                foreach (var cell in Target)
+                {
+                    if (cell.Target.Content.GetAllDefinedFunctionNames().Contains(def.Name)) jump = line;
+                    if (line++ >= lineIndex) break;
+                }
+                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
+            }
+            else if (helpTarget.Tag is ConstantDefine)
+            {
+                var def = helpTarget.Tag as ConstantDefine;
+
+                int line = 0;
+                foreach (var cell in Target)
+                {
+                    if (cell.Target.Content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
+                    if (line++ >= lineIndex) break;
+                }
+                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
+            }
+            else if (helpTarget.Tag is UnitConvertRecord)
+            {
+                OwnerMainForm.OpenDefine((helpTarget.Tag as UnitConvertRecord).ConvertUnit);
+            }
+            if (jump < 0) return;
+
+            azuki.Document.SetCaretIndex(jump, 0);
+            azuki.ScrollToCaret();
         }
 
         /// <summary>
@@ -284,36 +352,7 @@ namespace GoodSeat.Clapte.Views.Forms
             ColorScheme.SetColor(Highlighter.GetCharClassOf(target), color, Color.White);
         }
 
-        /// <summary>
-        /// 指定文字列から引き当てられる最初の入力補助候補を取得します。
-        /// </summary>
-        /// <param name="targetText">引き当てに用いる文字列。</param>
-        /// <param name="lineIndex">対象とする行番号。</param>
-        /// <param name="postText">対象単語と同じ行の後方の文字列。</param>
-        /// <returns>引き当てられる入力補助候補。</returns>
-        public InputSupportCandidate GetInputSupportCandidateFromText(string targetText, int lineIndex, string postText)
-        {
-            InputSupportEnumerator.CurrentCaretLineNumber = lineIndex;
-            var list = new List<InputSupportCandidate>(InputSupportEnumerator.GetAllCandidates(targetText).Where(
-                        def => def != null && def.ReplaceText.TrimEnd('(') == targetText));
-            if (list.Count == 0) return null;
-
-            var helpTarget = list[0];
-            if (list.Count > 1)
-            {
-                if (postText.StartsWith("("))
-                {
-                    foreach (var candidate in list)
-                        if (candidate.Tag is FunctionDefine) helpTarget = candidate;
-                }
-                else
-                {
-                    foreach (var candidate in list)
-                        if (!(candidate.Tag is FunctionDefine)) helpTarget = candidate;
-                }
-            }
-            return helpTarget;
-        }
+        protected override void OnCancel(EventArgs e) { this.Hide(); }
 
         #endregion
 
@@ -344,26 +383,17 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// 数式セルの評価ソルバの設定変更が完了した時に呼び出されます。
         /// </summary>
-        void Target_SolversUpdated(object sender, EventArgs e)
-        {
-            Target.RenewAll(_inputTextBox.Text);
-        }
+        void Target_SolversUpdated(object sender, EventArgs e) { Target.RenewAll(_inputTextBox.Text); }
 
         /// <summary>
         /// 数式セルの評価開始時に呼び出されます。
         /// </summary>
-        void Target_EvaluateStarted(object sender, EventArgs e)
-        {
-            _picStatus.Visible = Target.IsEvaluating;
-        }
+        void Target_EvaluateStarted(object sender, EventArgs e) { _picStatus.Visible = Target.IsEvaluating; }
 
         /// <summary>
         /// 数式セルの評価終了時に呼び出されます。
         /// </summary>
-        void Target_EvaluateFinished(object sender, EventArgs e)
-        {
-            _picStatus.Visible = Target.IsEvaluating;
-        }
+        void Target_EvaluateFinished(object sender, EventArgs e) { _picStatus.Visible = Target.IsEvaluating; }
 
         /// <summary>
         /// 入力ボックスのテキストに変更があったときに呼び出されます。
@@ -395,20 +425,9 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.UpdateCaretGraphic();
         }
 
-        protected override void OnCancel(EventArgs e)
-        {
-            this.Hide();
-        }
+        private void FormOfClaptePad_FormClosing(object sender, FormClosingEventArgs e) { HotSave(); }
 
-        private void FormOfClaptePad_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            HotSave();
-        }
-
-        private void FormOfClaptePad_Resize(object sender, EventArgs e)
-        {
-            SetVisibleOfScrollBar();
-        }
+        private void FormOfClaptePad_Resize(object sender, EventArgs e) { SetVisibleOfScrollBar(); }
 
         private void _timerDelay_Tick(object sender, EventArgs e)
         {
@@ -434,7 +453,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 return;
             }
 
-            var helpTarget = GetInputSupportCandidateFromText(targetText, lineIndex, postText);
+            var helpTarget = InputSupportEnumerator.GetInputSupportCandidateFromText(targetText, lineIndex, postText);
             if (helpTarget == null)
             {
                 hideTooltipHelp();
@@ -449,10 +468,13 @@ namespace GoodSeat.Clapte.Views.Forms
             _toolTipHelp.Show(helpTarget.Information, _inputTextBox, position, 5000);
         }
 
-        private void hideTooltipHelp()
+        private void _inputTextBox_FontChanged(object sender, EventArgs e)
         {
-            _toolTipHelp.Hide(_inputTextBox);
-            _toolTipHelp.Tag = null;
+            if (_inputTextBox.FontInfo == _resultTextBox.FontInfo) return;
+            if (sender == _inputTextBox)
+                _resultTextBox.FontInfo = _inputTextBox.FontInfo;
+            else
+                _inputTextBox.FontInfo = _resultTextBox.FontInfo;
         }
 
         private void _btnSave_Click(object sender, EventArgs e)
@@ -469,30 +491,15 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.Text = File.ReadAllText(_openFileDialog.FileName, Encoding.Default);
         }
 
-        private void _btnSetting_Click(object sender, EventArgs e)
-        {
-            OwnerMainForm.OpenSetting();
-        }
+        private void _btnSetting_Click(object sender, EventArgs e) { OwnerMainForm.OpenSetting(); }
 
-        private void _btnAbort_Click(object sender, EventArgs e)
-        {
-            Target.AbortEvaluate();
-        }
+        private void _btnAbort_Click(object sender, EventArgs e) { Target.AbortEvaluate(); }
 
-        private void _btnAllDelete_Click(object sender, EventArgs e)
-        {
-            _inputTextBox.Text = "";
-        }
+        private void _btnAllDelete_Click(object sender, EventArgs e) { _inputTextBox.Text = ""; }
 
-        private void _btnSave_MouseEnter(object sender, EventArgs e)
-        {
-            (sender as Control).BringToFront();
-        }
+        private void _btnSave_MouseEnter(object sender, EventArgs e) { (sender as Control).BringToFront(); }
 
-        private void _picStatus_VisibleChanged(object sender, EventArgs e)
-        {
-            _btnAbort.Visible = _picStatus.Visible;
-        }
+        private void _picStatus_VisibleChanged(object sender, EventArgs e) { _btnAbort.Visible = _picStatus.Visible; }
 
         #region コンテキストメニュー
 
@@ -507,133 +514,31 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuDelete.Enabled = _inputTextBox.CanCut;
         }
 
-        private void _menuUndo_Click(object sender, EventArgs e)
-        {
-            if (_inputTextBox.CanUndo) _inputTextBox.Undo();
-        }
+        private void _menuUndo_Click(object sender, EventArgs e) { if (_inputTextBox.CanUndo) _inputTextBox.Undo(); }
 
-        private void _menuRedo_Click(object sender, EventArgs e)
-        {
-            if (_inputTextBox.CanRedo) _inputTextBox.Redo();
-        }
+        private void _menuRedo_Click(object sender, EventArgs e) { if (_inputTextBox.CanRedo) _inputTextBox.Redo(); }
 
-        private void _menuCut_Click(object sender, EventArgs e)
-        {
-            if (_inputTextBox.CanCut) _inputTextBox.Cut();
-        }
+        private void _menuCut_Click(object sender, EventArgs e) { if (_inputTextBox.CanCut) _inputTextBox.Cut(); }
 
-        private void _menuCopy_Click(object sender, EventArgs e)
-        {
-            if (_inputTextBox.CanCopy) _inputTextBox.Copy();
-        }
+        private void _menuCopy_Click(object sender, EventArgs e) { if (_inputTextBox.CanCopy) _inputTextBox.Copy(); }
 
-        private void _menuPaste_Click(object sender, EventArgs e)
-        {
-            if (_inputTextBox.CanPaste) _inputTextBox.Paste();
-        }
+        private void _menuPaste_Click(object sender, EventArgs e) { if (_inputTextBox.CanPaste) _inputTextBox.Paste(); }
 
-        private void _menuDelete_Click(object sender, EventArgs e)
-        {
-            _inputTextBox.Delete();
-        }
+        private void _menuDelete_Click(object sender, EventArgs e) { _inputTextBox.Delete(); }
 
-        private void _menuSelectAll_Click(object sender, EventArgs e)
-        {
-            _inputTextBox.SelectAll();
-        }
+        private void _menuSelectAll_Click(object sender, EventArgs e) { _inputTextBox.SelectAll(); }
 
-        private void _menuJumpDefine_Click(object sender, EventArgs e)
-        {
-            JumpDefine(_inputTextBox);
-        }
+        private void _menuJumpDefine_Click(object sender, EventArgs e) { JumpDefine(_inputTextBox); }
 
-        private void _menuAddUserDefine_Click(object sender, EventArgs e)
-        {
+        private void _menuAddUserDefine_Click(object sender, EventArgs e) { } // TODO
 
-        }
+        private void _menuCopyResult_Click(object sender, EventArgs e) { if (_resultTextBox.CanCopy) _resultTextBox.Copy(); }
 
-        private void _menuCopyResult_Click(object sender, EventArgs e)
-        {
-            if (_resultTextBox.CanCopy) _resultTextBox.Copy();
-        }
+        private void _menuSelectAllResult_Click(object sender, EventArgs e) { _resultTextBox.SelectAll(); }
 
-        private void _menuSelectAllResult_Click(object sender, EventArgs e)
-        {
-            _resultTextBox.SelectAll();
-        }
+        private void _menuJumpDefineResult_Click(object sender, EventArgs e) { JumpDefine(_resultTextBox); }
 
-        private void _menuJumpDefineResult_Click(object sender, EventArgs e)
-        {
-            JumpDefine(_resultTextBox);
-        }
-
-        private void _menuAddUserDefineResult_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void JumpDefine(Sgry.Azuki.WinForms.AzukiControl azuki)
-        {
-            string targetText = azuki.GetSelectedText();
-
-            string postText;
-            int lineIndex;
-            string txt = azuki.GetCaretWord(out lineIndex, out postText);
-            if (string.IsNullOrEmpty(targetText)) targetText = txt;
-            if (targetText == null) return;
-
-            var helpTarget = GetInputSupportCandidateFromText(targetText, lineIndex, postText);
-            if (helpTarget == null)
-            {
-                var target = Target.BaseSolver.Target.Parser.Parse(targetText);
-
-                if (target is Variable) target = new Unit(targetText);
-
-                var unit = target as Unit;
-                if (unit != null && unit.UnitType != null) OwnerMainForm.OpenDefine(target);
-
-                return;
-            }
-
-            int jump = -1;
-            if (helpTarget.Tag is FunctionDefine)
-            {
-                var def = helpTarget.Tag as FunctionDefine;
-
-                int line = 0;
-                foreach (var cell in Target)
-                {
-                    if (cell.Target.Content.GetAllDefinedFunctionNames().Contains(def.Name)) jump = line;
-                    if (line++ >= lineIndex) break;
-                }
-
-                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
-            }
-            else if (helpTarget.Tag is ConstantDefine)
-            {
-                var def = helpTarget.Tag as ConstantDefine;
-
-                int line = 0;
-                foreach (var cell in Target)
-                {
-                    if (cell.Target.Content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
-                    if (line++ >= lineIndex) break;
-                }
-
-                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
-            }
-            else if (helpTarget.Tag is UnitConvertRecord)
-            {
-                OwnerMainForm.OpenDefine((helpTarget.Tag as UnitConvertRecord).ConvertUnit);
-            }
-
-            if (jump >= 0)
-            {
-                azuki.Document.SetCaretIndex(jump, 0);
-                azuki.ScrollToCaret();
-            }
-        }
-
+        private void _menuAddUserDefineResult_Click(object sender, EventArgs e) { } // TODO
 
         #endregion
 
@@ -641,6 +546,10 @@ namespace GoodSeat.Clapte.Views.Forms
 
         #region ISerializable メンバー
 
+        /// <summary>
+        /// 指定したXmlElementから状態を復元します。
+        /// </summary>
+        /// <param name="xmlElement">復元元Xml要素。</param>
         public void OnDeserialize(XmlElement xmlElement)
         {
             var fontName = xmlElement.GetAttribute("FontName");
@@ -664,6 +573,10 @@ namespace GoodSeat.Clapte.Views.Forms
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Operator, Color.FromArgb(int.Parse(colorSchemeElement["Operator"].GetAttribute("Color"))));
         }
 
+        /// <summary>
+        /// 状態をXmlElementに保存します。
+        /// </summary>
+        /// <param name="xmlElement">保存先のXmlElement。</param>
         public void OnSerialize(XmlElement xmlElement)
         {
             xmlElement.AddAttribute("FontName", FontInfo.Name);
@@ -701,7 +614,7 @@ namespace GoodSeat.Clapte.Views.Forms
             xmlElement.AddElements(colorScheme);
         }
 
-
         #endregion
+
     }
 }

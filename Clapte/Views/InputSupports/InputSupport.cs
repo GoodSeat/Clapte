@@ -26,20 +26,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
             Owner = owner;
             CandidateEnumerator = enumerator;
 
-            CandidateListBox = new ListBox();
-            CandidateListBox.Visible = false;
-            CandidateListBox.Font = Azuki.Font;
-            CandidateListBox.SelectedIndexChanged += new EventHandler(CandidateListBox_SelectedIndexChanged);
-            Owner.Controls.Add(CandidateListBox);
-
-            ToolTipHelp = new ToolTip();
-
-            azuki.TextChanged += new EventHandler(azuki_TextChanged);
-            azuki.FontChanged += new EventHandler(azuki_FontChanged);
-            azuki.CaretMoved += new EventHandler(azuki_CaretMoved);
-            azuki.KeyDown += new KeyEventHandler(azuki_KeyDown);
-            azuki.KeyUp += new KeyEventHandler(azuki_KeyUp);
-            CandidateListBox.KeyDown += new KeyEventHandler(azuki_KeyDown);
+            InitializeComponents();
 
             State = new InputSupportTypingState(this);
 
@@ -48,6 +35,8 @@ namespace GoodSeat.Clapte.Views.InputSupports
 
         InputSupportState _state;
         Keys _nextIgnore = Keys.None;
+
+        #region プロパティ
 
         /// <summary>
         /// 対象となるAzukiコントロールを設定もしくは取得します。
@@ -67,12 +56,9 @@ namespace GoodSeat.Clapte.Views.InputSupports
         /// <summary>
         /// 現在の入力補助状態を設定もしくは取得します。
         /// </summary>
-        InputSupportState State 
+        InputSupportState State
         {
-            get
-            {
-                return _state;
-            }
+            get { return _state; }
             set
             {
                 if (_state == value) return;
@@ -93,6 +79,11 @@ namespace GoodSeat.Clapte.Views.InputSupports
         }
 
         /// <summary>
+        /// 入力補助候補の説明を表示するツールチップを設定もしくは取得します。
+        /// </summary>
+        ToolTip ToolTipHelp { get; set; }
+
+        /// <summary>
         /// AzukiのOwnerに対する相対位置を設定します。
         /// </summary>
         public Point ModifyLocation { private get; set; }
@@ -106,11 +97,6 @@ namespace GoodSeat.Clapte.Views.InputSupports
         /// 入力補助を自動で表示するか否かを設定もしくは取得します。
         /// </summary>
         public bool AutoShow { get; set; }
-
-        /// <summary>
-        /// 入力補助候補の説明を表示するツールチップを設定もしくは取得します。
-        /// </summary>
-        ToolTip ToolTipHelp { get; set; }
 
         /// <summary>
         /// 現在の候補絞り込み対象テキストの開始インデックスを取得します。
@@ -132,6 +118,10 @@ namespace GoodSeat.Clapte.Views.InputSupports
         /// </summary>
         public string CurrentBaseTargetText { get; private set; }
 
+        #endregion
+
+        #region 操作
+
         /// <summary>
         /// 次の指定キー入力まで、テキストの変更を抑止します。
         /// </summary>
@@ -142,7 +132,6 @@ namespace GoodSeat.Clapte.Views.InputSupports
             _nextIgnore = key;
         }
 
-
         /// <summary>
         /// 現在の状況に応じて、入力補助を表示します。
         /// </summary>
@@ -150,17 +139,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
         public void ShowInputSupport(bool force)
         {
             if (!(State is InputSupportTypingState)) return;
-            if (!force)
-            {
-                int caret = Azuki.Document.CaretIndex;
-                if (caret < Azuki.Document.Text.Length)
-                {
-                    var nextChar = Azuki.Document.GetCharAt(caret);
-                    if (('a' <= nextChar && nextChar <= 'z') || ('A' <= nextChar && nextChar <= 'Z') ||
-                        ('1' <= nextChar && nextChar <= '0')) return;
-                    if (nextChar == '_') return;
-                }
-            }
+            if (!force && CaretIsFollowedByNoSplitChar()) return;
 
             int startIndex;
             var target = Azuki.GetPreCaretWord(out startIndex);
@@ -213,6 +192,31 @@ namespace GoodSeat.Clapte.Views.InputSupports
             Azuki.Document.Replace(newText, start, end);
         }
 
+        #endregion
+
+        #region 処理
+
+        /// <summary>
+        /// 各種Controlを初期化します。
+        /// </summary>
+        private void InitializeComponents()
+        {
+            CandidateListBox = new ListBox();
+            CandidateListBox.Visible = false;
+            CandidateListBox.Font = Azuki.Font;
+            CandidateListBox.SelectedIndexChanged += new EventHandler(CandidateListBox_SelectedIndexChanged);
+            Owner.Controls.Add(CandidateListBox);
+
+            ToolTipHelp = new ToolTip();
+
+            Azuki.TextChanged += new EventHandler(azuki_TextChanged);
+            Azuki.FontChanged += new EventHandler(azuki_FontChanged);
+            Azuki.CaretMoved += new EventHandler(azuki_CaretMoved);
+            Azuki.KeyDown += new KeyEventHandler(azuki_KeyDown);
+            Azuki.KeyUp += new KeyEventHandler(azuki_KeyUp);
+            CandidateListBox.KeyDown += new KeyEventHandler(azuki_KeyDown);
+        }
+
         /// <summary>
         /// 現在のキャレット位置を指定して、補助候補のリストボックスの表示状態を初期化します。
         /// </summary>
@@ -231,6 +235,24 @@ namespace GoodSeat.Clapte.Views.InputSupports
             CandidateListBox.Visible = true;
         }
 
+        /// <summary>
+        /// 現在のキャレット位置の後方に、区切り対象とならない文字が続くか否かを取得します。
+        /// </summary>
+        /// <returns>現在のキャレット位置の後方に、区切り対象とならない文字が続くか。</returns>
+        private bool CaretIsFollowedByNoSplitChar()
+        {
+            int caret = Azuki.Document.CaretIndex;
+            if (caret >= Azuki.Document.Text.Length) return false;
+
+            var nextChar = Azuki.Document.GetCharAt(caret);
+            if (('a' <= nextChar && nextChar <= 'z') || ('A' <= nextChar && nextChar <= 'Z') ||
+                ('1' <= nextChar && nextChar <= '0')) return true;
+            if (nextChar == '_') return true;
+            return false;
+        }
+
+        #endregion
+
         #region イベント対応
 
         int _lastTextLength = 0;
@@ -247,20 +269,13 @@ namespace GoodSeat.Clapte.Views.InputSupports
 
         void azuki_CaretMoved(object sender, EventArgs e)
         {
-//            if (!(State is InputSupportTypingState)) return;
             if (Azuki.CaretIndex < CurrentTargetStartIndex ||
                 Azuki.CaretIndex > CurrentTargetStartIndex + CurrentTargetLenth + 1) EscapeInputSupport();
         }
 
-        void azuki_FontChanged(object sender, EventArgs e)
-        {
-            CandidateListBox.Font = Azuki.Font;
-        }
+        void azuki_FontChanged(object sender, EventArgs e) { CandidateListBox.Font = Azuki.Font; }
 
-        void azuki_KeyDown(object sender, KeyEventArgs e)
-        {
-            State = State.NotifyKeyDown(e);
-        }
+        void azuki_KeyDown(object sender, KeyEventArgs e) { State = State.NotifyKeyDown(e); }
 
         void azuki_KeyUp(object sender, KeyEventArgs e)
         {
@@ -295,6 +310,11 @@ namespace GoodSeat.Clapte.Views.InputSupports
             Azuki.CaretMoved -= new EventHandler(azuki_CaretMoved);
             Azuki.KeyDown -= new KeyEventHandler(azuki_KeyDown);
             Azuki.KeyUp -= new KeyEventHandler(azuki_KeyUp);
+
+            CandidateListBox.KeyDown -= new KeyEventHandler(azuki_KeyDown);
+            CandidateListBox.Dispose();
+
+            ToolTipHelp.Dispose();
         }
 
         #endregion

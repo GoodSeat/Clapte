@@ -45,11 +45,17 @@ namespace GoodSeat.Clapte.Views.InputSupports
         /// </summary>
         public object Tag { get; set; }
 
-        public override string ToString()
-        {
-            return Title;
-        }
+        /// <summary>
+        /// 入力候補を表す文字列を取得します。
+        /// </summary>
+        /// <returns>入力候補を表す文字列。</returns>
+        public override string ToString() { return Title; }
 
+        /// <summary>
+        /// 指定したobjectが、この入力候補オブジェクトと等しいか否かを判定します。
+        /// </summary>
+        /// <param name="obj">比較対象のオブジェクト。</param>
+        /// <returns>判定結果。</returns>
         public override bool Equals(object obj)
         {
             var other = obj as InputSupportCandidate;
@@ -58,17 +64,23 @@ namespace GoodSeat.Clapte.Views.InputSupports
             return ReplaceText == other.ReplaceText;
         }
 
-        public override int GetHashCode()
-        {
-            return Title.GetHashCode();
-        }
+        /// <summary>
+        /// このインスタンスのハッシュコードを取得します。
+        /// </summary>
+        /// <returns>このインスタンスのハッシュコード。</returns>
+        public override int GetHashCode() { return Title.GetHashCode(); }
 
         #region IComparable<InputSupportCandidate> メンバー
 
-        public int CompareTo(InputSupportCandidate other)
-        {
-            return this.Title.CompareTo(other.Title);
-        }
+        /// <summary>
+        /// 現在のオブジェクトを同じ型の別のオブジェクトと比較します。
+        /// </summary>
+        /// <param name="other">このオブジェクトと比較するオブジェクト。</param>
+        /// <returns>
+        /// 比較対象オブジェクトの相対順序を示す値。戻り値の意味は次のとおりです。値意味0 より小さい値このオブジェクトが other パラメーターより小さいことを意味します。0このオブジェクトが
+        /// other と等しいことを意味します。0 より大きい値このオブジェクトが other よりも大きいことを意味します。
+        /// </returns>
+        public int CompareTo(InputSupportCandidate other) { return this.Title.CompareTo(other.Title); }
 
         #endregion
     }

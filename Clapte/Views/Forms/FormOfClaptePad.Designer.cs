@@ -109,6 +109,7 @@
             this._inputTextBox.ViewWidth = 4097;
             this._inputTextBox.CaretMoved += new System.EventHandler(this._inputTextBox_CaretMoved);
             this._inputTextBox.VScroll += new System.EventHandler(this._inputTextBox_VScroll);
+            this._inputTextBox.FontChanged += new System.EventHandler(this._inputTextBox_FontChanged);
             this._inputTextBox.TextChanged += new System.EventHandler(this._inputTextBox_TextChanged);
             this._inputTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._inputTextBox_MouseMove);
             // 
@@ -279,6 +280,7 @@
             this._resultTextBox.TabIndex = 17;
             this._resultTextBox.ViewWidth = 4097;
             this._resultTextBox.VScroll += new System.EventHandler(this._resultTextBox_VScroll);
+            this._resultTextBox.FontChanged += new System.EventHandler(this._inputTextBox_FontChanged);
             // 
             // _contextMenuResult
             // 
