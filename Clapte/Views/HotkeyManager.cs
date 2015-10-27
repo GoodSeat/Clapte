@@ -10,6 +10,7 @@ namespace GoodSeat.Clapte.Views
 {
     /// <summary>
     /// ホットキー登録の管理を行うクラスです。
+    /// 参考：http://devlights.hatenablog.com/entry/20070416/p1
     /// </summary>
     public sealed class HotkeyManager : ISerializable, IDisposable
     {
@@ -57,7 +58,7 @@ namespace GoodSeat.Clapte.Views
         /// <summary>
         /// ホットキー管理クラスを初期化します。
         /// </summary>
-        /// <param name="handle">コントロールのハンドル</param>
+        /// <param name="handle">コントロールのハンドル。</param>
         public HotkeyManager(IntPtr handle)
         {
             _handle = handle;
@@ -88,22 +89,17 @@ namespace GoodSeat.Clapte.Views
         /// <summary>
         /// ホットキーのメインキーを表す文字列を取得します。
         /// </summary>
-        public string Hotkey
-        {
-            get { return _hotkey; }
-        }
+        public string Hotkey { get { return _hotkey; } }
 
         /// <summary>
         /// 現在有効なホットキーで、Altキーを必要とするか否かを取得します。
         /// </summary>
-        public bool Alt
-        { get { return _alt; } }
+        public bool Alt { get { return _alt; } }
 
         /// <summary>
         /// 現在有効なホットキーで、Ctrlキーを必要とするか否かを取得します。
         /// </summary>
-        public bool Ctrl
-        { get { return _ctrl; } }
+        public bool Ctrl { get { return _ctrl; } }
 
         /// <summary>
         /// ホットキーが押されたときに呼び出されます。
@@ -120,12 +116,12 @@ namespace GoodSeat.Clapte.Views
         /// <param name="hotkey">キーを表す文字</param>
         /// <param name="alt">Altキーを使用するか否か</param>
         /// <param name="ctrl">Ctrlキーを使用するか否か</param>
-        /// <returns></returns>
+        /// <returns>登録に成功したか。</returns>
         public bool RegisterHotkey(string hotkey, bool alt, bool ctrl)
         {
             KeysConverter key = new KeysConverter();
             
-            if (hotkey == "") return false;
+            if (string.IsNullOrEmpty(hotkey)) return false;
             Keys keycode = (Keys)key.ConvertFromString(hotkey);
 
             // 先にあるのを解除
@@ -171,7 +167,7 @@ namespace GoodSeat.Clapte.Views
         /// <summary>
         /// 管理コントロールのウインドウメッセージを通知します。
         /// </summary>
-        /// <param name="message"></param>
+        /// <param name="message">メッセージ。</param>
         public void OnWndProc(Message message)
         {
             if (message.Msg == WM_HOTKEY)
@@ -186,6 +182,10 @@ namespace GoodSeat.Clapte.Views
         
         #region ISerializable メンバー
 
+        /// <summary>
+        /// 指定したXmlElementから状態を復元します。
+        /// </summary>
+        /// <param name="xmlElement">復元元Xml要素</param>
         public void OnDeserialize(XmlElement xmlElement)
         {
             _hotkey = xmlElement["Key"].Value;
@@ -193,6 +193,10 @@ namespace GoodSeat.Clapte.Views
             _ctrl = bool.Parse(xmlElement.GetAttribute("Ctrl"));
         }
 
+        /// <summary>
+        /// 状態をXmlElementに保存します。
+        /// </summary>
+        /// <param name="xmlElement">保存先のXmlElement</param>
         public void OnSerialize(XmlElement xmlElement)
         {
             xmlElement.AddElements(new XmlElement("Key", _hotkey));
@@ -204,6 +208,9 @@ namespace GoodSeat.Clapte.Views
 
         #region IDisposable メンバー
 
+        /// <summary>
+        /// アンマネージ リソースの解放およびリセットに関連付けられているアプリケーション定義のタスクを実行します。
+        /// </summary>
         public void Dispose()
         {
             UnregisterHotKey();

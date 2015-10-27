@@ -3,12 +3,13 @@ using System.Collections.Generic;
 using System.Text;
 using System.Runtime.InteropServices;
 using System.Windows.Forms;
+using System.Threading;
 
 namespace GoodSeat.Clapte.Views
 {
     /// <summary>
-    /// クリップボードを監視するクラス。
-    /// 使用後は必ずDispose()メソッドを呼び出して下さい。
+    /// クリップボードを監視するクラスです。
+    /// 参考：http://anis774.net/codevault.html
     /// </summary>
     public sealed class ClipBoardWatcher : IDisposable
     {
@@ -20,9 +21,7 @@ namespace GoodSeat.Clapte.Views
         public event EventHandler DrawClipBoard;
 
         /// <summary>
-        /// ClipBoardWatcherクラスを初期化して
-        /// クリップボードビューアチェインに登録します。
-        /// 使用後は必ずDispose()メソッドを呼び出して下さい。
+        /// ClipBoardWatcherクラスを初期化してクリップボードビューアチェインに登録します。
         /// </summary>
         public ClipBoardWatcher()
         {
@@ -42,16 +41,14 @@ namespace GoodSeat.Clapte.Views
 
         private void raiseDrawClipBoard()
         {
+#if DEBUG
             Console.WriteLine("クリップボードに変化がありました。");
-            if (DrawClipBoard != null)
-            {
-                DrawClipBoard(this, EventArgs.Empty);
-            }
+#endif
+            if (DrawClipBoard != null) DrawClipBoard(this, EventArgs.Empty);
         }
 
         /// <summary>
-        /// ClipBoardWatcherクラスを
-        /// クリップボードビューアチェインから削除します。
+        /// ClipBoardWatcherクラスをクリップボードビューアチェインから削除します。
         /// </summary>
         public void Dispose()
         {
@@ -72,16 +69,16 @@ namespace GoodSeat.Clapte.Views
             const int WM_DRAWCLIPBOARD = 0x0308;
             const int WM_CHANGECBCHAIN = 0x030D;
 
-            IntPtr nextHandle;
-            System.Threading.ThreadStart proc;
+            IntPtr _nextHandle;
+            ThreadStart _proc;
 
             public bool Enable { get; set; }
 
-            public void StartWatch(System.Threading.ThreadStart proc)
+            public void StartWatch(ThreadStart proc)
             {
-                this.proc = proc;
-                nextHandle = SetClipboardViewer(this.Handle);
-                this.WindowState = FormWindowState.Minimized;
+                _proc = proc;
+                _nextHandle = SetClipboardViewer(Handle);
+                WindowState = FormWindowState.Minimized;
 
                 _lastProcDate = DateTime.Now;
             }
@@ -90,24 +87,26 @@ namespace GoodSeat.Clapte.Views
             {
                 if (Enable && m.Msg == WM_DRAWCLIPBOARD)
                 {
-                    Console.WriteLine(this.Handle.ToString() + ", " + nextHandle.ToString());
-                    SendMessage(nextHandle, m.Msg, m.WParam, m.LParam);
+#if DEBUG
+                    Console.WriteLine(this.Handle.ToString() + ", " + _nextHandle.ToString());
+#endif
+                    SendMessage(_nextHandle, m.Msg, m.WParam, m.LParam);
 
                     if (DateTime.Now - _lastProcDate > TimeSpan.FromMilliseconds(100))
                     {
-                        proc();
+                        _proc();
                         _lastProcDate = DateTime.Now;
                     }
                 }
                 else if (Enable && m.Msg == WM_CHANGECBCHAIN)
                 {
-                    if (m.WParam == nextHandle)
+                    if (m.WParam == _nextHandle)
                     {
-                        nextHandle = m.LParam;
+                        _nextHandle = m.LParam;
                     }
                     else
                     {
-                        SendMessage(nextHandle, m.Msg, m.WParam, m.LParam);
+                        SendMessage(_nextHandle, m.Msg, m.WParam, m.LParam);
                     }
                 }
                 base.WndProc(ref m);
@@ -117,7 +116,7 @@ namespace GoodSeat.Clapte.Views
             {
                 try
                 {
-                    ChangeClipboardChain(this.Handle, nextHandle);
+                    ChangeClipboardChain(this.Handle, _nextHandle);
                 }
                 catch { }
                 base.Dispose(disposing);
