@@ -6,7 +6,6 @@ using GoodSeat.Liffom.Formulas;
 
 namespace GoodSeat.Liffom.Parse
 {
-    // TODO: 例外をもっと丁寧に
     /// <summary>
     /// 数式の構文解析器を表します。
     /// </summary>
@@ -214,7 +213,7 @@ namespace GoodSeat.Liffom.Parse
         }
 
         /// <summary>
-        /// トークン列に対し、トークン、及び演算解析器によるトークン間調整を状態が終息するまで実行します。
+        /// トークン列に対し、トークン、及び演算解析器によるトークン間調整を状態が収束するまで実行します。
         /// </summary>
         /// <param name="topToken">対象トークン列の先頭トークン。</param>
         /// <exception cref="FormulaParseException">トークン列が不正な状態となった場合にスローされます。</exception>
@@ -249,8 +248,8 @@ namespace GoodSeat.Liffom.Parse
         /// <summary>
         /// トークン列中で最初に見つかる末尾区切りトークンとその対となる区切りトークンの内部を、数式トークンに置き換えます。
         /// </summary>
-        /// <param name="topToken">トークン列の先頭トークン</param>
-        /// <returns>置き換え後トークン列の先頭トークン</returns>
+        /// <param name="topToken">トークン列の先頭トークン。</param>
+        /// <returns>置き換え後トークン列の先頭トークン。</returns>
         /// <exception cref="FormulaParseException">数式文字列中の区切りが正しく対応しない場合にスローされます。</exception>
         private Token ParseInnerPunctuation(StartToken topToken)
         {
@@ -284,8 +283,8 @@ namespace GoodSeat.Liffom.Parse
         /// <summary>
         /// 指定トークンが、数式の開始区切りであるか否かを取得します。
         /// </summary>
-        /// <param name="token">判定対象のトークン</param>
-        /// <returns>判定結果</returns>
+        /// <param name="token">判定対象のトークン。</param>
+        /// <returns>判定結果。</returns>
         private bool IsStartPunctuationToken(Token token)
         {
             if (token is PunctuationToken) return (token as PunctuationToken).Type == PunctuationToken.PunctuationType.Start;
@@ -295,8 +294,8 @@ namespace GoodSeat.Liffom.Parse
         /// <summary>
         /// 指定トークンが、数式の終端区切りであるか否かを取得します。
         /// </summary>
-        /// <param name="token">判定対象のトークン</param>
-        /// <returns>判定結果</returns>
+        /// <param name="token">判定対象のトークン。</param>
+        /// <returns>判定結果。</returns>
         private bool IsEndPunctuationToken(Token token)
         {
             if (token is PunctuationToken) return (token as PunctuationToken).Type == PunctuationToken.PunctuationType.End;
