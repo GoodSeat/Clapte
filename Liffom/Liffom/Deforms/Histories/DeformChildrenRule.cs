@@ -5,6 +5,7 @@ using System.Text;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Rules;
 
 namespace GoodSeat.Liffom.Deforms
 {
@@ -75,6 +76,14 @@ namespace GoodSeat.Liffom.Deforms
         public override string Information
         {
             get { return "子数式に対して、変形トークンに基づく変形を再帰的に適用するルールです。"; }
+        }
+
+        protected override IEnumerable<Type> OnGetPreDemandRules()
+        {
+            // 子数式を変形するまでもなく消せるものは消す
+            yield return typeof(RemoveInvalidOneOnProductRule);
+            yield return typeof(DeleteZeroOnSumRule);
+            yield return typeof(DeleteZeroOnProductRule);
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -26,12 +26,17 @@ namespace GoodSeat.Liffom.Formulas.Rules
             formula2 = c * b;
         }
 
-        protected override Formula GetRuledFormula() { return (a + c) * b; }
+        protected override Formula GetRuledFormula()
+        {
+            var n = new Numeric((a as Numeric).Data + (c as Numeric).Data);
+            return n * b;
+        }
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Sum; }
 
         protected override IEnumerable<Type> OnGetPreDemandRules()
         {
+            yield return typeof(CalculateSumOfNumericRule);
             yield return typeof(DistributivePropertyRule); // 逆変換の展開傾向
         }
 
@@ -50,7 +55,11 @@ namespace GoodSeat.Liffom.Formulas.Rules
         {
             yield return new KeyValuePair<Formula, Formula>(
                 Formula.Parse("5*a*x+a*x"),
-                Formula.Parse("(5+1)*(a*x)")
+                Formula.Parse("6*(a*x)")
+                );
+            yield return new KeyValuePair<Formula, Formula>(
+                Formula.Parse("5*i+i-15*i"),
+                Formula.Parse("-9*i")
                 );
         }
 
