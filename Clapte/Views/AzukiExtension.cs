@@ -14,21 +14,47 @@ namespace GoodSeat.Clapte.Views
     /// </summary>
     public static class AzukiExtension
     {
-        static AzukiExtension()
-        {
-            FindPreCursorWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*?)\b");
-            FindCursorWordRegex = new Regex(@"^(?<target>\D\S*?)\b");
-            FindCaretWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*)$");
-
-            // TODO: 累乗記号の省略が有効ならば、次に切り替える必要がある
-            FindPreCursorWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*?)(\d|\b)");
-            FindCursorWordRegex = new Regex(@"^(?<target>\D\S*?)(\d|\b)");
-            FindCaretWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*)$");
-        }
+        static AzukiExtension() { ResetRegex(); }
 
         static Regex FindPreCursorWordRegex { get; set; }
         static Regex FindCursorWordRegex { get; set; }
         static Regex FindCaretWordRegex { get; set; }
+
+        static bool s_splitWithfollowNumber;
+
+        /// <summary>
+        /// 非数値文字列の後方に続く数値文字列を、区切り位置として扱うか否かを設定若しくは取得します。
+        /// </summary>
+        public static bool SplitWithFollowNumber
+        {
+            get { return s_splitWithfollowNumber; }
+            set
+            {
+                if (s_splitWithfollowNumber == value) return;
+                s_splitWithfollowNumber = value;
+
+                ResetRegex();
+            }
+        }
+
+        /// <summary>
+        /// 現在の設定に基づいて、<see cref="AzukiExtension"/>で用いる正規表現を初期化します。
+        /// </summary>
+        private static void ResetRegex()
+        {
+            if (SplitWithFollowNumber)
+            {
+                FindPreCursorWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*?)(\d|\b)");
+                FindCursorWordRegex = new Regex(@"^(?<target>\D\S*?)(\d|\b)");
+                FindCaretWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*)$");
+            }
+            else
+            {
+                FindPreCursorWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*?)\b");
+                FindCursorWordRegex = new Regex(@"^(?<target>\D\S*?)\b");
+                FindCaretWordRegex = new Regex(@"^(?<pre>.*\b\d*)(?<target>\D\S*)$");
+            }
+        }
 
 
         /// <summary>
@@ -44,7 +70,7 @@ namespace GoodSeat.Clapte.Views
             postText = "";
 
             Point position = azuki.PointToClient(Cursor.Position);
-            position.X += 5; // カーソル前の単語を取ってくるので、カーソル位置を本来より少し右側に詐称しないと取得される単語が少し不自然。
+            position.X += 5; // カーソル前の単語を取ってくるので、カーソル位置を本来より少し右側に詐称しないと取得される単語が不自然。
             int index = azuki.GetIndexFromPosition(position);
             Point checkPosition = azuki.GetPositionFromIndex(index);
             if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;

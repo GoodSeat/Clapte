@@ -361,7 +361,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// 評価結果の変更時に呼び出されます。
         /// </summary>
-        void Target_ResultChanged(object sender, EventArgs e)
+        private void Target_ResultChanged(object sender, EventArgs e)
         {
             string resultText = "";
             for (int i = 0; i < _inputTextBox.Document.LineCount; i++)
@@ -383,17 +383,21 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// 数式セルの評価ソルバの設定変更が完了した時に呼び出されます。
         /// </summary>
-        void Target_SolversUpdated(object sender, EventArgs e) { Target.RenewAll(_inputTextBox.Text); }
+        private void Target_SolversUpdated(object sender, EventArgs e)
+        {
+            Target.RenewAll(_inputTextBox.Text);
+            AzukiExtension.SplitWithFollowNumber = Target.BaseSolver.PermitOmitPowerMark;
+        }
 
         /// <summary>
         /// 数式セルの評価開始時に呼び出されます。
         /// </summary>
-        void Target_EvaluateStarted(object sender, EventArgs e) { _picStatus.Visible = Target.IsEvaluating; }
+        private void Target_EvaluateStarted(object sender, EventArgs e) { _picStatus.Visible = Target.IsEvaluating; }
 
         /// <summary>
         /// 数式セルの評価終了時に呼び出されます。
         /// </summary>
-        void Target_EvaluateFinished(object sender, EventArgs e) { _picStatus.Visible = Target.IsEvaluating; }
+        private void Target_EvaluateFinished(object sender, EventArgs e) { _picStatus.Visible = Target.IsEvaluating; }
 
         /// <summary>
         /// 入力ボックスのテキストに変更があったときに呼び出されます。
