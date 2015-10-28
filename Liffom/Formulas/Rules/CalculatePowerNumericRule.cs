@@ -54,11 +54,13 @@ namespace GoodSeat.Liffom.Formulas.Rules
             // 累乗計算後の複素数の絶対値
             Numeric newAbs = abs.Data ^ expNumeric.Data;
 
-            // 角度を取得
+            // 角度を取得 // TODO:Math.PIを使用するのはダメ。
             Numeric newRad = new Numeric((rad * expNumeric).Numerate() as Numeric);
             if (newRad > Math.PI * 2) newRad = new Numeric(newRad % (2 * Math.PI));
             if (newRad < 0) newRad = (newRad + 2 * Math.PI).Numerate() as Numeric;
 
+            // TODO:このあたりの処理は再考。数値の精度に伴って変更する。
+            // 偏角はpiなども駆使したいところだが、速度とかルールの意味とかいろいろな側面でダメか。
             Numeric cos = new Numeric(newRad.Data.Cos());
             Numeric sin = new Numeric(newRad.Data.Sin());
             if (Math.Abs(cos) < 5E-15 || Math.Abs(sin) == 1) cos = new Numeric(0);
