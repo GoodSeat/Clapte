@@ -104,7 +104,7 @@
             this._inputTextBox.ShowsHScrollBar = false;
             this._inputTextBox.ShowsLineNumber = false;
             this._inputTextBox.ShowsVScrollBar = false;
-            this._inputTextBox.Size = new System.Drawing.Size(330, 326);
+            this._inputTextBox.Size = new System.Drawing.Size(330, 324);
             this._inputTextBox.TabIndex = 16;
             this._inputTextBox.ViewWidth = 4097;
             this._inputTextBox.CaretMoved += new System.EventHandler(this._inputTextBox_CaretMoved);
@@ -216,18 +216,18 @@
             this._splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._splitContainer.Location = new System.Drawing.Point(9, 28);
+            this._splitContainer.Location = new System.Drawing.Point(9, 30);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
             // 
-            this._splitContainer.Panel1.Controls.Add(this._btnAllDelete);
             this._splitContainer.Panel1.Controls.Add(this._inputTextBox);
+            this._splitContainer.Panel1.Controls.Add(this._btnAllDelete);
             // 
             // _splitContainer.Panel2
             // 
             this._splitContainer.Panel2.Controls.Add(this._resultTextBox);
-            this._splitContainer.Size = new System.Drawing.Size(520, 326);
+            this._splitContainer.Size = new System.Drawing.Size(520, 324);
             this._splitContainer.SplitterDistance = 330;
             this._splitContainer.TabIndex = 17;
             // 
@@ -276,11 +276,12 @@
             this._resultTextBox.ShowsDirtBar = false;
             this._resultTextBox.ShowsHScrollBar = false;
             this._resultTextBox.ShowsLineNumber = false;
-            this._resultTextBox.Size = new System.Drawing.Size(186, 326);
+            this._resultTextBox.Size = new System.Drawing.Size(186, 324);
             this._resultTextBox.TabIndex = 17;
             this._resultTextBox.ViewWidth = 4097;
             this._resultTextBox.VScroll += new System.EventHandler(this._resultTextBox_VScroll);
             this._resultTextBox.FontChanged += new System.EventHandler(this._inputTextBox_FontChanged);
+            this._resultTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._inputTextBox_MouseMove);
             // 
             // _contextMenuResult
             // 
@@ -336,7 +337,7 @@
             // _picStatus
             // 
             this._picStatus.Image = global::GoodSeat.Clapte.Properties.Resources.status_anim;
-            this._picStatus.Location = new System.Drawing.Point(94, 12);
+            this._picStatus.Location = new System.Drawing.Point(93, 12);
             this._picStatus.Name = "_picStatus";
             this._picStatus.Size = new System.Drawing.Size(47, 16);
             this._picStatus.TabIndex = 17;
@@ -352,7 +353,7 @@
             this._btnAbort.DownMove = 1;
             this._btnAbort.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter;
             this._btnAbort.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
-            this._btnAbort.Location = new System.Drawing.Point(73, 11);
+            this._btnAbort.Location = new System.Drawing.Point(73, 10);
             this._btnAbort.Name = "_btnAbort";
             this._btnAbort.Size = new System.Drawing.Size(15, 15);
             this._btnAbort.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -371,7 +372,7 @@
             this._btnLoad.DownMove = 1;
             this._btnLoad.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Open;
             this._btnLoad.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Open_Unfocus_mini;
-            this._btnLoad.Location = new System.Drawing.Point(29, 4);
+            this._btnLoad.Location = new System.Drawing.Point(29, 3);
             this._btnLoad.Name = "_btnLoad";
             this._btnLoad.Size = new System.Drawing.Size(26, 26);
             this._btnLoad.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -390,7 +391,7 @@
             this._btnSave.DownMove = 1;
             this._btnSave.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save;
             this._btnSave.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
-            this._btnSave.Location = new System.Drawing.Point(5, 4);
+            this._btnSave.Location = new System.Drawing.Point(5, 3);
             this._btnSave.Name = "_btnSave";
             this._btnSave.Size = new System.Drawing.Size(26, 26);
             this._btnSave.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -427,7 +428,7 @@
             this._btnSetting.DownMove = 1;
             this._btnSetting.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Setting;
             this._btnSetting.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Setting_Unfocus;
-            this._btnSetting.Location = new System.Drawing.Point(48, 4);
+            this._btnSetting.Location = new System.Drawing.Point(48, 3);
             this._btnSetting.Name = "_btnSetting";
             this._btnSetting.Size = new System.Drawing.Size(26, 26);
             this._btnSetting.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;

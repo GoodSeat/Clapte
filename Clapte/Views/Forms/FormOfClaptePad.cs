@@ -448,9 +448,12 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _inputTextBox_MouseMove(object sender, MouseEventArgs e)
         {
+            var textBox = sender as Sgry.Azuki.WinForms.AzukiControl;
+            if (textBox == null) return;
+
             int lineIndex;
             string postText;
-            string targetText = _inputTextBox.GetMouseHoverWord(out lineIndex, out postText);
+            string targetText = textBox.GetMouseHoverWord(out lineIndex, out postText);
             if (targetText == null)
             {
                 hideTooltipHelp();
@@ -466,10 +469,10 @@ namespace GoodSeat.Clapte.Views.Forms
 
             if (_toolTipHelp.Tag is string && (string)_toolTipHelp.Tag == helpTarget.Information) return;
 
-            Point position = _inputTextBox.PointToClient(Cursor.Position);
-            position.Offset(0, _inputTextBox.View.LineHeight);
+            Point position = textBox.PointToClient(Cursor.Position);
+            position.Offset(0, textBox.View.LineHeight);
             _toolTipHelp.Tag = helpTarget.Information;
-            _toolTipHelp.Show(helpTarget.Information, _inputTextBox, position, 5000);
+            _toolTipHelp.Show(helpTarget.Information, textBox, position, 5000);
         }
 
         private void _inputTextBox_FontChanged(object sender, EventArgs e)
