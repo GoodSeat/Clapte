@@ -63,6 +63,11 @@ namespace GoodSeat.Liffom.Deforms.Rules
         }
 
         /// <summary>
+        /// 各組合せについてルールの適用を試みる方法を取得します。
+        /// </summary>
+        protected virtual CombinationRule.ApplyType RuleApplyType { get { return CombinationRule.ApplyType.NoLimit; } }
+
+        /// <summary>
         /// 一つの組み合わせでルール適用があった場合に、再度全組み合わせについてルールの適用を試みる必要があるか否かを取得します。
         /// </summary>
         protected virtual bool RetryAll { get { return true; } }
@@ -94,74 +99,35 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <returns>ルールの適用があったか。</returns>
         private OperatorMultiple DeformWithRule(OperatorMultiple target)
         {
-            List<Formula> consist = new List<Formula>(target.Formulas);
-
-            bool ruleTreated = false;
-            for (int i = 0; i < consist.Count; i++)
-            {
-                if (i != 0 && !target.Satisfy(Operator.OperatorLaw.Associative)) break; // 結合則を満たさない場合
-
-                Formula r1 = consist[i];
-                if (r1 == null) break;
-
-                for (int k = i + 1; k < consist.Count; k++)
-                {
-                    if (k != i + 1 && !target.Satisfy(Operator.OperatorLaw.Commutative)) break; // 交換則を満たさない場合
-                    if (k != i + 1 && !target.Satisfy(Operator.OperatorLaw.Associative)) break; // 結合則を満たさない場合
-
-                    Formula r2 = consist[k];
-                    if (r2 == null) break;
-
-                    ClearPatternVariable();
-
-                    bool ruleMatch = false;
-                    if (r1.PatternMatch(Rule1) && r2.PatternMatch(Rule2, false)) ruleMatch = true;
-                    else if (!target.Satisfy(Operator.OperatorLaw.Commutative)) continue; // 交換則を満たさないなら無視
-                    else if (Reversible) continue; // 組み合わせを逆にしても結果が変わらないなら無視
-                    else ClearPatternVariable();
-
-                    if (!ruleMatch && r2.PatternMatch(Rule1) && r1.PatternMatch(Rule2, false)) ruleMatch = true;
-                    if (!ruleMatch) continue;
-#if DEBUG
-                    foreach (RulePatternVariable r in UsingPatternVariables.Values)
-                        FormulaAssertionException.Assert(r.MatchedFormula != null);
-#endif
-                    Formula rPost = GetRuledFormula();
-                    if (rPost == null) continue;
-#if DEBUG
-                    FormulaAssertionException.Assert(rPost.GetExistFactor<RulePatternVariable>().Count == 0);
-#endif                
-                    ruleTreated = true;
-                    if (rPost.GetType() == target.GetType() && IntegrateAfterRuled)
-                    {
-                        consist.RemoveAt(k);
-                        consist.InsertRange(i + 1, rPost);
-                        consist.RemoveAt(i);
-                    }
-                    else
-                    {
-                        consist[i] = rPost;
-                        consist.RemoveAt(k);
-                    }
-
-                    if (RetryAll)
-                    {
-                        i = -1;
-                        break;
-                    }
-                    else
-                    {
-                        r1 = consist[i];
-                        if (r1 == null) break;
-                        k = i;
-                    }
-                }
-            }
-
-            if (ruleTreated) return target.CreateOperator(consist.ToArray()) as OperatorMultiple;
-            else return null;
+            return CombinationRule.DeformWith(TryApply, target, RuleApplyType, RetryAll, IntegrateAfterRuled);
         }
 
+        /// <summary>
+        /// 指定した数式の組み合わせに対して、ルールの適用を試みます。
+        /// </summary>
+        /// <param name="r1">前方の数式。</param>
+        /// <param name="r2">後方の数式。</param>
+        /// <param name="target">親数式となる演算。</param>
+        /// <returns>ルールの適用に成功した場合は適用後の数式。それ以外の場合、null。</returns>
+        private Formula TryApply(Formula r1, Formula r2, OperatorMultiple target)
+        {
+            ClearPatternVariable();
+
+            if (!r1.PatternMatch(Rule1) || !r2.PatternMatch(Rule2, false))
+            {
+                if (!target.Satisfy(Operator.OperatorLaw.Commutative)) return null; // 交換則を満たさないなら無視
+                if (Reversible) return null; // 組み合わせを逆にしても結果が変わらないなら無視
+
+                ClearPatternVariable();
+
+                if (!r2.PatternMatch(Rule1) || !r1.PatternMatch(Rule2, false)) return null;
+            }
+#if DEBUG
+            foreach (RulePatternVariable r in UsingPatternVariables.Values)
+                FormulaAssertionException.Assert(r.MatchedFormula != null);
+#endif
+            return GetRuledFormula();
+        }
 
     }
 }

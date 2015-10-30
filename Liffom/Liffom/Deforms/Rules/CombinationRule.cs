@@ -12,6 +12,25 @@ namespace GoodSeat.Liffom.Deforms.Rules
     public abstract class CombinationRule : Rule
     {
         /// <summary>
+        /// 組合せの適用回数タイプを表します。
+        /// </summary>
+        public enum ApplyType
+        {
+            /// <summary>
+            /// 適用可能な組み合わせがある限り適用を続行します。
+            /// </summary>
+            NoLimit,
+            /// <summary>
+            /// 各項について、1度のみ適用を試みます。
+            /// </summary>
+            OneTimePerTerm,
+            /// <summary>
+            /// 何れかの組み合わせで適用があった場合に変形を終了します。
+            /// </summary>
+            OneTime
+        }
+
+        /// <summary>
         /// 処理ルールに従って数式に対する変換処理を試みます。
         /// </summary>
         /// <param name="target">処理対象の数式。</param>
@@ -31,6 +50,11 @@ namespace GoodSeat.Liffom.Deforms.Rules
         }
 
         /// <summary>
+        /// 各組合せについてルールの適用を試みる方法を取得します。
+        /// </summary>
+        protected virtual ApplyType RuleApplyType { get { return ApplyType.NoLimit; } }
+
+        /// <summary>
         /// 一つの組み合わせでルール適用があった場合に、再度全組み合わせについてルールの適用を試みる必要があるか否かを取得します。
         /// </summary>
         protected virtual bool RetryAll { get { return true; } }
@@ -39,6 +63,11 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// このルールの変形において、組み合わせが逆転しても結果が変わらないか否かを取得します。
         /// </summary>
         protected virtual bool Reversible { get { return false; } }
+
+        /// <summary>
+        /// ルールの適用後、演算の統合を実施するか否かを取得します。
+        /// </summary>
+        protected virtual bool IntegrateAfterRuled { get { return false; } }
 
         /// <summary>
         /// 指定した数式の組み合わせが、このルールの処理対象となるか否かを取得します。
@@ -56,22 +85,23 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <returns>処理後の数式。</returns>
         protected abstract Formula GetRuledFormula(Formula f1, Formula f2);
 
-        /// <summary>
-        /// ルールの適用後、演算の統合を実施するか否かを取得します。
-        /// </summary>
-        protected virtual bool IntegrateAfterRuled { get { return false; } }
 
         /// <summary>
         /// 指定ルールに従って、収束するまで数式の変形を行います。
         /// </summary>
+        /// <param name="f">任意の組み合わせの数式と親数式を指定して、変形を試みる関数。</param>
         /// <param name="target">変形対象の数式。</param>
-        /// <returns>ルールの適用があったか。</returns>
-        private OperatorMultiple DeformWithRule(OperatorMultiple target)
+        /// <param name="RuleApplyType">ルール適用の方法を表すApplyType。</param>
+        /// <param name="RetryAll">ルールの適用があった場合に、再度すべての組み合わせについて適用を試みるか。</param>
+        /// <param name="IntegrateAfterRuled">ルールの適用後、演算の統合を実施するか。</param>
+        /// <returns>ルールの適用があった場合、適用後の数式。それ以外の場合、null。</returns>
+        internal static OperatorMultiple DeformWith(Func<Formula, Formula, OperatorMultiple, Formula> f,
+            OperatorMultiple target, ApplyType RuleApplyType, bool RetryAll, bool IntegrateAfterRuled)
         {
             List<Formula> consist = new List<Formula>(target.Formulas);
 
             bool ruleTreated = false;
-            for (int i = 0; i < consist.Count; i++)
+            for (int i = 0; i < consist.Count - 1; i++)
             {
                 if (i != 0 && !target.Satisfy(Operator.OperatorLaw.Associative)) break; // 結合則を満たさない場合
 
@@ -86,12 +116,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
                     Formula r2 = consist[k];
                     if (r2 == null) break;
 
-                    Formula rPost = null;
-                    if (IsTargetCouple(r1, r2)) rPost = GetRuledFormula(r1, r2);
-                    if (rPost == null && !target.Satisfy(Operator.OperatorLaw.Commutative)) continue; // 交換則を満たさないなら無視
-                    if (rPost == null && Reversible) continue; // 組み合わせを逆にしても結果が変わらないなら無視
-
-                    if (rPost == null && IsTargetCouple(r2, r1)) rPost = GetRuledFormula(r2, r1);
+                    Formula rPost = f(r1, r2, target);
                     if (rPost == null) continue;
 
                     ruleTreated = true;
@@ -107,6 +132,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
                         consist.RemoveAt(k);
                     }
 
+                    if (RuleApplyType == ApplyType.OneTime || RuleApplyType == ApplyType.OneTimePerTerm) break;
                     if (RetryAll)
                     {
                         i = -1;
@@ -119,10 +145,41 @@ namespace GoodSeat.Liffom.Deforms.Rules
                         k = i;
                     }
                 }
+                if (ruleTreated && RuleApplyType == ApplyType.OneTime) break;
             }
 
             if (ruleTreated) return target.CreateOperator(consist.ToArray()) as OperatorMultiple;
             else return null;
+        }
+
+        /// <summary>
+        /// 指定ルールに従って、収束するまで数式の変形を行います。
+        /// </summary>
+        /// <param name="target">変形対象の数式。</param>
+        /// <returns>ルールの適用があったか。</returns>
+        private OperatorMultiple DeformWithRule(OperatorMultiple target)
+        {
+            return DeformWith(TryApply, target, RuleApplyType, RetryAll, IntegrateAfterRuled);
+        }
+
+        /// <summary>
+        /// 指定した数式の組み合わせに対して、ルールの適用を試みます。
+        /// </summary>
+        /// <param name="r1">前方の数式。</param>
+        /// <param name="r2">後方の数式。</param>
+        /// <param name="target">親数式となる演算。</param>
+        /// <returns>ルールの適用に成功した場合は適用後の数式。それ以外の場合、null。</returns>
+        private Formula TryApply(Formula r1, Formula r2, OperatorMultiple target)
+        {
+            Formula rPost = null;
+            if (IsTargetCouple(r1, r2)) rPost = GetRuledFormula(r1, r2);
+            if (rPost != null) return rPost;
+
+            if (!target.Satisfy(Operator.OperatorLaw.Commutative)) return null; // 交換則を満たさないなら無視
+            if (Reversible) return null; // 組み合わせを逆にしても結果が変わらないなら無視
+
+            if (IsTargetCouple(r2, r1)) rPost = GetRuledFormula(r2, r1);
+            return rPost;
         }
 
     }
