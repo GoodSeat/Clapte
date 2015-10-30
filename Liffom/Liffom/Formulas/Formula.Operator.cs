@@ -155,7 +155,7 @@ namespace GoodSeat.Liffom.Formulas
         /// Formulaでは、Equalsメソッドと==演算子で、いずれも値の等価判定が行われます。
         /// 参照の等価判定を行うには、object.ReferenceEqualsメソッドを用いてください。
         /// </remarks>
-        /// <param name="f">比較対象の数式。</param>
+        /// <param name="obj">比較対象の数式。</param>
         /// <returns>比較結果。</returns>
         public override bool Equals(object obj)
         {
