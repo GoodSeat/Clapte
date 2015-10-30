@@ -10,6 +10,10 @@ namespace GoodSeat.Liffom.Formulas
     {
         #region IEnumerable メンバー
                
+        /// <summary>
+        /// 数式を構成する子数式を順次返す反復子を取得します。
+        /// </summary>
+        /// <returns>数式を構成する子数式を順次返す反復子。</returns>
         public IEnumerator<Formula> GetEnumerator()
         {
             int i = 0;
@@ -39,8 +43,8 @@ namespace GoodSeat.Liffom.Formulas
         /// 通常、次の順に従います。
         /// 数値 ＜ その他(文字列長比較順) ＜ 負の累乗 ＜ 単位
         /// </remarks>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">比較対象の数式。</param>
+        /// <returns>比較結果を表す数字。</returns>
         public int CompareTo(Formula other)
         {
             int compare1 = (int)this.IsLargerThan(other);
@@ -63,8 +67,8 @@ namespace GoodSeat.Liffom.Formulas
         /// 通常、次の順に従います。
         /// 数値 ＜ その他(文字列長比較順) ＜ 負の累乗 ＜ 単位
         /// </remarks>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">比較対象の数式。</param>
+        /// <returns>比較結果。</returns>
         protected virtual CompareResult IsLargerThan(Formula other)
         {
             if (!this.IsUnit() &&  other.IsUnit()) return (CompareResult) (- 3);
