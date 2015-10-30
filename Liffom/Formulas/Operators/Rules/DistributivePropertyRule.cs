@@ -35,6 +35,11 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
 
         private Operator TargetFormula { get; set; }
 
+        protected override CombinationRule.ApplyType RuleApplyType
+        {
+            get { return ApplyType.OneTimePerTerm; }
+        }
+
         protected internal override bool IsTargetTypeFormula(Formula target) 
         {
             OwnerFormula = target as Operator;
