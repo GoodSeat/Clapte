@@ -145,15 +145,19 @@ namespace GoodSeat.Liffom.Deforms.Rules
 
         /// <summary>
         /// 指定数式が本クラスの処理対象となる数式か否かを簡易判定します。
+        /// </summary>
+        /// <remarks>
         /// この判定処理は頻繁に使用されるので、処理を重くしないよう注意してください。
         /// 複雑な判定処理はOnTryMatchRuleメソッドで行い、対象外となる場合には同メソッドにてnullを返してください。
-        /// </summary>
+        /// </remarks>
         internal protected abstract bool IsTargetTypeFormula(Formula target);
         
         /// <summary>
         /// 処理ルールに従って数式に対する変換処理を試みます。
-        /// 戻り値は、null、もしくは<paramref cref="formula"/>に対して、Equalsメソッドの等価判断によりfalseと判定される数式とする必要があります。
         /// </summary>
+        /// <remarks>
+        /// 戻り値は、null、もしくは<paramref cref="formula"/>に対して、Equalsメソッドの等価判断によりfalseと判定される数式とする必要があります。
+        /// </remarks>
         /// <param name="formula">処理対象の数式</param>
         /// <returns>変形後の数式。変形の対象とならない、もしくは結果的に変形のない場合、null。</returns>
         protected abstract Formula OnTryMatchRule(Formula target);
@@ -300,14 +304,14 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <summary>
         /// 変形前数式と変形後数式から成る、このルールの変形例を順次返す反復子を取得します。ここで取得される例は、単体テストで自動検証されます。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>変形例(変形前の数式と、変形適用後の数式を表す組合せ)を返す反復子。</returns>
         public abstract IEnumerable<KeyValuePair<Formula, Formula>> GetExamples();
 
 
         /// <summary>
         /// この型のルールのプロパティで、考えうるすべてのパターンのインスタンスを返す反復子を取得します。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>このルールで考えられる全てのパターンのインスタンスを返す反復子。</returns>
         public IEnumerable<Rule> GetAllPatternSample()
         {
             if (_cacheAllPatternSample == null) _cacheAllPatternSample = new List<Rule>(OnGetAllPatternSample());
@@ -317,14 +321,13 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <summary>
         /// この型のルールのプロパティで、考えうるすべてのパターンのインスタンスを生成して返す反復子を取得します。複数パターンのない場合、単にthisを返してください。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>このルールで考えられる全てのパターンのインスタンスを返す反復子。</returns>
         protected abstract IEnumerable<Rule> OnGetAllPatternSample();
 
         /// <summary>
         /// クローンを取得します。再帰呼び出し可能なルールである場合、単にthisを返してください。
         /// </summary>
-        /// <param name="sample">クローンのサンプルとするルール</param>
-        /// <returns></returns>
+        /// <returns>複製されたルール。</returns>
         public abstract Rule GetClone();
 
 
@@ -332,7 +335,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <summary>
         /// ルールのセルフテストを実行します。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>検知された例外を返す反復子。</returns>
         public IEnumerable<Exception> SelfCheckTest()
         {
             // GetReverseルールと、Pre、Postの関係
@@ -379,6 +382,11 @@ namespace GoodSeat.Liffom.Deforms.Rules
 
         #region IComparable<Rule> メンバー
 
+        /// <summary>
+        /// ルールの適用順序を定義する優先順序の比較結果を取得します。
+        /// </summary>
+        /// <param name="other">比較対象のルール。</param>
+        /// <returns>比較結果を表す数字。</returns>
         public int CompareTo(Rule other)
         {
             var otherType = other.GetType();
@@ -400,6 +408,11 @@ namespace GoodSeat.Liffom.Deforms.Rules
 
         #endregion
 
+        /// <summary>
+        /// 指定ルールと等価か否かを判断し、その結果を取得します。
+        /// </summary>
+        /// <param name="obj">比較対象のオブジェクト。</param>
+        /// <returns>比較結果。</returns>
         public override bool Equals(object obj)
         {
             Rule other = obj as Rule;
@@ -408,6 +421,10 @@ namespace GoodSeat.Liffom.Deforms.Rules
             return DistinguishedText == other.DistinguishedText;
         }
 
+        /// <summary>
+        /// このルールのハッシュコードを返します。
+        /// </summary>
+        /// <returns>ルールのハッシュコード。</returns>
         public override int GetHashCode()
         {
             return DistinguishedText.GetHashCode();
@@ -421,9 +438,9 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// ルールでは、Equalsメソッドと==演算子で、いずれも値の等価判定が行われます。
         /// 参照の等価判定を行うには、object.ReferenceEqualsメソッドを用いてください。
         /// </remarks>
-        /// <param name="r1">ルール1</param>
-        /// <param name="r2">ルール2</param>
-        /// <returns>比較結果</returns>
+        /// <param name="r1">ルール1。</param>
+        /// <param name="r2">ルール2。</param>
+        /// <returns>比較結果。</returns>
         public static bool operator ==(Rule r1, Rule r2) 
         {
             if (Object.Equals(r1, null) && Object.Equals(r2, null)) return true;
@@ -438,9 +455,9 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// ルールでは、Equalsメソッドと==演算子で、いずれも値の等価判定が行われます。
         /// 参照の等価判定を行うには、object.ReferenceEqualsメソッドを用いてください。
         /// </remarks>
-        /// <param name="r1">ルール1</param>
-        /// <param name="r2">ルール2</param>
-        /// <returns>比較結果</returns>
+        /// <param name="r1">ルール1。</param>
+        /// <param name="r2">ルール2。</param>
+        /// <returns>比較結果。</returns>
         public static bool operator !=(Rule r1, Rule r2) { return !(r1 == r2); }
 
 
