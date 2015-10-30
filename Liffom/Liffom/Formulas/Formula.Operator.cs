@@ -179,7 +179,7 @@ namespace GoodSeat.Liffom.Formulas
         /// Double型への暗黙的変換（変換できない場合、double.NaNを返します）
         /// </summary>
         /// <param name="f">対象の数式。</param>
-        /// <returns></returns>
+        /// <returns>変換された数値。</returns>
         public static implicit operator double(Formula f)
         {
             return (f is Numeric) ? (f as Numeric).Data : double.NaN;
