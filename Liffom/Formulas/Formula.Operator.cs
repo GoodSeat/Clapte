@@ -134,7 +134,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n1 = f1 as Numeric;
             if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return n1.Figure.Value.ToDouble() < f2;
+            return n1 < new Numeric(f2);
         }
 
         /// <summary>
@@ -147,7 +147,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n2 = f2 as Numeric;
             if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return f1 < n2.Figure.Value.ToDouble();
+            return new Numeric(f1) < n2;
         }
 
         /// <summary>
@@ -174,7 +174,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n1 = f1 as Numeric;
             if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return n1.Figure.Value.ToDouble() <= f2;
+            return n1 <= new Numeric(f2);
         }
 
         /// <summary>
@@ -187,7 +187,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n2 = f2 as Numeric;
             if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return f1 <= n2.Figure.Value.ToDouble();
+            return new Numeric(f1) <= n2;
         }
 
         /// <summary>
@@ -214,7 +214,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n1 = f1 as Numeric;
             if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return n1.Figure.Value.ToDouble() > f2;
+            return n1 > new Numeric(f2);
         }
 
         /// <summary>
@@ -227,7 +227,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n2 = f2 as Numeric;
             if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return f1 > n2.Figure.Value.ToDouble();
+            return new Numeric(f1) > n2;
         }
 
         /// <summary>
@@ -254,7 +254,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n1 = f1 as Numeric;
             if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return n1.Figure.Value.ToDouble() >= f2;
+            return n1 >= new Numeric(f2);
         }
 
         /// <summary>
@@ -267,7 +267,7 @@ namespace GoodSeat.Liffom.Formulas
         {
             var n2 = f2 as Numeric;
             if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
-            return f1 >= n2.Figure.Value.ToDouble();
+            return new Numeric(f1) >= n2;
         }
 
 
