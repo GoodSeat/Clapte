@@ -39,8 +39,8 @@ namespace GoodSeat.Liffom.Formulas
         /// 通常、次の順に従います。
         /// 数値 ＜ その他(文字列長比較順) ＜ 負の累乗 ＜ 単位
         /// </remarks>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">比較対象とする数式。</param>
+        /// <returns>このインスタンスが先となる場合に負の数値、後となる場合に正の数値、同じとなる場合には0を返します。</returns>
         public int CompareTo(Formula other)
         {
             int compare1 = (int)this.IsLargerThan(other);
@@ -63,8 +63,8 @@ namespace GoodSeat.Liffom.Formulas
         /// 通常、次の順に従います。
         /// 数値 ＜ その他(文字列長比較順) ＜ 負の累乗 ＜ 単位
         /// </remarks>
-        /// <param name="other"></param>
-        /// <returns></returns>
+        /// <param name="other">比較対象とする数式。</param>
+        /// <returns>比較結果。</returns>
         protected virtual CompareResult IsLargerThan(Formula other)
         {
             if (!this.IsUnit() &&  other.IsUnit()) return (CompareResult) (- 3);
