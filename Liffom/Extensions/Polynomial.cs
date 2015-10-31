@@ -570,7 +570,7 @@ namespace GoodSeat.Liffom.Extensions
             f.Add((deg1 >= deg2) ? f1pp : f2pp);
             f.Add((deg1 >= deg2) ? f2pp : f1pp);
 
-            for (int k = (int)((Math.Max(deg1, deg2)) + 0.1); k >= 0; k--)
+            for (int k = (int)((Value.Max(deg1, deg2)) + 0.1); k >= 0; k--)
             {
                 Formula pquo, prem;
                 Formula ratio = f[i].PseudoDivide(f[i + 1], x, out pquo, out prem);
@@ -611,7 +611,7 @@ namespace GoodSeat.Liffom.Extensions
 
             int count = 0;            
             Numeric error = new Numeric(0);
-            while (Math.Abs(n1) > error && Math.Abs(n2) > error)
+            while (Value.Abs(n1) > error && Value.Abs(n2) > error)
             {
                 if (n1 > n2)
                 {

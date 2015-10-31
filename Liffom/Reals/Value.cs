@@ -107,6 +107,13 @@ namespace GoodSeat.Liffom.Reals
         /// <exception cref="System.OverflowException">内部数値が表す数値が、double型の範囲を超過する場合にスローされます。</exception>
         public abstract double ToDouble();
 
+        /// <summary>
+        /// Double型への暗黙的変換。
+        /// </summary>
+        /// <param name="r">対象の実数。</param>
+        /// <returns>変換されたdouble型の実数。</returns>
+        public static implicit operator double(Value r) { return r.ToDouble(); }
+
         /* TODO : Realnに移植のこと
         /// <summary>
         /// Int型からの暗黙的変換。
@@ -249,6 +256,22 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r2">実数2。</param>
         /// <returns>加算結果。</returns>
         public static Value operator +(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r2); }
+        public static Value operator +(Value r1, double r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r1.CreateFrom(r2)); }
+        public static Value operator +(double r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r2.CreateFrom(r1), r2); }
+
+        /// <summary>
+        /// 単位数値を加算します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <returns>加算結果。</returns>
+        public static Value operator ++(Value r1) { return r1.AddTo(r1.CreateFrom(1)); }
+
+        /// <summary>
+        /// 単位数値を減算します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <returns>減算結果。</returns>
+        public static Value operator --(Value r1) { return r1.AddTo(r1.CreateFrom(-1)); }
 
         /// <summary>
         /// 減算します。
@@ -257,6 +280,8 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r2">実数2。</param>
         /// <returns>減算結果。</returns>
         public static Value operator -(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, -r2); }
+        public static Value operator -(Value r1, double r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r1.CreateFrom(-r2)); }
+        public static Value operator -(double r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r2.CreateFrom(r1), -r2); }
 
         /// <summary>
         /// 負数を生成します。
@@ -272,6 +297,8 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r2">乗数2。</param>
         /// <returns>乗算結果。</returns>
         public static Value operator *(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r1, r2); }
+        public static Value operator *(Value r1, double r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r1, r1.CreateFrom(r2)); }
+        public static Value operator *(double r1, Value r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r2.CreateFrom(r1), r2); }
 
         /// <summary>
         /// 除算します。
@@ -280,6 +307,8 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r2">除数。</param>
         /// <returns>除算結果。</returns>
         public static Value operator /(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r1, r2); }
+        public static Value operator /(Value r1, double r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r1, r1.CreateFrom(r2)); }
+        public static Value operator /(double r1, Value r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r2.CreateFrom(r1), r2); }
 
         /// <summary>
         /// 累乗します。
@@ -288,6 +317,8 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f2">冪数。</param>
         /// <returns>累乗。</returns>
         public static Value operator ^(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r2); }
+        public static Value operator ^(Value r1, double r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r1.CreateFrom(r2)); }
+        public static Value operator ^(double r1, Value r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r2.CreateFrom(r1), r2); }
         
         /// <summary>
         /// 剰余を取得します。
@@ -296,6 +327,8 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f2">除数。</param>
         /// <returns>累乗。</returns>
         public static Value operator %(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r1, r2); }
+        public static Value operator %(Value r1, double r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r1, r1.CreateFrom(r2)); }
+        public static Value operator %(double r1, Value r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r2.CreateFrom(r1), r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -310,6 +343,8 @@ namespace GoodSeat.Liffom.Reals
 
             return DoBoolOperate2((f1, f2) => f1.IsEqualTo(f2), r1, r2);
         }
+        public static bool operator ==(Value r1, double r2) { return r1 == r1.CreateFrom(r2); }
+        public static bool operator ==(double r1, Value r2) { return r2 == r2.CreateFrom(r1); }
         
         /// <summary>
         /// 数式の比較結果を返します。不一致の場合にのみtrueとなります。
@@ -318,6 +353,8 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
         public static bool operator !=(Value r1, Value r2) { return !(r1 == r2); }
+        public static bool operator !=(Value r1, double r2) { return !(r1 == r2); }
+        public static bool operator !=(double r1, Value r2) { return !(r1 == r2); }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -444,6 +481,69 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="round">丸める小数桁数。負数の指定も有効で、10^(-decimals)の桁に丸めます。</param>
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
         public abstract Value Round(int round);
+
+        /// <summary>
+        /// このインスタンスの絶対値を取得します。
+        /// </summary>
+        /// <returns>絶対値。</returns>
+        public virtual Value Abs()
+        {
+            if (this >= 0) return this;
+            else return -this;
+        }
+
+        /// <summary>
+        /// このインスタンスの符号を表す数値を取得します。
+        /// </summary>
+        /// <returns>符号を示す数値。</returns>
+        public virtual int Sign()
+        {
+            if (this == 0) return 0;
+            else if (this > 0) return 1;
+            else return -1;
+        }
+
+        #endregion
+
+        #region その他
+
+        /// <summary>
+        /// 数値の絶対値を返します。
+        /// </summary>
+        /// <param name="v1">対象とする数値。</param>
+        /// <returns>絶対値。</returns>
+        public static Value Abs(Value v1) { return v1.Abs(); }
+
+        /// <summary>
+        /// 2つの数値のうち、大きい方を返します。
+        /// </summary>
+        /// <param name="v1">比較する数値1。</param>
+        /// <param name="v2">比較する数値2。</param>
+        /// <returns>大きい方の数値。</returns>
+        public static Value Max(Value v1, Value v2)
+        {
+            if (v1 >= v2) return v1;
+            else return v2;
+        }
+
+        /// <summary>
+        /// 2つの数値のうち、小さい方を返します。
+        /// </summary>
+        /// <param name="v1">比較する数値1。</param>
+        /// <param name="v2">比較する数値2。</param>
+        /// <returns>小さい方の数値。</returns>
+        public static Value Min(Value v1, Value v2)
+        {
+            if (v1 <= v2) return v1;
+            else return v2;
+        }
+
+        /// <summary>
+        /// 指定数値の符号を表す数値を取得します。
+        /// </summary>
+        /// <param name="v1">判定対象の数値。</param>
+        /// <returns>符号を示す数値。</returns>
+        public static int Sign(Value v1) { return v1.Sign(); }
 
         #endregion
 

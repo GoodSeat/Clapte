@@ -5,6 +5,7 @@ using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Constants;
 using GoodSeat.Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Rules
 {
@@ -42,6 +43,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric R, E;
             if (!Imaginary.IsComplexNumber(formula, true, out R, out E) || expNumeric == null) return null;
 
+            var pi = R.Figure.GetPi();
+
             // 元の複素数の絶対値
             Numeric abs = Imaginary.Abs(R, E);
             if (abs == 0)
@@ -55,19 +58,19 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric newAbs = abs.Figure ^ expNumeric.Figure;
 
             // 角度を取得
-            Numeric newRad = new Numeric((rad * expNumeric).Numerate() as Numeric);
-            if (newRad > Math.PI * 2) newRad = new Numeric(newRad % (2 * Math.PI));
-            if (newRad < 0) newRad = (newRad + 2 * Math.PI).Numerate() as Numeric;
+            Numeric newRad = (rad * expNumeric).Numerate() as Numeric;
+            if (newRad > pi) newRad = new Numeric(newRad % (2 * pi));
+            if (newRad < 0) newRad = (newRad + new Numeric(2 * pi)).Numerate() as Numeric;
 
             Numeric cos = new Numeric(newRad.Figure.Cos());
             Numeric sin = new Numeric(newRad.Figure.Sin());
-            if (Math.Abs(cos) < 5E-15 || Math.Abs(sin) == 1) cos = new Numeric(0);
-            if (Math.Abs(sin) < 5E-15 || Math.Abs(cos) == 1) sin = new Numeric(0);
+            if (Value.Abs(cos) < 5E-15 || Value.Abs(sin) == 1) cos = new Numeric(0);
+            if (Value.Abs(sin) < 5E-15 || Value.Abs(cos) == 1) sin = new Numeric(0);
             cos = new Numeric(cos.Figure.Round(15)); 
             sin = new Numeric(sin.Figure.Round(15)); 
 
-            Numeric newReal = new Numeric(cos).Figure * newAbs.Figure;
-            Numeric newImag = new Numeric(sin).Figure * newAbs.Figure;
+            Numeric newReal = cos.Figure * newAbs.Figure;
+            Numeric newImag = sin.Figure * newAbs.Figure;
             if (newReal == 0)
             {
                 if (newImag == 1) return Imaginary.i;

@@ -86,13 +86,6 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>変換されたdouble型の実数。</returns>
         public static implicit operator double(Real r) { return r.Value.ToDouble(); }
 
-        /// <summary>
-        /// Numeric型への暗黙的変換
-        /// </summary>
-        /// <param name="r">対象の実数。</param>
-        /// <returns>変換されたNumeric型のインスタンス。</returns>
-        public static implicit operator Numeric(Real r) { return new Numeric(r); }
-
 
         /// <summary>
         /// 円周率を初期化して取得します。
@@ -159,6 +152,20 @@ namespace GoodSeat.Liffom.Reals
         public static Real operator +(Real r1, Real r2) { return r1.AddTo(r2); }
         public static Real operator +(double r1, Real r2) { return r2.CreateFrom(r1).AddTo(r2); }
         public static Real operator +(Real r1, double r2) { return r1.AddTo(r1.CreateFrom(r2)); }
+
+        /// <summary>
+        /// 単位数値を加算します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <returns>加算結果。</returns>
+        public static Real operator ++(Real r1) { return r1.AddTo(r1.CreateFrom(1)); }
+
+        /// <summary>
+        /// 単位数値を減算します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <returns>減算結果。</returns>
+        public static Real operator --(Real r1) { return r1.AddTo(r1.CreateFrom(-1)); }
 
         /// <summary>
         /// 減算します。

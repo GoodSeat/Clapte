@@ -300,7 +300,8 @@ namespace GoodSeat.Liffom.Processes
             }
             else if (factorized is Numeric)
             {
-                Formula factor = PrimeFactor.PrimeFactorize(factorized, false);
+                Numeric n = factorized as Numeric;
+                Formula factor = PrimeFactor.PrimeFactorize(n, false);
                 if (factor is Numeric) yield return factor;
                 else foreach (var prime in factor) yield return prime;
             }

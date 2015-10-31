@@ -120,6 +120,13 @@ namespace GoodSeat.Liffom.Reals
         public override double ToDouble() { return InnerData; }
 
         /// <summary>
+        /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
+        /// </summary>
+        /// <param name="format">数値書式指定文字列。</param>
+        /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
+        public override string ToString(string format) { return ToDouble().ToString(format); }
+
+        /// <summary>
         /// Int型からの暗黙的変換。
         /// </summary>
         /// <param name="n">対象の整数。</param>
@@ -132,13 +139,6 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r">対象の実数。</param>
         /// <returns>変換された実数。</returns>
         public static implicit operator DoubleValue(double r) { return new DoubleValue(r); }
-
-        /// <summary>
-        /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
-        /// </summary>
-        /// <param name="format">数値書式指定文字列。</param>
-        /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public override string ToString(string format) { return ToDouble().ToString(format); }
 
         #endregion
 
@@ -272,6 +272,18 @@ namespace GoodSeat.Liffom.Reals
 
             return CreateFrom(rounded / Math.Pow(10, round));
         }
+
+        /// <summary>
+        /// このインスタンスの絶対値を取得します。
+        /// </summary>
+        /// <returns>絶対値。</returns>
+        public override Value Abs() { return CreateFrom(Math.Abs(InnerData)); }
+
+        /// <summary>
+        /// このインスタンスの符号を表す数値を取得します。
+        /// </summary>
+        /// <returns>符号を示す数値。</returns>
+        public override int Sign() { return Math.Sign(InnerData); }
 
         #endregion
 

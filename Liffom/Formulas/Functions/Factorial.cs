@@ -1,4 +1,5 @@
-﻿using System;
+﻿using GoodSeat.Liffom.Reals;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -40,16 +41,27 @@ namespace GoodSeat.Liffom.Formulas.Functions
             else return new Factorial(args[0], args[1]);
         }
 
+        /// <summary>
+        /// この関数の引数として最低限必要な引数の数を取得します。
+        /// </summary>
         public override int MinimumArgumentQty
         {
             get { return 1; }
         }
 
+        /// <summary>
+        /// この関数の引数として可能な引数の最大数を取得します。
+        /// </summary>
         public override int MaximumArgumentQty
         {
             get { return 2; }
         }
 
+        /// <summary>
+        /// 関数の説明を取得します。
+        /// </summary>
+        /// <param name="args">引数の説明。</param>
+        /// <returns>関数の説明。</returns>
         public override string GetInformation(out List<string> args)
         {
             args = new List<string>();
@@ -58,6 +70,10 @@ namespace GoodSeat.Liffom.Formulas.Functions
             return "引数の階乗を返します。";
         }
 
+        /// <summary>
+        /// 関数に設定された引数により、関数を評価します。
+        /// </summary>
+        /// <returns>関数の評価結果。</returns>
         public override Formula CalculateFunction()
         {
             Numeric n = Argument[0] as Numeric;
@@ -67,11 +83,11 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
             if (n.Figure == 0) return 1;
 
-            double result = n;
-            double multiple = 1;
+            Value result = n;
+            Value multiple = result.CreateFrom(1);
             if (m != null) multiple = m;
 
-            for (int i = (int)(n - m + 0.01); i > 0; i -= (int)(m + 0.01)) result *= i;
+            for (Value i = (n - multiple); i > 0; i -= multiple) result *= i;
 
             return result;
         }

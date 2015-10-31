@@ -65,6 +65,15 @@ namespace GoodSeat.Liffom.Formulas.Operators
 
         #endregion
 
+        /// <summary>
+        /// 数式の基本的な並び順を定義する比較結果を取得します。
+        /// </summary>
+        /// <remarks>
+        /// 通常、次の順に従います。
+        /// 数値 ＜ その他(文字列長比較順) ＜ 負の累乗 ＜ 単位
+        /// </remarks>
+        /// <param name="other">比較対象とする数式。</param>
+        /// <returns>比較結果。</returns>
         protected override Formula.CompareResult IsLargerThan(Formula other)
         {
             Formula thisExp = Exponent;
@@ -72,10 +81,10 @@ namespace GoodSeat.Liffom.Formulas.Operators
             if (other is Power) otherExp = (other as Power).Exponent;
 
             double thisPowValue = 0;
-            if (thisExp is Numeric) thisPowValue = (thisExp as Numeric);
+            if (thisExp is Numeric) thisPowValue = (double)thisExp;
 
             double otherPowValue = 0;
-            if (otherExp is Numeric) otherPowValue = (otherExp as Numeric);
+            if (otherExp is Numeric) otherPowValue = (double)otherExp;
 
             if (thisPowValue < 0 && otherPowValue >= 0) return CompareResult.Larger;
             if (thisPowValue >= 0 && otherPowValue < 0) return CompareResult.Smaller;
@@ -83,6 +92,10 @@ namespace GoodSeat.Liffom.Formulas.Operators
             return base.IsLargerThan(other);
         }
 
+        /// <summary>
+        /// 数式を認識可能な文字列に変換して取得します。
+        /// </summary>
+        /// <returns>数式を表す文字列。</returns>
         public override string GetText()
         {
             // 累乗対象が単位の場合、角括弧で括らない。
@@ -126,6 +139,11 @@ namespace GoodSeat.Liffom.Formulas.Operators
             return result;
         }
 
+        /// <summary>
+        /// この数式が、指定数式で一致するルールパターン数式か否かを取得します。
+        /// </summary>
+        /// <param name="f">判定対象の数式。</param>
+        /// <returns>指定数式に一致するルールパターン数式か否か。</returns>
         protected override bool OnCheckPatternMatch(Formula f)
         {
             if (!(f is Power)) // 検証対象が累乗でない
@@ -155,7 +173,13 @@ namespace GoodSeat.Liffom.Formulas.Operators
             else if (sender is Product) foreach(var rule in GetProductRelatedRulesOf(sender as Product, deformToken)) yield return rule;
         }
 
-        public IEnumerable<Rule> GetPowerRelatedRulesOf(Power sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が累乗の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetPowerRelatedRulesOf(Power sender, DeformToken deformToken)
         {
             if (deformToken.Has<CombineToken>())
             {
@@ -179,7 +203,13 @@ namespace GoodSeat.Liffom.Formulas.Operators
             }
         }
 
-        public IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が乗算の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
         {
             if (deformToken.Has<CombineToken>())
             {

@@ -7,6 +7,7 @@ using GoodSeat.Liffom.Formulas.Constants;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Functions.Rules;
 using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Functions
 {
@@ -51,8 +52,8 @@ namespace GoodSeat.Liffom.Formulas.Functions
                 if (checkSin.Calculate() == z) return rad;
             }
 
-            if (z is Numeric && Math.Abs(z) <= 1.0)
-                return new Numeric((z as Numeric).Figure.Asin());
+            if (z is Numeric && Value.Abs(z as Numeric) <= 1.0)
+                return (z as Numeric).Figure.Asin();
             else if (Imaginary.IsComplexNumber(z, true))
             {
                 var i = Imaginary.i;

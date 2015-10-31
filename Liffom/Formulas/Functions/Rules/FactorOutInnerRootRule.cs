@@ -6,6 +6,7 @@ using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
 using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
@@ -207,7 +208,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
                     var b = (f as Power).Base;
                     foreach (var c in GetFactorsFrom(b))
                     {
-                        for (int i = 0; i < Math.Abs(exp); i++)
+                        for (int i = 0; i < Value.Abs(exp); i++)
                         {
                             if (exp < 0) yield return c ^ -1;
                             else yield return c;

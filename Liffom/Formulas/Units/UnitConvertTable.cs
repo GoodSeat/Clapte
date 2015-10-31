@@ -408,7 +408,8 @@ namespace GoodSeat.Liffom.Formulas.Units
             if (from == to)
             {
 #if DEBUG
-                if (!(result is Numeric) || Math.Round(result, Math.Min((result as Numeric).SignificantDigits + 1, Numeric.MaxValidDigits)) != 0) throw new FormulaAssertionException("同単位間の変換加算が0となりませんでした。");
+                Numeric n = result as Numeric;
+                if (n == null|| n.Figure.Round(Math.Min(n.SignificantDigits + 1, Numeric.MaxValidDigits)) != 0) throw new FormulaAssertionException("同単位間の変換加算が0となりませんでした。");
 #endif
                 return 0;
             }

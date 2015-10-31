@@ -18,7 +18,40 @@ namespace GoodSeat.Liffom.Formulas
     [Serializable()]
     public class Numeric : Formula
     {
-        static Numeric() { Zero = new Numeric(0d); }
+        static Numeric()
+        { 
+            InnerRealType = RealType.DoubleModified;
+//            InnerRealType = RealType.Decimal;
+        }
+
+        /// <summary>
+        /// 数値内部表現を表します。
+        /// </summary>
+        public enum RealType
+        {
+            /// <summary>内部数値として、double型を使用します。</summary>
+            Double,
+            /// <summary>内部数値として、double型(自動誤差修正)を使用します。</summary>
+            DoubleModified,
+            /// <summary>内部数値として、decimal型を使用します。</summary>
+            Decimal
+        }
+
+        static RealType s_innerRealType;
+
+        /// <summary>
+        /// <see cref="Numeric"/>における数値内部表現を設定もしくは取得します。
+        /// </summary>
+        public static RealType InnerRealType
+        {
+            get { return s_innerRealType; }
+            set
+            {
+                if (s_innerRealType == value) return;
+                s_innerRealType = value;
+                Zero = new Numeric(0d);
+            }
+        }
 
         /// <summary>
         /// 中間値の丸め方法を設定もしくは取得します。
@@ -48,12 +81,55 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 考慮する最大有効桁数を設定もしくは取得します。この値より大きな有効桁数を有する場合、当該数値の有効桁数を無限と判定します。
         /// </summary>
-        public static int MaxValidDigits { get { return 15; } }
+        public static int MaxValidDigits { get { return Zero.Figure.Value.MaxValidDigits; } }
 
         /// <summary>
         /// 2つの数値を比較し、一致するか否かを判定します。
         /// </summary>
         public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Figure == n2.Figure; }
+
+        /// <summary>
+        /// <see cref="Numeric"/>型 → <see cref="Value"/>型の暗黙的変換（変換できない場合、double.NaNを返します）を行います。
+        /// </summary>
+        /// <param name="f">対象の数式。</param>
+        /// <returns>変換されたValueオブジェクト。</returns>
+        public static implicit operator Value(Numeric n) { return n.Figure.Value; }
+
+        /// <summary>
+        /// <see cref="Numeric"/>型 → <see cref="Real"/>型の暗黙的変換（変換できない場合、double.NaNを返します）を行います。
+        /// </summary>
+        /// <param name="f">対象の数式。</param>
+        /// <returns>変換されたRealオブジェクト。</returns>
+        public static implicit operator Real(Numeric n) { return n.Figure; }
+
+        /// <summary>
+        /// <see cref="int"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="n">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(int n) { return new Numeric(n); }
+
+        /// <summary>
+        /// <see cref="double"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="d">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(double d) { return new Numeric(d); }
+
+        /// <summary>
+        /// <see cref="Real"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="r">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(Real r) { return new Numeric(r); }
+
+        /// <summary>
+        /// <see cref="Value"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="r">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(Value r) { return new Numeric(r); }
+
 
 
         /// <summary>
@@ -62,8 +138,10 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="s">初期値を指定する文字列。</param>
         public Numeric(string s)
         {
-            var d = double.Parse(s);
-            Figure = new SignificantReal(new DoubleValueModified(d), s);
+            if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(double.Parse(s)), s);
+            else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(double.Parse(s)), s);
+            else if (InnerRealType == RealType.Decimal) Figure = new SignificantReal(new DecimalValue(decimal.Parse(s)), s);
+            else throw new NotImplementedException();
         }
 
         /// <summary>
@@ -75,10 +153,22 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 数値を作成します。
         /// </summary>
+        /// <param name="r">初期値を指定する数値。</param>
+        public Numeric(Value r)
+        {
+            Figure = new SignificantReal(r);
+        }
+
+        /// <summary>
+        /// 数値を作成します。
+        /// </summary>
         /// <param name="d">初期値を指定する数値。</param>
         public Numeric(double d)
         {
-            Figure = new SignificantReal(new DoubleValueModified(d));
+            if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(d));
+            else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(d));
+            else if (InnerRealType == RealType.Decimal) Figure = new SignificantReal(new DecimalValue(d));
+            else throw new NotImplementedException();
         }
 
         /// <summary>
@@ -109,20 +199,6 @@ namespace GoodSeat.Liffom.Formulas
         {
             get { return Figure % 1.0 == 0.0; }
         }
-
-        /// <summary>
-        /// Real型への暗黙的変換（変換できない場合、double.NaNを返します）。
-        /// </summary>
-        /// <param name="f">対象の数式。</param>
-        /// <returns>変換されたRealオブジェクト。</returns>
-        public static implicit operator Real(Numeric n) { return n.Figure; }
-
-        /// <summary>
-        /// double型の暗黙的変換を行います。
-        /// </summary>
-        /// <param name="d">対象の数値。</param>
-        /// <returns>変換されたNumeric型のオブジェクト。</returns>
-        public static implicit operator Numeric(double d) { return new Numeric(d); }
 
         /// <summary>
         /// 数式を認識可能な文字列に変換して取得します。
