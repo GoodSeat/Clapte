@@ -140,7 +140,11 @@ namespace GoodSeat.Liffom.Formulas
         {
             if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(double.Parse(s)), s);
             else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(double.Parse(s)), s);
-            else if (InnerRealType == RealType.Decimal) Figure = new SignificantReal(new DecimalValue(decimal.Parse(s)), s);
+            else if (InnerRealType == RealType.Decimal)
+            {
+                if (s.ToLower().Contains("e")) Figure = new SignificantReal(new DecimalValue(double.Parse(s)), s);
+                else Figure = new SignificantReal(new DecimalValue(decimal.Parse(s)), s);
+            }
             else throw new NotImplementedException();
         }
 

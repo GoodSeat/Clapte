@@ -258,6 +258,39 @@ namespace GoodSeat.Liffom.Reals
         public static bool operator !=(Real r1, double r2) { return !(r1 == r2); }
 
         /// <summary>
+        /// 実数の比較結果を取得します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >(Real r1, Real r2) { return r1.Value > r2.Value; }
+
+        /// <summary>
+        /// 実数の比較結果を取得します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >=(Real r1, Real r2) { return r1.Value >= r2.Value; }
+
+        /// <summary>
+        /// 実数の比較結果を取得します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <(Real r1, Real r2) { return r1.Value < r2.Value; }
+
+        /// <summary>
+        /// 実数の比較結果を取得します。
+        /// </summary>
+        /// <param name="r1">実数1。</param>
+        /// <param name="r2">実数2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <=(Real r1, Real r2) { return r1.Value <= r2.Value; }
+
+
+        /// <summary>
         /// 対象のインスタンスが、指定したオブジェクトに等しいかどうかを示す値を返します。
         /// </summary>
         /// <param name="obj">このインスタンスと比較するオブジェクト。</param>

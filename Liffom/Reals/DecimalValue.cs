@@ -520,7 +520,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="other">このオブジェクトと比較するオブジェクト。</param>
         /// <returns>比較対象オブジェクトの相対順序を示す値。</returns>
-        public override int CompareTo(Value other) { return Math.Sign(ToDouble() - other.ToDouble()); }
+        public override int CompareTo(Value other) { return Sign(new DecimalValue(InnerData - (other as DecimalValue).InnerData)); }
 
         #endregion
 

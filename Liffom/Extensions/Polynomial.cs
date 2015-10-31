@@ -639,7 +639,7 @@ namespace GoodSeat.Liffom.Extensions
             }
 
             Numeric gcd = (n1 > n2) ? n1 : n2;
-            if ((gcd / (2d * errorRatio)).Numerate() < nBase) return null; // 無理数判定
+            if (gcd < (nBase * (2d * errorRatio)).Numerate()) return null; // 無理数判定
             return gcd;
         }
 
