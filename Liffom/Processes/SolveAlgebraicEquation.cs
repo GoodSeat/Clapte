@@ -322,7 +322,7 @@ namespace GoodSeat.Liffom.Processes
         /// <returns></returns>
         static List<Formula> GetSolution(Formula a, Formula b, Formula c, Formula d)
         {
-            var deformToken = new DeformToken(Formula.SimplifyToken, Formula.NumerateToken, Formula.CalculateToken);
+            var token = new DeformToken(Formula.SimplifyToken, Formula.NumerateToken, Formula.CalculateToken);
 
             Formula i = Imaginary.i;
             Numeric n2 = new Numeric(2d);
@@ -332,35 +332,39 @@ namespace GoodSeat.Liffom.Processes
             Formula B = (c / a).Simplify();
             Formula C = (d / a).Simplify();
 
-            Formula q = ((C + 2 * (A ^ 3) / new Numeric(27d) - 1 / n3 * A * B) / n2).DeformFormula(deformToken);
-            Formula p = ((B - 1 / n3 * (A ^ 2)) / n3).DeformFormula(deformToken);
+            var a2 = (A ^ 2).DeformFormula(token);
+            var a3_2 = (2 * (A ^ 3)).DeformFormula(token);
+            var ab = (A * B).DeformFormula(token);
+
+            Formula q = ((C + a3_2 / 27d - ab / n3) / n2).DeformFormula(token);
+            Formula p = ((B - a2 / n3) / n3).DeformFormula(token);
 
             Formula w1 = 1;
-            Formula w2 = ((-1 + i * (n3 ^ 0.5)) / n2).DeformFormula(deformToken);
-            Formula w3 = ((-1 - i * (n3 ^ 0.5)) / n2).DeformFormula(deformToken);
+            Formula w2 = ((-1 + i * (n3 ^ 0.5)) / n2).DeformFormula(token);
+            Formula w3 = ((-1 - i * (n3 ^ 0.5)) / n2).DeformFormula(token);
 
-            Formula mid = (((q ^ 2) + (p ^ 3)) ^ 0.5).DeformFormula(deformToken);
+            Formula mid = (((q ^ 2) + (p ^ 3)) ^ 0.5).DeformFormula(token);
 
             Formula uBase = (-q + mid) ^ (n3 ^ -1);
-            uBase = uBase.Simplify().DeformFormula(deformToken);
-            Formula u1 = (w1 * uBase).DeformFormula(deformToken);
-            Formula u2 = (w2 * uBase).DeformFormula(deformToken);
-            Formula u3 = (w3 * uBase).DeformFormula(deformToken);
+            uBase = uBase.Simplify().DeformFormula(token);
+            Formula u1 = (w1 * uBase).DeformFormula(token);
+            Formula u2 = (w2 * uBase).DeformFormula(token);
+            Formula u3 = (w3 * uBase).DeformFormula(token);
 
             Formula vBase = (-q - mid) ^ (n3 ^ -1);
-            vBase = vBase.Simplify().DeformFormula(deformToken);
+            vBase = vBase.Simplify().DeformFormula(token);
 
-            Formula v1 = (w1 * vBase).DeformFormula(deformToken);
-            Formula v2 = (w2 * vBase).DeformFormula(deformToken);
-            Formula v3 = (w3 * vBase).DeformFormula(deformToken);
+            Formula v1 = (w1 * vBase).DeformFormula(token);
+            Formula v2 = (w2 * vBase).DeformFormula(token);
+            Formula v3 = (w3 * vBase).DeformFormula(token);
 
-            Formula x1 = u1 + v1 - 1d / n3 * A;
-            Formula x2 = u2 + v3 - 1d / n3 * A;
-            Formula x3 = u3 + v2 - 1d / n3 * A;
+            Formula x1 = u1 + v1 - A / n3;
+            Formula x2 = u2 + v3 - A / n3;
+            Formula x3 = u3 + v2 - A / n3;
 
-            x1 = x1.DeformFormula(deformToken);
-            x2 = x2.DeformFormula(deformToken);
-            x3 = x3.DeformFormula(deformToken);
+            x1 = x1.DeformFormula(token);
+            x2 = x2.DeformFormula(token);
+            x3 = x3.DeformFormula(token);
 
             List<Formula> ret = new List<Formula>();
             ret.Add(x1);

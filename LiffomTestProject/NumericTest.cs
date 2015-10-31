@@ -132,15 +132,15 @@ namespace GoodSeat.LiffomTestProject
             var f = Formula.Parse("(10000000000.9 - 1E10) * 1E10 - 9E9");
             DeformHistory history;
             f = f.DeformFormula(Formula.NumerateToken, out history);
-            Assert.AreEqual("0", f.ToString());
+            Assert.AreEqual(Formula.Parse("0"), f);
 
             f = Formula.Parse("99.96 - 99.87");
             f = f.DeformFormula(Formula.NumerateToken, out history);
-            Assert.AreEqual("0.09", f.ToString());
+            Assert.AreEqual(Formula.Parse("0.09"), f);
 
             f = Formula.Parse("((1E10+5/9)-1E10-5/9) * 1E10");
             f = f.DeformFormula(Formula.NumerateToken, out history);
-            Assert.AreEqual("0", f.ToString());
+            Assert.AreEqual(Formula.Parse("0"), f);
         }
     }
 }
