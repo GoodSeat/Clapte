@@ -112,14 +112,14 @@ namespace GoodSeat.Liffom.Reals
         public override int MaxValidDigits { get { return 28; } }
 
         /// <summary>
-        /// このインスタンスの型で考慮可能な最小数値の正規化時の指数を取得します。
+        /// このインスタンスの型で考慮可能な最大数値の正規化時の指数を取得します。
         /// </summary>
         public override int MaxValidExponent { get { return 28; } }
 
         /// <summary>
-        /// このインスタンスの型で考慮可能な最大数値の正規化時の指数を取得します。
+        /// このインスタンスの型で考慮可能な最小数値の正規化時の指数を取得します。
         /// </summary>
-        public override int MinValidExponent { get { return 28; } }
+        public override int MinValidExponent { get { return -28; } }
 
         #endregion
 
@@ -219,18 +219,6 @@ namespace GoodSeat.Liffom.Reals
         /// decimal型の自然対数の底eを取得します。
         /// </summary>
         public static decimal e { get; private set; }
-
-        /// <summary>
-        /// decimal型の自然数nの階乗を取得します。
-        /// </summary>
-        /// <param name="n">階乗の算出対象とする自然数。</param>
-        /// <returns>階乗。</returns>
-        public static decimal Factorial(uint n)
-        {
-            decimal res = 1m;
-            for (int x = 2; x <= n; x++) res *= (decimal)x;
-            return res;
-        }
 
         /// <summary>
         /// decimal型の整数を指数とする累乗を取得します。

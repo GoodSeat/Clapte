@@ -157,5 +157,141 @@ namespace GoodSeat.LiffomTestProject
             //              -0.67474094222355266305652097361 [keisan.casio.jp]
             //                                         ~~~
         }
+
+
+        /// <summary>
+        /// BigDecimalValue のテスト
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void BigDecimalValueTest()
+        {
+            var r1 = new BigDecimalValue(1.23456789012);
+            var r2 = new BigDecimalValue(10.23456789018);
+            Assert.AreEqual( "1.14691357803E+1", (r1 + r2).ToString());
+
+            r1 = new BigDecimalValue(1.23456789012);
+            r2 = new BigDecimalValue(10.23456789012);
+            Assert.AreEqual( "1.26352688863953483936144E+1", (r1 * r2).ToString());
+
+            r1 = new BigDecimalValue(10);
+            r2 = new BigDecimalValue(0.0025);
+            Assert.AreEqual("4.E+3", (r1 / r2).ToString());
+
+            r2 = new BigDecimalValue(3);
+            string expect = "3.";
+            for (int i = 1; i < BigDecimalValue.MaxDigits; i++) expect += "3";
+            Assert.AreEqual(expect, (r1 / r2).ToString());
+
+
+            r1 = new BigDecimalValue(-1.23456789012);
+            r2 = new BigDecimalValue(10.23456789018);
+            Assert.AreEqual("9.00000000006", (r1 + r2).ToString());
+
+            r1 = new BigDecimalValue(-1.23456789012);
+            r2 = new BigDecimalValue(10.23456789012);
+            Assert.AreEqual( "-1.26352688863953483936144E+1", (r1 * r2).ToString());
+
+            r1 = new BigDecimalValue(-10);
+            r2 = new BigDecimalValue(0.0025);
+            Assert.AreEqual("-4.E+3", (r1 / r2).ToString());
+
+            r2 = new BigDecimalValue(3);
+            Assert.AreEqual("-" + expect, (r1 / r2).ToString());
+        }
+
+        object _lock = new object();
+
+        /// <summary>
+        /// ResetDigits のテスト
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void ResetDigitsTest()
+        {
+            lock (_lock)
+            {
+                int save = BigDecimalValue.MaxDigits;
+                BigDecimalValue.MaxDigits = 4;
+
+                var test = new BigDecimalValue(3.33333333d);
+                PrivateObject po = new PrivateObject(test);
+                po.Invoke("ResetDigits");
+                Assert.AreEqual("333333", po.GetProperty("Component").ToString());
+                Assert.AreEqual(-5, po.GetProperty("MinimumDigit"));
+
+                var r1 = new BigDecimalValue(1d);
+                var r3 = new BigDecimalValue(3d);
+                var t1 = r1 / r3;
+                Assert.AreEqual("3.333E-1", t1.ToString());
+                var t2 = t1 * 3;
+                Assert.AreEqual("1.", t2.ToString());
+
+
+                r1 = new BigDecimalValue(-1d);
+                t1 = r1 / r3;
+                Assert.AreEqual("-3.333E-1", t1.ToString());
+                t2 = t1 * 3;
+                Assert.AreEqual("-1.", t2.ToString());
+
+                BigDecimalValue.MaxDigits = save;
+            }
+        }
+
+        /// <summary>
+        /// BigDecimalValue のテスト
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void BigDecimalValueFunctionTest()
+        {
+            lock (_lock)
+            {
+                int save = BigDecimalValue.MaxDigits;
+                BigDecimalValue.MaxDigits = 30;
+
+                var result = Value.Exp(new BigDecimalValue(2.345d), 30);
+                Assert.AreEqual("1.04332727275489151637060295131E+1", result.ToString());
+                //              "10.4332727275489151637060295131" [keisan.casio.jp]
+                //                                           ~~
+
+                result = BigDecimalValue.Power(3, 3, 30);
+                Assert.AreEqual(27d, (double)result);
+
+                result = BigDecimalValue.Power(3.151351, 12.513151, 30);
+                Assert.AreEqual("1.72888240839625926101843745647E+6", result.ToString());
+                //               1728882.40839625926101843745647 [keisan.casio.jp]
+
+                var pi = result.GetPi();
+
+                result = Value.Sin(pi / 6d as BigDecimalValue, 30);
+                Assert.AreEqual(0.5, result);
+                //              0.5 [keisan.casio.jp]
+
+                result = Value.Cos(pi / 6d as BigDecimalValue, 30);
+                Assert.AreEqual("8.66025403784438646763723170753E-1", result.ToString());
+                //             "0.866025403784438646763723170753" [keisan.casio.jp]
+
+                result = Value.Tan(pi / 6d as BigDecimalValue, 30);
+                Assert.AreEqual("5.77350269189625764509148780502E-1", result.ToString());
+                //             "0.577350269189625764509148780502" [keisan.casio.jp]
+
+                result = Value.Atan(new BigDecimalValue(1.2), 30);
+                Assert.AreEqual("8.76058050598193423114047521128E-1", result.ToString());
+                //             "0.876058050598193423114047521128" [keisan.casio.jp]
+
+                result = Value.Atan(new BigDecimalValue(0.8), 30);
+                Assert.AreEqual("6.7474094222355266305652097361E-1", result.ToString());
+                //             "0.67474094222355266305652097361" [keisan.casio.jp]
+
+                result = Value.Atan(new BigDecimalValue(-1.2), 30);
+                Assert.AreEqual("-8.76058050598193423114047521128E-1", result.ToString());
+                //             "-0.876058050598193423114047521128" [keisan.casio.jp]
+
+                result = Value.Atan(new BigDecimalValue(-0.8), 30);
+                Assert.AreEqual("-6.7474094222355266305652097361E-1", result.ToString());
+                //             "-0.67474094222355266305652097361" [keisan.casio.jp]
+
+                BigDecimalValue.MaxDigits = save;
+            }
+        }
+
     }
 }
