@@ -112,50 +112,48 @@ namespace GoodSeat.LiffomTestProject
         [TestCategory("数値"), TestMethod()]
         public void DecimalValueTest()
         {
-            var result = DecimalValue.Exp(2.345m, 28);
-            //              12 34567890123456789012345678
-            Assert.AreEqual(10.433272727548915163706029514m, result);
-            //              10.4332727275489151637060295131 [keisan.casio.jp]
-            //                                           ~~
+            var test = new DecimalValue(2.345m) as Value;
+            var ans = test.GetNapiers() ^ test;
+            Assert.AreEqual("10.43327272754891516370603", ans.ToString());
+            //               10.4332727275489151637060295131 [keisan.casio.jp]
 
-            result = DecimalValue.Power(3m, 3m, 28);
-            Assert.AreEqual(27m, result);
+            test = new DecimalValue(3m);
+            ans = test ^ test;
+            Assert.AreEqual("27", ans.ToString());
 
-            result = DecimalValue.Power(3.151351m, 12.513151m, 28);
-            Assert.AreEqual(1728882.4083962592610184374537m, result);
-            //              1728882.40839625926101843745647 [keisan.casio.jp]
-            //                                          ~~
+            test = new DecimalValue(3.151351m) ^ new DecimalValue(12.513151m);
+            Assert.AreEqual("1728882.4083962592610184375", test.ToString());
+            //               1728882.40839625926101843745647 [keisan.casio.jp]
 
-            result = DecimalValue.Sin(DecimalValue.Pi / 6m, 28);
-            Assert.AreEqual(0.4999999999999999999999999995m, result);
-            //              0.5 [keisan.casio.jp]
+            test = new DecimalValue(DecimalValue.Pi / 6m);
+            ans = test.Sin();
+            Assert.AreEqual("0.5", ans.ToString());
+            //               0.5 [keisan.casio.jp]
 
-            result = DecimalValue.Cos(DecimalValue.Pi / 6m, 28);
-            Assert.AreEqual(0.8660254037844386467637231709m, result);
-            //              0.866025403784438646763723170753 [keisan.casio.jp]
-            //                                           ~~~
+            ans = test.Cos();
+            Assert.AreEqual("0.86602540378443864676372317", ans.ToString());
+            //               0.866025403784438646763723170753 [keisan.casio.jp]
 
-            result = DecimalValue.Tan(DecimalValue.Pi / 6m, 28);
-            Assert.AreEqual(0.5773502691896257645091487798m, result);
-            //              0.577350269189625764509148780502 [keisan.casio.jp]
-            //                                         ~~~
+            ans = test.Tan();
+            Assert.AreEqual("0.57735026918962576450914878", ans.ToString());
+            //               0.577350269189625764509148780502 [keisan.casio.jp]
 
-            result = DecimalValue.Atan(1.2m, 28);
-            Assert.AreEqual(0.8760580505981934231140475196m, result);
-            //              0.876058050598193423114047521128 [keisan.casio.jp]
-            //                                         ~~~
-            result = DecimalValue.Atan(0.8m, 28);
-            Assert.AreEqual(0.6747409422235526630565209738m, result);
-            //              0.67474094222355266305652097361 [keisan.casio.jp]
-            //                                         ~~~
-            result = DecimalValue.Atan(-1.2m, 28);
-            Assert.AreEqual(-0.8760580505981934231140475196m, result);
-            //              -0.876058050598193423114047521128 [keisan.casio.jp]
-            //                                         ~~~
-            result = DecimalValue.Atan(-0.8m, 28);
-            Assert.AreEqual(-0.6747409422235526630565209738m, result);
-            //              -0.67474094222355266305652097361 [keisan.casio.jp]
-            //                                         ~~~
+            ans = new DecimalValue(1.2m).Atan();
+            Assert.AreEqual("0.87605805059819342311404752", ans.ToString());
+            //               0.876058050598193423114047521128 [keisan.casio.jp]
+
+            ans = new DecimalValue(0.8m).Atan();
+            Assert.AreEqual("0.67474094222355266305652097", ans.ToString());
+            //               0.67474094222355266305652097361 [keisan.casio.jp]
+
+            ans = new DecimalValue(-1.2m).Atan();
+            Assert.AreEqual("-0.87605805059819342311404752", ans.ToString());
+            //               -0.876058050598193423114047521128 [keisan.casio.jp]
+
+            ans = new DecimalValue(-0.8m).Atan();
+            Assert.AreEqual("-0.67474094222355266305652097", ans.ToString());
+            //               -0.67474094222355266305652097361 [keisan.casio.jp]
+
         }
 
 
@@ -252,10 +250,10 @@ namespace GoodSeat.LiffomTestProject
                 //              "10.4332727275489151637060295131" [keisan.casio.jp]
                 //                                           ~~
 
-                result = BigDecimalValue.Power(3, 3, 30);
+                result = Value.Power(new BigDecimalValue(3), new BigDecimalValue(3), 30);
                 Assert.AreEqual(27d, (double)result);
 
-                result = BigDecimalValue.Power(3.151351, 12.513151, 30);
+                result = Value.Power((BigDecimalValue)3.151351, (BigDecimalValue)12.513151, 30);
                 Assert.AreEqual("1.72888240839625926101843745647E+6", result.ToString());
                 //               1728882.40839625926101843745647 [keisan.casio.jp]
 

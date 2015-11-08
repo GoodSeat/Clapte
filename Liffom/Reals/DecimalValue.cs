@@ -109,7 +109,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// このインスタンスの型で考慮可能な最大桁数を取得します。
         /// </summary>
-        public override int MaxValidDigits { get { return 28; } }
+        public override int MaxValidDigits { get { return 26; } }
 
         /// <summary>
         /// このインスタンスの型で考慮可能な最大数値の正規化時の指数を取得します。
@@ -137,7 +137,11 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public override string ToString(string format) { return InnerData.ToString(format); }
+        public override string ToString(string format)
+        {
+            var rounded = (Round(MaxValidDigits - Exponent - 1) as DecimalValue).InnerData;
+            return rounded.ToString(format);
+        }
 
         /// <summary>
         /// double型数値から内部数値を初期化して取得します。
@@ -159,6 +163,13 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r">対象の実数。</param>
         /// <returns>変換された実数。</returns>
         public static implicit operator DecimalValue(double r) { return new DecimalValue(r); }
+
+        /// <summary>
+        /// decimal型からの暗黙的変換。
+        /// </summary>
+        /// <param name="r">対象の実数。</param>
+        /// <returns>変換された実数。</returns>
+        public static implicit operator DecimalValue(decimal r) { return new DecimalValue(r); }
 
         #endregion
 

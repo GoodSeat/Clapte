@@ -353,47 +353,6 @@ namespace GoodSeat.Liffom.Reals
         #region 数値計算
 
         /// <summary>
-        /// BigDecimalValue型の累乗を取得します。
-        /// </summary>
-        /// <param name="x">基数。</param>
-        /// <param name="y">指数。</param>
-        /// <param name="validDigits">算出精度。</param>
-        /// <returns>累乗。</returns>
-        /// <remarks>
-        /// <para>x^y = exp(y * ln x)</para>
-        /// <para>(a*b)^y = a^y * b^y</para>
-        /// </remarks>
-        public static BigDecimalValue Power(BigDecimalValue x, BigDecimalValue y, int validDigits)
-        {
-            if (x.Component == 0) return 0;
-            if (y.MinimumDigit >= 0) return Power(x, (int)y) as BigDecimalValue;
-
-            bool invert = false;
-            if (y.Component < 0)
-            {
-                invert = true;
-                y = (y * -1d) as BigDecimalValue;
-            }
-
-            int n = 0;
-            var ay = x.CreateFrom(1d);
-            while (Value.Abs(x) >= 2d)
-            {
-                if (ay == 1) ay = Exp(y * Ln(x.CreateFrom(1.96d), validDigits), validDigits);
-
-                x = (x / 1.96d) as BigDecimalValue;
-                n++;
-            }
-            if (n > 1) ay = Power(ay, n) as BigDecimalValue;
-            var by = Exp(y * Ln(x, validDigits), validDigits);
-
-            BigDecimalValue result = (ay * by) as BigDecimalValue;
-
-            if (invert) return (1d / result) as BigDecimalValue;
-            else return result;
-        }
-
-        /// <summary>
         /// 指定数値の平方根を算出します。
         /// </summary>
         /// <param name="x">算出対象の数値。</param>

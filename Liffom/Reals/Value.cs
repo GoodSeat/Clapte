@@ -531,19 +531,24 @@ namespace GoodSeat.Liffom.Reals
                 y = y * -1d;
             }
 
+            var y_b = y % 1d;
+            var y_a = y - y_b;
+
+            var xa = Power(x, (int)y_a);
+
             int n = 0;
             Value ay = x.CreateFrom(1d);
-            while (Value.Abs(x) >= 2d)
+            while (Value.Abs(x) >= 1.6d)
             {
-                if (ay == 1) ay = Exp(y * Ln(x.CreateFrom(1.96d), validDigits), validDigits);
+                if (ay == 1) ay = Exp(y_b * Ln(x.CreateFrom(1.5d), validDigits), validDigits);
 
-                x = x / 1.96d;
+                x = x / 1.5d;
                 n++;
             }
             if (n > 1) ay = Power(ay, n);
-            Value by = Exp(y * Ln(x, validDigits), validDigits);
+            Value by = Exp(y_b * Ln(x, validDigits), validDigits);
 
-            Value result = ay * by;
+            Value result = xa * ay * by;
 
             if (invert) return 1d / result;
             else return result;
