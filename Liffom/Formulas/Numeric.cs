@@ -20,8 +20,9 @@ namespace GoodSeat.Liffom.Formulas
     {
         static Numeric()
         { 
-            InnerRealType = RealType.DoubleModified;
+//            InnerRealType = RealType.DoubleModified;
 //            InnerRealType = RealType.Decimal;
+            InnerRealType = RealType.BigDecimal;
         }
 
         /// <summary>
@@ -34,7 +35,9 @@ namespace GoodSeat.Liffom.Formulas
             /// <summary>内部数値として、double型(自動誤差修正)を使用します。</summary>
             DoubleModified,
             /// <summary>内部数値として、decimal型を使用します。</summary>
-            Decimal
+            Decimal,
+            /// <summary>内部数値として、任意精度小数点を使用します。</summary>
+            BigDecimal
         }
 
         static RealType s_innerRealType;
@@ -145,6 +148,7 @@ namespace GoodSeat.Liffom.Formulas
                 if (s.ToLower().Contains("e")) Figure = new SignificantReal(new DecimalValue(double.Parse(s)), s);
                 else Figure = new SignificantReal(new DecimalValue(decimal.Parse(s)), s);
             }
+            else if (InnerRealType == RealType.BigDecimal) Figure = new SignificantReal(BigDecimalValue.Parse(s), s);
             else throw new NotImplementedException();
         }
 
@@ -172,6 +176,7 @@ namespace GoodSeat.Liffom.Formulas
             if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(d));
             else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(d));
             else if (InnerRealType == RealType.Decimal) Figure = new SignificantReal(new DecimalValue(d));
+            else if (InnerRealType == RealType.BigDecimal) Figure = new SignificantReal(new BigDecimalValue(d));
             else throw new NotImplementedException();
         }
 

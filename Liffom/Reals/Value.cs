@@ -238,7 +238,7 @@ namespace GoodSeat.Liffom.Reals
                 isNegative = !isNegative;
             }
 
-            var div = this / r;
+            var div = n1 / n2;
             div = div.Round(0);
             var rem = n1 - n2 * div;
             if (isNegative) rem *= -1;
@@ -523,6 +523,14 @@ namespace GoodSeat.Liffom.Reals
         {
             if (x == 0d) return x.CreateFrom(0);
             if (y % 1d == 0d) return Power(x, (int)y);
+
+            if (x.Exponent != 0 && x != 10) // (x * 1En)^y -> x^y * 10^(y*n)
+            {
+                var xdy = Power(x.Mantissa, y, validDigits);
+                var edy = Power(x.CreateFrom(10), y * x.Exponent, validDigits);
+
+                return xdy * edy;
+            }
 
             bool invert = false;
             if (y < 0d)

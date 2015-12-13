@@ -213,15 +213,17 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// <returns>偏角。</returns>
         public static Numeric Arg(Numeric R, Numeric E)
         {
+            var pi = R.Figure.GetPi();
+
             Numeric asin = E.Figure * (Abs(R, E).Figure ^ new Numeric(-1d));
             if (asin > 1) asin = new Numeric(1);
             if (asin < -1) asin = new Numeric(-1);
 
             Numeric rad = new Numeric(asin.Figure.Asin());
-            if (R < 0) rad = new Numeric(rad.Figure + Math.PI);
+            if (R < 0) rad = new Numeric(rad.Figure + pi);
 
-            while (rad > Math.PI) rad = new Numeric(rad.Figure - 2 * Math.PI);
-            while (rad < -Math.PI) rad = new Numeric(rad.Figure + 2 * Math.PI);
+            while (rad > pi) rad = new Numeric(rad.Figure - 2 * pi);
+            while (rad < -pi) rad = new Numeric(rad.Figure + 2 * pi);
 
             return rad;
         }

@@ -151,7 +151,6 @@ namespace GoodSeat.Liffom.Processes
             return null;
         }
 
-        ///
         /// <summary>
         /// 指定式を、<see cref="about"/>に関して整理して取得します。
         /// </summary>

@@ -15,13 +15,34 @@ namespace GoodSeat.Liffom.Reals
     {
         static BigDecimalValue()
         {
-            MaxDigits = 100;
+            MaxDigits = 30;
         }
 
         /// <summary>
         /// 考慮する最大桁数を設定もしくは取得します。
         /// </summary>
         static public int MaxDigits { get; set; }
+
+        /// <summary>
+        /// 数値の文字列形式を、それと等価な任意精度小数点数値に変換します。
+        /// </summary>
+        /// <param name="s">変換する数値を格納する文字列。</param>
+        /// <returns>変換された数値。</returns>
+        public static BigDecimalValue Parse(string s)
+        {
+            int expDelta = 0;
+
+            string[] split = s.ToLower().Split('e');
+            if (split.Length > 2) throw new FormatException();
+            else if (split.Length > 1) expDelta += int.Parse(split[1]);
+
+            string[] mantissa = split[0].Split('.');
+            if (mantissa.Length > 2) throw new FormatException();
+            else if (mantissa.Length > 1) expDelta -= mantissa[1].Length;
+
+            var component = BigInteger.Parse(split[0].Replace(".", ""));
+            return new BigDecimalValue(component, expDelta);
+        }
 
         /// <summary>
         /// 計算用実数を初期化します。
@@ -148,6 +169,8 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
         public override string ToString(string format)
         {
+            if (Component == 0) return "0";
+
             bool isNegative = false;
             var component = Component;
             var exponent = Exponent;
@@ -226,6 +249,12 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         private void ResetDigits()
         {
+            if (Component == 0)
+            {
+                MinimumDigit = 0;
+                return;
+            }
+
             // 最大桁数+2桁まで保持する。
             if (HoldDigits > MaxDigits + 2)
             {
@@ -430,7 +459,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
         public override Value Round(int round)
         {
-            int delta = round - MinimumDigit;
+            int delta = - round - MinimumDigit;
             if (delta > 0)
             {
                 var min = MinimumDigit + delta;
