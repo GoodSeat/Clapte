@@ -33,6 +33,24 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Sum; }
 
+        protected override Comparison<Formula> Comparison
+        {
+            get
+            {
+                // 指数の差が大きい数値同士で加算を行うと誤差が生じやすいので、指数でソートしてから加算処理を行う。
+                return (f1, f2) =>
+                {
+                    Numeric n1 = f1 as Numeric;
+                    Numeric n2 = f2 as Numeric;
+                    if (n1 == null && n2 == null) return 0;
+                    else if (n1 == null) return 1;
+                    else if (n2 == null) return 0;
+
+                    return n1.Figure.Exponent - n2.Figure.Exponent;
+                };
+            }
+        }
+
         public override string Information
         {
             get { return "数値の加算結果を規定する計算ルールです。"; }

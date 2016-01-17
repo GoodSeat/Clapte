@@ -62,6 +62,11 @@ namespace GoodSeat.Liffom.Deforms.Rules
         protected virtual bool IntegrateAfterRuled { get { return false; } }
 
         /// <summary>
+        /// ルールによる変形前に、ソートを行う場合に用いる比較メソッドを取得します。
+        /// </summary>
+        protected virtual Comparison<Formula> Comparison { get { return null; } }
+
+        /// <summary>
         /// 指定ルールに従って、収束するまで数式の変形を行います。
         /// </summary>
         /// <param name="target">変形対象の数式。</param>
@@ -69,6 +74,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
         private OperatorMultiple DeformWithRule(OperatorMultiple target)
         {
             List<Formula> consist = new List<Formula>(target.Formulas);
+            if (Comparison != null) consist.Sort(Comparison);
 
             bool ruleTreated = false;
             for (int i = 0; i < consist.Count; i++)
