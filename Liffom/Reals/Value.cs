@@ -239,7 +239,7 @@ namespace GoodSeat.Liffom.Reals
             }
 
             var div = n1 / n2;
-            div = div.Round(0);
+            div = (div + 0.5).Round(0) - 1;
             var rem = n1 - n2 * div;
             if (isNegative) rem *= -1;
             return rem;
@@ -539,24 +539,14 @@ namespace GoodSeat.Liffom.Reals
                 y = y * -1d;
             }
 
+            // x^(y_a + y_b) = x^y_a * x^y_b
             var y_b = y % 1d;
             var y_a = y - y_b;
 
-            var xa = Power(x, (int)y_a);
+            var xa = Power(x, (int)y_a); // x^y_a
+            var xb = Exp(y_b * Ln(x, validDigits), validDigits); // x^y_b
 
-            int n = 0;
-            Value ay = x.CreateFrom(1d);
-            while (Value.Abs(x) >= 1.6d)
-            {
-                if (ay == 1) ay = Exp(y_b * Ln(x.CreateFrom(1.5d), validDigits), validDigits);
-
-                x = x / 1.5d;
-                n++;
-            }
-            if (n > 1) ay = Power(ay, n);
-            Value by = Exp(y_b * Ln(x, validDigits), validDigits);
-
-            Value result = xa * ay * by;
+            Value result = xa * xb;
 
             if (invert) return 1d / result;
             else return result;
@@ -622,7 +612,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// Value型変数x(0 ＜ x ＜ 2)の自然対数を計算して取得します。
         /// </summary>
-        /// <param name="x">自然対数を算出するValue型変数。0より大きく2未満の数値のみを対象とし、それ以外の場合例外がスローされます。</param>
+        /// <param name="x">自然対数を算出するValue型変数。0より大きい数値のみを対象とし、それ以外の場合例外がスローされます。</param>
         /// <returns>自然対数。</returns>
         /// <remarks>
         /// <para>             ∞  (-1)^(n+1)                         </para>
@@ -632,14 +622,30 @@ namespace GoodSeat.Liffom.Reals
         /// <exception cref="ArgumentException">引数の数値が0以下もしくは2以上の場合にスローされます。</exception>
         public static Value Ln(Value x, int validDigits)
         {
-            if (x <= 0 || x >= 2) throw new ArgumentException("Lnメソッドの引数は、0より大きく2未満の数値のみ指定できます。");
+            if (x <= 0) throw new ArgumentException("Lnメソッドの引数は、0より大きい数値のみ指定できます。");
 
-            var y = x - 1d;
-            return Series(y, 2, y, validDigits, (z, n) => {
-                        var delta = Power(z, n) / (double)n;
-                        if (n % 2 == 0) delta *= -1d;
-                        return delta;
-                    });
+            if (x >= 1.6d) // ln xy = ln x + ln y -> ln x*(1.5)^n = ln x + n * ln 1.5
+            {
+                int n = 0;
+                while (x > 1.5d)
+                {
+                    x /= 1.5d;
+                    n++;
+                }
+                var ln = Ln(x.CreateFrom(1.5), validDigits);
+
+                return Ln(x, validDigits) + n * ln;
+            }
+            else
+            {
+                var y = x - 1d;
+                return Series(y, 2, y, validDigits, (z, n) =>
+                {
+                    var delta = Power(z, n) / (double)n;
+                    if (n % 2 == 0) delta *= -1d;
+                    return delta;
+                });
+            }
         }
 
         /// <summary>

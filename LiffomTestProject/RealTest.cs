@@ -261,6 +261,10 @@ namespace GoodSeat.LiffomTestProject
                 //               4.99243541526789431258604727654E-32 [keisan.casio.jp]
                 //                                             ~
 
+                result = Value.Ln((BigDecimalValue)851.481, 30);
+                Assert.AreEqual("6.74697718628949339448203169576", result.ToString());
+                //               6.74697718628949339448203169576 [keisan.casio.jp]
+
                 var pi = result.GetPi();
 
                 result = Value.Sin(pi / 6d as BigDecimalValue, 30);
