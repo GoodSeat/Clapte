@@ -10,6 +10,10 @@ namespace GoodSeat.Liffom.Formulas
     {
         #region IEnumerable メンバー
                
+        /// <summary>
+        /// 数式を構成する子数式を順次返す反復子を取得します。
+        /// </summary>
+        /// <returns>数式を構成する子数式を順次返す反復子。</returns>
         public IEnumerator<Formula> GetEnumerator()
         {
             int i = 0;

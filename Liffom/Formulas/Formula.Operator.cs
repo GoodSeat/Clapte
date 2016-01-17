@@ -53,7 +53,7 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         /// <param name="f1">分子。</param>
         /// <param name="f2">分母。</param>
-        /// <returns>除算。</returns> return divide;
+        /// <returns>除算。</returns> 
         public static Formula operator /(Formula f1, Formula f2)
         {
             Power divide = f2 ^ -1;
@@ -76,10 +76,10 @@ namespace GoodSeat.Liffom.Formulas
         }
 
         /// <summary>
-        /// 数式の比較結果を取得します。数式の項が一致（順不同）する場合にのみtrueとなります。
+        /// 数式の比較結果を取得します。数式の項が一致する場合にのみtrueとなります。
         /// </summary>
         /// <remarks>
-        /// Formulaでは、Equalsメソッドと==演算子で、いずれも値の等価判定が行われます。
+        /// Formulaでは、Equalsメソッドと==演算子のいずれでも値の等価判定が行われます。
         /// 参照の等価判定を行うには、object.ReferenceEqualsメソッドを用いてください。
         /// 値の順序や、括弧の種類の違いは等価判定に影響しません。
         /// </remarks>
@@ -316,7 +316,7 @@ namespace GoodSeat.Liffom.Formulas
         /// Formulaでは、Equalsメソッドと==演算子で、いずれも値の等価判定が行われます。
         /// 参照の等価判定を行うには、object.ReferenceEqualsメソッドを用いてください。
         /// </remarks>
-        /// <param name="f">比較対象の数式。</param>
+        /// <param name="obj">比較対象の数式。</param>
         /// <returns>比較結果。</returns>
         public override bool Equals(object obj)
         {

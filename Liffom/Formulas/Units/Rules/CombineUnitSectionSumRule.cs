@@ -18,6 +18,8 @@ namespace GoodSeat.Liffom.Formulas.Units.Rules
         {
             (b as RulePatternVariable).CheckTarget = f => f.IsUnit();
             (d as RulePatternVariable).CheckTarget = f => f.IsUnit();
+            (a as RulePatternVariable).CheckTarget = f => !f.Contains<Unit>();
+            (c as RulePatternVariable).CheckTarget = f => !f.Contains<Unit>();
             formula1 = a * b;
             formula2 = c * d;
         }

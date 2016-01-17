@@ -155,7 +155,7 @@ namespace GoodSeat.Liffom.Deforms
         /// </summary>
         /// <param name="ApplyRule">適用候補のルール</param>
         /// <returns>同系統の履歴を参照して、同数式に対して同ルールの適用があった場合、trueを返します。</returns>
-        public bool IsAlreadyAppliedRule(Rule ApplyRule)
+        public bool DetectInfinityLoopRuleApply(Rule ApplyRule)
         {
             for (int i = 1; i < AppliedNodes.Count; i++)
             {

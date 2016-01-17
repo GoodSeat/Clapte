@@ -100,7 +100,6 @@ namespace GoodSeat.Liffom.Formats.Numerics
             }
         }
 
-
         /// <summary>
         /// 数値表記文字列に対し、3桁ごとに区切る文字列を挿入します。
         /// </summary>
@@ -122,37 +121,39 @@ namespace GoodSeat.Liffom.Formats.Numerics
             string[] splitExp = formula.Split('e', 'E');
             string[] splitPeriod = splitExp[0].Split(radix);
 
-            int count = splitPeriod[0].Length;
-            if (SplitAlsoFour || count  > 4)
-            {
-                StringBuilder sb = new StringBuilder();
-                for (int i = 1; i <= count; i++)
-                {
-                    sb.Insert(0, splitPeriod[0][count - i]);
-                    if (i % 3 == 0 && i != count) sb.Insert(0, SplitText);
-                }
-                splitPeriod[0] = sb.ToString();
-            }
-            
-            if (SplitAlsoDecimal && splitPeriod.Length > 1) // 小数部について
-            {
-                count = splitPeriod[1].Length;
-                if (SplitAlsoFour || count  > 4)
-                {
-                    StringBuilder sb = new StringBuilder();
-                    for (int i = 1; i <= count; i++)
-                    {
-                        sb.Append(splitPeriod[1][i - 1]);
-                        if (i % 3 == 0 && i != count) sb.Append(SplitText);
-                    }
-                    splitPeriod[1] = sb.ToString();
-                }
-            }
+            splitPeriod[0] = BuildSplitFormatTextFrom(splitPeriod[0], false);
+            if (SplitAlsoDecimal && splitPeriod.Length > 1) splitPeriod[1] = BuildSplitFormatTextFrom(splitPeriod[1], true);
 
             string result = splitPeriod[0];
             if (splitPeriod.Length > 1) result += radix + splitPeriod[1];
             if (splitExp.Length > 1) result += (formula.Contains("E") ? "E" : "e") + splitExp[1];
             return result;
+        }
+
+        /// <summary>
+        /// 指定した文字列に対し、設定に基づいて区切り文字を挿入した文字列を取得します。
+        /// </summary>
+        /// <param name="text">加工対象の文字列。</param>
+        /// <param name="isDecimal">対象とする文字列が小数部か否か。</param>
+        /// <returns>区切り文字を挿入した文字列。</returns>
+        private string BuildSplitFormatTextFrom(string text, bool isDecimal)
+        {
+            int count = text.Length;
+            if (!SplitAlsoFour && count <= 4) return text;
+
+            StringBuilder sb = new StringBuilder();
+            for (int i = 1; i <= count; i++)
+            {
+                if (!isDecimal) sb.Insert(0, text[count - i]);
+                else sb.Append(text[i - 1]);
+
+                if (i % 3 == 0 && i != count)
+                {
+                    if (!isDecimal) sb.Insert(0, SplitText);
+                    else sb.Append(SplitText);
+                }
+            }
+            return sb.ToString();
         }
 
         /// <summary>

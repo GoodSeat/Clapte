@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Deforms
 
                 foreach (var rule in GetApplyCandidateRules(token, target, history))
                 {
-                    if (history.IsAlreadyAppliedRule(rule)) continue;
+                    if (history.DetectInfinityLoopRuleApply(rule)) continue;
                     RemoveBracketFormatOfTerm(target); // 変形があったら元の意味のない括弧を消す
 
                     if (rule.TryMatchRule(ref target))

@@ -237,7 +237,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
                             {
                                 TestFormulas.RemoveAt(t);
                                 RuleFormulas.RemoveAt(r);
-                                MatchedRuleFormulas[checkType].Add(rule, test);
+                                if (!MatchedRuleFormulas[checkType].ContainsKey(rule)) MatchedRuleFormulas[checkType].Add(rule, test);
                                 matched = true;
                                 r--;
                                 break;

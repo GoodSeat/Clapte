@@ -374,9 +374,9 @@ namespace GoodSeat.Liffom.Processes
         {
             List<Unit>[] convertBases = new List<Unit>[2];
             List<Unit>[] convertTo = new List<Unit>[2];
-            convertBases[0] =  baseIsFrom ? _fromMolecular     : _toMolecular;
+            convertBases[0] =  baseIsFrom ? _fromMolecular   : _toMolecular;
             convertBases[1] =  baseIsFrom ? _fromDenominator : _toDenominator;
-            convertTo[0]    = !baseIsFrom ? _fromMolecular     : _toMolecular;
+            convertTo[0]    = !baseIsFrom ? _fromMolecular   : _toMolecular;
             convertTo[1]    = !baseIsFrom ? _fromDenominator : _toDenominator;
             for (int i = 0; i < 2; i++) // 分子、分母の順
             {
@@ -393,13 +393,11 @@ namespace GoodSeat.Liffom.Processes
                         List<Unit> convertDenominator = new List<Unit>();
                         BuildUnitList(record.ConvertUnit, ref convertMolecular, ref convertDenominator);
 
-                        if (!alsoNoCancel)
-                        {
-                            if (!ExistMatchTypeUnit(convertMolecular,    convertTo[i]) &&
-                                !ExistMatchTypeUnit(convertDenominator, convertTo[1 - i]) &&
-                                !ExistMatchTypeUnit(convertMolecular,    convertBases[1 - i]) && 
-                                !ExistMatchTypeUnit(convertDenominator, convertBases[i])) continue;
-                        }
+                        List<Unit>[] convertUnit = new List<Unit>[2];
+                        convertUnit[0] = convertMolecular;
+                        convertUnit[1] = convertDenominator;
+                        if (!alsoNoCancel && !HasPossibleCanceling(i == 0, convertBases, convertTo, convertUnit)) continue;
+
                         Formula modify = table.GetConversionRatio(convertBases[i][j], record.ConvertUnit);
                         if ((baseIsFrom && i == 1) || (!baseIsFrom && i == 0)) modifyFrom *= modify;
                         else modifyTo *= modify;
@@ -411,6 +409,25 @@ namespace GoodSeat.Liffom.Processes
                     }
                 }
             }
+            return false;
+        }
+
+        /// <summary>
+        /// 変換元の構成単位リストと変換を試みる単位の単位構成リストを指定して、約分により単位を減らすことができるか否かを判定して取得します。
+        /// </summary>
+        /// <param name="isMolecular">対象の単位が分子側の場合、true。分母側の場合false。</param>
+        /// <param name="convertBases">変換元の構成単位リスト。インデックス0が分子側、インデックス1が分母側を表す。</param>
+        /// <param name="convertTo">変換先の構成単位リスト。インデックス0が分子側、インデックス1が分母側を表す。</param>
+        /// <param name="convertUnit">変換を試みる単位の構成単位リスト。インデックス0が分子側、インデックス1が分母側を表す。</param>
+        /// <returns></returns>
+        private bool HasPossibleCanceling(bool isMolecular, List<Unit>[] convertBases, List<Unit>[] convertTo, List<Unit>[] convertUnit)
+        {
+            int i = isMolecular ? 0 : 1;
+
+            if (ExistMatchTypeUnit(convertUnit[0], convertTo[i]) ||
+                ExistMatchTypeUnit(convertUnit[1], convertTo[1 - i]) ||
+                ExistMatchTypeUnit(convertUnit[0], convertBases[1 - i]) ||
+                ExistMatchTypeUnit(convertUnit[1], convertBases[i])) return true;
             return false;
         }
 
