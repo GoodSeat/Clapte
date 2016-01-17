@@ -196,7 +196,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">比較対象の実数。</param>
         /// <returns>比較結果。</returns>
-        protected override bool IsEqualTo(Value r) { return GetErrorModifiedData() == r.ToDouble(); }
+        protected override bool IsEqualTo(Value r) { return ToString() == r.ToString(); }
 
         #endregion
 

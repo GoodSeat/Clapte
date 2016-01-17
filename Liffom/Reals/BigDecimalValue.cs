@@ -374,7 +374,7 @@ namespace GoodSeat.Liffom.Reals
             var n1 = this;
             var n2 = r as BigDecimalValue;
 
-            return n1.Component == n2.Component && n1.MinimumDigit == n2.MinimumDigit;
+            return n1.ToString() == n2.ToString();
         }
 
         #endregion
@@ -463,7 +463,11 @@ namespace GoodSeat.Liffom.Reals
             if (delta > 0)
             {
                 var min = MinimumDigit + delta;
-                var com = Component / BigInteger.Pow(10, delta);
+                var com = Component / BigInteger.Pow(10, delta - 1);
+
+                if (com > 0) com += 5;
+                else if (com < 0) com -= 5;
+                com /= 10;
                 return new BigDecimalValue(com, min);
             }
             else
