@@ -248,7 +248,6 @@ namespace GoodSeat.LiffomTestProject
                 var result = Value.Exp(new BigDecimalValue(2.345d), 30);
                 Assert.AreEqual("1.04332727275489151637060295131E+1", result.ToString());
                 //              "10.4332727275489151637060295131" [keisan.casio.jp]
-                //                                           ~~
 
                 result = Value.Power(new BigDecimalValue(3), new BigDecimalValue(3), 30);
                 Assert.AreEqual(27d, (double)result);
@@ -256,6 +255,11 @@ namespace GoodSeat.LiffomTestProject
                 result = Value.Power((BigDecimalValue)3.151351, (BigDecimalValue)12.513151, 30);
                 Assert.AreEqual("1.72888240839625926101843745647E+6", result.ToString());
                 //               1728882.40839625926101843745647 [keisan.casio.jp]
+
+                result = Value.Power((BigDecimalValue)0.003151351, (BigDecimalValue)12.513151, 30);
+                Assert.AreEqual("4.99243541526789431258604727653E-32", result.ToString());
+                //               4.99243541526789431258604727654E-32 [keisan.casio.jp]
+                //                                             ~
 
                 var pi = result.GetPi();
 
@@ -289,6 +293,19 @@ namespace GoodSeat.LiffomTestProject
 
                 BigDecimalValue.MaxDigits = save;
             }
+        }
+
+        /// <summary>
+        /// BigDecimalValue の構文解析テスト
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void BigDecimalValueParseTest()
+        {
+            var test = BigDecimalValue.Parse("178598.235");
+            Assert.AreEqual(178598.235d, test.ToDouble());
+
+            test = BigDecimalValue.Parse("17.8598235E+4");
+            Assert.AreEqual(178598.235d, test.ToDouble());
         }
 
     }

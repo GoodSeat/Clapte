@@ -92,9 +92,9 @@ namespace GoodSeat.LiffomTestProject
         {
             DeformToken token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
-            DeformTokenTest.DeformTest(token, "sin(i)",             "1.17520119364381*i");
-            DeformTokenTest.DeformTest(token, "sin(i  + 1)",        "1.29845758141598+0.63496391478474*i");
-            DeformTokenTest.DeformTest(token, "cos(i)",             "1.54308063481525");
+            DeformTokenTest.DeformTest(token, "sin(i)",             "1.1752011936438*i");
+            DeformTokenTest.DeformTest(token, "sin(i  + 1)",        "1.29845758141598+0.634963914784736*i");
+            DeformTokenTest.DeformTest(token, "cos(i)",             "1.54308063481524");
             DeformTokenTest.DeformTest(token, "cos(i + 1)",         "0.83373002513115-0.98889770576287*i");
             DeformTokenTest.DeformTest(token, "tan(i)",             "0.761594155955766*i");
             DeformTokenTest.DeformTest(token, "tan(i + 1)",         "0.271752585319508+1.0839233273387*i");
