@@ -165,15 +165,15 @@ namespace GoodSeat.LiffomTestProject
         {
             var r1 = new BigDecimalValue(1.23456789012);
             var r2 = new BigDecimalValue(10.23456789018);
-            Assert.AreEqual( "1.14691357803E+1", (r1 + r2).ToString());
+            Assert.AreEqual( "11.4691357803", (r1 + r2).ToString());
 
             r1 = new BigDecimalValue(1.23456789012);
             r2 = new BigDecimalValue(10.23456789012);
-            Assert.AreEqual( "1.26352688863953483936144E+1", (r1 * r2).ToString());
+            Assert.AreEqual( "12.6352688863953483936144", (r1 * r2).ToString());
 
             r1 = new BigDecimalValue(10);
             r2 = new BigDecimalValue(0.0025);
-            Assert.AreEqual("4.E+3", (r1 / r2).ToString());
+            Assert.AreEqual("4000", (r1 / r2).ToString());
 
             r2 = new BigDecimalValue(3);
             string expect = "3.";
@@ -187,11 +187,11 @@ namespace GoodSeat.LiffomTestProject
 
             r1 = new BigDecimalValue(-1.23456789012);
             r2 = new BigDecimalValue(10.23456789012);
-            Assert.AreEqual( "-1.26352688863953483936144E+1", (r1 * r2).ToString());
+            Assert.AreEqual( "-12.6352688863953483936144", (r1 * r2).ToString());
 
             r1 = new BigDecimalValue(-10);
             r2 = new BigDecimalValue(0.0025);
-            Assert.AreEqual("-4.E+3", (r1 / r2).ToString());
+            Assert.AreEqual("-4000", (r1 / r2).ToString());
 
             r2 = new BigDecimalValue(3);
             Assert.AreEqual("-" + expect, (r1 / r2).ToString());
@@ -219,16 +219,16 @@ namespace GoodSeat.LiffomTestProject
                 var r1 = new BigDecimalValue(1d);
                 var r3 = new BigDecimalValue(3d);
                 var t1 = r1 / r3;
-                Assert.AreEqual("3.333E-1", t1.ToString());
+                Assert.AreEqual("0.3333", t1.ToString());
                 var t2 = t1 * 3;
-                Assert.AreEqual("1.", t2.ToString());
+                Assert.AreEqual("1", t2.ToString());
 
 
                 r1 = new BigDecimalValue(-1d);
                 t1 = r1 / r3;
-                Assert.AreEqual("-3.333E-1", t1.ToString());
+                Assert.AreEqual("-0.3333", t1.ToString());
                 t2 = t1 * 3;
-                Assert.AreEqual("-1.", t2.ToString());
+                Assert.AreEqual("-1", t2.ToString());
 
                 BigDecimalValue.MaxDigits = save;
             }
@@ -246,14 +246,14 @@ namespace GoodSeat.LiffomTestProject
                 BigDecimalValue.MaxDigits = 30;
 
                 var result = Value.Exp(new BigDecimalValue(2.345d), 30);
-                Assert.AreEqual("1.04332727275489151637060295131E+1", result.ToString());
+                Assert.AreEqual("10.4332727275489151637060295131", result.ToString());
                 //              "10.4332727275489151637060295131" [keisan.casio.jp]
 
                 result = Value.Power(new BigDecimalValue(3), new BigDecimalValue(3), 30);
                 Assert.AreEqual(27d, (double)result);
 
                 result = Value.Power((BigDecimalValue)3.151351, (BigDecimalValue)12.513151, 30);
-                Assert.AreEqual("1.72888240839625926101843745647E+6", result.ToString());
+                Assert.AreEqual("1728882.40839625926101843745647", result.ToString());
                 //               1728882.40839625926101843745647 [keisan.casio.jp]
 
                 result = Value.Power((BigDecimalValue)0.003151351, (BigDecimalValue)12.513151, 30);
@@ -272,28 +272,28 @@ namespace GoodSeat.LiffomTestProject
                 //              0.5 [keisan.casio.jp]
 
                 result = Value.Cos(pi / 6d as BigDecimalValue, 30);
-                Assert.AreEqual("8.66025403784438646763723170753E-1", result.ToString());
-                //             "0.866025403784438646763723170753" [keisan.casio.jp]
+                Assert.AreEqual("0.866025403784438646763723170753", result.ToString());
+                //              "0.866025403784438646763723170753" [keisan.casio.jp]
 
                 result = Value.Tan(pi / 6d as BigDecimalValue, 30);
-                Assert.AreEqual("5.77350269189625764509148780502E-1", result.ToString());
-                //             "0.577350269189625764509148780502" [keisan.casio.jp]
+                Assert.AreEqual("0.577350269189625764509148780502", result.ToString());
+                //              "0.577350269189625764509148780502" [keisan.casio.jp]
 
                 result = Value.Atan(new BigDecimalValue(1.2), 30);
-                Assert.AreEqual("8.76058050598193423114047521128E-1", result.ToString());
-                //             "0.876058050598193423114047521128" [keisan.casio.jp]
+                Assert.AreEqual("0.876058050598193423114047521128", result.ToString());
+                //              "0.876058050598193423114047521128" [keisan.casio.jp]
 
                 result = Value.Atan(new BigDecimalValue(0.8), 30);
-                Assert.AreEqual("6.7474094222355266305652097361E-1", result.ToString());
-                //             "0.67474094222355266305652097361" [keisan.casio.jp]
+                Assert.AreEqual("0.67474094222355266305652097361", result.ToString());
+                //              "0.67474094222355266305652097361" [keisan.casio.jp]
 
                 result = Value.Atan(new BigDecimalValue(-1.2), 30);
-                Assert.AreEqual("-8.76058050598193423114047521128E-1", result.ToString());
-                //             "-0.876058050598193423114047521128" [keisan.casio.jp]
+                Assert.AreEqual("-0.876058050598193423114047521128", result.ToString());
+                //              "-0.876058050598193423114047521128" [keisan.casio.jp]
 
                 result = Value.Atan(new BigDecimalValue(-0.8), 30);
-                Assert.AreEqual("-6.7474094222355266305652097361E-1", result.ToString());
-                //             "-0.67474094222355266305652097361" [keisan.casio.jp]
+                Assert.AreEqual("-0.67474094222355266305652097361", result.ToString());
+                //              "-0.67474094222355266305652097361" [keisan.casio.jp]
 
                 BigDecimalValue.MaxDigits = save;
             }

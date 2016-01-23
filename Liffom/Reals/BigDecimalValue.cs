@@ -196,19 +196,44 @@ namespace GoodSeat.Liffom.Reals
                 component /= 10;
             }
 
-            string mantissa = component.ToString().TrimEnd('0');
-            mantissa = mantissa[0] + "." + mantissa.Substring(1);
-
-            string result;
-            if (exponent == 0)
-                result = mantissa;
-            else if (exponent > 0)
-                result = string.Format("{0}E+{1}", mantissa, exponent);
-            else
-                result = string.Format("{0}E{1}", mantissa, exponent);
-
+            string result = CreatePositiveValueText(component, exponent);
             if (isNegative) return "-" + result;
             else return result;
+        }
+
+        /// <summary>
+        /// 正の内部数値と指数を指定して、標準出力文字列を取得します。
+        /// </summary>
+        /// <param name="component">正の内部数値。</param>
+        /// <param name="exponent">指数。</param>
+        /// <returns>文字列。</returns>
+        private string CreatePositiveValueText(BigInteger component, int exponent)
+        {
+            string result;
+            if (exponent >= 0 && exponent < 15)
+            {
+                result = component.ToString().TrimEnd('0');
+                while (result.Length <= exponent) result += "0";
+                if (result.Length > exponent + 1) result = result.Insert(exponent + 1, ".");
+            }
+            else if (exponent < 0 && exponent > -5)
+            {
+                result = "0.";
+                for (int i = 1; i < -exponent; i++) result += "0";
+                result += component.ToString().TrimEnd('0');
+            }
+            else
+            {
+                string mantissa = component.ToString().TrimEnd('0');
+                mantissa = mantissa[0] + "." + mantissa.Substring(1);
+
+                if (exponent > 0)
+                    result = string.Format("{0}E+{1}", mantissa, exponent);
+                else
+                    result = string.Format("{0}E{1}", mantissa, exponent);
+            }
+
+            return result;
         }
 
         /// <summary>
