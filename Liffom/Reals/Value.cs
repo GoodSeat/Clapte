@@ -43,6 +43,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>初期化された内部数値。</returns>
         public abstract Value CreateFrom(double data);
 
+
         #region プロパティ
 
         /// <summary>
@@ -73,7 +74,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
         /// </summary>
-        public abstract bool IsInfinity { get; }
+        public bool IsInfinity { get { return IsPositiveInfinity || IsNegativeInfinity; } }
 
         /// <summary>
         /// インスタンスの表す数値が正の無限大と評価されるかどうかを示す値を返します。
@@ -106,7 +107,20 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <returns>内部数値から変換されたdouble型の数値。</returns>
         /// <exception cref="System.OverflowException">内部数値が表す数値が、double型の範囲を超過する場合にスローされます。</exception>
-        public abstract double ToDouble();
+        public double ToDouble()
+        {
+            if (IsNaN) return double.NaN;
+            if (IsPositiveInfinity) return double.PositiveInfinity;
+            if (IsNegativeInfinity) return double.NegativeInfinity;
+            return OnToDouble();
+        }
+
+        /// <summary>
+        /// 内部数値をdouble型に変換して取得します。変換の際に、有効桁数の情報が失われる可能性があります。
+        /// </summary>
+        /// <returns>内部数値から変換されたdouble型の数値。</returns>
+        /// <exception cref="System.OverflowException">内部数値が表す数値が、double型の範囲を超過する場合にスローされます。</exception>
+        protected abstract double OnToDouble();
 
         /// <summary>
         /// Double型への暗黙的変換。
@@ -126,7 +140,20 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public abstract string ToString(string format);
+        public string ToString(string format)
+        {
+            if (IsNaN) return double.NaN.ToString(format);
+            if (IsPositiveInfinity) return double.PositiveInfinity.ToString(format);
+            if (IsNegativeInfinity) return double.NegativeInfinity.ToString(format);
+            return OnToString(format);
+        }
+
+        /// <summary>
+        /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
+        /// </summary>
+        /// <param name="format">数値書式指定文字列。</param>
+        /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
+        protected abstract string OnToString(string format);
 
         /// <summary>
         /// このインスタンスのハッシュコードを返します。
@@ -159,6 +186,8 @@ namespace GoodSeat.Liffom.Reals
                 if (r1.MaxValidDigits < r2.MaxValidDigits) r1 = r2.CreateFrom(r1.ToDouble());
                 else r2 = r1.CreateFrom(r2.ToDouble());
             }
+            if (r1.IsNaN) return r1;
+            if (r2.IsNaN) return r2;
             return op(r1, r2);
         }
 
@@ -262,23 +291,34 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>加算結果。</returns>
-        public static Value operator +(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r2); }
-        public static Value operator +(Value r1, double r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r1.CreateFrom(r2)); }
-        public static Value operator +(double r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r2.CreateFrom(r1), r2); }
+        public static Value operator +(Value r1, Value r2) 
+        {
+            if (!r1.IsNaN && !r2.IsNaN)
+            {
+                if ((r1.IsPositiveInfinity && r2.IsNegativeInfinity) ||
+                    (r1.IsNegativeInfinity && r2.IsPositiveInfinity))   return r1.CreateFrom(double.NaN);
+                if (r1.IsPositiveInfinity || r1.IsNegativeInfinity) return r1;
+                if (r2.IsPositiveInfinity || r2.IsNegativeInfinity) return r2;
+            }
+
+            return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r2);
+        }
+        public static Value operator +(Value r1, double r2) { return r1 + r1.CreateFrom(r2); }
+        public static Value operator +(double r1, Value r2) { return r2.CreateFrom(r1) + r2; }
 
         /// <summary>
         /// 単位数値を加算します。
         /// </summary>
         /// <param name="r1">実数1。</param>
         /// <returns>加算結果。</returns>
-        public static Value operator ++(Value r1) { return r1.AddTo(r1.CreateFrom(1)); }
+        public static Value operator ++(Value r1) { return r1 + r1.CreateFrom(1); }
 
         /// <summary>
         /// 単位数値を減算します。
         /// </summary>
         /// <param name="r1">実数1。</param>
         /// <returns>減算結果。</returns>
-        public static Value operator --(Value r1) { return r1.AddTo(r1.CreateFrom(-1)); }
+        public static Value operator --(Value r1) { return r1 + r1.CreateFrom(-1); }
 
         /// <summary>
         /// 減算します。
@@ -286,9 +326,20 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>減算結果。</returns>
-        public static Value operator -(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, -r2); }
-        public static Value operator -(Value r1, double r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r1, r1.CreateFrom(-r2)); }
-        public static Value operator -(double r1, Value r2) { return DoOperate2((f1, f2) => f1.AddTo(f2), r2.CreateFrom(r1), -r2); }
+        public static Value operator -(Value r1, Value r2)
+        {
+            if (!r1.IsNaN && !r2.IsNaN)
+            {
+                if ((r1.IsPositiveInfinity && r2.IsPositiveInfinity) ||
+                    (r1.IsNegativeInfinity && r2.IsNegativeInfinity))   return r1.CreateFrom(double.NaN);
+                if (r1.IsPositiveInfinity || r2.IsNegativeInfinity) return r1.CreateFrom(double.PositiveInfinity);
+                if (r2.IsPositiveInfinity || r1.IsNegativeInfinity) return r1.CreateFrom(double.NegativeInfinity);
+            }
+
+            return DoOperate2((f1, f2) => f1.AddTo(f2), r1, -r2);
+        }
+        public static Value operator -(Value r1, double r2) { return r1 - r1.CreateFrom(r2); }
+        public static Value operator -(double r1, Value r2) { return r2.CreateFrom(r1) - r2; }
 
         /// <summary>
         /// 負数を生成します。
@@ -303,9 +354,20 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">乗数1。</param>
         /// <param name="r2">乗数2。</param>
         /// <returns>乗算結果。</returns>
-        public static Value operator *(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r1, r2); }
-        public static Value operator *(Value r1, double r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r1, r1.CreateFrom(r2)); }
-        public static Value operator *(double r1, Value r2) { return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r2.CreateFrom(r1), r2); }
+        public static Value operator *(Value r1, Value r2)
+        {
+            if (!r1.IsNaN && !r2.IsNaN)
+            {
+                if (r1.IsPositiveInfinity && r2 != 0d) return r2 > 0d ? r1 : r1.CreateFrom(double.NegativeInfinity);
+                if (r1.IsNegativeInfinity && r2 != 0d) return r2 > 0d ? r1 : r1.CreateFrom(double.PositiveInfinity);
+                if (r2.IsPositiveInfinity && r1 != 0d) return r1 > 0d ? r2 : r2.CreateFrom(double.NegativeInfinity);
+                if (r2.IsNegativeInfinity && r1 != 0d) return r1 > 0d ? r2 : r2.CreateFrom(double.PositiveInfinity);
+            }
+
+            return DoOperate2((f1, f2) => f1.MultiplyTo(f2), r1, r2);
+        }
+        public static Value operator *(Value r1, double r2) { return r1 * r1.CreateFrom(r2); }
+        public static Value operator *(double r1, Value r2) { return r2.CreateFrom(r1) * r2; }
 
         /// <summary>
         /// 除算します。
@@ -313,9 +375,27 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">被除数。</param>
         /// <param name="r2">除数。</param>
         /// <returns>除算結果。</returns>
-        public static Value operator /(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r1, r2); }
-        public static Value operator /(Value r1, double r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r1, r1.CreateFrom(r2)); }
-        public static Value operator /(double r1, Value r2) { return DoOperate2((f1, f2) => f1.DivideBy(f2), r2.CreateFrom(r1), r2); }
+        public static Value operator /(Value r1, Value r2)
+        { 
+            if (!r1.IsNaN && !r2.IsNaN)
+            {
+                if (r1.IsInfinity && r2.IsInfinity)    return r1.CreateFrom(double.NaN);
+                if (r1.IsPositiveInfinity && r2 != 0d) return r2 > 0d ? r1 : r1.CreateFrom(double.NegativeInfinity);
+                if (r1.IsNegativeInfinity && r2 != 0d) return r2 > 0d ? r1 : r1.CreateFrom(double.PositiveInfinity);
+                if (r2.IsPositiveInfinity && r1 != 0d) return r2.CreateFrom(0d);
+                if (r2.IsNegativeInfinity && r1 != 0d) return r2.CreateFrom(0d);
+                if (r2 == 0d)
+                {
+                    if      (r1 == 0d) return r1.CreateFrom(double.NaN);
+                    else if (r1 >  0d) return r2.CreateFrom(double.PositiveInfinity) ;
+                    else               return r2.CreateFrom(double.NegativeInfinity);
+                }
+            }
+
+            return DoOperate2((f1, f2) => f1.DivideBy(f2), r1, r2);
+        }
+        public static Value operator /(Value r1, double r2) { return r1 / r1.CreateFrom(r2); }
+        public static Value operator /(double r1, Value r2) { return r2.CreateFrom(r1) / r2; }
 
         /// <summary>
         /// 累乗します。
@@ -323,9 +403,20 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f1">底。</param>
         /// <param name="f2">冪数。</param>
         /// <returns>累乗。</returns>
-        public static Value operator ^(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r2); }
-        public static Value operator ^(Value r1, double r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r1.CreateFrom(r2)); }
-        public static Value operator ^(double r1, Value r2) { return DoOperate2((f1, f2) => f1.PowerWith(f2), r2.CreateFrom(r1), r2); }
+        public static Value operator ^(Value r1, Value r2)
+        {
+            if (!r1.IsNaN && !r2.IsNaN)
+            {
+                if (r1.IsPositiveInfinity && r2 != 0d) return r2 > 0d ? r1 : r1.CreateFrom(double.NaN);
+                if (r1.IsNegativeInfinity && r2 != 0d) return r1.CreateFrom(double.NaN);
+                if (r2.IsPositiveInfinity && r1 != 0d) return r1 > 0d ? r2.CreateFrom(double.PositiveInfinity) : r2.CreateFrom(double.NaN);
+                if (r2.IsNegativeInfinity && r1 != 0d) return r2.CreateFrom(double.NaN);                
+            }
+
+            return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r2);
+        }
+        public static Value operator ^(Value r1, double r2) { return r1 ^ r1.CreateFrom(r2); }
+        public static Value operator ^(double r1, Value r2) { return r2.CreateFrom(r1) ^ r2; }
         
         /// <summary>
         /// 剰余を取得します。
@@ -333,9 +424,18 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="f1">被除数。</param>
         /// <param name="f2">除数。</param>
         /// <returns>累乗。</returns>
-        public static Value operator %(Value r1, Value r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r1, r2); }
-        public static Value operator %(Value r1, double r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r1, r1.CreateFrom(r2)); }
-        public static Value operator %(double r1, Value r2) { return DoOperate2((f1, f2) => f1.ModOf(f2), r2.CreateFrom(r1), r2); }
+        public static Value operator %(Value r1, Value r2)
+        {
+            if (!r1.IsNaN && !r2.IsNaN)
+            {
+                if (r1.IsInfinity) return r1.CreateFrom(double.NaN);
+                if (r2.IsInfinity) return r1;
+            }
+
+            return DoOperate2((f1, f2) => f1.ModOf(f2), r1, r2);
+        }
+        public static Value operator %(Value r1, double r2) { return r1 % r1.CreateFrom(r2); }
+        public static Value operator %(double r1, Value r2) { return r2.CreateFrom(r1) % r2; }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -347,6 +447,12 @@ namespace GoodSeat.Liffom.Reals
         {
             if (Object.Equals(r1, null) && Object.Equals(r2, null)) return true;
             if (Object.Equals(r1, null) || Object.Equals(r2, null)) return false;
+
+            if (r1.IsNaN && r2.IsNaN) return true;
+            if (r1.IsPositiveInfinity && r2.IsPositiveInfinity) return true;
+            if (r1.IsNegativeInfinity && r2.IsNegativeInfinity) return true;
+            if (r1.IsNaN || r2.IsNaN) return false;
+            if (r1.IsInfinity || r2.IsInfinity) return false;
 
             return DoBoolOperate2((f1, f2) => f1.IsEqualTo(f2), r1, r2);
         }
@@ -369,7 +475,19 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator >(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) > 0, r1, r2); }
+        public static bool operator >(Value r1, Value r2)
+        {
+            if (r1.IsNaN && r2.IsNaN) return true;
+            if (r1.IsNaN) return true;
+            if (r2.IsNaN) return false;
+
+            if (r1.IsPositiveInfinity && r2.IsPositiveInfinity) return true;
+            if (r1.IsNegativeInfinity && r2.IsNegativeInfinity) return true;
+            if (r1.IsPositiveInfinity || r2.IsNegativeInfinity) return true;
+            if (r2.IsPositiveInfinity || r1.IsNegativeInfinity) return false;
+
+            return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) > 0, r1, r2);
+        }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -377,7 +495,19 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator >=(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) >= 0, r1, r2); }
+        public static bool operator >=(Value r1, Value r2)
+        {
+            if (r1.IsNaN && r2.IsNaN) return true;
+            if (r1.IsNaN) return true;
+            if (r2.IsNaN) return false;
+
+            if (r1.IsPositiveInfinity && r2.IsPositiveInfinity) return true;
+            if (r1.IsNegativeInfinity && r2.IsNegativeInfinity) return true;
+            if (r1.IsPositiveInfinity || r2.IsNegativeInfinity) return true;
+            if (r2.IsPositiveInfinity || r1.IsNegativeInfinity) return false;
+
+            return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) >= 0, r1, r2);
+        }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -385,7 +515,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator <(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) < 0, r1, r2); }
+        public static bool operator <(Value r1, Value r2) { return r2 > r1; }
 
         /// <summary>
         /// 実数の比較結果を取得します。
@@ -393,7 +523,7 @@ namespace GoodSeat.Liffom.Reals
         /// <param name="r1">実数1。</param>
         /// <param name="r2">実数2。</param>
         /// <returns>比較結果。</returns>
-        public static bool operator <=(Value r1, Value r2) { return DoBoolOperate2((f1, f2) => f1.CompareTo(f2) <= 0, r1, r2); }
+        public static bool operator <=(Value r1, Value r2) { return r2 >= r1; }
 
         /// <summary>
         /// 対象のインスタンスが、指定したオブジェクトに等しいかどうかを示す値を返します。
@@ -576,6 +706,8 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>求められた数値。</returns>
         private static Value Series(Value d1, int n, Value x, int validDigits, Func<Value, int, Value> f)
         {
+            if (x.IsNaN) return x;
+
             int expDelta;
             Value delta;
             Value result = d1;
@@ -610,19 +742,19 @@ namespace GoodSeat.Liffom.Reals
         public static Value Exp(Value x, int validDigits) { return Series(x.CreateFrom(1d), 1, x, validDigits, PowerFactorial); }
 
         /// <summary>
-        /// Value型変数x(0 ＜ x ＜ 2)の自然対数を計算して取得します。
+        /// Value型変数xの自然対数を計算して取得します。
         /// </summary>
-        /// <param name="x">自然対数を算出するValue型変数。0より大きい数値のみを対象とし、それ以外の場合例外がスローされます。</param>
+        /// <param name="x">自然対数を算出するValue型変数。</param>
         /// <returns>自然対数。</returns>
         /// <remarks>
         /// <para>             ∞  (-1)^(n+1)                         </para>
         /// <para> ln(1 + y) = Σ ----------- y^n                     </para>
         /// <para>             n=1    n                where |y| ＜ 1 </para>
         /// </remarks>
-        /// <exception cref="ArgumentException">引数の数値が0以下もしくは2以上の場合にスローされます。</exception>
         public static Value Ln(Value x, int validDigits)
         {
-            if (x <= 0) throw new ArgumentException("Lnメソッドの引数は、0より大きい数値のみ指定できます。");
+            if (x == 0) return x.CreateFrom(double.NegativeInfinity);
+            if (x <= 0) return x.CreateFrom(double.NaN);
 
             if (x >= 1.6d) // ln xy = ln x + ln y -> ln x*(1.5)^n = ln x + n * ln 1.5
             {
@@ -709,8 +841,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>評価後の実数。</returns>
         public static Value Asin(Value x, int validDigits)
         {
-            if (x > 1d) throw new ArgumentOutOfRangeException();
-            if (x < -1d) throw new ArgumentOutOfRangeException();
+            if (x > 1d || x < -1d) return x.CreateFrom(double.NaN);
 
             var modif = x.CreateFrom(0);
             var pi = x.GetPi();

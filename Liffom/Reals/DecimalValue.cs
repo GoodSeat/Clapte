@@ -44,6 +44,9 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>初期化された内部数値。</returns>
         public override Value CreateFrom(double data) { return new DecimalValue(data); }
 
+        bool _isNaN = false;
+        bool _isNegativeInfinity = false;
+        bool _isPositiveInfinity = false;
 
         #region プロパティ
 
@@ -87,24 +90,19 @@ namespace GoodSeat.Liffom.Reals
 
 
         /// <summary>
-        /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
-        /// </summary>
-        public override bool IsInfinity { get { return double.IsInfinity(ToDouble()); } }
-
-        /// <summary>
         /// インスタンスの表す数値が非数であると評価されるかどうかを示す値を返します。
         /// </summary>
-        public override bool IsNaN { get { return double.IsNaN(ToDouble()); } }
+        public override bool IsNaN { get { return _isNaN; } }
 
         /// <summary>
         /// インスタンスの表す数値が負の無限大と評価されるかどうかを示す値を返します。
         /// </summary>
-        public override bool IsNegativeInfinity { get { return double.IsNegativeInfinity(ToDouble()); } }
+        public override bool IsNegativeInfinity { get { return _isNegativeInfinity; } }
 
         /// <summary>
         /// インスタンスの表す数値が正の無限大と評価されるかどうかを示す値を返します。
         /// </summary>
-        public override bool IsPositiveInfinity { get { return double.IsPositiveInfinity(ToDouble()); } }
+        public override bool IsPositiveInfinity { get { return _isPositiveInfinity; } }
 
         /// <summary>
         /// このインスタンスの型で考慮可能な最大桁数を取得します。
@@ -130,14 +128,14 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <returns>内部数値から変換されたdouble型の数値。</returns>
         /// <exception cref="System.OverflowException">内部数値が表す数値が、double型の範囲を超過する場合にスローされます。</exception>
-        public override double ToDouble() { return (double)InnerData; }
+        protected override double OnToDouble() { return (double)InnerData; }
 
         /// <summary>
         /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public override string ToString(string format)
+        protected override string OnToString(string format)
         {
             var rounded = (Round(MaxValidDigits - Exponent - 1) as DecimalValue).InnerData;
             return rounded.ToString(format);
@@ -148,7 +146,18 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="data">初期化元とする数値。</param>
         /// <returns>double型から初期化された数値。</returns>
-        public override void FromDouble(double data) { InnerData = (decimal)data; }
+        public override void FromDouble(double data)
+        {
+            _isPositiveInfinity = false;
+            _isNegativeInfinity = false;
+            _isNaN = false;
+            InnerData = 0m;
+
+            if (double.IsPositiveInfinity(data)) _isPositiveInfinity = true;
+            else if (double.IsNegativeInfinity(data)) _isNegativeInfinity = true;
+            else if (double.IsNaN(data)) _isNaN = true;
+            else InnerData = (decimal)data;
+        }
 
         /// <summary>
         /// Int型からの暗黙的変換。

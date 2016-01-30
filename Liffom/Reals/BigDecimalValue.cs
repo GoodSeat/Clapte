@@ -122,11 +122,6 @@ namespace GoodSeat.Liffom.Reals
         public override bool IsNaN { get { return _isNaN; } }
 
         /// <summary>
-        /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
-        /// </summary>
-        public override bool IsInfinity { get { return _isNegativeInfinity || _isPositiveInfinity; } }
-
-        /// <summary>
         /// インスタンスの表す数値が負の無限大と評価されるかどうかを示す値を返します。
         /// </summary>
         public override bool IsNegativeInfinity { get { return _isNegativeInfinity; } }
@@ -160,14 +155,14 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <returns>内部数値から変換されたdouble型の数値。</returns>
         /// <exception cref="System.OverflowException">内部数値が表す数値が、double型の範囲を超過する場合にスローされます。</exception>
-        public override double ToDouble() { return double.Parse(ToString()); }
+        protected override double OnToDouble() { return double.Parse(ToString()); }
 
         /// <summary>
         /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public override string ToString(string format)
+        protected override string OnToString(string format)
         {
             if (Component == 0) return "0";
 
@@ -252,7 +247,7 @@ namespace GoodSeat.Liffom.Reals
             if (data == 0d) return;
             else if (double.IsPositiveInfinity(data)) _isPositiveInfinity = true;
             else if (double.IsNegativeInfinity(data)) _isNegativeInfinity = true;
-            else if (double.IsNaN(data)) _isNegativeInfinity = true;
+            else if (double.IsNaN(data)) _isNaN = true;
             else
             {
                 double digit = Math.Log10(Math.Abs(data));

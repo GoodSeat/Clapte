@@ -117,7 +117,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <returns>内部数値から変換されたdouble型の数値。</returns>
         /// <exception cref="System.OverflowException">内部数値が表す数値が、double型の範囲を超過する場合にスローされます。</exception>
-        public override double ToDouble() { return GetErrorModifiedData(); }
+        protected override double OnToDouble() { return GetErrorModifiedData(); }
 
         /// <summary>
         /// Int型からの暗黙的変換。

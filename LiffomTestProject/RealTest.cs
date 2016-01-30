@@ -312,5 +312,116 @@ namespace GoodSeat.LiffomTestProject
             Assert.AreEqual(178598.235d, test.ToDouble());
         }
 
+        /// <summary>
+        /// 非数値や無限大となる数値の扱いに関するテスト。
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void InvalidValueTreatmentTest()
+        {
+            // doubleの動作を正解とする
+            {
+                double testLn = Math.Log(-2.5);
+                Assert.AreEqual(double.NaN, testLn);
+                Assert.AreEqual(double.NaN, 5.0 + testLn);
+
+                double testLn2 = Math.Log(0);
+                Assert.AreEqual(double.NegativeInfinity, testLn2);
+                Assert.AreEqual(double.NegativeInfinity, 5.0 + testLn2);
+                Assert.AreEqual(double.PositiveInfinity, testLn2 * -1);
+
+                double asin = Math.Asin(1.2);
+                Assert.AreEqual(double.NaN, asin);
+
+                double testInfP = 5d / 0d;
+                Assert.AreEqual(double.PositiveInfinity, testInfP);
+                Assert.AreEqual(double.PositiveInfinity, testInfP / 30d);
+
+                double testInfM = -5d / 0d;
+                Assert.AreEqual(double.NegativeInfinity, testInfM);
+                Assert.AreEqual(double.NegativeInfinity, testInfM / 30d);
+
+                Assert.AreEqual(double.NaN, testInfM + testInfP);
+                Assert.AreEqual(double.NaN, testInfM / testInfP);
+
+                double maxTest = Math.Max(testLn, testInfP);
+                Assert.AreEqual(testLn, maxTest);
+            }
+
+            // DoubleValueModified
+            {
+                DoubleValueModified testLn = Math.Log(-2.5);
+                Assert.IsTrue(testLn.IsNaN);
+                Assert.IsTrue((5.0 + testLn).IsNaN);
+
+                DoubleValueModified testLn2 = Math.Log(0);
+                Assert.IsTrue(testLn2.IsNegativeInfinity);
+                Assert.IsTrue((5.0 + testLn2).IsNegativeInfinity);
+
+                DoubleValueModified asin = Math.Asin(1.2);
+                Assert.IsTrue(asin.IsNaN);
+
+                DoubleValueModified testInfP = 5d / 0d;
+                Assert.IsTrue(testInfP.IsPositiveInfinity);
+                Assert.IsTrue((testInfP / 30d).IsPositiveInfinity);
+
+                DoubleValueModified testInfM = -5d / 0d;
+                Assert.IsTrue(testInfM.IsNegativeInfinity);
+                Assert.IsTrue((testInfM / 30d).IsNegativeInfinity);
+
+                Assert.IsTrue((testInfM + testInfP).IsNaN);
+                Assert.IsTrue((testInfM / testInfP).IsNaN);
+            }
+
+            // DecimalValue
+            {
+                DecimalValue testLn = Math.Log(-2.5);
+                Assert.IsTrue(testLn.IsNaN);
+                Assert.IsTrue((5.0 + testLn).IsNaN);
+
+                DecimalValue testLn2 = Math.Log(0);
+                Assert.IsTrue(testLn2.IsNegativeInfinity);
+                Assert.IsTrue((5.0 + testLn2).IsNegativeInfinity);
+
+                DecimalValue asin = Math.Asin(1.2);
+                Assert.IsTrue(asin.IsNaN);
+
+                DecimalValue testInfP = 5d / 0d;
+                Assert.IsTrue(testInfP.IsPositiveInfinity);
+                Assert.IsTrue((testInfP / 30d).IsPositiveInfinity);
+
+                DecimalValue testInfM = -5d / 0d;
+                Assert.IsTrue(testInfM.IsNegativeInfinity);
+                Assert.IsTrue((testInfM / 30d).IsNegativeInfinity);
+
+                Assert.IsTrue((testInfM + testInfP).IsNaN);
+                Assert.IsTrue((testInfM / testInfP).IsNaN);
+            }
+
+            // BigDecimalValue
+            {
+                BigDecimalValue testLn = Math.Log(-2.5);
+                Assert.IsTrue(testLn.IsNaN);
+                Assert.IsTrue((5.0 + testLn).IsNaN);
+
+                BigDecimalValue testLn2 = Math.Log(0);
+                Assert.IsTrue(testLn2.IsNegativeInfinity);
+                Assert.IsTrue((5.0 + testLn2).IsNegativeInfinity);
+
+                BigDecimalValue asin = Math.Asin(1.2);
+                Assert.IsTrue(asin.IsNaN);
+
+                BigDecimalValue testInfP = 5d / 0d;
+                Assert.IsTrue(testInfP.IsPositiveInfinity);
+                Assert.IsTrue((testInfP / 30d).IsPositiveInfinity);
+
+                BigDecimalValue testInfM = -5d / 0d;
+                Assert.IsTrue(testInfM.IsNegativeInfinity);
+                Assert.IsTrue((testInfM / 30d).IsNegativeInfinity);
+
+                Assert.IsTrue((testInfM + testInfP).IsNaN);
+                Assert.IsTrue((testInfM / testInfP).IsNaN);
+            }
+        }
+
     }
 }

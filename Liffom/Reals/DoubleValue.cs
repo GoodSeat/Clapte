@@ -76,10 +76,6 @@ namespace GoodSeat.Liffom.Reals
             }
         }
 
-        /// <summary>
-        /// インスタンスの表す数値が負または正の無限大と評価されるかどうかを示す値を返します。
-        /// </summary>
-        public override bool IsInfinity { get { return double.IsInfinity(InnerData); } }
 
         /// <summary>
         /// インスタンスの表す数値が正の無限大と評価されるかどうかを示す値を返します。
@@ -117,14 +113,14 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <returns>内部数値から変換されたdouble型の数値。</returns>
         /// <exception cref="System.OverflowException">内部数値が表す数値が、double型の範囲を超過する場合にスローされます。</exception>
-        public override double ToDouble() { return InnerData; }
+        protected override double OnToDouble() { return InnerData; }
 
         /// <summary>
         /// 指定した書式を使用して、このインスタンスの数値を、それと等価な文字列形式に変換します。
         /// </summary>
         /// <param name="format">数値書式指定文字列。</param>
         /// <returns>format で指定された、このインスタンスの値の文字列形式。</returns>
-        public override string ToString(string format) { return ToDouble().ToString(format); }
+        protected override string OnToString(string format) { return ToDouble().ToString(format); }
 
         /// <summary>
         /// Int型からの暗黙的変換。
