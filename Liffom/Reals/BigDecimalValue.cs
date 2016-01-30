@@ -339,7 +339,9 @@ namespace GoodSeat.Liffom.Reals
             var b2 = n2.Component;
             if (n2.MinimumDigit != min) b2 *= BigInteger.Pow(10, n2.MinimumDigit - min);
 
-            return new BigDecimalValue(b1 + b2, min);
+            var sum = b1 + b2;
+            if (BigInteger.Abs(sum) < 10 && Math.Max(n1.HoldDigits, n2.HoldDigits) > MaxDigits) return new BigDecimalValue(0d);
+            else return new BigDecimalValue(sum, min);
         }
 
         /// <summary>
@@ -484,11 +486,21 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>丸められた数値。指定桁数で丸められない場合、引数の数値をそのまま返します。</returns>
         public override Value Round(int round)
         {
-            int delta = - round - MinimumDigit;
+            var component = Component;
+            var minDigit = MinimumDigit;
+
+            if (HoldDigits > MaxDigits) // 桁の丸め
+            {
+                component += 5;
+                component /= 10;
+                minDigit += 1;
+            }
+
+            int delta = - round - minDigit;
             if (delta > 0)
             {
-                var min = MinimumDigit + delta;
-                var com = Component / BigInteger.Pow(10, delta - 1);
+                var min = minDigit + delta;
+                var com = component / BigInteger.Pow(10, delta - 1);
 
                 if (com > 0) com += 5;
                 else if (com < 0) com -= 5;
