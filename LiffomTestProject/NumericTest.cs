@@ -76,7 +76,7 @@ namespace GoodSeat.LiffomTestProject
             string actual;
             Numeric target = new Numeric("53000.02");
 
-            var digit = new ConsiderDigitFormatProperty(); // 有効数値考慮表記
+            var digit = new ConsiderSignificantFiguresFormatProperty(); // 有効数値考慮表記
             var radixPoint = new RadixPointFormatProperty(); // 小数点表記
             var split = new SplitFormatProperty(); // 3桁区切りの表記
 

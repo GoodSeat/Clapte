@@ -6,7 +6,7 @@ using System.Text;
 namespace GoodSeat.Liffom.Reals
 {
     /// <summary>
-    /// 有効数値の考慮、及び誤差の自動修正が可能な実数を表します。
+    /// 有効数字を考慮した実数を表します。
     /// </summary>
     [Serializable()]
     public class SignificantReal : Real
@@ -258,5 +258,107 @@ namespace GoodSeat.Liffom.Reals
             newReal.SignificantDigits = newPrecision;
             return newReal;
         }
+
+        #region 演算
+
+        /// <summary>
+        /// 指定実数との加算結果を返します。
+        /// </summary>
+        /// <param name="r">加算値。</param>
+        /// <returns>加算結果。</returns>
+        public override Real AddTo(Real r)
+        {
+            SignificantReal n1 = this;
+            SignificantReal n2 = r as SignificantReal;
+            if (n2 == null) n2 = new SignificantReal(r.Value);
+
+            var n1d = n1.Value;
+            var n2d = n2.Value;
+
+            int minPrecision1 = n1.Exponent - n1.SignificantDigits + 1; // 有効最小桁数
+            int minPrecision2 = n2.Exponent - n2.SignificantDigits + 1; // 有効最小桁数
+
+            int postMinPrecision = Math.Max(minPrecision1, minPrecision2);
+
+            var result = new SignificantReal(Value + r.Value);
+            result.SignificantDigits = result.Exponent - postMinPrecision + 1;
+
+            return result;
+        }
+
+        /// <summary>
+        /// 指定実数との積算結果を返します。
+        /// </summary>
+        /// <param name="r">乗数。</param>
+        /// <returns>積算結果。</returns>
+        public override Real MultiplyTo(Real r)
+        {
+            SignificantReal n1 = this;
+            SignificantReal n2 = r as SignificantReal;
+            if (n2 == null) n2 = new SignificantReal(r.Value);
+
+            var result = new SignificantReal(Value * r.Value);
+            result.SignificantDigits = Math.Min(n1.SignificantDigits, n2.SignificantDigits);
+
+            return result;
+        }
+        
+        /// <summary>
+        /// 指定実数との除算結果を返します。
+        /// </summary>
+        /// <param name="r">除数。</param>
+        /// <returns>除算結果。</returns>
+        public override Real DivideBy(Real r)
+        {
+            SignificantReal n1 = this;
+            SignificantReal n2 = r as SignificantReal;
+            if (n2 == null) n2 = new SignificantReal(r.Value);
+
+            var result = new SignificantReal(Value / r.Value);
+            result.SignificantDigits = Math.Min(n1.SignificantDigits, n2.SignificantDigits);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 指定実数との累乗結果を返します。
+        /// </summary>
+        /// <param name="r">冪数。</param>
+        /// <returns>累乗結果。</returns>
+        public override Real PowerWith(Real r)
+        {
+            SignificantReal n1 = this;
+            SignificantReal n2 = r as SignificantReal;
+            if (n2 == null) n2 = new SignificantReal(r.Value);
+
+            var result = new SignificantReal(Value ^ r.Value);
+            result.SignificantDigits = Math.Min(n1.SignificantDigits, n2.SignificantDigits);
+
+            return result;
+        }
+
+        /// <summary>
+        /// 指定実数で除した時の剰余を返します。
+        /// </summary>
+        /// <param name="r">除数。</param>
+        /// <returns>剰余。</returns>
+        public override Real ModOf(Real r)
+        {
+            SignificantReal n1 = this;
+            SignificantReal n2 = r as SignificantReal;
+            if (n2 == null) n2 = new SignificantReal(r.Value);
+
+            var n1d = n1.Value;
+            var n2d = n2.Value;
+
+            int minPrecision = n1.Exponent - n1.SignificantDigits + 1; // 有効最小桁数
+
+            var result = new SignificantReal(Value % r.Value);
+            result.SignificantDigits = result.Exponent - minPrecision + 1;
+
+            return result;
+        }
+
+        #endregion
     }
 }

@@ -20,9 +20,9 @@ namespace GoodSeat.Liffom.Formulas
     {
         static Numeric()
         { 
-//            InnerRealType = RealType.DoubleModified;
+            InnerRealType = RealType.DoubleModified;
 //            InnerRealType = RealType.Decimal;
-            InnerRealType = RealType.BigDecimal;
+//            InnerRealType = RealType.BigDecimal;
         }
 
         /// <summary>
@@ -218,8 +218,8 @@ namespace GoodSeat.Liffom.Formulas
             string result = null;
 
             // 有効桁数考慮表記
-            bool considerDigit = Format.PropertyOf<ConsiderDigitFormatProperty>();
-            if (considerDigit)
+            bool considerSignificantFigures = Format.PropertyOf<ConsiderSignificantFiguresFormatProperty>();
+            if (considerSignificantFigures)
                 result = Figure.ToString();
             else
                 result = Figure.Value.ToString("G");

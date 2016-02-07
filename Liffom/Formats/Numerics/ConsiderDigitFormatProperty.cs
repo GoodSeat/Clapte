@@ -6,47 +6,48 @@ using GoodSeat.Liffom.Formulas;
 namespace GoodSeat.Liffom.Formats.Numerics
 {
     /// <summary>
-    /// 数値の有効桁数考慮の表記情報を表します。
+    /// 数値の有効数字考慮の表記情報を表します。
     /// </summary>
     [Serializable()]
-    public class ConsiderDigitFormatProperty : FormatProperty
+    public class ConsiderSignificantFiguresFormatProperty : FormatProperty
     {
         /// <summary>
-        /// 数値の有効桁数考慮表記情報を初期化します。
+        /// 数値の有効数字考慮表記情報を初期化します。
         /// </summary>
-        public ConsiderDigitFormatProperty() : this(false) { }
+        public ConsiderSignificantFiguresFormatProperty() : this(false) { }
 
         /// <summary>
-        /// 数値の有効桁数考慮表記情報を初期化します。
+        /// 数値の有効数字考慮表記情報を初期化します。
         /// </summary>
-        public ConsiderDigitFormatProperty(bool consider)
+        /// <param name="consider">有効数字を考慮した表記とするか否か。</param>
+        public ConsiderSignificantFiguresFormatProperty(bool consider)
         {
-            ConsiderDigit = consider;
+            Consider = consider;
         }
 
         /// <summary>
-        /// 有効桁数を考慮した表記とするか否かを設定もしくは取得します。
+        /// 有効数字を考慮した表記とするか否かを設定もしくは取得します。
         /// </summary>
-        public bool ConsiderDigit { get; set; }
+        public bool Consider { get; set; }
 
         /// <summary>
         /// bool型からの暗黙的変換を行います。
         /// </summary>
         /// <param name="property">変換対象のプロパティ。</param>
-        /// <returns>有効桁数考慮の表記とするか否か。</returns>
-        public static implicit operator ConsiderDigitFormatProperty(bool property)
+        /// <returns>有効数字考慮の表記とするか否か。</returns>
+        public static implicit operator ConsiderSignificantFiguresFormatProperty(bool property)
         {
-            return new ConsiderDigitFormatProperty(property);
+            return new ConsiderSignificantFiguresFormatProperty(property);
         }
 
         /// <summary>
         /// bool型への暗黙的変換を行います。
         /// </summary>
         /// <param name="property">変換対象のプロパティ。</param>
-        /// <returns>有効桁数考慮の表記とするか否か。</returns>
-        public static implicit operator bool(ConsiderDigitFormatProperty property)
+        /// <returns>有効数字考慮の表記とするか否か。</returns>
+        public static implicit operator bool(ConsiderSignificantFiguresFormatProperty property)
         {
-            return property.ConsiderDigit;
+            return property.Consider;
         }
     }
 }
