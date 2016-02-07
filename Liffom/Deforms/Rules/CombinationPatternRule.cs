@@ -88,9 +88,15 @@ namespace GoodSeat.Liffom.Deforms.Rules
         protected virtual bool IntegrateAfterRuled { get { return false; } }
 
         /// <summary>
+        /// ルールによる変形前に、ソートを行う場合に用いる比較メソッドを取得します。
+        /// </summary>
+        protected virtual Comparison<Formula> Comparison { get { return null; } }
+
+        /// <summary>
         /// 処理対象を表すルール数式をリセットします。ルール独自のプロパティが変化して、対象となる数式に変更があった場合には、本メソッドを呼び出して下さい。
         /// </summary>
         protected override void ResetRulePatternFormula() { _rule1 = null; _rule2 = null; }
+
 
         /// <summary>
         /// 指定ルールに従って、収束するまで数式の変形を行います。
@@ -99,7 +105,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <returns>ルールの適用があったか。</returns>
         private OperatorMultiple DeformWithRule(OperatorMultiple target)
         {
-            return CombinationRule.DeformWith(TryApply, target, RuleApplyType, RetryAll, IntegrateAfterRuled);
+            return CombinationRule.DeformWith(TryApply, target, RuleApplyType, RetryAll, IntegrateAfterRuled, Comparison);
         }
 
         /// <summary>

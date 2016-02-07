@@ -87,9 +87,18 @@ namespace GoodSeat.LiffomTestProject
 
             var userStates = new List<object>();
             Console.WriteLine(string.Format("全プロセス開始前 : {0}", DateTime.Now));
-            ProcessTest.AddTestCaseAsync(process, "x=1.55689330449006[cm]", userStates, "(x+2[cm])^3 = 45[cm^3]");
-            ProcessTest.AddTestCaseAsync(process, "x=(sqrt(43, 2), -sqrt(43, 2))", userStates, "(x^2+2)[cm] = 45[cm]");
-            ProcessTest.AddTestCaseAsync(process, "x=(1,2,3)", userStates, "x^3 - 6*x^2 + 11*x - 6 = 0");
+            if (Numeric.InnerRealType == Numeric.RealType.BigDecimal)
+            {
+                ProcessTest.AddTestCaseAsync(process, "x=1.55689330449006280600615462224[cm]", userStates, "(x+2[cm])^3 = 45[cm^3]");
+                ProcessTest.AddTestCaseAsync(process, "x=(sqrt(43, 2), -sqrt(43, 2))", userStates, "(x^2+2)[cm] = 45[cm]");
+                ProcessTest.AddTestCaseAsync(process, "x=(1,2,3)", userStates, "x^3 - 6*x^2 + 11*x - 6 = 0");
+            }
+            else
+            {
+                ProcessTest.AddTestCaseAsync(process, "x=1.55689330449006[cm]", userStates, "(x+2[cm])^3 = 45[cm^3]");
+                ProcessTest.AddTestCaseAsync(process, "x=(sqrt(43, 2), -sqrt(43, 2))", userStates, "(x^2+2)[cm] = 45[cm]");
+                ProcessTest.AddTestCaseAsync(process, "x=(1,2,3)", userStates, "x^3 - 6*x^2 + 11*x - 6 = 0");
+            }
             Console.WriteLine(string.Format("全プロセス開始済み : {0}", DateTime.Now));
 
             ProcessTest.CheckAssertionTestCase(process, userStates);

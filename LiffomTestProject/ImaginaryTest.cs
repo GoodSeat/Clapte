@@ -93,23 +93,23 @@ namespace GoodSeat.LiffomTestProject
             DeformToken token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
             DeformTokenTest.DeformTest(token, "sin(i)",             "1.1752011936438*i");
-            DeformTokenTest.DeformTest(token, "sin(i  + 1)",        "1.29845758141598+0.634963914784739*i");
-            DeformTokenTest.DeformTest(token, "cos(i)",             "1.54308063481525");
-            DeformTokenTest.DeformTest(token, "cos(i + 1)",         "0.833730025131152-0.988897705762864*i");
-            DeformTokenTest.DeformTest(token, "tan(i)",             "0.761594155955766*i");
-            DeformTokenTest.DeformTest(token, "tan(i + 1)",         "0.271752585319509+1.0839233273387*i");
+            DeformTokenTest.DeformTest(token, "sin(i  + 1)",        "1.29845758141598+0.634963914784736*i");
+            DeformTokenTest.DeformTest(token, "cos(i)",             "1.54308063481524");
+            DeformTokenTest.DeformTest(token, "cos(i + 1)",         "0.833730025131149-0.988897705762865*i");
+            DeformTokenTest.DeformTest(token, "tan(i)",             "0.761594155955765*i");
+            DeformTokenTest.DeformTest(token, "tan(i + 1)",         "0.271752585319512+1.0839233273387*i");
                                                                      
-            DeformTokenTest.DeformTest(token, "i^i",                "0.207879576350761");
+            DeformTokenTest.DeformTest(token, "i^i",                "0.207879576350762");
             DeformTokenTest.DeformTest(token, "ln(i)",              "1.5707963267949*i");
-            DeformTokenTest.DeformTest(token, "ln(i+1)",            "0.346573590279976+0.785398163397452*i");
+            DeformTokenTest.DeformTest(token, "ln(i+1)",            "0.346573590279972+0.785398163397448*i");
                                                                      
-            DeformTokenTest.DeformTest(token, "-(2i)^(2i)",         "-0.00792789471147596-0.042480480425152*i");
-            DeformTokenTest.DeformTest(token, "(-2i)^(2i)",         "4.24532146387433+22.7479427903522*i");
-            DeformTokenTest.DeformTest(token, "(-2)^(2i) * i^(2i)", "1.48048893566919E-05+7.93298644094132E-05*i");
+            DeformTokenTest.DeformTest(token, "-(2i)^(2i)",         "-0.00792789471147608-0.0424804804251522*i");
+            DeformTokenTest.DeformTest(token, "(-2i)^(2i)",         "4.24532146387435+22.7479427903521*i");
+            DeformTokenTest.DeformTest(token, "(-2)^(2i) * i^(2i)", "1.48048893566922E-05+7.93298644094137E-05*i");
                                                                      
             DeformTokenTest.DeformTest(token, "ln(-2 )",            "0.693147180559944+3.14159265358979*i");
-            DeformTokenTest.DeformTest(token, "asin(2)",            "1.5707963267949-1.31695789692482*i");
-            DeformTokenTest.DeformTest(token, "acos(2)",            "1.31695789692482*i");
+            DeformTokenTest.DeformTest(token, "asin(2)",            "1.5707963267949-1.31695789692481*i");
+            DeformTokenTest.DeformTest(token, "acos(2)",            "1.31695789692481*i");
             DeformTokenTest.DeformTest(token, "atan(2i)",           "1.5707963267949+0.549306144334054*i");
 
             DeformTokenTest.DeformTest(token, "sqrt(-8)",           "2.8284271247461901*i");

@@ -29,9 +29,27 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         protected override bool IsTargetCouple(Formula f1, Formula f2) { return f1 is Numeric && f2 is Numeric; }
 
-        protected override Formula GetRuledFormula(Formula f1, Formula f2) { return new Numeric((f1 as Numeric).Data + (f2 as Numeric).Data); }
+        protected override Formula GetRuledFormula(Formula f1, Formula f2) { return new Numeric((f1 as Numeric).Figure + (f2 as Numeric).Figure); }
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Sum; }
+
+        protected override Comparison<Formula> Comparison
+        {
+            get
+            {
+                // 指数の差が大きい数値同士で加算を行うと誤差が生じやすいので、指数でソートしてから加算処理を行う。
+                return (f1, f2) =>
+                {
+                    Numeric n1 = f1 as Numeric;
+                    Numeric n2 = f2 as Numeric;
+                    if (n1 == null && n2 == null) return 0;
+                    else if (n1 == null) return 1;
+                    else if (n2 == null) return 0;
+
+                    return n1.Figure.Exponent - n2.Figure.Exponent;
+                };
+            }
+        }
 
         public override string Information
         {

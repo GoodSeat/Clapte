@@ -33,7 +33,7 @@ namespace GoodSeat.Liffom.Formulas
         public static Formula operator -(Formula f1) 
         {
             var num = f1 as Numeric;
-            if (num != null && num.Data > 0)
+            if (num != null && num.Figure > 0)
             {
                 return (-1 * f1).Numerate();
             }
@@ -110,6 +110,167 @@ namespace GoodSeat.Liffom.Formulas
             return (f1.GetUniqueText() == f2.GetUniqueText());
         }
 
+        /// <summary>
+        /// 数式の小なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <(Formula f1, Formula f2)
+        {
+            var n1 = f1 as Numeric;
+            var n2 = f2 as Numeric;
+            if (n1 == null || n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1.Figure < n2.Figure;
+        }
+
+        /// <summary>
+        /// 数式の小なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <(Formula f1, double f2)
+        {
+            var n1 = f1 as Numeric;
+            if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1 < new Numeric(f2);
+        }
+
+        /// <summary>
+        /// 数式の小なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <(double f1, Formula f2)
+        {
+            var n2 = f2 as Numeric;
+            if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return new Numeric(f1) < n2;
+        }
+
+        /// <summary>
+        /// 数式の小なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <=(Formula f1, Formula f2)
+        {
+            var n1 = f1 as Numeric;
+            var n2 = f2 as Numeric;
+            if (n1 == null || n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1.Figure <= n2.Figure;
+        }
+
+        /// <summary>
+        /// 数式の小なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <=(Formula f1, double f2)
+        {
+            var n1 = f1 as Numeric;
+            if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1 <= new Numeric(f2);
+        }
+
+        /// <summary>
+        /// 数式の小なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator <=(double f1, Formula f2)
+        {
+            var n2 = f2 as Numeric;
+            if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return new Numeric(f1) <= n2;
+        }
+
+        /// <summary>
+        /// 数式の大なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >(Formula f1, Formula f2)
+        {
+            var n1 = f1 as Numeric;
+            var n2 = f2 as Numeric;
+            if (n1 == null || n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1.Figure > n2.Figure;
+        }
+
+        /// <summary>
+        /// 数式の大なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >(Formula f1, double f2)
+        {
+            var n1 = f1 as Numeric;
+            if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1 > new Numeric(f2);
+        }
+
+        /// <summary>
+        /// 数式の大なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >(double f1, Formula f2)
+        {
+            var n2 = f2 as Numeric;
+            if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return new Numeric(f1) > n2;
+        }
+
+        /// <summary>
+        /// 数式の大なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >=(Formula f1, Formula f2)
+        {
+            var n1 = f1 as Numeric;
+            var n2 = f2 as Numeric;
+            if (n1 == null || n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1.Figure >= n2.Figure;
+        }
+
+        /// <summary>
+        /// 数式の大なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >=(Formula f1, double f2)
+        {
+            var n1 = f1 as Numeric;
+            if (n1 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return n1 >= new Numeric(f2);
+        }
+
+        /// <summary>
+        /// 数式の大なり比較の結果を取得します。
+        /// </summary>
+        /// <param name="f1">数式1。</param>
+        /// <param name="f2">数式2。</param>
+        /// <returns>比較結果。</returns>
+        public static bool operator >=(double f1, Formula f2)
+        {
+            var n2 = f2 as Numeric;
+            if (n2 == null) throw new InvalidOperationException("Numeric型以外の数式を比較することはできません。");
+            return new Numeric(f1) >= n2;
+        }
+
+
 
         /// <summary>
         /// 2数式の子数式の数が等しいか否かを取得します。
@@ -166,9 +327,9 @@ namespace GoodSeat.Liffom.Formulas
         }
 
         /// <summary>
-        /// この数式のハッシュコードを返します。
+        /// このインスタンスのハッシュコードを取得します。
         /// </summary>
-        /// <returns>数式のハッシュコード。</returns>
+        /// <param>ハッシュコード。</param>
         public override int GetHashCode() 
         {
             Sort();
@@ -176,21 +337,46 @@ namespace GoodSeat.Liffom.Formulas
         }
 
         /// <summary>
-        /// Double型への暗黙的変換（変換できない場合、double.NaNを返します）
+        /// <see cref="Real"/>型 → <see cref="Formula"/>型の暗黙的変換を行います。
         /// </summary>
-        /// <param name="f">対象の数式。</param>
-        /// <returns>変換された数値。</returns>
-        public static implicit operator double(Formula f)
-        {
-            return (f is Numeric) ? (f as Numeric).Data : double.NaN;
-        }
+        /// <param name="r">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Formula(Real r) { return new Numeric(r); }
 
         /// <summary>
-        /// Double型の暗黙的変換を行います。
+        /// <see cref="Value"/>型 → <see cref="Formula"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="d">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Formula(Value d) { return new Numeric(d); }
+
+        /// <summary>
+        /// <see cref="double"/>型 → <see cref="Formula"/>型の暗黙的変換を行います。
         /// </summary>
         /// <param name="d">対象の数値。</param>
         /// <returns>変換されたNumeric型のオブジェクト。</returns>
         public static implicit operator Formula(double d) { return new Numeric(d); }
+
+        /// <summary>
+        /// <see cref="Formula"/>型 → <see cref="Real"/>型への明示的変換を行います。
+        /// </summary>
+        /// <param name="f">対象の数式。</param>
+        /// <returns>変換された実数。</returns>
+        public static explicit operator Real(Formula f)
+        {
+            if (!(f is Numeric)) throw new InvalidCastException("Numric型以外の数式をReal型に変換することはできません。");
+            return (f as Numeric).Figure;
+        }
+        
+        /// <summary>
+        /// <see cref="Formula"/>型 → <see cref="int"/>型の明示的変換を行います。
+        /// </summary>
+        /// <param name="f">変換対象の数式。</param>
+        public static explicit operator int(Formula f)
+        {
+            if (!(f is Numeric)) throw new InvalidCastException("Numric型以外の数式をint型に変換することはできません。");
+            return (int)(f as Numeric).Figure.Value.ToDouble();
+        }
 
     }
 }

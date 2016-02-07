@@ -306,9 +306,6 @@ namespace GoodSeat.Liffom.Extensions
         /// <exception cref="Liffom.FormulaProcessException">被除数、もしくは除数が整数多項式でない場合にスローされます。</exception>
         public static Formula Divide(this Formula f, Formula g, AtomicFormula x, out Formula r, bool admitFraction)
         {
-            f.ResetError();
-            g.ResetError();
-
             if (g == 1)
             {
                 r = 0;
@@ -398,7 +395,9 @@ namespace GoodSeat.Liffom.Extensions
         {
             if (f is Numeric && g is Numeric)
             {
-                r = f % g;
+                var nf = f as Numeric;
+                var ng = g as Numeric;
+                r = nf.Figure % ng.Figure;
                 return ((f - r) / g).Simplify();
             }
             else
@@ -420,22 +419,6 @@ namespace GoodSeat.Liffom.Extensions
                     r = 0;
                     return q;
                 }
-            }
-        }
-
-        /// <summary>
-        /// 指定数式に含まれる数値の数値誤差をリセットします。
-        /// </summary>
-        /// <param name="f">対象の数式。</param>
-        public static void ResetError(this Formula f)
-        {
-            if (f is Numeric)
-            {
-                (f as Numeric).ModifyError();
-            }
-            else
-            {
-                foreach (var child in f) ResetError(child);
             }
         }
 
@@ -587,7 +570,7 @@ namespace GoodSeat.Liffom.Extensions
             f.Add((deg1 >= deg2) ? f1pp : f2pp);
             f.Add((deg1 >= deg2) ? f2pp : f1pp);
 
-            for (int k = (int)((Math.Max(deg1, deg2)) + 0.1); k >= 0; k--)
+            for (int k = (int)((Value.Max(deg1, deg2)) + 0.1); k >= 0; k--)
             {
                 Formula pquo, prem;
                 Formula ratio = f[i].PseudoDivide(f[i + 1], x, out pquo, out prem);
@@ -616,10 +599,10 @@ namespace GoodSeat.Liffom.Extensions
         {
             if (n1 == 0) return n2;
             if (n2 == 0) return n1;
-            if (n1.Data.IsInfinity) return null;
-            if (n2.Data.IsInfinity) return null;
+            if (n1.Figure.IsInfinity) return null;
+            if (n2.Figure.IsInfinity) return null;
 
-            Numeric errorRatio = new Numeric(Math.Pow(10, -Numeric.MaxPrecision) * 5d);
+            Numeric errorRatio = new Numeric(Math.Pow(10, -Numeric.MaxValidDigits) * 5d);
 
             Numeric nBase = (n1 > n2) ? n1 : n2;
         
@@ -628,23 +611,23 @@ namespace GoodSeat.Liffom.Extensions
 
             int count = 0;            
             Numeric error = new Numeric(0);
-            while (Math.Abs(n1) > error && Math.Abs(n2) > error)
+            while (Value.Abs(n1) > error && Value.Abs(n2) > error)
             {
                 if (n1 > n2)
                 {
-                    Real baseReal = n1.Data;
-                    n1 = new Numeric(n1.Data % n2.Data);
+                    Real baseReal = n1.Figure;
+                    n1 = new Numeric(n1.Figure % n2.Figure);
                     error = (n2 * errorRatio).Numerate() as Numeric;
 
-                    if (n1.Data == baseReal) break;
+                    if (n1.Figure == baseReal) break;
                 }
                 else
                 {
-                    Real baseReal = n2.Data;
-                    n2 = new Numeric(n2.Data % n1.Data);
+                    Real baseReal = n2.Figure;
+                    n2 = new Numeric(n2.Figure % n1.Figure);
                     error = (n1 * errorRatio).Numerate() as Numeric;
 
-                    if (n2.Data == baseReal) break;
+                    if (n2.Figure == baseReal) break;
                 }
 
                 if (count++ > 1000)
@@ -656,7 +639,7 @@ namespace GoodSeat.Liffom.Extensions
             }
 
             Numeric gcd = (n1 > n2) ? n1 : n2;
-            if ((gcd / (2d * errorRatio)).Numerate() < nBase) return null; // 無理数判定
+            if (gcd < (nBase * (2d * errorRatio)).Numerate()) return null; // 無理数判定
             return gcd;
         }
 

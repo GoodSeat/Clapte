@@ -124,7 +124,7 @@ namespace GoodSeat.Liffom.Processes
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
-            Real solution = initial.Data;
+            Real solution = initial.Figure;
             Formula fd = new Differentiate(f, x); // f'
 
             bool containFunction = f.GetExistFactor<Function>().Count != 0; // もともとの式に関数が含まれる→微分結果にも関数が含まれないとおかしい、ただし積分関数は例外…
@@ -156,20 +156,20 @@ namespace GoodSeat.Liffom.Processes
 
                 lastSolution = solution;
 
-                Real fSubstituted = (f.Substituted(x, solution).DeformFormula(token) as Numeric).Data;
-                if (fdSubstituted == null) fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Data;
+                Real fSubstituted = (f.Substituted(x, solution).DeformFormula(token) as Numeric).Figure;
+                if (fdSubstituted == null) fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Figure;
                 solution = solution - fSubstituted / fdSubstituted;
 
                 // 非数値や無限大ならリセット
                 if (solution == null || solution.IsNaN || solution.IsInfinity) 
-                    solution = GetRandomShift(new Numeric(0), random);
+                    solution = GetRandomShift(0d, random);
 
                 // 無限ループを検知、もしくは導関数が0となったら、解を適当にずらす
-                fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Data;
+                fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Figure;
                 while (solList.Contains(solution) ||  fdSubstituted == 0) 
                 {
                     solution = GetRandomShift(solution, random);
-                    fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Data;
+                    fdSubstituted = (fd.Substituted(x, solution).DeformFormula(token) as Numeric).Figure;
                 }
 
                 solList.Add(solution);
@@ -191,7 +191,7 @@ namespace GoodSeat.Liffom.Processes
         /// <returns>ずらした数値。</returns>
         private Numeric GetRandomShift(Numeric baseNumeric, Random random)
         {
-            return new Numeric(baseNumeric.Data + Increment + (random.NextDouble() - 0.5) * IncrementWidth * 2);
+            return new Numeric(baseNumeric.Figure + Increment + (random.NextDouble() - 0.5) * IncrementWidth * 2);
         }
 
     }

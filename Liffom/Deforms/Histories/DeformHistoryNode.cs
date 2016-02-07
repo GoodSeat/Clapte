@@ -15,6 +15,7 @@ namespace GoodSeat.Liffom.Deforms
         bool _changedInChildHistory = false;
         string _cacheFormulaUniqueText = null;
         string _cacheFormulaText = null;
+        DeformToken _cacheToken = null;
 
         /// <summary>
         /// ルールの適用履歴の地点記録を初期化します。
@@ -59,6 +60,7 @@ namespace GoodSeat.Liffom.Deforms
         {
             get
             {
+                UpdateCache();
                 if (_cacheFormulaText == null) _cacheFormulaText = Formula.ToString();
                 return _cacheFormulaText;
             }
@@ -71,6 +73,7 @@ namespace GoodSeat.Liffom.Deforms
         {
             get
             {
+                UpdateCache();
                 if (_cacheFormulaUniqueText == null) _cacheFormulaUniqueText = Formula.GetUniqueText();
                 return _cacheFormulaUniqueText;
             }
@@ -139,6 +142,19 @@ namespace GoodSeat.Liffom.Deforms
         /// </summary>
         /// <param name="childHistory"></param>
         public void AddChildHistory(DeformHistory childHistory) { ChildrenHistories.Add(childHistory); }
+
+        /// <summary>
+        /// 文字列キャッシュ時の数式の最終変形トークンをチェックします。
+        /// </summary>
+        private void UpdateCache()
+        {
+            if (_cacheToken != Formula.LastDeformToken)
+            {
+                _cacheFormulaText = null;
+                _cacheFormulaUniqueText = null;
+                _cacheToken = Formula.LastDeformToken;
+            }
+        }
 
         public override string ToString()
         {

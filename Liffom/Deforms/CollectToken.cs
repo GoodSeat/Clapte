@@ -112,8 +112,8 @@ namespace GoodSeat.Liffom.Deforms
             int result = 0;
             if (c1 is Numeric && c2 is Numeric)
             {
-                if ((c1 as Numeric).Data > (c2 as Numeric).Data) result = 1;
-                else if ((c1 as Numeric).Data < (c2 as Numeric).Data) result = -1;
+                if ((c1 as Numeric).Figure > (c2 as Numeric).Figure) result = 1;
+                else if ((c1 as Numeric).Figure < (c2 as Numeric).Figure) result = -1;
             }
             else if (!(c1 is Numeric) && c2 is Numeric) result = 1;
             else if (c1 is Numeric && !(c2 is Numeric)) result = -1;

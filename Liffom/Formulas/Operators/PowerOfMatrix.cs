@@ -61,6 +61,11 @@ namespace GoodSeat.Liffom.Formulas.Operators
 
         #endregion
 
+        /// <summary>
+        /// 数式の基本的な並び順を定義する比較結果を取得します。
+        /// </summary>
+        /// <param name="other">比較対象とする数式。</param>
+        /// <returns>比較結果。</returns>
         protected override Formula.CompareResult IsLargerThan(Formula other)
         {
             Formula thisExp = Exponent;
@@ -68,10 +73,10 @@ namespace GoodSeat.Liffom.Formulas.Operators
             if (other is PowerOfMatrix) otherExp = (other as PowerOfMatrix).Exponent;
 
             double thisPowValue = 0;
-            if (thisExp is Numeric) thisPowValue = (thisExp as Numeric);
+            if (thisExp is Numeric) thisPowValue = (double)thisExp;
 
             double otherPowValue = 0;
-            if (otherExp is Numeric) otherPowValue = (otherExp as Numeric);
+            if (otherExp is Numeric) otherPowValue = (double)otherExp;
 
             if (thisPowValue < 0 && otherPowValue >= 0) return CompareResult.Larger;
             if (thisPowValue >= 0 && otherPowValue < 0) return CompareResult.Smaller;
@@ -79,6 +84,10 @@ namespace GoodSeat.Liffom.Formulas.Operators
             return base.IsLargerThan(other);
         }
 
+        /// <summary>
+        /// 数式を認識可能な文字列に変換して取得します。
+        /// </summary>
+        /// <returns>数式を表す文字列。</returns>
         public override string GetText()
         {
             string exp =  Exponent.ToString();
@@ -88,6 +97,11 @@ namespace GoodSeat.Liffom.Formulas.Operators
             return result;
         }
 
+        /// <summary>
+        /// この数式が、指定数式で一致するルールパターン数式か否かを取得します。
+        /// </summary>
+        /// <param name="f">判定対象の数式。</param>
+        /// <returns>指定数式に一致するルールパターン数式か否か。</returns>
         protected override bool OnCheckPatternMatch(Formula f)
         {
             if (!(f is PowerOfMatrix)) // 検証対象が累乗でない

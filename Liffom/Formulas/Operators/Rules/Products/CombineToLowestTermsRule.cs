@@ -32,9 +32,9 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
             Numeric n1 = b as Numeric;
             Numeric n2 = d as Numeric;
 
-            if (n1.Data > n2.Data)
+            if (n1.Figure > n2.Figure)
                 return (a ^ (b - d)) * (c ^ -1);
-            else if (n1.Data < n2.Data)
+            else if (n1.Figure < n2.Figure)
                 return (c * (a ^ (d - b))) ^ -1;
             else
                 return c ^ -1;

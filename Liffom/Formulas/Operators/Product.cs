@@ -43,6 +43,11 @@ namespace GoodSeat.Liffom.Formulas.Operators
         }
 
         /// <summary>
+        /// 演算のデフォルト値を取得します。この値は、全ての構成数式が削除された場合に、代替の数式として使用されます。
+        /// </summary>
+        public override Formula DefaultValue { get { return 1; } }
+
+        /// <summary>
         /// 分配則の対象となる演算の型を取得します。
         /// </summary>
         /// <example>積算(Product)は和算(Sum)に対して分配則が成り立つため、typeof(Sum)を返します。</example>
@@ -63,10 +68,15 @@ namespace GoodSeat.Liffom.Formulas.Operators
             return new Product(args);
         }
 
+        /// <summary>
+        /// 構成要素を並べ替えます。
+        /// </summary>
         protected override void OnSort() { Formulas.Sort(); }
 
-        public override Formula DefaultValue { get { return 1; } }
-
+        /// <summary>
+        /// 数式を認識可能な文字列に変換して取得します。
+        /// </summary>
+        /// <returns>数式を表す文字列。</returns>
         public override string GetText()
         {
             string result = "";
@@ -106,7 +116,13 @@ namespace GoodSeat.Liffom.Formulas.Operators
             if (sender is Product) foreach(var rule in GetProductRelatedRulesOf(sender as Product, deformToken)) yield return rule;
         }
 
-        public IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が乗算の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
         {
             if (deformToken.Has<CombineToken>())
             {

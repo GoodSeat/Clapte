@@ -28,7 +28,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         protected override Formula GetRuledFormula()
         {
-            var n = new Numeric((a as Numeric).Data + (c as Numeric).Data);
+            var n = new Numeric((a as Numeric).Figure + (c as Numeric).Figure);
             return n * b;
         }
 

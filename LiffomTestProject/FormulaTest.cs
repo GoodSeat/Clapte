@@ -110,7 +110,7 @@ namespace GoodSeat.LiffomTestProject
         /// <summary>
         ///Substituted のテスト
         ///</summary>
-        [TestMethod()]
+        [TestCategory("代数処理"), TestMethod()]
         public void SubstitutedTest()
         {
             Formula target = Formula.Parse("E = m*c^2");

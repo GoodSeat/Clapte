@@ -35,8 +35,9 @@ namespace GoodSeat.Liffom.Deforms
             var operatorMultiple = target as OperatorMultiple;
             if (operatorMultiple == null) return null;
 
-            var result = operatorMultiple.CreateIntegrated();
-            if (result != null) return result;
+            bool integrated;
+            var result = operatorMultiple.CreateIntegrated(out integrated);
+            if (integrated) return result;
 
             result = operatorMultiple;
             if (result.Count == 1) return result[0];

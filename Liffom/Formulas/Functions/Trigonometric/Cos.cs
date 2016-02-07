@@ -43,7 +43,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// <returns>計算された三角関数値。</returns>
         public override Formula CalculateTrigonometric(Formula arg)
         {
-            if (arg is Numeric) return new Numeric((arg as Numeric).Data.Cos());
+            if (arg is Numeric) return new Numeric((arg as Numeric).Figure.Cos());
 
             Numeric R, E;
             if (!Imaginary.IsComplexNumber(arg, false, out R, out E)) return this;

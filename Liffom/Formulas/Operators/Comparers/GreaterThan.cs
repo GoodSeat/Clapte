@@ -62,12 +62,12 @@ namespace GoodSeat.Liffom.Formulas.Operators.Comparers
             {
                 if (ContainEqual)
                 {
-                    if ((f as Numeric).Data >= 0) return Judge.True;
+                    if ((f as Numeric).Figure >= 0) return Judge.True;
                     else return Judge.False;
                 }
                 else
                 {
-                    if ((f as Numeric).Data > 0) return Judge.True;
+                    if ((f as Numeric).Figure > 0) return Judge.True;
                     else return Judge.False;
                 }
             }

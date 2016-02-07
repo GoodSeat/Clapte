@@ -44,13 +44,13 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// <summary>
         /// 関数を初期化します。
         /// </summary>
-        /// <param name="arg">引数</param>
+        /// <param name="arg">引数。</param>
         public Function(Argument arg) { Argument = arg; }
 
         /// <summary>
         /// 関数を初期化します。
         /// </summary>
-        /// <param name="f">引数リスト</param>
+        /// <param name="f">引数リスト。</param>
         public Function(params Formula[] f) 
         {
             if (f.Length == 1 && f[0] is Argument)
@@ -118,7 +118,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
         public abstract int MinimumArgumentQty { get; }
 
         /// <summary>
-        /// この関数の引数として可能な引数の最大数を取得します。通常は、MinimumArgumentQtyと同様の値を返します。
+        /// この関数の引数として可能な引数の最大数を取得します。既定では、MinimumArgumentQtyと同様の値を返します。
         /// </summary>
         public virtual int MaximumArgumentQty { get { return MinimumArgumentQty; } }
 

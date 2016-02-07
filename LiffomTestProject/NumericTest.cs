@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using GoodSeat.Liffom.Reals;
 using GoodSeat.Liffom.Formats.Numerics;
+using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.LiffomTestProject
 {
@@ -75,7 +76,7 @@ namespace GoodSeat.LiffomTestProject
             string actual;
             Numeric target = new Numeric("53000.02");
 
-            var digit = new ConsiderDigitFormatProperty(); // 有効数値考慮表記
+            var digit = new ConsiderSignificantFiguresFormatProperty(); // 有効数値考慮表記
             var radixPoint = new RadixPointFormatProperty(); // 小数点表記
             var split = new SplitFormatProperty(); // 3桁区切りの表記
 
@@ -120,8 +121,26 @@ namespace GoodSeat.LiffomTestProject
                 actual = target.GetText();
                 Assert.AreEqual("53,000.02", actual);
             }
+        }
 
+        /// <summary>
+        /// 数値誤差 のテスト
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void NumericalOperateModifyTest()
+        {
+            var f = Formula.Parse("(10000000000.9 - 1E10) * 1E10 - 9E9");
+            DeformHistory history;
+            f = f.DeformFormula(Formula.NumerateToken, out history);
+            Assert.AreEqual(Formula.Parse("0"), f);
 
+            f = Formula.Parse("99.96 - 99.87");
+            f = f.DeformFormula(Formula.NumerateToken, out history);
+            Assert.AreEqual(Formula.Parse("0.09"), f);
+
+            f = Formula.Parse("((1E10+5/9)-1E10-5/9) * 1E10");
+            f = f.DeformFormula(Formula.NumerateToken, out history);
+            Assert.AreEqual(Formula.Parse("0"), f);
         }
     }
 }

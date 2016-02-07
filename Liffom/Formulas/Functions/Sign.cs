@@ -4,6 +4,7 @@ using System.Text;
 using GoodSeat.Liffom.Formulas.Operators;
 using System.Drawing.Drawing2D;
 using System.Drawing;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Functions
 {
@@ -37,7 +38,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
         public override Formula CalculateFunction()
         {
             if (Argument[0] is Numeric)
-                return new Numeric(Math.Sign(Argument[0]));
+                return new Numeric(Value.Sign(Argument[0] as Numeric));
             else
                 return this;
         }

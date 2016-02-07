@@ -48,9 +48,9 @@ namespace GoodSeat.Liffom.Formulas.Functions
             Numeric round = (Argument.Count > 1) ? Argument[1] as Numeric : null;
 
             if (n != null && (Argument.Count == 1 || round == null))
-                return new Numeric(n.Data.Round(0));
+                return new Numeric(n.Figure.Round(0));
             else if (n != null && round != null && round.IsInteger)
-                return new Numeric(n.Data.Round((int)round.Data));
+                return new Numeric(n.Figure.Round((int)round.Figure));
             else
                 return this;
         }

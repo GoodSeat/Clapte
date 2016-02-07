@@ -290,7 +290,7 @@ namespace GoodSeat.Liffom.Formulas.Units
 
             Formula currentConvert = GetConversionRatio(from, to);
             if (currentConvert == null) return;
-            foreach (Numeric n in currentConvert.GetExistFactor<Numeric>()) n.Precision = 100; // 設定後の有効桁数に合わせるため、無限を設定
+            foreach (Numeric n in currentConvert.GetExistFactor<Numeric>()) n.SignificantDigits = 100; // 設定後の有効桁数に合わせるため、無限を設定
 
             UnitConvertRecord fromData = GetRecordOf(from);
             UnitConvertRecord toData = GetRecordOf(to);
@@ -307,14 +307,14 @@ namespace GoodSeat.Liffom.Formulas.Units
             {
                 Formula modif = currentConvert / ratio;
                 Formula preConversionRatio = toData.ConversionRatio;
-                foreach (Numeric n in preConversionRatio.GetExistFactor<Numeric>()) n.Precision = 100; // 設定後の有効桁数に合わせるため、無限を設定
+                foreach (Numeric n in preConversionRatio.GetExistFactor<Numeric>()) n.SignificantDigits = 100; // 設定後の有効桁数に合わせるため、無限を設定
                 toData.ConversionRatio = (modif * preConversionRatio).Combine();
             }
             else
             {
                 Formula modif = ratio / currentConvert;
                 Formula preConversionRatio = fromData.ConversionRatio;
-                foreach (Numeric n in preConversionRatio.GetExistFactor<Numeric>()) n.Precision = 100; // 設定後の有効桁数に合わせるため、無限を設定
+                foreach (Numeric n in preConversionRatio.GetExistFactor<Numeric>()) n.SignificantDigits = 100; // 設定後の有効桁数に合わせるため、無限を設定
                 fromData.ConversionRatio = (modif * preConversionRatio).Combine();
             }
         }
@@ -342,7 +342,7 @@ namespace GoodSeat.Liffom.Formulas.Units
             Formula convert = fromConvert / toConvert;
             Formula result = convert.Combine();
             foreach (Numeric n in result.GetExistFactor<Numeric>())
-                if (n.Precision > Numeric.MaxPrecision) n.Precision = 100;
+                if (n.SignificantDigits > Numeric.MaxValidDigits) n.SignificantDigits = 100;
 
             if (from == to)
             {
@@ -369,13 +369,13 @@ namespace GoodSeat.Liffom.Formulas.Units
             UnitConvertRecord toData = GetRecordOf(to);
 
             Formula convertToBase = GetConversionRatio(to, BaseUnit.ConvertUnit);
-            foreach (Numeric n in convertToBase.GetExistFactor<Numeric>()) n.Precision = 100; // 設定後の有効桁数に合わせるため、無限を設定
+            foreach (Numeric n in convertToBase.GetExistFactor<Numeric>()) n.SignificantDigits = 100; // 設定後の有効桁数に合わせるため、無限を設定
             Formula delta = addition * convertToBase; // 基準単位による設定加算値
 
             Formula fromConvertAdd = fromData.ConversionAddition;
             Formula toConvertAdd = toData.ConversionAddition;
-            foreach (Numeric n in fromConvertAdd.GetExistFactor<Numeric>()) n.Precision = 100; // 設定後の有効桁数に合わせるため、無限を設定
-            foreach (Numeric n in toConvertAdd.GetExistFactor<Numeric>()) n.Precision = 100; // 設定後の有効桁数に合わせるため、無限を設定
+            foreach (Numeric n in fromConvertAdd.GetExistFactor<Numeric>()) n.SignificantDigits = 100; // 設定後の有効桁数に合わせるため、無限を設定
+            foreach (Numeric n in toConvertAdd.GetExistFactor<Numeric>()) n.SignificantDigits = 100; // 設定後の有効桁数に合わせるため、無限を設定
 
             if ((!(toData is BaseUnitConvertRecord) && !modifyFrom) || fromData is BaseUnitConvertRecord)
                 toData.ConversionAddition = (fromConvertAdd - delta).Combine();
@@ -403,12 +403,13 @@ namespace GoodSeat.Liffom.Formulas.Units
             Formula toConvert = toData.ConversionAddition * toModify; // 基準単位
             Formula addition = (fromConvert - toConvert) / toData.ConversionRatio; // 変換後単位
             Formula result = addition.Combine();
-            foreach (Numeric n in result.GetExistFactor<Numeric>()) if (n.Precision > Numeric.MaxPrecision) n.Precision = 100;
+            foreach (Numeric n in result.GetExistFactor<Numeric>()) if (n.SignificantDigits > Numeric.MaxValidDigits) n.SignificantDigits = 100;
 
             if (from == to)
             {
 #if DEBUG
-                if (!(result is Numeric) || Math.Round(result, Math.Min((result as Numeric).Precision + 1, Numeric.MaxPrecision)) != 0) throw new FormulaAssertionException("同単位間の変換加算が0となりませんでした。");
+                Numeric n = result as Numeric;
+                if (n == null|| n.Figure.Round(Math.Min(n.SignificantDigits + 1, Numeric.MaxValidDigits)) != 0) throw new FormulaAssertionException("同単位間の変換加算が0となりませんでした。");
 #endif
                 return 0;
             }

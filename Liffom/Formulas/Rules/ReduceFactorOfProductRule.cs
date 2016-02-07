@@ -47,12 +47,12 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
             if (denominator == 0) return null;
 
-            int postPrecision = Math.Min(molecular.Precision, denominator.Precision);
+            int postPrecision = Math.Min(molecular.SignificantDigits, denominator.SignificantDigits);
             Numeric newMolecular, newDenominator;
             GetReductedFactor(molecular, denominator, out newMolecular, out newDenominator);
 
-            newMolecular.Precision = postPrecision;
-            newDenominator.Precision = postPrecision;
+            newMolecular.SignificantDigits = postPrecision;
+            newDenominator.SignificantDigits = postPrecision;
 
             if (newMolecular == molecular || newDenominator == denominator) return null;
             return newMolecular / newDenominator;
@@ -76,8 +76,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             }
             else
             {
-                newMolecular = new Numeric((molecular.Data / gcd.Data).Round(0));
-                newDenominator = new Numeric((denominator.Data / gcd.Data).Round(0));
+                newMolecular = new Numeric((molecular.Figure / gcd.Figure).Round(0));
+                newDenominator = new Numeric((denominator.Figure / gcd.Figure).Round(0));
             }
         }
 

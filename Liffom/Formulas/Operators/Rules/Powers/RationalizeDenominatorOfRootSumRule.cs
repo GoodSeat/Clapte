@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
+using GoodSeat.Liffom.Formulas.Functions;
 
 namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 {
@@ -15,10 +16,18 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
         protected override Formula GetRulePatternFormula()
         {
             (a as RulePatternVariable).AdmitMultiplyOne = true; 
-            return (a * (b ^ (1 / 2)) + c) ^ -1;
+            (d as RulePatternVariable).CheckTarget = (f => (f.PatternMatch(b ^ (new Numeric(1) / new Numeric(2))) || f.PatternMatch(new Sqrt(b))));
+            return (a * d + c) ^ -1;
         }
 
-        protected override Formula GetRuledFormula() { return (a * (b ^ (1 / 2)) - c) * (((a ^ 2) * b - (c ^ 2)) ^ -1); }
+        protected override Formula GetRuledFormula()
+        {
+            var ci = c;
+            if (c is Sum) ci = (c as Sum).CreateIntegrated();
+            if (ci is Sum && (ci as Sum).Formulas.Count > 2) return null; // 分母がdと合わせて3項以上の場合、本ルールを適用すると無限ループとなる可能性がある
+
+            return (a * (b ^ (new Numeric(1) / new Numeric(2))) - ci) * (((a ^ 2) * b - (ci ^ 2)) ^ -1);
+        }
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Power; }
 
@@ -32,8 +41,8 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {
             yield return new KeyValuePair<Formula, Formula>(
-                Formula.Parse("(5^(1/2)-3^(1/2))^-1"),
-                Formula.Parse("(5^(1/2)+3^(1/2)) * (5-3^2)^-1")
+                Formula.Parse("(5^(1/2)-3^(1/2))^-1"), // (1 * (5 ^ (1/2) + (-3^(1/2))) ^ -1
+                Formula.Parse("(1*5^(1/2)-1*(-3^(1/2))) * (1^2*5-1*(-3^(1/2))^2)^-1")
                 );
         }
 
