@@ -42,11 +42,9 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
         protected override Formula OnTryMatchRule(Formula target)
         {
             if (target is TrigonometricFunction)
-                OnTryMatchRule(target as TrigonometricFunction);
+                return OnTryMatchRule(target as TrigonometricFunction);
             else
-                OnTryMatchRule(target as Function);
-
-            return null;
+                return OnTryMatchRule(target as Function);
         }
 
         /// <summary>

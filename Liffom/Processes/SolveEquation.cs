@@ -88,7 +88,7 @@ namespace GoodSeat.Liffom.Processes
             int testDigit = (new Numeric(error)).Figure.Exponent + 1; // 許容誤差値の正規化時の指数
             int minExponent = testDigit;
             foreach (Numeric n in solution.GetExistFactor<Numeric>())
-                minExponent = Math.Min(minExponent, n.Figure.Exponent - 15);
+                minExponent = Math.Min(minExponent, n.Figure.Exponent - Numeric.MaxValidDigits);
 
             for (int test = testDigit; test >= minExponent; test--)
             {
@@ -116,9 +116,9 @@ namespace GoodSeat.Liffom.Processes
 
             // 初期解にて計算した時の解の有効数字を取得
             var copy = solution.Copy();
-            foreach (Numeric n in copy.GetExistFactor<Numeric>()) n.SignificantDigits = 100;
+            foreach (Numeric n in copy.GetExistFactor<Numeric>()) n.SignificantDigits = Numeric.MaxValidDigits * 2;
             initialValidDigit = int.MinValue; // 初期解で計算したときの最大有効桁
-            initialPrecision = 100; // 初期解で計算したときの有効桁数
+            initialPrecision = Numeric.MaxValidDigits * 2; // 初期解で計算したときの有効桁数
             Formula checkDigit = f.Substituted(x, copy).DeformFormula(token);
 
             bool needCheckValid = false;
