@@ -267,9 +267,9 @@ namespace GoodSeat.Liffom.Extensions
                 if (A[i, j] is Numeric)
                 {
                     var num = A[i, j] as Numeric;
-                    if (Math.Abs(num.Data) > colMax)
+                    if (Math.Abs(num.Figure) > colMax)
                     {
-                        colMax = Math.Abs(num.Data);
+                        colMax = Math.Abs(num.Figure);
                         pRow = j;
                         current = A[i, j];
                     }

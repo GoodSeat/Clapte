@@ -44,7 +44,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
         protected override Formula GetRuledFormula(Formula f1, Formula f2) 
         {
             Numeric zero = f1 as Numeric;
-            if (f2 is Numeric && (f2 as Numeric).Data < 0) f1 = new Numeric(zero.Data * -1); // +0と-0を区別
+            if (f2 is Numeric && (f2 as Numeric).Figure < 0) f1 = new Numeric(zero.Figure * -1); // +0と-0を区別
             return f1;
         }
 

@@ -4,6 +4,7 @@ using System;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom;
 using System.Collections.Generic;
+using GoodSeat.Liffom.Formulas;
 
 namespace GoodSeat.LiffomTestProject
 {
@@ -78,9 +79,19 @@ namespace GoodSeat.LiffomTestProject
 
             var userStates = new List<object>();
             Console.WriteLine(string.Format("全プロセス開始前 : {0}", DateTime.Now));
-            SolveEquationTest.AddTestCaseAsync(solve, "x^9 + 7*x = 589", "x", "x=2.02588389805628", userStates);
-            SolveEquationTest.AddTestCaseAsync(solve, "(x+3)*(x-1)^2 = 0", "x", "x=-3", userStates);
-            SolveEquationTest.AddTestCaseAsync(solve, "π*x=951.3", "x", "x=302.8081947266404", userStates);
+            if (Numeric.InnerRealType == Numeric.RealType.BigDecimal)
+            {
+                solve.ErrorTolerance = 1E-20;
+                SolveEquationTest.AddTestCaseAsync(solve, "x^9 + 7*x = 589", "x", "x=2.02588389785460739614073495466", userStates);
+                SolveEquationTest.AddTestCaseAsync(solve, "(x+3)*(x-1)^2 = 0", "x", "x=-3", userStates);
+                SolveEquationTest.AddTestCaseAsync(solve, "π*x=951.3", "x", "x=302.808194726640377979065375498", userStates);
+            }
+            else
+            {
+                SolveEquationTest.AddTestCaseAsync(solve, "x^9 + 7*x = 589", "x", "x=2.02588389805628", userStates);
+                SolveEquationTest.AddTestCaseAsync(solve, "(x+3)*(x-1)^2 = 0", "x", "x=-3", userStates);
+                SolveEquationTest.AddTestCaseAsync(solve, "π*x=951.3", "x", "x=302.8081947266404", userStates);
+            }
             Console.WriteLine(string.Format("全プロセス開始済み : {0}", DateTime.Now));
 
             SolveEquationTest.CheckAssertionTestCase(solve, userStates);

@@ -5,6 +5,7 @@ using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Constants;
 using GoodSeat.Liffom.Formulas.Operators.Rules;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Rules
 {
@@ -42,6 +43,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric R, E;
             if (!Imaginary.IsComplexNumber(formula, true, out R, out E) || expNumeric == null) return null;
 
+            var pi = R.Figure.GetPi();
+
             // 元の複素数の絶対値
             Numeric abs = Imaginary.Abs(R, E);
             if (abs == 0)
@@ -52,24 +55,22 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric rad = Imaginary.Arg(R, E); // 元の偏角
 
             // 累乗計算後の複素数の絶対値
-            Numeric newAbs = abs.Data ^ expNumeric.Data;
+            Numeric newAbs = abs.Figure ^ expNumeric.Figure;
 
-            // 角度を取得 // TODO:Math.PIを使用するのはダメ。
-            Numeric newRad = new Numeric((rad * expNumeric).Numerate() as Numeric);
-            if (newRad > Math.PI * 2) newRad = new Numeric(newRad % (2 * Math.PI));
-            if (newRad < 0) newRad = (newRad + 2 * Math.PI).Numerate() as Numeric;
+            // 角度を取得
+            Numeric newRad = (rad * expNumeric).Numerate() as Numeric;
+            if (newRad > pi) newRad = new Numeric(newRad % (2 * pi));
+            if (newRad < 0) newRad = (newRad + new Numeric(2 * pi)).Numerate() as Numeric;
 
-            // TODO:このあたりの処理は再考。数値の精度に伴って変更する。
-            // 偏角はpiなども駆使したいところだが、速度とかルールの意味とかいろいろな側面でダメか。
-            Numeric cos = new Numeric(newRad.Data.Cos());
-            Numeric sin = new Numeric(newRad.Data.Sin());
-            if (Math.Abs(cos) < 5E-15 || Math.Abs(sin) == 1) cos = new Numeric(0);
-            if (Math.Abs(sin) < 5E-15 || Math.Abs(cos) == 1) sin = new Numeric(0);
-            cos = new Numeric(cos.Data.Round(15)); 
-            sin = new Numeric(sin.Data.Round(15)); 
+            Numeric cos = new Numeric(newRad.Figure.Cos());
+            Numeric sin = new Numeric(newRad.Figure.Sin());
+            if (Value.Abs(cos) < 5E-15 || Value.Abs(sin) == 1) cos = new Numeric(0);
+            if (Value.Abs(sin) < 5E-15 || Value.Abs(cos) == 1) sin = new Numeric(0);
+            cos = new Numeric(cos.Figure.Round(15)); 
+            sin = new Numeric(sin.Figure.Round(15)); 
 
-            Numeric newReal = new Numeric(cos).Data * newAbs.Data;
-            Numeric newImag = new Numeric(sin).Data * newAbs.Data;
+            Numeric newReal = cos.Figure * newAbs.Figure;
+            Numeric newImag = sin.Figure * newAbs.Figure;
             if (newReal == 0)
             {
                 if (newImag == 1) return Imaginary.i;

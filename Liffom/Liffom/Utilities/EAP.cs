@@ -89,7 +89,11 @@ namespace GoodSeat.Liffom.Utilities
         /// 処理のキャンセルが要求されたか否かを設定もしくは取得します。
         /// </summary>
         /// <param name="userState">一意のユーザー状態</param>
-        public bool IsCanceled(object userState) { return CanceledMap[userState]; }
+        public bool IsCanceled(object userState)
+        {
+            if (!CanceledMap.ContainsKey(userState)) return false;
+            return CanceledMap[userState];
+        }
 
         /// <summary>
         /// 一意のユーザー情報を指定して、複数の同時呼び出しを許可するか否かを取得します。

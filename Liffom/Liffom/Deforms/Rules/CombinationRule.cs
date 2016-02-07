@@ -87,18 +87,24 @@ namespace GoodSeat.Liffom.Deforms.Rules
 
 
         /// <summary>
+        /// ルールによる変形前に、ソートを行う場合に用いる比較メソッドを取得します。
+        /// </summary>
+        protected virtual Comparison<Formula> Comparison { get { return null; } }
+
+        /// <summary>
         /// 指定ルールに従って、収束するまで数式の変形を行います。
         /// </summary>
         /// <param name="f">任意の組み合わせの数式と親数式を指定して、変形を試みる関数。</param>
         /// <param name="target">変形対象の数式。</param>
-        /// <param name="RuleApplyType">ルール適用の方法を表すApplyType。</param>
-        /// <param name="RetryAll">ルールの適用があった場合に、再度すべての組み合わせについて適用を試みるか。</param>
-        /// <param name="IntegrateAfterRuled">ルールの適用後、演算の統合を実施するか。</param>
+        /// <param name="ruleApplyType">ルール適用の方法を表すApplyType。</param>
+        /// <param name="retryAll">ルールの適用があった場合に、再度すべての組み合わせについて適用を試みるか。</param>
+        /// <param name="integrateAfterRuled">ルールの適用後、演算の統合を実施するか。</param>
         /// <returns>ルールの適用があった場合、適用後の数式。それ以外の場合、null。</returns>
         internal static OperatorMultiple DeformWith(Func<Formula, Formula, OperatorMultiple, Formula> f,
-            OperatorMultiple target, ApplyType RuleApplyType, bool RetryAll, bool IntegrateAfterRuled)
+            OperatorMultiple target, ApplyType ruleApplyType, bool retryAll, bool integrateAfterRuled, Comparison<Formula> comparison)
         {
             List<Formula> consist = new List<Formula>(target.Formulas);
+            if (comparison != null) consist.Sort(comparison);
 
             bool ruleTreated = false;
             for (int i = 0; i < consist.Count - 1; i++)
@@ -120,7 +126,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
                     if (rPost == null) continue;
 
                     ruleTreated = true;
-                    if (rPost.GetType() == target.GetType() && IntegrateAfterRuled)
+                    if (rPost.GetType() == target.GetType() && integrateAfterRuled)
                     {
                         consist.RemoveAt(k);
                         consist.InsertRange(i + 1, rPost);
@@ -132,8 +138,8 @@ namespace GoodSeat.Liffom.Deforms.Rules
                         consist.RemoveAt(k);
                     }
 
-                    if (RuleApplyType == ApplyType.OneTime || RuleApplyType == ApplyType.OneTimePerTerm) break;
-                    if (RetryAll)
+                    if (ruleApplyType == ApplyType.OneTime || ruleApplyType == ApplyType.OneTimePerTerm) break;
+                    if (retryAll)
                     {
                         i = -1;
                         break;
@@ -145,7 +151,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
                         k = i;
                     }
                 }
-                if (ruleTreated && RuleApplyType == ApplyType.OneTime) break;
+                if (ruleTreated && ruleApplyType == ApplyType.OneTime) break;
             }
 
             if (ruleTreated) return target.CreateOperator(consist.ToArray()) as OperatorMultiple;
@@ -159,7 +165,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// <returns>ルールの適用があったか。</returns>
         private OperatorMultiple DeformWithRule(OperatorMultiple target)
         {
-            return DeformWith(TryApply, target, RuleApplyType, RetryAll, IntegrateAfterRuled);
+            return DeformWith(TryApply, target, RuleApplyType, RetryAll, IntegrateAfterRuled, Comparison);
         }
 
         /// <summary>

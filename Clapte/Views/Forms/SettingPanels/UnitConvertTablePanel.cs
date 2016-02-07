@@ -174,7 +174,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         void RefreshConvertTable()
         {
             Format format = new Format();
-            format.SetProperty(new ConsiderDigitFormatProperty(true));
+            format.SetProperty(new ConsiderSignificantFiguresFormatProperty(true));
             format.SetProperty(new DivisionFormatProperty(true));
 
             for (int i = 0; i < _dataGridUnitTable.Rows.Count; i++)

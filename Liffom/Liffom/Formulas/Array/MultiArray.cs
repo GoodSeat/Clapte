@@ -171,7 +171,7 @@ namespace GoodSeat.Liffom.Formulas.Array
             {
                 var n = index[i] as Numeric;
                 if (n == null || !n.IsInteger) return null;
-                indexs[i - 1] = (int)n.Data;
+                indexs[i - 1] = (int)n.Figure;
             }
 
             return GetAt(indexs);

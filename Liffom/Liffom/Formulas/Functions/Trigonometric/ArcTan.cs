@@ -53,7 +53,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             }
 
             if (z is Numeric)
-                return new Numeric((z as Numeric).Data.Atan());
+                return new Numeric((z as Numeric).Figure.Atan());
             else if (Imaginary.IsComplexNumber(z, true))
             {
                 var i = Imaginary.i;

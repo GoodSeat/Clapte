@@ -313,7 +313,7 @@ namespace GoodSeat.Clapte.ViewModels
             Format format = new Format();
 
             // 有効数値の考慮
-            var considerDigit = new ConsiderDigitFormatProperty(ConsiderValidDigit);
+            var considerDigit = new ConsiderSignificantFiguresFormatProperty(ConsiderValidDigit);
             format.SetProperty(considerDigit);
 
             // x^-nは、1/x^n形式で表示

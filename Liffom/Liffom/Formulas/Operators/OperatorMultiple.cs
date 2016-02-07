@@ -54,7 +54,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
         public int Count { get { return Formulas.Count; } }
 
         /// <summary>
-        /// 演算中のデフォルト値を取得します。この値は、全ての構成数式が削除された場合に、代替の数式として使用されます。
+        /// 演算のデフォルト値を取得します。この値は、全ての構成数式が削除された場合に、代替の数式として使用されます。
         /// </summary>
         public abstract Formula DefaultValue { get; }
 
@@ -84,13 +84,26 @@ namespace GoodSeat.Liffom.Formulas.Operators
         /// <summary>
         /// 構成要素内の同要素を、親の子要素として統合した演算を初期化して取得します。
         /// </summary>
-        /// <returns>統合操作があった場合には、初期化された演算数式。統合操作がなかった場合には、null。</returns>
+        /// <returns>統合操作がされた演算数式。</returns>
         public OperatorMultiple CreateIntegrated()
         {
+            bool integrated;
+            return CreateIntegrated(out integrated);
+        }
+
+        /// <summary>
+        /// 構成要素内の同要素を、親の子要素として統合した演算を初期化して取得します。
+        /// </summary>
+        /// <param name="integrated">実際に統合操作があったか否か。</param>
+        /// <returns>統合操作がされた演算数式。</returns>
+        public OperatorMultiple CreateIntegrated(out bool integrated)
+        {
+            integrated = true;
             var list = new List<Formula>(EnumerateIntegrateChildren());
             if (list.Count != Count) return CreateOperator(list.ToArray()) as OperatorMultiple;
 
-            return null;
+            integrated = false;
+            return this;
         }
 
         /// <summary>
@@ -191,6 +204,9 @@ namespace GoodSeat.Liffom.Formulas.Operators
             return base.OnSubstitute(oldValue, newValue, formatReplace);
         }
 
+        /// <summary>
+        /// 構成要素を並べ替えます。
+        /// </summary>
         protected override void OnSort() 
         {
             if ((Law & OperatorLaw.Commutative) == OperatorLaw.Commutative) 

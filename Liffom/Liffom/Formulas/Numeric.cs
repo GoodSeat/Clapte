@@ -13,20 +13,56 @@ using GoodSeat.Liffom.Formulas.Operators.Rules.Powers;
 namespace GoodSeat.Liffom.Formulas
 {
     /// <summary>
-    /// 数値データ（最小単位）を表します。
+    /// 数値を表します。
     /// </summary>
     [Serializable()]
     public class Numeric : Formula
     {
-        static Numeric() { Zero = new Numeric(0d); }
+        static Numeric()
+        { 
+            InnerRealType = RealType.DoubleModified;
+//            InnerRealType = RealType.Decimal;
+//            InnerRealType = RealType.BigDecimal;
+        }
+
+        /// <summary>
+        /// 数値内部表現を表します。
+        /// </summary>
+        public enum RealType
+        {
+            /// <summary>内部数値として、double型を使用します。</summary>
+            Double,
+            /// <summary>内部数値として、double型(自動誤差修正)を使用します。</summary>
+            DoubleModified,
+            /// <summary>内部数値として、decimal型を使用します。</summary>
+            Decimal,
+            /// <summary>内部数値として、任意精度小数点を使用します。</summary>
+            BigDecimal
+        }
+
+        static RealType s_innerRealType;
+
+        /// <summary>
+        /// <see cref="Numeric"/>における数値内部表現を設定もしくは取得します。
+        /// </summary>
+        public static RealType InnerRealType
+        {
+            get { return s_innerRealType; }
+            set
+            {
+                if (s_innerRealType == value) return;
+                s_innerRealType = value;
+                Zero = new Numeric(0d);
+            }
+        }
 
         /// <summary>
         /// 中間値の丸め方法を設定もしくは取得します。
         /// </summary>
         public static MidpointRounding MidpointRound
         {
-            get { return Real.MidpointRound; }
-            set { Real.MidpointRound = value; }
+            get { return Value.MidpointRound; }
+            set { Value.MidpointRound = value; }
         }
 
         /// <summary>
@@ -48,15 +84,56 @@ namespace GoodSeat.Liffom.Formulas
         /// <summary>
         /// 考慮する最大有効桁数を設定もしくは取得します。この値より大きな有効桁数を有する場合、当該数値の有効桁数を無限と判定します。
         /// </summary>
-        public static int MaxPrecision { get { return PrecisionDouble.MaxPrecision; } }
+        public static int MaxValidDigits { get { return Zero.Figure.Value.MaxValidDigits; } }
 
         /// <summary>
         /// 2つの数値を比較し、一致するか否かを判定します。
         /// </summary>
-        public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Data == n2.Data; }
+        public static bool AreEqual(Numeric n1, Numeric n2) { return n1.Figure == n2.Figure; }
+
+        /// <summary>
+        /// <see cref="Numeric"/>型 → <see cref="Value"/>型の暗黙的変換（変換できない場合、double.NaNを返します）を行います。
+        /// </summary>
+        /// <param name="f">対象の数式。</param>
+        /// <returns>変換されたValueオブジェクト。</returns>
+        public static implicit operator Value(Numeric n) { return n.Figure.Value; }
+
+        /// <summary>
+        /// <see cref="Numeric"/>型 → <see cref="Real"/>型の暗黙的変換（変換できない場合、double.NaNを返します）を行います。
+        /// </summary>
+        /// <param name="f">対象の数式。</param>
+        /// <returns>変換されたRealオブジェクト。</returns>
+        public static implicit operator Real(Numeric n) { return n.Figure; }
+
+        /// <summary>
+        /// <see cref="int"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="n">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(int n) { return new Numeric(n); }
+
+        /// <summary>
+        /// <see cref="double"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="d">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(double d) { return new Numeric(d); }
+
+        /// <summary>
+        /// <see cref="Real"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="r">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(Real r) { return new Numeric(r); }
+
+        /// <summary>
+        /// <see cref="Value"/>型 → <see cref="Numeric"/>型の暗黙的変換を行います。
+        /// </summary>
+        /// <param name="r">対象の数値。</param>
+        /// <returns>変換されたNumeric型のオブジェクト。</returns>
+        public static implicit operator Numeric(Value r) { return new Numeric(r); }
 
 
-        PrecisionReal _num; // 保持数値
 
         /// <summary>
         /// 数値を初期化します。
@@ -64,35 +141,64 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="s">初期値を指定する文字列。</param>
         public Numeric(string s)
         {
-            Data = new PrecisionDouble(s);
+            if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(double.Parse(s)), s);
+            else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(double.Parse(s)), s);
+            else if (InnerRealType == RealType.Decimal)
+            {
+                if (s.ToLower().Contains("e")) Figure = new SignificantReal(new DecimalValue(double.Parse(s)), s);
+                else Figure = new SignificantReal(new DecimalValue(decimal.Parse(s)), s);
+            }
+            else if (InnerRealType == RealType.BigDecimal) Figure = new SignificantReal(BigDecimalValue.Parse(s), s);
+            else throw new NotImplementedException();
         }
 
         /// <summary>
         /// 数値を作成します。
         /// </summary>
         /// <param name="r">初期値を指定する数値。</param>
-        public Numeric(Real r)
+        public Numeric(Real r) { Figure = r; }
+
+        /// <summary>
+        /// 数値を作成します。
+        /// </summary>
+        /// <param name="r">初期値を指定する数値。</param>
+        public Numeric(Value r)
         {
-            if (r is PrecisionReal) Data = r as PrecisionReal;
-            else Data = new PrecisionDouble(r);
+            Figure = new SignificantReal(r);
+        }
+
+        /// <summary>
+        /// 数値を作成します。
+        /// </summary>
+        /// <param name="d">初期値を指定する数値。</param>
+        public Numeric(double d)
+        {
+            if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(d));
+            else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(d));
+            else if (InnerRealType == RealType.Decimal) Figure = new SignificantReal(new DecimalValue(d));
+            else if (InnerRealType == RealType.BigDecimal) Figure = new SignificantReal(new BigDecimalValue(d));
+            else throw new NotImplementedException();
         }
 
         /// <summary>
         /// 内部数値を設定もしくは取得します。
         /// </summary>
-        public PrecisionReal Data
-        {
-            get { return _num; }
-            set { _num = value; }
-        }
+        public Real Figure { get; set; }
 
         /// <summary>
         /// 有効桁数を設定もしくは取得します。
         /// </summary>
-        public int Precision
+        public int SignificantDigits
         {
-            get { return Data.Precision; }
-            set { Data.Precision = value; }
+            get
+            {
+                if (Figure is SignificantReal) return (Figure as SignificantReal).SignificantDigits;
+                return Figure.Value.MaxValidDigits;
+            }
+            set
+            {
+                if (Figure is SignificantReal) (Figure as SignificantReal).SignificantDigits = value;
+            }
         }
 
         /// <summary>
@@ -100,32 +206,23 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         public bool IsInteger
         {
-            get { return (Data.ModOf(1) == 0); }
+            get { return Figure % 1.0 == 0.0; }
         }
 
         /// <summary>
-        /// Real型への暗黙的変換（変換できない場合、double.NaNを返します）。
+        /// 数式を認識可能な文字列に変換して取得します。
         /// </summary>
-        /// <param name="f">対象の数式。</param>
-        /// <returns>変換されたRealオブジェクト。</returns>
-        public static implicit operator Real(Numeric n) { return n.Data; }
-
-        /// <summary>
-        /// 内部保持の数値を、内部誤差を修正した数値に置き換えます。
-        /// </summary>
-        public void ModifyError() { Data.ModifyError(); }
-
-
+        /// <returns>数式を表す文字列。</returns>
         public override string GetText()
         {
             string result = null;
 
             // 有効桁数考慮表記
-            bool considerDigit = Format.PropertyOf<ConsiderDigitFormatProperty>();
-            if (considerDigit)
-                result = Data.ToString();
+            bool considerSignificantFigures = Format.PropertyOf<ConsiderSignificantFiguresFormatProperty>();
+            if (considerSignificantFigures)
+                result = Figure.ToString();
             else
-                result = Data.Data.ToString("G");
+                result = Figure.Value.ToString("G");
 
             // 小数点表記
             result = Format.PropertyOf<RadixPointFormatProperty>().SetRadixPoint(result);
@@ -140,18 +237,21 @@ namespace GoodSeat.Liffom.Formulas
         /// 数式の一意性評価に用いる文字列で、同じ型の数式同士の一意性を表す文字列を取得します。
         /// </summary>
         /// <returns>数式を一意に区別する文字列。</returns>
-        protected override string OnGetUniqueText() { return Data.Data.ToString("G"); }
+        protected override string OnGetUniqueText() { return Figure.Value.ToString("G"); }
 
+        /// <summary>
+        /// 数式の基本的な並び順を定義する比較結果を取得します。
+        /// </summary>
+        /// <remarks>
+        /// 通常、次の順に従います。
+        /// 数値 ＜ その他(文字列長比較順) ＜ 負の累乗 ＜ 単位
+        /// </remarks>
+        /// <param name="other">比較対象とする数式。</param>
+        /// <returns>比較結果。</returns>
         protected override CompareResult IsLargerThan(Formula other)
         {
             int compare = -1;
-            if (other is Numeric)
-            {
-                Real delta = Data - (other as Numeric).Data;
-                if (delta > 0.0) compare = 1;
-                else if (delta < 0.0) compare = -1;
-                else compare = 0;
-            }
+            if (other is Numeric) compare = Figure.CompareTo((other as Numeric).Figure);
 
             if (compare > 0) return CompareResult.Larger;
             else if (compare < 0) return CompareResult.Smaller;
@@ -174,7 +274,13 @@ namespace GoodSeat.Liffom.Formulas
             if (sender is Sum) foreach (var rule in GetSumRelatedRulesOf(sender as Sum, deformToken)) yield return rule;
         }
 
-        public IEnumerable<Rule> GetPowerRelatedRulesOf(Power sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が累乗の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetPowerRelatedRulesOf(Power sender, DeformToken deformToken)
         {
             if (deformToken.Has<NumerateToken>())
             {
@@ -197,7 +303,13 @@ namespace GoodSeat.Liffom.Formulas
             }
         }
 
-        public IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が乗算の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetProductRelatedRulesOf(Product sender, DeformToken deformToken)
         {
             if (deformToken.Has<CombineToken>())
             {
@@ -218,7 +330,13 @@ namespace GoodSeat.Liffom.Formulas
         
         }
 
-        public IEnumerable<Rule> GetSumRelatedRulesOf(Sum sender, DeformToken deformToken)
+        /// <summary>
+        /// 親数式が和算の場合において、関連するルールを順次返す反復子を取得します。
+        /// </summary>
+        /// <param name="sender">親数式。</param>
+        /// <param name="deformToken">変形識別トークン。</param>
+        /// <returns>変形に関連するルールを返す反復子。</returns>
+        private IEnumerable<Rule> GetSumRelatedRulesOf(Sum sender, DeformToken deformToken)
         {
             if (deformToken.Has<CombineToken>())
             {

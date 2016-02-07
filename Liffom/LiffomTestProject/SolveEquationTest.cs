@@ -117,7 +117,7 @@ namespace GoodSeat.LiffomTestProject
             int initialPrecision = 0;
 
             int initialValidDigitExpected = -3;
-            int initialPrecisionExpected = 4;
+            int initialPrecisionExpected = -11;
             bool expected = true;
             bool actual;
             actual = SolveEquation_Accessor.GetInitialPrecision(f, x, solution, out initialValidDigit, out initialPrecision);
@@ -140,7 +140,7 @@ namespace GoodSeat.LiffomTestProject
 
             Numeric actual;
             actual = SolveEquation_Accessor.GetPrecisionModifiedSolution(f, x, solution, initialValidDigit) as Numeric;
-            Assert.AreEqual(3, actual.Precision);
+            Assert.AreEqual(3, actual.SignificantDigits);
         }
 
 

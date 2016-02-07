@@ -6,6 +6,7 @@ using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Rules.Products;
 using GoodSeat.Liffom.Extensions;
+using GoodSeat.Liffom.Reals;
 
 namespace GoodSeat.Liffom.Formulas.Functions.Rules
 {
@@ -46,7 +47,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             var root = target as Root;
             var exp = root[1] as Numeric;
 
-            int exponent = (int)exp.Data;
+            int exponent = (int)exp.Figure;
             if (exponent == 1) return root[0];
             if (exponent == 0) return 1; // TODO:これは明確な間違え
             if (exponent < 0) return 1 / new Root(root[0], -1 * exponent);
@@ -163,10 +164,8 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
         private List<Formula> GetFactorsFrom(Formula gcd)
         {
             var result = new List<Formula>();
-            if (gcd is Numeric)
-            {
-                result.AddRange(GetFactorsFromNumeric(gcd as Numeric));
-            }
+            if (gcd is Numeric) result.AddRange(GetFactorsFromNumeric(gcd as Numeric));
+            else if (gcd is AtomicFormula) result.Add(gcd);
             else
             {
                 var a = new RulePatternVariable("a");
@@ -209,7 +208,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
                     var b = (f as Power).Base;
                     foreach (var c in GetFactorsFrom(b))
                     {
-                        for (int i = 0; i < Math.Abs(exp); i++)
+                        for (int i = 0; i < Value.Abs(exp); i++)
                         {
                             if (exp < 0) yield return c ^ -1;
                             else yield return c;

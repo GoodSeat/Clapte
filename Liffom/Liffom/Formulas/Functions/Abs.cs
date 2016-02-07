@@ -40,7 +40,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             {
                 Numeric n = Argument[0] as Numeric;
                 if (n >= 0) return n;
-                else return (new Numeric(-1)).Data * n.Data;
+                else return (new Numeric(-1)).Figure * n.Figure;
             }
             else
                 return this;

@@ -52,7 +52,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             if (exp <= 0) return null; // OnGetPreDemandRuleにより解決済みのはずなので、対象としない
 
             List<Formula> sectionList = new List<Formula>();
-            for (int i = 0; i < exp.Data; i++) sectionList.Add(power.Base);
+            for (int i = 0; i < exp.Figure; i++) sectionList.Add(power.Base);
 
             Formula result = new Product(sectionList.ToArray());
 

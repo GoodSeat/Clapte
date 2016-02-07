@@ -135,11 +135,7 @@ namespace GoodSeat.Liffom.Processes
                 foreach (var process in factorizeProcesses)
                     fd = fd.Substitute(process.Key, process.Value.Wait());
 
-                if (fd is OperatorMultiple)
-                {
-                    var fdd = (fd as OperatorMultiple).CreateIntegrated();
-                    if (fdd != null) fd = fdd;
-                }
+                if (fd is OperatorMultiple) fd = (fd as OperatorMultiple).CreateIntegrated();
                 return fd;
             }
             return null;
@@ -304,7 +300,8 @@ namespace GoodSeat.Liffom.Processes
             }
             else if (factorized is Numeric)
             {
-                Formula factor = PrimeFactor.PrimeFactorize(factorized, false);
+                Numeric n = factorized as Numeric;
+                Formula factor = PrimeFactor.PrimeFactorize(n, false);
                 if (factor is Numeric) yield return factor;
                 else foreach (var prime in factor) yield return prime;
             }

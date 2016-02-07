@@ -30,7 +30,7 @@ namespace GoodSeat.Liffom.Parse
                     var num = pair.Value as Numeric;
                     if (num != null && num > 0)
                     {
-                        sumList.Add(new Numeric(num.Data * new Real(-1d)));
+                        sumList.Add(new Numeric(num.Figure * -1d));
                         continue;
                     }
 
@@ -38,7 +38,7 @@ namespace GoodSeat.Liffom.Parse
                     if (product != null && product[0] is Numeric && product[0] > 0)
                     {
                         var numTop = product[0] as Numeric;
-                        product[0] = new Numeric(numTop.Data * new Real(-1));
+                        product[0] = new Numeric(numTop.Figure * -1);
                         sumList.Add(product);
                         continue;
                     }

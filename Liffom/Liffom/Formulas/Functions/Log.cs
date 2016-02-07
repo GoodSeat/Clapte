@@ -66,10 +66,10 @@ namespace GoodSeat.Liffom.Formulas.Functions
             if (a == b) return 1;
 
             Numeric an = a as Numeric;
-            if (an != null && an > 0 && b == null) return new Numeric(an.Data.Log(new Numeric(10d)));
+            if (an != null && an > 0 && b == null) return new Numeric(an.Figure.Log(new Numeric(10d)));
 
             Numeric bn = b as Numeric;
-            if (an != null && an > 0 && bn != null) return new Numeric(an.Data.Log(bn));
+            if (an != null && an > 0 && bn != null) return new Numeric(an.Figure.Log(bn));
 
             return this;
         }
