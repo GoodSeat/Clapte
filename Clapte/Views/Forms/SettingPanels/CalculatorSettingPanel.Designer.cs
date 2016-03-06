@@ -44,7 +44,7 @@
             this._colorDialog = new System.Windows.Forms.ColorDialog();
             this._fontDialog = new System.Windows.Forms.FontDialog();
             this._comboFont = new System.Windows.Forms.ComboBox();
-            this._numFontSize = new Clapte.Views.Controls.NumericSlider();
+            this._numFontSize = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._checkVisibleTab = new System.Windows.Forms.CheckBox();
             this._groupFont = new System.Windows.Forms.GroupBox();
             this._checkUnderline = new System.Windows.Forms.CheckBox();
@@ -53,6 +53,7 @@
             this._checkAutoShowArgumentHint = new System.Windows.Forms.CheckBox();
             this._checkVisibleEol = new System.Windows.Forms.CheckBox();
             this._groupSupport = new System.Windows.Forms.GroupBox();
+            this._checkInputSupportAlsoInfomation = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this._picColorConstant)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorFunction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorUnit)).BeginInit();
@@ -248,7 +249,7 @@
             // _checkVisibleTab
             // 
             this._checkVisibleTab.AutoSize = true;
-            this._checkVisibleTab.Location = new System.Drawing.Point(13, 277);
+            this._checkVisibleTab.Location = new System.Drawing.Point(13, 293);
             this._checkVisibleTab.Name = "_checkVisibleTab";
             this._checkVisibleTab.Size = new System.Drawing.Size(117, 16);
             this._checkVisibleTab.TabIndex = 11;
@@ -272,7 +273,7 @@
             // _checkUnderline
             // 
             this._checkUnderline.AutoSize = true;
-            this._checkUnderline.Location = new System.Drawing.Point(13, 299);
+            this._checkUnderline.Location = new System.Drawing.Point(13, 315);
             this._checkUnderline.Name = "_checkUnderline";
             this._checkUnderline.Size = new System.Drawing.Size(175, 16);
             this._checkUnderline.TabIndex = 13;
@@ -299,14 +300,14 @@
             fontInfo1.Style = System.Drawing.FontStyle.Regular;
             this._textBoxSample.FontInfo = fontInfo1;
             this._textBoxSample.ForeColor = System.Drawing.Color.Black;
-            this._textBoxSample.Location = new System.Drawing.Point(13, 328);
+            this._textBoxSample.Location = new System.Drawing.Point(13, 337);
             this._textBoxSample.Name = "_textBoxSample";
             this._textBoxSample.ScrollPos = new System.Drawing.Point(0, 0);
             this._textBoxSample.ShowsDirtBar = false;
             this._textBoxSample.ShowsHScrollBar = false;
             this._textBoxSample.ShowsLineNumber = false;
             this._textBoxSample.ShowsVScrollBar = false;
-            this._textBoxSample.Size = new System.Drawing.Size(276, 62);
+            this._textBoxSample.Size = new System.Drawing.Size(276, 100);
             this._textBoxSample.TabIndex = 17;
             this._textBoxSample.ViewWidth = 4097;
             // 
@@ -323,7 +324,7 @@
             // _checkAutoShowArgumentHint
             // 
             this._checkAutoShowArgumentHint.AutoSize = true;
-            this._checkAutoShowArgumentHint.Location = new System.Drawing.Point(14, 40);
+            this._checkAutoShowArgumentHint.Location = new System.Drawing.Point(14, 62);
             this._checkAutoShowArgumentHint.Name = "_checkAutoShowArgumentHint";
             this._checkAutoShowArgumentHint.Size = new System.Drawing.Size(187, 16);
             this._checkAutoShowArgumentHint.TabIndex = 19;
@@ -333,7 +334,7 @@
             // _checkVisibleEol
             // 
             this._checkVisibleEol.AutoSize = true;
-            this._checkVisibleEol.Location = new System.Drawing.Point(155, 277);
+            this._checkVisibleEol.Location = new System.Drawing.Point(155, 293);
             this._checkVisibleEol.Name = "_checkVisibleEol";
             this._checkVisibleEol.Size = new System.Drawing.Size(124, 16);
             this._checkVisibleEol.TabIndex = 20;
@@ -345,14 +346,25 @@
             // 
             this._groupSupport.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupSupport.Controls.Add(this._checkInputSupportAlsoInfomation);
             this._groupSupport.Controls.Add(this._checkAutoShowInputSupport);
             this._groupSupport.Controls.Add(this._checkAutoShowArgumentHint);
             this._groupSupport.Location = new System.Drawing.Point(12, 196);
             this._groupSupport.Name = "_groupSupport";
-            this._groupSupport.Size = new System.Drawing.Size(276, 64);
+            this._groupSupport.Size = new System.Drawing.Size(276, 91);
             this._groupSupport.TabIndex = 21;
             this._groupSupport.TabStop = false;
             this._groupSupport.Text = "補助";
+            // 
+            // _checkInputSupportAlsoInfomation
+            // 
+            this._checkInputSupportAlsoInfomation.AutoSize = true;
+            this._checkInputSupportAlsoInfomation.Location = new System.Drawing.Point(14, 40);
+            this._checkInputSupportAlsoInfomation.Name = "_checkInputSupportAlsoInfomation";
+            this._checkInputSupportAlsoInfomation.Size = new System.Drawing.Size(221, 16);
+            this._checkInputSupportAlsoInfomation.TabIndex = 20;
+            this._checkInputSupportAlsoInfomation.Text = "説明文も入力補完の引き当てに考慮する";
+            this._checkInputSupportAlsoInfomation.UseVisualStyleBackColor = true;
             // 
             // CalculatorSettingPanel
             // 
@@ -366,7 +378,7 @@
             this.Controls.Add(this._checkVisibleTab);
             this.Controls.Add(this._groupHighlight);
             this.Name = "CalculatorSettingPanel";
-            this.Size = new System.Drawing.Size(301, 402);
+            this.Size = new System.Drawing.Size(301, 449);
             ((System.ComponentModel.ISupportInitialize)(this._picColorConstant)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorFunction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorUnit)).EndInit();
@@ -407,5 +419,6 @@
         private System.Windows.Forms.CheckBox _checkAutoShowArgumentHint;
         private System.Windows.Forms.CheckBox _checkVisibleEol;
         private System.Windows.Forms.GroupBox _groupSupport;
+        private System.Windows.Forms.CheckBox _checkInputSupportAlsoInfomation;
     }
 }

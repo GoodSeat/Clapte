@@ -164,6 +164,15 @@ namespace GoodSeat.Clapte.Views.Forms
             set { ArgumentHelper.AutoShow = value; }
         }
 
+        /// <summary>
+        /// 説明文も補完対象として使用するか否かを設定もしくは取得します。
+        /// </summary>
+        public bool InputSupportWithAlsoInfomation
+        {
+            get { return InputSupportEnumerator.AlsoInfomation; }
+            set { InputSupportEnumerator.AlsoInfomation = value; }
+        }
+
 
         /// <summary>
         /// 親となるClapteの常駐メインフォームを取得します。
@@ -571,6 +580,7 @@ namespace GoodSeat.Clapte.Views.Forms
             Delay = int.Parse(xmlElement.GetAttribute("Delay", "500"));
             AutoShowInputSupport = bool.Parse(xmlElement.GetAttribute("AutoShowInputSupport", "True"));
             AutoShowArgumentHelp = bool.Parse(xmlElement.GetAttribute("AutoShowArgumentHelp", "True"));
+            InputSupportWithAlsoInfomation = bool.Parse(xmlElement.GetAttribute("InputSupportWithAlsoInfomation", "True"));
 
             var colorSchemeElement = xmlElement["ColorScheme"];
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant, Color.FromArgb(int.Parse(colorSchemeElement["Constant"].GetAttribute("Color"))));
@@ -596,6 +606,7 @@ namespace GoodSeat.Clapte.Views.Forms
             xmlElement.AddAttribute("Delay", Delay.ToString());
             xmlElement.AddAttribute("AutoShowInputSupport", Support.AutoShow.ToString());
             xmlElement.AddAttribute("AutoShowArgumentHelp", ArgumentHelper.AutoShow.ToString());
+            xmlElement.AddAttribute("InputSupportWithAlsoInfomation", InputSupportWithAlsoInfomation.ToString());
 
             XmlElement colorScheme = new XmlElement("ColorScheme");
             XmlElement colorConstant = new XmlElement("Constant");

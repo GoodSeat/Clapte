@@ -56,6 +56,11 @@ namespace GoodSeat.Clapte.Views.InputSupports
         public int CurrentCaretLineNumber { get; set; }
 
         /// <summary>
+        /// 説明文も補完対象として使用するか否かを設定もしくは取得します。
+        /// </summary>
+        public bool AlsoInfomation { get; set; }
+
+        /// <summary>
         /// 入力補助の提供元情報となるFormulaCellListViewModelを設定もしくは取得します。
         /// </summary>
         FormulaCellListViewModel Target { get; set; }
@@ -79,12 +84,11 @@ namespace GoodSeat.Clapte.Views.InputSupports
                 }
             }
 
-            foreach (var def in Target.ConstantList.Target.Where(def =>
-                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
-                yield return def;
-            foreach (var def in Target.ConstantList.GetSystemConstants().Where(def =>
-                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
-                yield return def;
+            Func<ConstantDefine, bool> isTarget = def => def != null && def.Name.StartsWith(startsWith);
+            if (AlsoInfomation) isTarget = def => def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith));
+
+            foreach (var def in Target.ConstantList.Target.Where(isTarget)) yield return def;
+            foreach (var def in Target.ConstantList.GetSystemConstants().Where(isTarget)) yield return def;
         }
 
         private IEnumerable<FunctionDefine> GetAllFunctionDefines(string startsWith)
@@ -105,13 +109,12 @@ namespace GoodSeat.Clapte.Views.InputSupports
                     yield return def;
                 }
             }
+            
+            Func<FunctionDefine, bool> isTarget = def => def != null && def.Name.StartsWith(startsWith);
+            if (AlsoInfomation) isTarget = def => def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith));
 
-            foreach (var def in Target.FunctionList.Target.Where(def =>
-                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
-                yield return def;
-            foreach (var def in Target.FunctionList.GetSystemFunctions().Where(def =>
-                        def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith))))
-                yield return def;
+            foreach (var def in Target.FunctionList.Target.Where(isTarget)) yield return def;
+            foreach (var def in Target.FunctionList.GetSystemFunctions().Where(isTarget)) yield return def;
         }
 
         private IEnumerable<Tuple<String, Unit, UnitConvertRecord>> GetAllUnitDefines(string startsWith, CandidateType targetType)

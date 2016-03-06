@@ -61,6 +61,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _checkVisibleEol.Checked = Target.ShowEolChara;
 
             _checkAutoShowInputSupport.Checked = Target.AutoShowInputSupport;
+            _checkInputSupportAlsoInfomation.Checked = Target.InputSupportWithAlsoInfomation;
             _checkAutoShowArgumentHint.Checked = Target.AutoShowArgumentHelp;
 
             _picColorConstant.BackColor = Target.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant);
@@ -84,6 +85,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.ShowEolChara = _checkVisibleEol.Checked;
 
             Target.AutoShowInputSupport = _checkAutoShowInputSupport.Checked;
+            Target.InputSupportWithAlsoInfomation = _checkInputSupportAlsoInfomation.Checked;
             Target.AutoShowArgumentHelp = _checkAutoShowArgumentHint.Checked;
 
             Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant, _picColorConstant.BackColor);
