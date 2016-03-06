@@ -13,6 +13,8 @@ namespace GoodSeat.Clapte.Solvers.Processes
     /// </summary>
     public class SieveTargetInputProcess : Process
     {
+        static string[] s_ops = { "+", "-", "*", "/", "^", "＋", "―", "－", "／", "×", "÷" };
+
         /// <summary>
         /// 計算対象とする文字列、及び数式を篩う処理を初期化します。
         /// </summary>
@@ -45,6 +47,14 @@ namespace GoodSeat.Clapte.Solvers.Processes
         {
             if (input.Length > MaxInputTextLength)
                 return new Error(Error.Level.Abort, "計算対象とする数式の最大文字列長を超過します。");
+
+            bool isInvalid = true;
+            input.Split('\n').Where(s => !string.IsNullOrWhiteSpace(s)).Select(s => s.Trim()).Aggregate((s1, s2) =>  {
+                if (!s_ops.Any(op => s1.EndsWith(op)) && !s_ops.Any(op => s2.StartsWith(op))) isInvalid = false;
+                return s2;
+            });
+            if (!isInvalid)
+                return new Error(Error.Level.Abort, "無効な位置の改行を含む計算式です。");
             
             return base.CheckInputText(ref input);
         }
