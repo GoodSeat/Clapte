@@ -114,6 +114,8 @@ namespace GoodSeat.LiffomTestProject
             AddParseTestCase(target, "x=2", new Equal(new Variable("x"), 2));
             // 定数のテスト
             AddParseTestCase(target, "x=i", new Equal(new Variable("x"), Imaginary.i));
+            // 単項演算子のテスト
+            AddParseTestCase(target, "a = -3.2 - 2", new Equal(new Variable("a"), new Sum(-3.2, -2)));
 
             // 空テスト
             AddParseTestCase(target, "5 m+5 cm", new Product(5, new Variable("m")) + new Product(5, new Variable("cm")));

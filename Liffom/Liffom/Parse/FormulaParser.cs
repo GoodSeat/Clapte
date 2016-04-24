@@ -500,8 +500,8 @@ namespace GoodSeat.Liffom.Parse
                     else
                     {
                         previousFormulaToken = formulaToken;
-                        seriesOperatorToken = null;
                     }
+                    seriesOperatorToken = null;
                 }
                 else
                     throw new FormulaParseException("想定外のトークンです。");
