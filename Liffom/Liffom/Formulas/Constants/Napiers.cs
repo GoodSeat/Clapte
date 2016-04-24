@@ -34,7 +34,7 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// </summary>
         public override string Information { get { return "自然対数の底"; } }
 
-        public override Formula Value { get { return Math.E; } }
+        public override Formula Value { get { return Numeric.Zero.Figure.GetNapiers(); } }
 
         /// <summary>
         /// 指定処理に関連するルールをすべて返す反復子を取得します。

@@ -93,6 +93,12 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>円周率。</returns>
         public Real GetPi() { return CreateFrom(Value.GetPi()); }
 
+        /// <summary>
+        /// 自然対数の底eに相当する数値を初期化して取得します。
+        /// </summary>
+        /// <returns>自然対数の底。</returns>
+        public Real GetNapiers() { return CreateFrom(Value.GetNapiers()); }
+
         #endregion
 
         #region 演算

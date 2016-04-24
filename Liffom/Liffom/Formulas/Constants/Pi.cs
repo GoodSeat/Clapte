@@ -41,6 +41,6 @@ namespace GoodSeat.Liffom.Formulas.Constants
         /// </summary>
         public override string Information { get { return "円周率"; } }
 
-        public override Formula Value { get { return Math.PI; } }
+        public override Formula Value { get { return Numeric.Zero.Figure.GetPi(); } }
     }
 }
