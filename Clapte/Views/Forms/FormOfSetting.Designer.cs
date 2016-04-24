@@ -29,11 +29,10 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfSetting));
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("監視対象外");
-            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("区切り数値集計");
-            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("計算機");
-            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("方程式");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("計算");
+            System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("計算機");
+            System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("監視対象外");
+            System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("区切り数値集計");
             System.Windows.Forms.TreeNode treeNode5 = new System.Windows.Forms.TreeNode("一般設定", new System.Windows.Forms.TreeNode[] {
             treeNode1,
             treeNode2,
@@ -43,6 +42,7 @@
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("関数");
             System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("単位変換表");
             System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("バージョン情報");
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfSetting));
             this._treeList = new System.Windows.Forms.TreeView();
             this._containerAll = new System.Windows.Forms.SplitContainer();
             this._btnHelp = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
@@ -61,14 +61,14 @@
             this._treeList.ItemHeight = 18;
             this._treeList.Location = new System.Drawing.Point(0, 0);
             this._treeList.Name = "_treeList";
-            treeNode1.Name = "_nodeExclude";
-            treeNode1.Text = "監視対象外";
-            treeNode2.Name = "_nodeSplitData";
-            treeNode2.Text = "区切り数値集計";
-            treeNode3.Name = "_nodeCalculator";
-            treeNode3.Text = "計算機";
-            treeNode4.Name = "_nodeSolveEquation";
-            treeNode4.Text = "方程式";
+            treeNode1.Name = "_nodeCalculate";
+            treeNode1.Text = "計算";
+            treeNode2.Name = "_nodeCalculator";
+            treeNode2.Text = "計算機";
+            treeNode3.Name = "_nodeExclude";
+            treeNode3.Text = "監視対象外";
+            treeNode4.Name = "_nodeSplitData";
+            treeNode4.Text = "区切り数値集計";
             treeNode5.Name = "_nodeGeneral";
             treeNode5.Text = "一般設定";
             treeNode6.Name = "_nodeConstant";

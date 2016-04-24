@@ -60,9 +60,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _numMaxLength.Value = TargetSolver.MaxInputTextLength;
             _numMaxUnitLength.Value = TargetSolver.MaxVariableTextLength;
 
-            _cmbValidPrecision.SelectedIndex = TargetSolver.ConsiderValidDigit ? 0 : 1;
-            _cmbRounding.SelectedIndex = (TargetSolver.MidpointRound == MidpointRounding.AwayFromZero) ? 0 : 1;
-
             _numBalloonTime.Value = Target.LimitTime;
 
             switch (TargetSolver.OutputCharaType)
@@ -78,15 +75,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 case UnitFormatType.EncloseWithSpace: _cmbOutputUnit.SelectedIndex = 1; break;
                 case UnitFormatType.EncloseWithParentheses: _cmbOutputUnit.SelectedIndex = 2; break;
                 case UnitFormatType.EncloseWithBrackets: _cmbOutputUnit.SelectedIndex = 3; break;
-                default: throw new NotImplementedException(); 
+                default: _cmbOutputUnit.SelectedIndex = 0; break;
             }
-            switch (TargetSolver.Mode)
-            {
-                case CalculateMode.Decimal: _cmbCalculateMode.SelectedIndex = 0; break;
-                case CalculateMode.Fraction: _cmbCalculateMode.SelectedIndex = 1; break;
-                default: throw new NotImplementedException();
-            }
-            //_numLimitTime.Value = (decimal)Target.LimitTime / 1000m;
             _checkPermitAllResult.Checked = !TargetSolver.PermitOnlySingleTermResult ;
 
             _checkCopyWithClick.Checked = TargetMainForm.ActionWithBalloonClick;
@@ -109,9 +99,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             TargetSolver.MaxInputTextLength = (int)_numMaxLength.Value;
             TargetSolver.MaxVariableTextLength = (int)_numMaxUnitLength.Value;
 
-            TargetSolver.ConsiderValidDigit = (_cmbValidPrecision.SelectedIndex == 0);
-            TargetSolver.MidpointRound = (_cmbRounding.SelectedIndex == 0) ? MidpointRounding.AwayFromZero : MidpointRounding.ToEven;
-
             Target.LimitTime = (int)_numBalloonTime.Value;
 
             switch (_cmbResultCharType.SelectedIndex)
@@ -129,13 +116,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 case 3: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithBrackets; break;
                 default: throw new NotImplementedException(); 
             }
-            switch (_cmbCalculateMode.SelectedIndex)
-            {
-                case 0: TargetSolver.Mode = CalculateMode.Decimal; break;
-                case 1: TargetSolver.Mode = CalculateMode.Fraction; break;
-                default: throw new NotImplementedException();
-            }
-            //TargetWatcher.Solver.MaxCalculateTime = (int)(_numLimitTime.Value * 1000);
             TargetSolver.PermitOnlySingleTermResult = !_checkPermitAllResult.Checked;
 
             TargetMainForm.ActionWithBalloonClick = _checkCopyWithClick.Checked;

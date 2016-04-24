@@ -38,6 +38,12 @@ namespace GoodSeat.Clapte.ViewModels
     /// </summary>
     public class SolverViewModel : ISerializable
     {
+        static SolverViewModel()
+        {
+            Numeric.InnerRealType = Numeric.RealType.DoubleModified;
+            Liffom.Reals.BigDecimalValue.MaxDigits = 30;
+        }
+
         /// <summary>
         /// Clapteソルバのビューモデルを初期化します。
         /// </summary>
@@ -118,6 +124,24 @@ namespace GoodSeat.Clapte.ViewModels
         /// 計算モードを設定もしくは取得します。
         /// </summary>
         public CalculateMode Mode { get; set; }
+
+        /// <summary>
+        /// 数値精度モードを設定もしくは取得します。
+        /// </summary>
+        public Numeric.RealType NumericPrecision
+        {
+            get { return Numeric.InnerRealType; }
+            set { Numeric.InnerRealType = value; }
+        }
+
+        /// <summary>
+        /// 任意精度時の考慮数値桁数を設定もしくは取得します。
+        /// </summary>
+        public int PrecisionDigitOfBigDecimal
+        {
+            get { return Liffom.Reals.BigDecimalValue.MaxDigits; }
+            set { Liffom.Reals.BigDecimalValue.MaxDigits = value; }
+        }
 
         /// <summary>
         /// 中間数値の丸め処理方法を設定もしくは取得します。
@@ -337,6 +361,8 @@ namespace GoodSeat.Clapte.ViewModels
 
             XmlElement calculateElement = xmlElement["CalculateSetting"];
             Mode = (CalculateMode)Enum.Parse(typeof(CalculateMode), calculateElement.GetAttribute("Mode"));
+            NumericPrecision = (Numeric.RealType)Enum.Parse(typeof(Numeric.RealType), calculateElement.GetAttribute("NumericPrecision", "DoubleModified"));
+            PrecisionDigitOfBigDecimal = int.Parse(calculateElement.GetAttribute("PrecisionDigitOfBigDecimal", "30"));
             MaxTime = double.Parse(calculateElement.GetAttribute("MaxTime", "3000"));
             MidpointRound = (MidpointRounding)Enum.Parse(typeof(MidpointRounding), calculateElement.GetAttribute("MidpointRound"));
             {
@@ -374,6 +400,8 @@ namespace GoodSeat.Clapte.ViewModels
 
             XmlElement calculateElement = new XmlElement("CalculateSetting");
             calculateElement.AddAttribute("Mode", Mode.ToString());
+            calculateElement.AddAttribute("NumericPrecision", NumericPrecision.ToString());
+            calculateElement.AddAttribute("PrecisionDigitOfBigDecimal", PrecisionDigitOfBigDecimal.ToString());
             calculateElement.AddAttribute("MaxTime", MaxTime.ToString());
             calculateElement.AddAttribute("MidpointRound", MidpointRound.ToString());
             {

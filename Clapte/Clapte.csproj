@@ -189,11 +189,11 @@
     <Compile Include="Views\Forms\SettingPanels\SettingPanel.designer.cs">
       <DependentUpon>SettingPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Forms\SettingPanels\SolveEquationSettingPanel.cs">
+    <Compile Include="Views\Forms\SettingPanels\CalculateSettingPanel.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Views\Forms\SettingPanels\SolveEquationSettingPanel.Designer.cs">
-      <DependentUpon>SolveEquationSettingPanel.cs</DependentUpon>
+    <Compile Include="Views\Forms\SettingPanels\CalculateSettingPanel.Designer.cs">
+      <DependentUpon>CalculateSettingPanel.cs</DependentUpon>
     </Compile>
     <Compile Include="Views\Forms\SettingPanels\SplitDataCounterPanel.cs">
       <SubType>UserControl</SubType>
@@ -265,8 +265,8 @@
     <EmbeddedResource Include="Views\Forms\SettingPanels\SettingPanel.resx">
       <DependentUpon>SettingPanel.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\SettingPanels\SolveEquationSettingPanel.resx">
-      <DependentUpon>SolveEquationSettingPanel.cs</DependentUpon>
+    <EmbeddedResource Include="Views\Forms\SettingPanels\CalculateSettingPanel.resx">
+      <DependentUpon>CalculateSettingPanel.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Forms\SettingPanels\SplitDataCounterPanel.resx">
       <DependentUpon>SplitDataCounterPanel.cs</DependentUpon>

@@ -28,24 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this._numMaxLength = new Clapte.Views.Controls.NumericSlider();
+            this._numMaxLength = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._labelMaxLength = new System.Windows.Forms.Label();
             this._checkPermitOmitMultipleMark = new System.Windows.Forms.CheckBox();
             this._labelCharType = new System.Windows.Forms.Label();
             this._cmbResultCharType = new System.Windows.Forms.ComboBox();
-            this._cmbValidPrecision = new System.Windows.Forms.ComboBox();
-            this._labelPrecision = new System.Windows.Forms.Label();
             this._groupInput = new System.Windows.Forms.GroupBox();
             this._checkPermitOmitPowerMark = new System.Windows.Forms.CheckBox();
             this._labelMaxUnitLength = new System.Windows.Forms.Label();
-            this._numMaxUnitLength = new Clapte.Views.Controls.NumericSlider();
-            this._groupSolver = new System.Windows.Forms.GroupBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this._numLimitTime = new Clapte.Views.Controls.NumericSlider();
-            this._cmbCalculateMode = new System.Windows.Forms.ComboBox();
-            this.label1 = new System.Windows.Forms.Label();
-            this._cmbRounding = new System.Windows.Forms.ComboBox();
-            this._labelRounding = new System.Windows.Forms.Label();
+            this._numMaxUnitLength = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._groupResult = new System.Windows.Forms.GroupBox();
             this._checkPermitAllResult = new System.Windows.Forms.CheckBox();
             this._cmbOutputUnit = new System.Windows.Forms.ComboBox();
@@ -59,9 +50,8 @@
             this._labelBalloonTime = new System.Windows.Forms.Label();
             this._checkAlt = new System.Windows.Forms.CheckBox();
             this._checkCopyWithClick = new System.Windows.Forms.CheckBox();
-            this._numBalloonTime = new Clapte.Views.Controls.NumericSlider();
+            this._numBalloonTime = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._groupInput.SuspendLayout();
-            this._groupSolver.SuspendLayout();
             this._groupResult.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -156,27 +146,6 @@
             this._cmbResultCharType.Size = new System.Drawing.Size(98, 20);
             this._cmbResultCharType.TabIndex = 5;
             // 
-            // _cmbValidPrecision
-            // 
-            this._cmbValidPrecision.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this._cmbValidPrecision.FormattingEnabled = true;
-            this._cmbValidPrecision.Items.AddRange(new object[] {
-            "考慮する",
-            "考慮しない"});
-            this._cmbValidPrecision.Location = new System.Drawing.Point(75, 21);
-            this._cmbValidPrecision.Name = "_cmbValidPrecision";
-            this._cmbValidPrecision.Size = new System.Drawing.Size(99, 20);
-            this._cmbValidPrecision.TabIndex = 6;
-            // 
-            // _labelPrecision
-            // 
-            this._labelPrecision.AutoSize = true;
-            this._labelPrecision.Location = new System.Drawing.Point(16, 25);
-            this._labelPrecision.Name = "_labelPrecision";
-            this._labelPrecision.Size = new System.Drawing.Size(53, 12);
-            this._labelPrecision.TabIndex = 7;
-            this._labelPrecision.Text = "有効桁数";
-            // 
             // _groupInput
             // 
             this._groupInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -187,7 +156,7 @@
             this._groupInput.Controls.Add(this._labelMaxLength);
             this._groupInput.Controls.Add(this._numMaxLength);
             this._groupInput.Controls.Add(this._checkPermitOmitMultipleMark);
-            this._groupInput.Location = new System.Drawing.Point(4, 4);
+            this._groupInput.Location = new System.Drawing.Point(4, 7);
             this._groupInput.Name = "_groupInput";
             this._groupInput.Size = new System.Drawing.Size(396, 98);
             this._groupInput.TabIndex = 9;
@@ -260,123 +229,6 @@
             0});
             this._numMaxUnitLength.VisibleBackBar = true;
             // 
-            // _groupSolver
-            // 
-            this._groupSolver.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._groupSolver.Controls.Add(this.label2);
-            this._groupSolver.Controls.Add(this._numLimitTime);
-            this._groupSolver.Controls.Add(this._cmbCalculateMode);
-            this._groupSolver.Controls.Add(this.label1);
-            this._groupSolver.Controls.Add(this._cmbRounding);
-            this._groupSolver.Controls.Add(this._cmbValidPrecision);
-            this._groupSolver.Controls.Add(this._labelRounding);
-            this._groupSolver.Controls.Add(this._labelPrecision);
-            this._groupSolver.Location = new System.Drawing.Point(4, 107);
-            this._groupSolver.Name = "_groupSolver";
-            this._groupSolver.Size = new System.Drawing.Size(396, 87);
-            this._groupSolver.TabIndex = 10;
-            this._groupSolver.TabStop = false;
-            this._groupSolver.Text = "計算";
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(187, 57);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(77, 12);
-            this.label2.TabIndex = 55;
-            this.label2.Text = "最大計算時間";
-            // 
-            // _numLimitTime
-            // 
-            this._numLimitTime.BackBarColor = System.Drawing.Color.Lavender;
-            this._numLimitTime.ClickChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numLimitTime.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this._numLimitTime.EnableUpDown = false;
-            this._numLimitTime.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numLimitTime.Location = new System.Drawing.Point(268, 52);
-            this._numLimitTime.Maximum = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this._numLimitTime.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numLimitTime.Name = "_numLimitTime";
-            this._numLimitTime.Precision = 4;
-            this._numLimitTime.Sensitivity = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this._numLimitTime.ShowButton = true;
-            this._numLimitTime.Size = new System.Drawing.Size(116, 22);
-            this._numLimitTime.SlideChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numLimitTime.TabIndex = 54;
-            this._numLimitTime.UnderBar = false;
-            this._numLimitTime.Unit = "sec";
-            this._numLimitTime.UseToolTip = true;
-            this._numLimitTime.Value = new decimal(new int[] {
-            10,
-            0,
-            0,
-            0});
-            this._numLimitTime.VisibleBackBar = true;
-            // 
-            // _cmbCalculateMode
-            // 
-            this._cmbCalculateMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this._cmbCalculateMode.FormattingEnabled = true;
-            this._cmbCalculateMode.Items.AddRange(new object[] {
-            "小数計算",
-            "分数計算"});
-            this._cmbCalculateMode.Location = new System.Drawing.Point(75, 53);
-            this._cmbCalculateMode.Name = "_cmbCalculateMode";
-            this._cmbCalculateMode.Size = new System.Drawing.Size(99, 20);
-            this._cmbCalculateMode.TabIndex = 52;
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(14, 57);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(57, 12);
-            this.label1.TabIndex = 53;
-            this.label1.Text = "計算モード";
-            // 
-            // _cmbRounding
-            // 
-            this._cmbRounding.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
-            this._cmbRounding.FormattingEnabled = true;
-            this._cmbRounding.Items.AddRange(new object[] {
-            "四捨五入",
-            "最近接偶数への丸め"});
-            this._cmbRounding.Location = new System.Drawing.Point(268, 21);
-            this._cmbRounding.Name = "_cmbRounding";
-            this._cmbRounding.Size = new System.Drawing.Size(116, 20);
-            this._cmbRounding.TabIndex = 51;
-            // 
-            // _labelRounding
-            // 
-            this._labelRounding.AutoSize = true;
-            this._labelRounding.Location = new System.Drawing.Point(187, 25);
-            this._labelRounding.Name = "_labelRounding";
-            this._labelRounding.Size = new System.Drawing.Size(75, 12);
-            this._labelRounding.TabIndex = 50;
-            this._labelRounding.Text = "端数丸め方法";
-            // 
             // _groupResult
             // 
             this._groupResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
@@ -396,9 +248,9 @@
             this._groupResult.Controls.Add(this._numBalloonTime);
             this._groupResult.Controls.Add(this._cmbResultCharType);
             this._groupResult.Controls.Add(this._labelCharType);
-            this._groupResult.Location = new System.Drawing.Point(4, 201);
+            this._groupResult.Location = new System.Drawing.Point(4, 117);
             this._groupResult.Name = "_groupResult";
-            this._groupResult.Size = new System.Drawing.Size(396, 190);
+            this._groupResult.Size = new System.Drawing.Size(396, 196);
             this._groupResult.TabIndex = 11;
             this._groupResult.TabStop = false;
             this._groupResult.Text = "出力";
@@ -442,7 +294,7 @@
             this._txtBoxHotkey.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._txtBoxHotkey.Enabled = false;
             this._txtBoxHotkey.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._txtBoxHotkey.Location = new System.Drawing.Point(203, 168);
+            this._txtBoxHotkey.Location = new System.Drawing.Point(203, 170);
             this._txtBoxHotkey.Name = "_txtBoxHotkey";
             this._txtBoxHotkey.ReadOnly = true;
             this._txtBoxHotkey.Size = new System.Drawing.Size(40, 15);
@@ -455,7 +307,7 @@
             // 
             this._labelHotkey.AutoSize = true;
             this._labelHotkey.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._labelHotkey.Location = new System.Drawing.Point(159, 168);
+            this._labelHotkey.Location = new System.Drawing.Point(159, 170);
             this._labelHotkey.Name = "_labelHotkey";
             this._labelHotkey.Size = new System.Drawing.Size(41, 15);
             this._labelHotkey.TabIndex = 47;
@@ -464,7 +316,7 @@
             // _checkCopyWithHotkey
             // 
             this._checkCopyWithHotkey.AutoSize = true;
-            this._checkCopyWithHotkey.Location = new System.Drawing.Point(21, 146);
+            this._checkCopyWithHotkey.Location = new System.Drawing.Point(21, 148);
             this._checkCopyWithHotkey.Name = "_checkCopyWithHotkey";
             this._checkCopyWithHotkey.Size = new System.Drawing.Size(139, 16);
             this._checkCopyWithHotkey.TabIndex = 8;
@@ -476,7 +328,7 @@
             // 
             this._labelEnableHotkey.AutoSize = true;
             this._labelEnableHotkey.ForeColor = System.Drawing.Color.Blue;
-            this._labelEnableHotkey.Location = new System.Drawing.Point(251, 170);
+            this._labelEnableHotkey.Location = new System.Drawing.Point(251, 172);
             this._labelEnableHotkey.Name = "_labelEnableHotkey";
             this._labelEnableHotkey.Size = new System.Drawing.Size(69, 12);
             this._labelEnableHotkey.TabIndex = 48;
@@ -499,7 +351,7 @@
             this._checkCtrl.CheckState = System.Windows.Forms.CheckState.Checked;
             this._checkCtrl.Enabled = false;
             this._checkCtrl.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._checkCtrl.Location = new System.Drawing.Point(108, 166);
+            this._checkCtrl.Location = new System.Drawing.Point(108, 168);
             this._checkCtrl.Name = "_checkCtrl";
             this._checkCtrl.Size = new System.Drawing.Size(45, 19);
             this._checkCtrl.TabIndex = 45;
@@ -523,7 +375,7 @@
             this._checkAlt.CheckState = System.Windows.Forms.CheckState.Checked;
             this._checkAlt.Enabled = false;
             this._checkAlt.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._checkAlt.Location = new System.Drawing.Point(66, 166);
+            this._checkAlt.Location = new System.Drawing.Point(66, 168);
             this._checkAlt.Name = "_checkAlt";
             this._checkAlt.Size = new System.Drawing.Size(42, 19);
             this._checkAlt.TabIndex = 46;
@@ -593,14 +445,11 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.Controls.Add(this._groupResult);
-            this.Controls.Add(this._groupSolver);
             this.Controls.Add(this._groupInput);
             this.Name = "GeneralSettingPanel";
-            this.Size = new System.Drawing.Size(408, 405);
+            this.Size = new System.Drawing.Size(408, 331);
             this._groupInput.ResumeLayout(false);
             this._groupInput.PerformLayout();
-            this._groupSolver.ResumeLayout(false);
-            this._groupSolver.PerformLayout();
             this._groupResult.ResumeLayout(false);
             this._groupResult.PerformLayout();
             this.ResumeLayout(false);
@@ -614,10 +463,7 @@
         private System.Windows.Forms.CheckBox _checkPermitOmitMultipleMark;
         private System.Windows.Forms.Label _labelCharType;
         private System.Windows.Forms.ComboBox _cmbResultCharType;
-        private System.Windows.Forms.ComboBox _cmbValidPrecision;
-        private System.Windows.Forms.Label _labelPrecision;
         private System.Windows.Forms.GroupBox _groupInput;
-        private System.Windows.Forms.GroupBox _groupSolver;
         private System.Windows.Forms.GroupBox _groupResult;
         private System.Windows.Forms.CheckBox _checkCopyWithHotkey;
         private System.Windows.Forms.CheckBox _checkCopyWithSame;
@@ -632,14 +478,8 @@
         private System.Windows.Forms.Label _labelMaxUnitLength;
         private Controls.NumericSlider _numMaxUnitLength;
         private System.Windows.Forms.CheckBox _checkPermitOmitPowerMark;
-        private System.Windows.Forms.ComboBox _cmbRounding;
-        private System.Windows.Forms.Label _labelRounding;
         private System.Windows.Forms.ComboBox _cmbOutputUnit;
         private System.Windows.Forms.Label _labelOutputUnit;
-        private System.Windows.Forms.Label label2;
-        private Controls.NumericSlider _numLimitTime;
-        private System.Windows.Forms.ComboBox _cmbCalculateMode;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox _checkPermitAllResult;
     }
 }
