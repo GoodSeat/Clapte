@@ -37,14 +37,13 @@ namespace GoodSeat.Liffom.Formulas.Units.Rules
             bool changed = false;
             var result = target.Copy();
 
-            List<Unit> existUnits = result.GetExistFactor<Unit>();
-            foreach (var unit in existUnits)
+            foreach (var unit in result.GetExistFactors<Unit>())
             {
                 if (!result.Contains(unit)) continue;
 
                 var unitType = unit.UnitType;
 
-                foreach (var other in result.GetExistFactor<Unit>())
+                foreach (var other in result.GetExistFactors<Unit>())
                 {
                     if (other.UnitType != unitType) continue;
                     if (unit == other) continue;

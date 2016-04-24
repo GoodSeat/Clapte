@@ -57,16 +57,16 @@ namespace GoodSeat.Clapte.Models
             var equal = f as Equal;
             if (equal == null) return null;
 
-            var variableList = f.GetExistFactor<Variable>();
-            if (variableList.Count == 0) // 変数が一つもない。
+            var variables = f.GetExistFactors<Variable>();
+            if (variables.Count() == 0) // 変数が一つもない。
                 return null;
-            else if (variableList.Count == 1) // 変数が一つだけ存在。
-                return new FormulaCellContentDefineWithEquation(formulaText, f, variableList[0], f, previous);
+            else if (variables.Count() == 1) // 変数が一つだけ存在。
+                return new FormulaCellContentDefineWithEquation(formulaText, f, variables.First(), f, previous);
 
             var permanentTarget = new Variable(SolveEquationProcess.PermanentSolveTarget);
-            if (variableList.Contains(permanentTarget)) return null; // 恒久的な求解対象が存在する ⇒ 変数定義とはみなさない
+            if (variables.Contains(permanentTarget)) return null; // 恒久的な求解対象が存在する ⇒ 変数定義とはみなさない
 
-            var noDefinedList = variableList.Where(v => !IsDefined(v, solver, previous));
+            var noDefinedList = variables.Where(v => !IsDefined(v, solver, previous));
             if (noDefinedList.Count() != 1) return null; // 未定義の変数が1つでない。
 
             return new FormulaCellContentDefineWithEquation(formulaText, f, noDefinedList.First() as Variable, f, previous);

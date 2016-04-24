@@ -58,7 +58,7 @@ namespace GoodSeat.Liffom.Processes
 
             var pattern = a * b;
 
-            foreach (var convert in target.GetExistFactor(f => f.PatternMatch(pattern)))
+            foreach (var convert in target.GetExistFactors(f => f.PatternMatch(pattern)))
             {
                 convert.PatternMatch(pattern);
                 var aMatched = a.MatchedFormula;

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Collections.Generic;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formats;
@@ -427,14 +428,31 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         /// <typeparam name="T">探索対象要素の型。</typeparam>
         /// <returns>指定タイプの数式リスト。</returns>
-        public List<T> GetExistFactor<T>() where T : Formula
+        public IEnumerable<T> GetExistFactors<T>() where T : Formula
         {
-            List<T> result = new List<T>();
-            if (this is T) result.Add(this as T);
+            List<T> already = new List<T>();
+            foreach (T f in onGetExistFactors<T>(already)) yield return f;
+        }
+
+        /// <summary>
+        /// 数式中の指定要素一覧を取得します。
+        /// </summary>
+        /// <typeparam name="T">探索対象要素の型。</typeparam>
+        /// <param name="already">既に返した数式要素。</param>
+        /// <returns>指定タイプの数式リスト。</returns>
+        private IEnumerable<T> onGetExistFactors<T>(List<T> already) where T : Formula
+        {
+            if (this is T && !already.Contains(this as T))
+            {
+                yield return (this as T);
+                already.Add(this as T);
+            }
+
             foreach (Formula f in this)
-                result.AddRange(f.GetExistFactor<T>());
-            SieveDouble<T>(result);
-            return result;
+            {
+                foreach (T f_ in f.onGetExistFactors<T>(already))
+                    yield return f_;
+            }
         }
 
         /// <summary>
@@ -442,14 +460,32 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         /// <param name="isTarget">判定デリゲート。</param>
         /// <returns>指定条件に一致する数式リスト。</returns>
-        public List<Formula> GetExistFactor(IsTargetFormula isTarget)
+        public IEnumerable<Formula> GetExistFactors(IsTargetFormula isTarget)
         {
-            List<Formula> result = new List<Formula>();
-            if (isTarget(this)) result.Add(this);
+            List<Formula> already = new List<Formula>();
+            foreach (var f in onGetExistFactors(isTarget, already)) yield return f;
+        }
+
+        /// <summary>
+        /// 数式中の指定要素一覧を取得します。
+        /// </summary>
+        /// <typeparam name="T">探索対象要素の型。</typeparam>
+        /// <param name="isTarget">判定デリゲート。</param>
+        /// <param name="already">既に返した数式要素。</param>
+        /// <returns>指定タイプの数式リスト。</returns>
+        private IEnumerable<Formula> onGetExistFactors(IsTargetFormula isTarget, List<Formula> already)
+        {
+            if (isTarget(this) && !already.Contains(this))
+            {
+                yield return (this);
+                already.Add(this);
+            }
+
             foreach (Formula f in this)
-                result.AddRange(f.GetExistFactor(isTarget));
-            SieveDouble(result);
-            return result;
+            {
+                foreach (Formula f_ in f.onGetExistFactors(isTarget, already))
+                    yield return f_;
+            }
         }
 
 
@@ -458,21 +494,21 @@ namespace GoodSeat.Liffom.Formulas
         /// </summary>
         /// <param name="f">探索対象とする数式。</param>
         /// <returns>判定結果。</returns>
-        public bool Contains(Formula f) { return GetExistFactor((check) => f == check).Count != 0; }
+        public bool Contains(Formula f) { return GetExistFactors((check) => f == check).Any(f_ => true); }
 
         /// <summary>
         /// 数式中に指定要素が含まれるか否かを取得します。
         /// </summary>
         /// <typeparam name="T">探索対象要素の型。</typeparam>
         /// <returns>判定結果。</returns>
-        public bool Contains<T>() where T : Formula { return GetExistFactor<T>().Count != 0; }
+        public bool Contains<T>() where T : Formula { return GetExistFactors<T>().Any(f => true); }
 
         /// <summary>
         /// 指定条件に見合う数式が、数式中に存在するか否かを取得します。
         /// </summary>
         /// <param name="isTarget">判定デリゲート。</param>
         /// <returns>判定結果。</returns>
-        public bool Contains(IsTargetFormula isTarget) { return GetExistFactor(isTarget).Count != 0; }
+        public bool Contains(IsTargetFormula isTarget) { return GetExistFactors(isTarget).Any(f => true); }
 
         /// <summary>
         /// リスト内の重複する要素を削除します。
@@ -524,17 +560,17 @@ namespace GoodSeat.Liffom.Formulas
             Dictionary<RulePatternVariable, Formula> cachePre = new Dictionary<RulePatternVariable, Formula>();
             if (!clearMatched)
             {
-                foreach (RulePatternVariable r in GetExistFactor<RulePatternVariable>())
+                foreach (RulePatternVariable r in GetExistFactors<RulePatternVariable>())
                     if (r.MatchedFormula != null) cachePre.Add(r, r.MatchedFormula);
             }
             else
             {
-                foreach (RulePatternVariable r in GetExistFactor<RulePatternVariable>()) r.ClearMatchedFormula();
+                foreach (RulePatternVariable r in GetExistFactors<RulePatternVariable>()) r.ClearMatchedFormula();
             }
 
             // 未設定のルール変数を記録
             List<RulePatternVariable> unsetRuleVariables = new List<RulePatternVariable>();
-            foreach (RulePatternVariable r in GetExistFactor<RulePatternVariable>())
+            foreach (RulePatternVariable r in GetExistFactors<RulePatternVariable>())
                 if (r.MatchedFormula == null) unsetRuleVariables.Add(r);
 
             bool check = OnCheckPatternMatch(f);

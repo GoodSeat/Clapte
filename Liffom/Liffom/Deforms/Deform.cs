@@ -78,7 +78,7 @@ namespace GoodSeat.Liffom.Deforms
         /// <param name="target">削除対象の数式。</param>
         private static void RemoveBracketFormatOfTerm(Formula target)
         {
-            foreach (var f in target.GetExistFactor(f => f is AtomicFormula || f is Numeric))
+            foreach (var f in target.GetExistFactors(f => f is AtomicFormula || f is Numeric))
                 f.Format.RemoveIndividualSettingOf<Bracket>();
         }
 

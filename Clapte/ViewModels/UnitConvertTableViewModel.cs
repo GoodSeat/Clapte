@@ -89,7 +89,7 @@ namespace GoodSeat.Clapte.ViewModels
             else
             {
                 var convert = Formula.Parse(unit);
-                foreach (var variable in convert.GetExistFactor(f => (f is Variable || f is Constant)))
+                foreach (var variable in convert.GetExistFactors(f => (f is Variable || f is Constant)))
                     convert = convert.Substituted(variable, new Unit(variable.ToString()));
                 record.ConvertUnit = convert;
             }

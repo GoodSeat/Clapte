@@ -181,7 +181,7 @@ namespace GoodSeat.Clapte.Models
             var result = new List<FormulaCell>();
             if (f == null) return result;
 
-            foreach (var variable in f.GetExistFactor<Variable>())
+            foreach (var variable in f.GetExistFactors<Variable>())
             {
                 var mark = variable.Mark;
                 bool picked = false;
@@ -199,7 +199,7 @@ namespace GoodSeat.Clapte.Models
                     if (picked) break;
                 }
             }
-            foreach (var func in f.GetExistFactor<UserFunction>())
+            foreach (var func in f.GetExistFactors<UserFunction>())
             {
                 var name = func.Name;
                 bool picked = false;
@@ -239,7 +239,7 @@ namespace GoodSeat.Clapte.Models
         public IEnumerable<string> GetAllReferenceVariableNames()
         {
             if (EvaluateTargetFormula == null) yield break;
-            foreach (var varialble in EvaluateTargetFormula.GetExistFactor<Variable>())
+            foreach (var varialble in EvaluateTargetFormula.GetExistFactors<Variable>())
             {
                 yield return varialble.Mark;
             }
@@ -251,7 +251,7 @@ namespace GoodSeat.Clapte.Models
         public IEnumerable<string> GetAllReferenceFunctionNames()
         {
             if (EvaluateTargetFormula == null) yield break;
-            foreach (var func in EvaluateTargetFormula.GetExistFactor<UserFunction>())
+            foreach (var func in EvaluateTargetFormula.GetExistFactors<UserFunction>())
             {
                 yield return func.Name;
             }

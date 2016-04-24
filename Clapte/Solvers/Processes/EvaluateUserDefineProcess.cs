@@ -85,13 +85,13 @@ namespace GoodSeat.Clapte.Solvers.Processes
             UserFunctionCache.Clear();
 
             // 変数がただ1つだけある等式なら、方程式とみなす
-            if (input is Equal && input.GetExistFactor<Variable>().Count == 1) return null;
+            if (input is Equal && input.GetExistFactors<Variable>().Count() == 1) return null;
 
             var callStack = new Stack<Formula>();
 
             try
             {
-                foreach (Variable v in input.GetExistFactor<Variable>())
+                foreach (Variable v in input.GetExistFactors<Variable>())
                 {
                     var error = EvaluateConstant(v, callStack);
                     if (error != null) return error;
@@ -100,7 +100,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
                     if (define == null) continue;
                     input = input.Substituted(v, define);
                 }
-                foreach (UserFunction v in input.GetExistFactor<UserFunction>())
+                foreach (UserFunction v in input.GetExistFactors<UserFunction>())
                 {
                     var error = EvaluateFunction(v, callStack);
                     if (error != null) return error;
@@ -232,12 +232,12 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <returns>置換された数式。</returns>
         private Formula SubsutitueUserDefines(Formula define, Stack<Formula> callStack)
         {
-            foreach (var inner in define.GetExistFactor<Variable>())
+            foreach (var inner in define.GetExistFactors<Variable>())
             {
                 EvaluateConstant(inner, callStack);
                 if (UserConstantCache[inner] != null) define = define.Substituted(inner, UserConstantCache[inner]);
             }
-            foreach (var inner in define.GetExistFactor<UserFunction>())
+            foreach (var inner in define.GetExistFactors<UserFunction>())
             {
                 EvaluateFunction(inner, callStack);
                 if (UserFunctionCache[inner] != null) define = define.Substituted(inner, UserFunctionCache[inner]);

@@ -39,7 +39,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
             if (power.Exponent is Numeric && (power.Exponent as Numeric).IsInteger) return target.Numerate();
 
             // 数値化した結果、整数となるなら計算結果で置き換える。i^(1/5)など。
-            if (power.Exponent.GetExistFactor(f => (!(f is Numeric) && !(f is Operator))).Count == 0)
+            if (!power.Exponent.Contains(f => (!(f is Numeric) && !(f is Operator))))
             {
                 Formula numerated = target.Numerate();
                 if (numerated == Imaginary.i || numerated == -1 * Imaginary.i) return numerated;

@@ -72,7 +72,7 @@ namespace GoodSeat.Liffom.Formulas
         /// <returns>数値化可能か否か。</returns>
         public static bool IsNumericOnly(Formula f)
         {
-            return f.GetExistFactor(child=>(!(child is Operator) && !(child is Numeric))).Count == 0;
+            return !f.Contains(child=>(!(child is Operator) && !(child is Numeric)));
         }
 
 

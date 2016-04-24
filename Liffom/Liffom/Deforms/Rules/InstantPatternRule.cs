@@ -49,7 +49,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
             if (target.PatternMatch(RuleFormula))
             {
                 var result = ResultFormula;
-                var patternList = result.GetExistFactor<RulePatternVariable>();
+                var patternList = result.GetExistFactors<RulePatternVariable>();
 
                 foreach (var ruleVariable in patternList) result = result.Substitute(ruleVariable, ruleVariable.MatchedFormula);
 

@@ -60,10 +60,10 @@ namespace GoodSeat.Clapte.Solvers.Processes
                 CurrentTargetUnit = parsed;
 
                 // 変数を同名の単位で置き換え
-                foreach (var variable in CurrentTargetUnit.GetExistFactor<Variable>())
+                foreach (var variable in CurrentTargetUnit.GetExistFactors<Variable>())
                     CurrentTargetUnit = CurrentTargetUnit.Substituted(variable, new Unit(variable.Mark));
                 // 定数を同名の単位で置き換え
-                foreach (var constant in CurrentTargetUnit.GetExistFactor<Constant>())
+                foreach (var constant in CurrentTargetUnit.GetExistFactors<Constant>())
                     CurrentTargetUnit = CurrentTargetUnit.Substituted(constant, new Unit(constant.DistinguishedName));
 
                 if (!CurrentTargetUnit.IsUnit(true)) return new Error(Error.Level.Abort, "目標単位として指定された文字列を、単位として認識できません。");

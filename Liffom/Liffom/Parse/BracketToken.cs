@@ -75,7 +75,7 @@ namespace GoodSeat.Liffom.Parse
             if (EvaluateAsUnit)
             {
                 // 変数を単位で置き換え
-                foreach (var variable in parsed.GetExistFactor<Variable>())
+                foreach (var variable in parsed.GetExistFactors<Variable>())
                 {
                     Unit unit = new Unit(variable.Mark);
                     parsed = parsed.Substitute(variable, unit);

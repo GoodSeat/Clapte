@@ -66,12 +66,12 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error CheckInputFormula(ref Formula input)
         {
-            foreach (var check in input.GetExistFactor<Variable>())
+            foreach (var check in input.GetExistFactors<Variable>())
             {
                 if (check.Mark.Length > MaxVariableTextLength)
                     return new Error(Error.Level.Abort, "数式中に存在する変数名が、許容最大文字列長を超過します。");
             }
-            foreach (var check in input.GetExistFactor<Unit>())
+            foreach (var check in input.GetExistFactors<Unit>())
             {
                 if (check.UnitName.Length > MaxVariableTextLength)
                     return new Error(Error.Level.Abort, "数式中に存在する単位名が、許容最大文字列長を超過します。");

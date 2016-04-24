@@ -648,7 +648,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             Formula f = Formula.Parse(value);
             if (f == 0) throw new Exception("単位変換率に0を指定することはできません。");
-            foreach (Unit u in f.GetExistFactor<Unit>()) throw new Exception("変換率に単位を含むことはできません。");
+            foreach (Unit u in f.GetExistFactors<Unit>()) throw new Exception("変換率に単位を含むことはできません。");
 
             // 変換率の設定
             rowRecord.BelongTable.SetConversionRatio(rowRecord.ConvertUnit, columnRecord.ConvertUnit, f);
@@ -672,7 +672,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 value = GetStringFrom(_dataGridUnitTable[e.ColumnIndex, e.RowIndex].Value);
 
             Formula f = Formula.Parse(value);
-            foreach (Unit u in f.GetExistFactor<Unit>()) throw new Exception("変換加算値に単位を含むことはできません。");
+            foreach (Unit u in f.GetExistFactors<Unit>()) throw new Exception("変換加算値に単位を含むことはできません。");
             f = f.Simplify();
 
             if (rowRecord is BaseUnitConvertRecord || columnRecord is BaseUnitConvertRecord)

@@ -64,9 +64,9 @@ namespace GoodSeat.Clapte.Solvers.Processes
                 var token = new DeformToken(new SimplifyToken(), new CalculateToken());
                 var target = input.DeformFormula(token);
 
-                var variables = target.GetExistFactor<Variable>();
-                if (variables.Count != 1) return null;
-                var x = variables[0];
+                var variables = target.GetExistFactors<Variable>();
+                if (variables.Count() != 1) return null;
+                var x = variables.First();
 
                 for (int i = 0; i < SolveEquations.Count; i++)
                 {

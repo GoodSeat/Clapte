@@ -369,13 +369,13 @@ namespace GoodSeat.Liffom.Extensions
         public static AtomicFormula RepresentativeVariable(this Formula f, params AtomicFormula[] ignores)
         {
             var ignoreList = new List<AtomicFormula>(ignores);
-            foreach (var x in f.GetExistFactor<Variable>())
+            foreach (var x in f.GetExistFactors<Variable>())
             {
                 if (ignoreList.Contains(x)) continue;
                 if (f.Degree(x) != 0) return x;
             }
 
-            foreach (var x in f.GetExistFactor<AtomicFormula>())
+            foreach (var x in f.GetExistFactors<AtomicFormula>())
             {
                 if (ignoreList.Contains(x)) continue;
                 if (x is Variable) continue;

@@ -37,18 +37,18 @@ namespace GoodSeat.Clapte.Solvers.Processes
             if (input is Equal) // 方程式扱いの判定
             {
                 // 未定義の変数が一つだけなら方程式とみなし、単位には変換しない
-                int countVariable = input.GetExistFactor<Variable>().Count;
+                int countVariable = input.GetExistFactors<Variable>().Count();
                 if (countVariable == 1) return null;
 
-                var constantList = input.GetExistFactor<Constant>();
-                int countConstant = constantList.Count;
-                var unitList = input.GetExistFactor<Unit>();
-                int countUnit = unitList.Count;
+                var constants = input.GetExistFactors<Constant>();
+                int countConstant = constants.Count();
+                var units = input.GetExistFactors<Unit>();
+                int countUnit = units.Count();
 
                 // 定数が一つだけなら、定数ではなく変数とみなす
                 if (countVariable == 0 && countUnit == 0 && countConstant == 1)
                 {
-                    var constant = constantList[0];
+                    var constant = constants.First();
                     input = input.Substituted(constant, new Variable(constant.DistinguishedName));
                     return null;
                 }
@@ -56,14 +56,14 @@ namespace GoodSeat.Clapte.Solvers.Processes
                 // 単位が一つだけなら、単位ではなく変数とみなす
                 if (countVariable == 0 && countConstant == 0 && countUnit == 1)
                 {
-                    var unit = unitList[0];
+                    var unit = units.First();
                     input = input.Substituted(unit, new Variable(unit.ToString()));
                     return null;
                 }
             }
 
             // 変数を単位に変換
-            foreach (var variable in input.GetExistFactor<Variable>())
+            foreach (var variable in input.GetExistFactors<Variable>())
             {
                 if (variable.Mark == SolveEquationProcess.PermanentSolveTarget) continue; // ただし、?は常に除外
                 if (IgnoreVariableNames.Contains(variable.Mark)) continue;

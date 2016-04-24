@@ -54,7 +54,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
         public override Error CheckInputFormula(ref Formula input)
         {
-            foreach (var f in input.GetExistFactor(f => f.IsUnit()))
+            foreach (var f in input.GetExistFactors(f => f.IsUnit()))
             {
                 var prop = f.Format.PropertyOf<Bracket>();
 
@@ -75,7 +75,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
             if (type != UnitFormatType.None)
             {
                 var notargets = new List<Formula>();
-                foreach (var f in output.GetExistFactor(f => f.IsUnit()))
+                foreach (var f in output.GetExistFactors(f => f.IsUnit()))
                 {
                     if (notargets.Contains(f)) continue;
 
@@ -86,7 +86,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
                     else if (type == UnitFormatType.EncloseWithBrackets)
                         f.Format.SetProperty(Bracket.SquareBracket);
 
-                    foreach (var child in f.GetExistFactor(p => p.IsUnit())) notargets.Add(child);
+                    foreach (var child in f.GetExistFactors(p => p.IsUnit())) notargets.Add(child);
                 }
             }
             return base.CheckOutputFormula(ref output);

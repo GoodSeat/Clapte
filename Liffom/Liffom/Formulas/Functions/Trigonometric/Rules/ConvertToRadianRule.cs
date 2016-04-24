@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
             if (unitType == null) return null;
 
             Formula result = null;
-            foreach (var other in target.GetExistFactor<Unit>())
+            foreach (var other in target.GetExistFactors<Unit>())
             {
                 if (other.UnitType != unitType) continue;
                 if (Rad == other) continue;

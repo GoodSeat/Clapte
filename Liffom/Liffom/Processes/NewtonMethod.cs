@@ -127,7 +127,6 @@ namespace GoodSeat.Liffom.Processes
             Real solution = initial.Figure;
             Formula fd = new Differentiate(f, x); // f'
 
-            bool containFunction = f.GetExistFactor<Function>().Count != 0; // もともとの式に関数が含まれる→微分結果にも関数が含まれないとおかしい、ただし積分関数は例外…
             fd = fd.DeformFormula(token);
 
             // 微分結果の確認

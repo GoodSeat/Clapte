@@ -91,7 +91,7 @@ namespace GoodSeat.Liffom.Processes
             Console.WriteLine("ブレント法による解の算出開始：" + start.ToLongTimeString());
 #endif
             Formula f = (target[0] - target[1]).Numerate().Combine(); // 対象の方程式 f(x) = 0 を解く。
-            if (f.GetExistFactor((v)=>(v is Variable && v != x)).Count > 0)
+            if (f.Contains(v => (v is Variable && v != x)))
                 throw new FormulaProcessException(string.Format("数式「{0}」に{1}以外の変数が存在するため、ブレント法で解くことができません。", target, x));
 
             Numeric upper = UpperLimit.Copy() as Numeric;
