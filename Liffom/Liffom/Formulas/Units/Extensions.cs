@@ -45,8 +45,12 @@ namespace GoodSeat.Liffom.Formulas.Units
                     if (!IsUnit(child, alsoOne)) return false;
                     existIsUnit = true;
 
-                    if (exist1 && (!(child is Power) || (child as Power).Exponent >= 0))
-                        return false;
+                    if (exist1)
+                    {
+                        Power pow = child as Power;
+                        if (pow == null) return false;
+                        if (!(pow.Exponent is Numeric) || pow.Exponent >= 0) return false;
+                    }
                 }
                 return existIsUnit;
             }
