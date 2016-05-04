@@ -1,4 +1,5 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Formulas;
@@ -373,7 +374,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
 #endif
             Formula ruled = GetRuledFormula();
 #if DEBUG
-            if (ruled != null) FormulaAssertionException.Assert(ruled.GetExistFactor<RulePatternVariable>().Count == 0);
+            if (ruled != null) FormulaAssertionException.Assert(ruled.GetExistFactors<RulePatternVariable>().Count() == 0);
 #endif                
             return ruled;
         }
