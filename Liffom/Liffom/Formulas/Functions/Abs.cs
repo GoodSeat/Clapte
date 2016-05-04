@@ -1,9 +1,9 @@
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Formulas.Operators;
-using System.Drawing.Drawing2D;
-using System.Drawing;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Liffom.Formulas.Functions
 {
@@ -36,14 +36,27 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         public override Formula CalculateFunction()
         {
-            if (Argument[0] is Numeric)
+            var arg = Argument[0];
+
+            if (arg is Numeric)
             {
-                Numeric n = Argument[0] as Numeric;
+                Numeric n = arg as Numeric;
                 if (n >= 0) return n;
                 else return (new Numeric(-1)).Figure * n.Figure;
             }
+            else if (arg is Product && arg.Count(f => f.IsUnit(true)) != 0)
+            {
+                List<Formula> fs      = new List<Formula>(arg.Where(f => !f.IsUnit(true)));
+                List<Formula> fs_unit = new List<Formula>(arg.Where(f =>  f.IsUnit(true)));
+                var nonUnit = new Abs(new Product(fs.ToArray())).CalculateFunction();
+                fs_unit.Insert(0, nonUnit);
+
+                return new Product(fs_unit.ToArray());
+            }
             else
+            {
                 return this;
+            }
         }
 
         public override int MinimumArgumentQty
