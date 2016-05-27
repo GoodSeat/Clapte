@@ -361,7 +361,17 @@ namespace GoodSeat.Clapte.Views.Forms
             ColorScheme.SetColor(Highlighter.GetCharClassOf(target), color, Color.White);
         }
 
-        protected override void OnCancel(EventArgs e) { this.Hide(); }
+        protected override void OnCancel(EventArgs e)
+        {
+            if (FormOfMain.IsCalculatorMode)
+            {
+                OwnerMainForm.Close();
+            }
+            else
+            {
+                this.Hide();
+            }
+        }
 
         #endregion
 

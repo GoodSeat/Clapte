@@ -25,6 +25,7 @@ namespace GoodSeat.Clapte.Views.Forms
         ClipBoardWatcher _clipBoradWatcher;
         HotkeyManager _hotkeyManager;
 
+        static bool s_calculatorMode;
         FormOfSetting _formOfSetting;
         FormOfClaptePad _formOfClaptePad;
 
@@ -34,10 +35,17 @@ namespace GoodSeat.Clapte.Views.Forms
         public static uint WM_CLAPTE = 0x0400;
 
         /// <summary>
+        /// アプリケーションが計算機モードか否かを設定若しくは取得します。
+        /// </summary>
+        public static bool IsCalculatorMode { get { return s_calculatorMode; } set { s_calculatorMode = value; } }
+
+        /// <summary>
         /// Clapteの常駐メインフォームを初期化します。
         /// </summary>
         public FormOfMain()
         {
+            IsCalculatorMode = false;
+
             InitializeComponent();
             this.Disposed += new EventHandler(FormOfMain_Disposed);
 
@@ -120,9 +128,13 @@ namespace GoodSeat.Clapte.Views.Forms
 
             this.WindowState = FormWindowState.Minimized;
 
+            // 計算機モード
+            if (IsCalculatorMode)
+            {
+                _menuCalculator_Click(sender, e);
+                _notifyIconClapte.Visible = false;
+            }
 #if DEBUG
-            _menuCalculator_Click(sender, e);
-
             ToolStripMenuItem testFormuMenu = new ToolStripMenuItem("テストフォーム起動(&F)");
             _menuClapte.Items.Add(testFormuMenu);
             testFormuMenu.Click += (testSender, testE) =>
