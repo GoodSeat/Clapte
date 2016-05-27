@@ -133,12 +133,6 @@
     <Compile Include="Views\Controls\NumericSlider.designer.cs">
       <DependentUpon>NumericSlider.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\Forms\FormOfCalculator.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="Views\Forms\FormOfCalculator.Designer.cs">
-      <DependentUpon>FormOfCalculator.cs</DependentUpon>
-    </Compile>
     <Compile Include="Views\Forms\FormOfClaptePad.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -237,9 +231,6 @@
     <Compile Include="Views\InputSupports\InputSupportTypingState.cs" />
     <EmbeddedResource Include="Views\Controls\NumericSlider.resx">
       <DependentUpon>NumericSlider.cs</DependentUpon>
-    </EmbeddedResource>
-    <EmbeddedResource Include="Views\Forms\FormOfCalculator.resx">
-      <DependentUpon>FormOfCalculator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Views\Forms\FormOfClaptePad.resx">
       <DependentUpon>FormOfClaptePad.cs</DependentUpon>
