@@ -566,6 +566,7 @@ namespace GoodSeat.Liffom.Extensions
             Formula f1pp = f1.PrimitivePolynomial(x, out cont1);
             Formula f2pp = f2.PrimitivePolynomial(x, out cont2);
             Formula gcd = GCD(cont1, cont2);
+            if (gcd == null) return null;
 
             f.Add((deg1 >= deg2) ? f1pp : f2pp);
             f.Add((deg1 >= deg2) ? f2pp : f1pp);
