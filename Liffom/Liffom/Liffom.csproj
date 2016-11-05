@@ -139,7 +139,6 @@
     <Compile Include="Formulas\Functions\Trigonometric\Tan.cs" />
     <Compile Include="Formulas\Functions\Trigonometric\TrigonometricFunction.cs" />
     <Compile Include="Formulas\Functions\UserFunction.cs" />
-    <Compile Include="Formulas\INoEvaluateAsNumeric.cs" />
     <Compile Include="Formulas\Locked.cs" />
     <Compile Include="Formulas\Matrices\Matrix.cs" />
     <Compile Include="Formulas\Matrices\Rules\CombineProductOfMatrixToPowerRule.cs" />
