@@ -355,4 +355,20 @@ namespace GoodSeat.Liffom.Formulas
 
     }
 
+    /// <summary>
+    /// Numericに関連する拡張メソッドを提供します。
+    /// </summary>
+    public static class NumericExtension
+    {
+        /// <summary>
+        /// 指定数式がすべて数値で構成され、数値化可能か否かを取得します。
+        /// </summary>
+        /// <param name="f">判定対象の数式。</param>
+        /// <returns>数値化可能か否か。</returns>
+        public static bool IsNumericOnly(this Formula f)
+        {
+            return !f.Contains(child=>(!(child is Operator) && !(child is Numeric)));
+        }
+    }
+
 }

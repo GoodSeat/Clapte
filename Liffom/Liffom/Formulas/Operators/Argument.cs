@@ -14,7 +14,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
         /// <summary>
         /// 引数を作成します。
         /// </summary>
-        /// <param name="formulas"></param>
+        /// <param name="formulas">引数を構成する可変数の数式。</param>
         public Argument(params Formula[] formulas) : base(formulas) { }
         
         /// <summary>
@@ -40,7 +40,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
         /// <summary>
         /// 指定した数式を、引数の構成数式に追加します。
         /// </summary>
-        /// <param name="formula">追加数式</param>
+        /// <param name="formula">追加数式。</param>
         public void Add(Formula formula)
         {
             Formulas.Add(formula);
