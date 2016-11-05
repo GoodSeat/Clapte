@@ -69,6 +69,7 @@
     <Compile Include="Models\FormulaCell.cs" />
     <Compile Include="Models\FormulaCellContent.cs" />
     <Compile Include="Models\FormulaCellContentComment.cs" />
+    <Compile Include="Models\FormulaCellContentContinuation.cs" />
     <Compile Include="Models\FormulaCellContentDefineConstant.cs" />
     <Compile Include="Models\FormulaCellContentDefineFunction.cs" />
     <Compile Include="Models\FormulaCellContentDefineWithEquation.cs" />
