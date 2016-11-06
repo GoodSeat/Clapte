@@ -46,6 +46,8 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this._menuJumpDefine = new System.Windows.Forms.ToolStripMenuItem();
             this._menuAddUserDefine = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._btnAllDelete = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._resultTextBox = new Sgry.Azuki.WinForms.AzukiControl();
@@ -64,8 +66,8 @@
             this._openFileDialog = new System.Windows.Forms.OpenFileDialog();
             this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this._btnSetting = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
-            this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuCommentOut = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuUnCommentOut = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -131,9 +133,11 @@
             this._menuJumpDefine,
             this._menuAddUserDefine,
             this.toolStripSeparator4,
+            this._menuCommentOut,
+            this._menuUnCommentOut,
             this._menuSolveSimultaneousEquation});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(184, 270);
+            this._contextMenuEdit.Size = new System.Drawing.Size(184, 314);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
@@ -214,6 +218,18 @@
             this._menuAddUserDefine.Size = new System.Drawing.Size(183, 22);
             this._menuAddUserDefine.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefine.Click += new System.EventHandler(this._menuAddUserDefine_Click);
+            // 
+            // toolStripSeparator4
+            // 
+            this.toolStripSeparator4.Name = "toolStripSeparator4";
+            this.toolStripSeparator4.Size = new System.Drawing.Size(180, 6);
+            // 
+            // _menuSolveSimultaneousEquation
+            // 
+            this._menuSolveSimultaneousEquation.Name = "_menuSolveSimultaneousEquation";
+            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(183, 22);
+            this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
+            this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
             // 
             // _splitContainer
             // 
@@ -443,17 +459,19 @@
             this._btnSetting.Click += new System.EventHandler(this._btnSetting_Click);
             this._btnSetting.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
             // 
-            // _menuSolveSimultaneousEquation
+            // _menuCommentOut
             // 
-            this._menuSolveSimultaneousEquation.Name = "_menuSolveSimultaneousEquation";
-            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(183, 22);
-            this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
-            this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
+            this._menuCommentOut.Name = "_menuCommentOut";
+            this._menuCommentOut.Size = new System.Drawing.Size(183, 22);
+            this._menuCommentOut.Text = "コメントアウト(&K)";
+            this._menuCommentOut.Click += new System.EventHandler(this._menuCommentOut_Click);
             // 
-            // toolStripSeparator4
+            // _menuUnCommentOut
             // 
-            this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(180, 6);
+            this._menuUnCommentOut.Name = "_menuUnCommentOut";
+            this._menuUnCommentOut.Size = new System.Drawing.Size(183, 22);
+            this._menuUnCommentOut.Text = "コメントアウト解除(&L)";
+            this._menuUnCommentOut.Click += new System.EventHandler(this._menuUnCommentOut_Click);
             // 
             // FormOfClaptePad
             // 
@@ -533,5 +551,7 @@
         private System.Windows.Forms.ToolStripMenuItem _menuAddUserDefineResult;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator4;
         private System.Windows.Forms.ToolStripMenuItem _menuSolveSimultaneousEquation;
+        private System.Windows.Forms.ToolStripMenuItem _menuCommentOut;
+        private System.Windows.Forms.ToolStripMenuItem _menuUnCommentOut;
     }
 }
