@@ -30,7 +30,7 @@ namespace GoodSeat.Clapte.Models
         }
 
         /// <summary>
-        ///    定義対象の変数を取得します。
+        /// 定義対象の変数を取得します。
         /// </summary>
         public Variable DefineTarget { get; private set; }
 
@@ -79,7 +79,7 @@ namespace GoodSeat.Clapte.Models
         /// <param name="solver">数式の構文解析に用いるソルバ。</param>
         /// <param name="previous">前方に宣言されている可変数の数式セル。</param>
         /// <returns>定義されているか否か。</returns>
-        private bool IsDefined(Variable variable, Solver solver, params FormulaCell[] previous)
+        public static bool IsDefined(Variable variable, Solver solver, params FormulaCell[] previous)
         {
             foreach (var constant in Constant.GetEnableConstants())
                 foreach (var name in constant.GetAllDistinguishedNames())
@@ -122,6 +122,7 @@ namespace GoodSeat.Clapte.Models
                 }
                 else
                 {
+                    result.ResultLevel = Result.Level.Error;
                     result.ResultText = string.Format("{0}についての求解に失敗しました。", DefineTarget);
                 }
             }

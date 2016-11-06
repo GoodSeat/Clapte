@@ -73,6 +73,7 @@
     <Compile Include="Models\FormulaCellContentDefineConstant.cs" />
     <Compile Include="Models\FormulaCellContentDefineFunction.cs" />
     <Compile Include="Models\FormulaCellContentDefineWithEquation.cs" />
+    <Compile Include="Models\FormulaCellContentDefineWithSimultaneousEquation.cs" />
     <Compile Include="Models\FormulaCellList.cs" />
     <Compile Include="Models\Windows\WindowIdentifyInfo.cs" />
     <Compile Include="Models\Windows\WindowInfo.cs" />

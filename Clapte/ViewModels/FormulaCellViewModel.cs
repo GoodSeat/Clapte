@@ -102,7 +102,7 @@ namespace GoodSeat.Clapte.ViewModels
         {
             var solver = e.Argument as SolverViewModel;
 
-            while (!Target.CanEvaluate) Thread.Sleep(2);
+            while (!Target.CanEvaluate) Thread.Sleep(50);
 
             Target.Evaluate(solver.Target);
         }
@@ -120,7 +120,7 @@ namespace GoodSeat.Clapte.ViewModels
                 _backWorker = null;
             }
 
-            if (ExitEvaluate != null) ExitEvaluate(this, e);
+            ExitEvaluate?.Invoke(this, e);
         }
 
         /// <summary>

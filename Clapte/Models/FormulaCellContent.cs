@@ -38,6 +38,7 @@ namespace GoodSeat.Clapte.Models
             s_protTypes.Add(new FormulaCellContentDefineConstant(null, null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineFunction(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineWithEquation(null, null, null, null));
+            s_protTypes.Add(new FormulaCellContentDefineWithSimultaneousEquation(null));
             s_protTypes.Add(new FormulaCellContent(null, null, null));
             s_protTypes.Add(new FormulaCellContentComment());
             s_protTypes.Add(new FormulaCellContentContinuation(null));
@@ -315,10 +316,17 @@ namespace GoodSeat.Clapte.Models
             }
 
             // 結果をセット
-            var result = OnEvaluate(solver);
-            ResultText = result.ResultText;
-            if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText.Replace("\n", " ").Replace("\r", "");
-            else if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
+            try
+            {
+                var result = OnEvaluate(solver);
+                ResultText = result.ResultText;
+                if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText.Replace("\n", " ").Replace("\r", "");
+                else if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
+            }
+            catch (Exception e)
+            {
+                ResultText = "!!! " + e.Message.Replace("\n", " ").Replace("\r", "");
+            }
         }
 
         /// <summary>

@@ -32,6 +32,7 @@ namespace GoodSeat.Clapte.Views
             Comment = CharClass.Comment,
             /// <summary>コメントを表します。</summary>
             Condition = CharClass.DocComment,
+            /// <summary>エラーを表します。</summary>
             Error = CharClass.RemovedLine
         }
 
