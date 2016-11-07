@@ -601,7 +601,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuSolveSimultaneousEquation_Click(object sender, EventArgs e)
         {
-            EditSelectedLines((text, isLast) => { return (isLast ? "{  " : "{_ ") + text; });
+            EditSelectedLines((text, isLast) => { return (isLast ? "{_ " : "{  ") + text; });
         }
 
         private void _menuCommentOut_Click(object sender, EventArgs e)
