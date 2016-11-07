@@ -39,7 +39,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             _cmbValidPrecision.SelectedIndex = TargetSolver.ConsiderValidDigit ? 0 : 1;
             _cmbRounding.SelectedIndex = (TargetSolver.MidpointRound == MidpointRounding.AwayFromZero) ? 0 : 1;
-            _numLimitTime.Value = Target.LimitTime / 1000m;
+            _numLimitTime.Value = (decimal)(TargetSolver.MaxTime / 1000d);
             switch (TargetSolver.Mode)
             {
                 case CalculateMode.Decimal: _cmbCalculateMode.SelectedIndex = 0; break;
@@ -93,7 +93,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             TargetSolver.ConsiderValidDigit = (_cmbValidPrecision.SelectedIndex == 0);
             TargetSolver.MidpointRound = (_cmbRounding.SelectedIndex == 0) ? MidpointRounding.AwayFromZero : MidpointRounding.ToEven;
-            Target.LimitTime = (int)(_numLimitTime.Value * 1000);
+            TargetSolver.MaxTime = (double)(_numLimitTime.Value * 1000);
 
             switch (_cmbCalculateMode.SelectedIndex)
             {
