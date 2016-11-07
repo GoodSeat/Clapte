@@ -18,7 +18,7 @@ namespace GoodSeat.Clapte.Models
         /// <summary>
         /// 数式を保持しない数式セルの内容を初期化します。
         /// </summary>
-        protected internal FormulaCellContentComment() : base(null, null, null) { }
+        protected internal FormulaCellContentComment() : base(null, null, null, null) { }
 
         /// <summary>
         /// 数式を保持しない数式セルの内容を初期化して取得します。

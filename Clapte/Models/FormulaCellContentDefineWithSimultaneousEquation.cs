@@ -22,7 +22,7 @@ namespace GoodSeat.Clapte.Models
         /// 連立方程式の求解による変数の定義を表す数式セルの計算/定義内容を初期化します。
         /// </summary>
         /// <param name="formulaText">初期化対象のテキスト。</param>
-        public FormulaCellContentDefineWithSimultaneousEquation(string formulaText) : base(formulaText, null, null)
+        public FormulaCellContentDefineWithSimultaneousEquation(string formulaText) : base(formulaText, null, null, null)
         {
             ResultText = "";
             IsTerminator = false;
@@ -36,8 +36,8 @@ namespace GoodSeat.Clapte.Models
         /// <param name="target">定義対象の変数。</param>
         /// <param name="evaluateTarget">具体に評価対象とする数式。</param>
         /// <param name="previous">前方に宣言されている可変数の数式セル。</param>
-        protected internal FormulaCellContentDefineWithSimultaneousEquation(string formulaText, List<Variable> targets, IEnumerable<Equal> evaluateTarget, params FormulaCell[] previous)
-            : base(formulaText, new Argument(evaluateTarget.ToArray()), new Argument(evaluateTarget.ToArray()), previous)
+        protected internal FormulaCellContentDefineWithSimultaneousEquation(string formulaText, List<Variable> targets, IEnumerable<Equal> evaluateTarget, FormulaCell[] previous)
+            : base(formulaText, new Argument(evaluateTarget.ToArray()), new Argument(evaluateTarget.ToArray()), previous, targets.Select(v => v.Mark))
         {
             DefineTargets = targets;
             TargetEquations = new List<Equal>(evaluateTarget);
@@ -48,6 +48,11 @@ namespace GoodSeat.Clapte.Models
         /// このセルコンテンツが、連立方程式の最終行で計算を行う本体セルであるか否かを取得します。
         /// </summary>
         public bool IsTerminator { get; private set; }
+
+        /// <summary>
+        /// この数式セルが実際の評価を行わず、後続の行に評価を移譲するか否かを取得します。
+        /// </summary>
+        public override bool IsContinuation { get { return !IsTerminator; } }
 
         /// <summary>
         /// 定義対象とする変数リストを取得します。
@@ -139,7 +144,7 @@ namespace GoodSeat.Clapte.Models
         /// </summary>
         /// <param name="formulaText">初期化対象のテキスト。</param>
         /// <param name="solver">数式の構文解析に用いるソルバ。</param>
-        /// <param name="previous">前方に宣言されているか変数の数式セル。</param>
+        /// <param name="previous">前方に宣言されている可変数の数式セル。</param>
         /// <returns>初期化された数式セル内容オブジェクト。生成対象とならなかった場合には、null。</returns>
         protected override FormulaCellContent TryCreateNoCalculateTarget(string formulaText, Solver solver, params FormulaCell[] previous)
         {
@@ -157,9 +162,24 @@ namespace GoodSeat.Clapte.Models
         /// <returns>評価結果を表す文字列。</returns>
         protected override Result OnEvaluate(Solver solver)
         {
-            ReplaceConstantDefineOfSolveTarget(solver);
+            var evaluateUserDefineProc = solver.GetProcessOf<EvaluateUserDefineProcess>();
+            var replaceUnitProc = solver.GetProcessOf<ReplaceVariableToUnitProcess>();
+            foreach (var variableName in DefineTargets.Select(v => v.Mark))
+            {
+                ConstantDefine delete = null;
+                foreach (var def in evaluateUserDefineProc.CustomDefineConstants)
+                {
+                    if (def.Name != variableName) continue;
+                    delete = def;
+                    break;
+                }
+                if (delete != null) evaluateUserDefineProc.CustomDefineConstants.Remove(delete);
+                replaceUnitProc.IgnoreVariableNames.Add(variableName);
+            }
 
             var result = solver.Solve(FormulaText);
+
+            replaceUnitProc.IgnoreVariableNames.Clear();
 
             if (result.ResultLevel == Result.Level.Success)
             {
@@ -168,82 +188,61 @@ namespace GoodSeat.Clapte.Models
                 var eqs = result.ResultFormula as Argument;
                 if (eqs == null || eqs.Any(f => !(f is Equal))) return result;
 
-                var proc = new SolveSimultaneousEquation();
-                var solutions = proc.Solve(new List<Equal>(eqs.Select(ConvertUnitToVariable)), DefineTargets.ToArray());
-                if (solutions == null || solutions.Count == 0) return result;
-
-                var resultTexts = new List<string>();
-                foreach (var defs in solutions)
+                try
                 {
-                    foreach (var def in defs)
+                    var proc = new SolveSimultaneousEquation();
+                    var solutions = proc.Solve(new List<Equal>(eqs.OfType<Equal>()), DefineTargets.ToArray());
+                    if (solutions == null || solutions.Count == 0) return result;
+
+                    List<string> resultTexts = CreateResultTexts(solutions);
+
+                    result.ResultLevel = Result.Level.Success;
+                    result.ResultText = resultTexts.FirstOrDefault();
+                    if (resultTexts.Count > 1)
                     {
-                        Variable val = def.LeftHandSide as Variable;
-                        if (val == null) return result;
-
-                        if (EvaluatedDefines.ContainsKey(val))
-                        {
-                            EvaluatedDefines[val].Add(def.RightHandSide);
-                        }
-                        else
-                        {
-                            var list = new List<Formula>();
-                            list.Add(def.RightHandSide);
-                            EvaluatedDefines.Add(val, list);
-                        }
+                        result.ResultText = string.Join(", ", resultTexts.Select(s => "(" + s + ")"));
                     }
-                    resultTexts.Add(string.Join(", ", defs.Select(s => s.ToString())).Replace("=", " = "));
                 }
-
-                result.ResultLevel = Result.Level.Success;
-                result.ResultText = resultTexts.FirstOrDefault();
-                if (resultTexts.Count > 1)
+                catch
                 {
-                    result.ResultText = string.Join(", ", resultTexts.Select(s => "(" + s + ")"));
+                    return result;
                 }
             }
             return result;
         }
 
         /// <summary>
-        /// 求解対象とする変数の定義を、一時的に置き換える変数定義を追加します。
+        /// 連立方程式の解の組合せから、結果表記のテキストリストを生成して取得します。
         /// </summary>
-        /// <param name="solver"></param>
-        private void ReplaceConstantDefineOfSolveTarget(Solver solver)
+        /// <param name="solutions">連立方程式の解の組合せ。</param>
+        /// <returns>連立方程式の結果を表すテキストのリスト。</returns>
+        private List<string> CreateResultTexts(List<List<Equal>> solutions)
         {
-            // 求解対象の変数を単位名で置き換え
-            var defVar = solver.GetProcessOf<EvaluateUserDefineProcess>();
-            foreach (var v in DefineTargets)
+            var resultTexts = new List<string>();
+            foreach (var defs in solutions)
             {
-                var constantDef = defVar.CustomDefineConstants.FirstOrDefault(def => def.Name == v.Mark);
-                if (constantDef == null)
+                foreach (var def in defs)
                 {
-                    constantDef = new ConstantDefine(v.Mark);
-                    defVar.CustomDefineConstants.Add(constantDef);
+                    Variable val = def.LeftHandSide as Variable;
+                    if (val == null) throw new ClapteProcessException();
+
+                    if (EvaluatedDefines.ContainsKey(val))
+                    {
+                        EvaluatedDefines[val].Add(def.RightHandSide);
+                    }
+                    else
+                    {
+                        var list = new List<Formula>();
+                        list.Add(def.RightHandSide);
+                        EvaluatedDefines.Add(val, list);
+                    }
                 }
-                constantDef.Define = "[" + CreateReplaceNameOf(v) + "]";
+                resultTexts.Add(string.Join(", ", defs.Select(s => s.ToString())).Replace("=", " = "));
             }
+
+            return resultTexts;
         }
 
-        /// <summary>
-        /// 求解対象とする変数名に一致する単位を、変数で置き換えて取得します。
-        /// </summary>
-        /// <param name="f">置き換え対象の数式。</param>
-        /// <returns>単位を変数で置き換えた数式。</returns>
-        private Equal ConvertUnitToVariable(Formula f)
-        {
-            foreach (Variable v in DefineTargets)
-            {
-                f = f.Substituted(new Unit(CreateReplaceNameOf(v)), v) as Equal;
-            }
-            return f as Equal;
-        }
-
-        /// <summary>
-        /// 変数の一時的置き換え用の単位名を取得します。
-        /// </summary>
-        /// <param name="v">置き換え対象の変数。</param>
-        /// <returns>置き換え用の単位名称。</returns>
-        private string CreateReplaceNameOf(Variable v) { return "_" + v.Mark + "_"; }
 
     }
 }

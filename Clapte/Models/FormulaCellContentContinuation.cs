@@ -16,7 +16,7 @@ namespace GoodSeat.Clapte.Models
         /// 継続行を意味する数式セルの内容を初期化します。
         /// </summary>
         /// <param name="formulaText">継続するテキスト。</param>
-        public FormulaCellContentContinuation(string formulaText) : base(formulaText, null, null)
+        public FormulaCellContentContinuation(string formulaText) : base(formulaText, null, null, null)
         {
             ResultText = "";
         }
@@ -45,6 +45,11 @@ namespace GoodSeat.Clapte.Models
             if (formulaText.Trim().EndsWith(" _")) return CreateFrom(formulaText, solver, previous);
             return null;
         }
+
+        /// <summary>
+        /// この数式セルが実際の評価を行わず、後続の行に評価を移譲するか否かを取得します。
+        /// </summary>
+        public override bool IsContinuation { get { return true; } }
 
 
     }

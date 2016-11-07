@@ -39,7 +39,7 @@ namespace GoodSeat.Clapte.Models
             s_protTypes.Add(new FormulaCellContentDefineFunction(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineWithEquation(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineWithSimultaneousEquation(null));
-            s_protTypes.Add(new FormulaCellContent(null, null, null));
+            s_protTypes.Add(new FormulaCellContent(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentComment());
             s_protTypes.Add(new FormulaCellContentContinuation(null));
         }
@@ -97,13 +97,29 @@ namespace GoodSeat.Clapte.Models
         /// <param name="f">対象の数式。</param>
         /// <param name="evaluateTarget">具体に評価対象とする数式。</param>
         /// <param name="previous">前方に宣言されている可変数の数式セル。</param>
-        protected internal FormulaCellContent(string formulaText, Formula f, Formula evaluateTarget, params FormulaCell[] previous)
+        /// <param name="notReferenceVariableNames">この数式セルで参照しない変数名。</param>
+        /// <param name="notReferenceFunctionNames">この数式セルで参照しない関数名。</param>
+        protected internal FormulaCellContent(
+            string formulaText, Formula f, Formula evaluateTarget, FormulaCell[] previous,
+            IEnumerable<string> notReferenceVariableNames = null, IEnumerable<string> notReferenceFunctionNames = null
+        )
         {
             FormulaText = formulaText;
             TargetFormula = f;
             EvaluateTargetFormula = evaluateTarget;
 
-            PreDemandEvaluateFormulaCells = CreatePreDemandEvaluateFormulaCellsList(evaluateTarget, previous);
+            if (notReferenceVariableNames != null) _notReferenceVariableNames.AddRange(notReferenceVariableNames);
+            if (notReferenceFunctionNames != null) _notReferenceFunctionNames.AddRange(notReferenceFunctionNames);
+
+            PreDemandEvaluateFormulaCells = CreatePreDemandEvaluateFormulaCellsList(previous);
+            if (previous != null)
+            {
+                foreach (var cell in previous.Reverse())
+                {
+                    if (!cell.Content.IsContinuation) break;
+                    if (!PreDemandEvaluateFormulaCells.Contains(cell)) PreDemandEvaluateFormulaCells.Add(cell);
+                }
+            }
         }
 
         /// <summary>
@@ -154,6 +170,11 @@ namespace GoodSeat.Clapte.Models
         /// </summary>
         public bool Evaluated { get { return ResultText != null; } }
 
+        /// <summary>
+        /// この数式セルが実際の評価を行わず、後続の行に評価を移譲するか否かを取得します。
+        /// </summary>
+        public virtual bool IsContinuation { get { return false; } }
+
 
         /// <summary>
         /// 指定文字列から、数式セルの内容を初期化して取得します。
@@ -193,17 +214,14 @@ namespace GoodSeat.Clapte.Models
         /// <summary>
         /// 指定数式を評価するのにあたって、先に評価されるべき数式セルのリストを取得します。
         /// </summary>
-        /// <param name="f">評価対象の数式。</param>
         /// <param name="previous">前方に宣言されている可変数の数式セル。</param>
         /// <returns>先に評価されるべき数式セルリスト。</returns>
-        private List<FormulaCell> CreatePreDemandEvaluateFormulaCellsList(Formula f, params FormulaCell[] previous)
+        private List<FormulaCell> CreatePreDemandEvaluateFormulaCellsList(params FormulaCell[] previous)
         {
             var result = new List<FormulaCell>();
-            if (f == null) return result;
 
-            foreach (var variable in f.GetExistFactors<Variable>())
+            foreach (var mark in GetAllReferenceVariableNames())
             {
-                var mark = variable.Mark;
                 bool picked = false;
 
                 for (int i = previous.Length - 1; i >= 0; i--)
@@ -219,9 +237,8 @@ namespace GoodSeat.Clapte.Models
                     if (picked) break;
                 }
             }
-            foreach (var func in f.GetExistFactors<UserFunction>())
+            foreach (var name in GetAllReferenceFunctionNames())
             {
-                var name = func.Name;
                 bool picked = false;
 
                 for (int i = previous.Length - 1; i >= 0; i--)
@@ -261,9 +278,11 @@ namespace GoodSeat.Clapte.Models
             if (EvaluateTargetFormula == null) yield break;
             foreach (var varialble in EvaluateTargetFormula.GetExistFactors<Variable>())
             {
+                if (_notReferenceVariableNames.Contains(varialble.Mark)) continue;
                 yield return varialble.Mark;
             }
         }
+        List<string> _notReferenceVariableNames = new List<string>();
 
         /// <summary>
         /// この数式セルで参照するユーザー定義関数名をすべて返す反復子を取得します。
@@ -273,9 +292,11 @@ namespace GoodSeat.Clapte.Models
             if (EvaluateTargetFormula == null) yield break;
             foreach (var func in EvaluateTargetFormula.GetExistFactors<UserFunction>())
             {
+                if (_notReferenceFunctionNames.Contains(func.Name)) continue;
                 yield return func.Name;
             }
         }
+        List<string> _notReferenceFunctionNames = new List<string>();
 
 
         /// <summary>
@@ -360,4 +381,3 @@ namespace GoodSeat.Clapte.Models
 
     }
 }
-

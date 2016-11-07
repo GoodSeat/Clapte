@@ -36,8 +36,6 @@ namespace GoodSeat.Clapte.Models
             }
 
             Content = FormulaCellContent.CreateFormulaCellContent(FormulaText, solver, previous);
-
-            if (Content != null) FormulaText = Content.FormulaText;
         }
 
         /// <summary>
