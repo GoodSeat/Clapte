@@ -55,7 +55,7 @@ namespace GoodSeat.Clapte.Solvers
         /// <summary>
         /// 結果の概要を取得します。
         /// </summary>
-        public Level ResultLevel { get; private set; }
+        public Level ResultLevel { get; set; }
 
         /// <summary>
         /// エラー情報リストを取得します。

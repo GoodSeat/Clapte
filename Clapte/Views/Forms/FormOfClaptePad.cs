@@ -361,6 +361,37 @@ namespace GoodSeat.Clapte.Views.Forms
             ColorScheme.SetColor(Highlighter.GetCharClassOf(target), color, Color.White);
         }
 
+        /// <summary>
+        /// 選択されているすべての行についてテキストの変換を行います。
+        /// </summary>
+        /// <param name="convert">元の文字列と、その行が選択行のうちの最終行か否かを受け取り、文字列を変換する処理。</param>
+        private void EditSelectedLines(Func<string, bool, string> convert)
+        {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+
+            int beginLine = _inputTextBox.GetLineHeadIndexFromCharIndex(begin);
+            int endLine = _inputTextBox.GetLineHeadIndexFromCharIndex(end);
+
+            int sline = -1, eline = -1;
+            int line = 0;
+            while (sline == -1 || eline == -1)
+            {
+                int lineHeadIndex = _inputTextBox.GetLineHeadIndex(line);
+                if (lineHeadIndex == beginLine) sline = line;
+                if (lineHeadIndex == endLine) eline = line;
+                ++line;
+            }
+
+            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            for (int l = sline; l < eline; ++l) texts[l] = convert(texts[l], false);
+            texts[eline] = convert(texts[eline], true);
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = string.Join("\r\n", texts);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
+        }
+
         protected override void OnCancel(EventArgs e)
         {
             if (FormOfMain.IsCalculatorMode)
@@ -538,6 +569,8 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuCut.Enabled = _inputTextBox.CanCut;
             _menuPaste.Enabled = _inputTextBox.CanPaste;
             _menuDelete.Enabled = _inputTextBox.CanCut;
+
+            _menuSolveSimultaneousEquation.Enabled = _inputTextBox.GetSelectedText().Contains("\n");
         }
 
         private void _menuUndo_Click(object sender, EventArgs e) { if (_inputTextBox.CanUndo) _inputTextBox.Undo(); }
@@ -565,6 +598,25 @@ namespace GoodSeat.Clapte.Views.Forms
         private void _menuJumpDefineResult_Click(object sender, EventArgs e) { JumpDefine(_resultTextBox); }
 
         private void _menuAddUserDefineResult_Click(object sender, EventArgs e) { } // TODO
+
+        private void _menuSolveSimultaneousEquation_Click(object sender, EventArgs e)
+        {
+            EditSelectedLines((text, isLast) => { return (isLast ? "{  " : "{_ ") + text; });
+        }
+
+        private void _menuCommentOut_Click(object sender, EventArgs e)
+        {
+            EditSelectedLines((text, isLast) => { return "# " + text; });
+        }
+
+        private void _menuUnCommentOut_Click(object sender, EventArgs e)
+        {
+            EditSelectedLines((text, isLast) => {
+                var textResult = text.TrimStart().TrimStart('#');
+                if (textResult.StartsWith(" ")) return textResult.Substring(1);
+                return textResult;
+            });
+        }
 
         #endregion
 

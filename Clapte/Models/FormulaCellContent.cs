@@ -32,15 +32,16 @@ namespace GoodSeat.Clapte.Models
     public class FormulaCellContent
     {
         static List<FormulaCellContent> s_protTypes = new List<FormulaCellContent>();
-        static FormulaCellContentComment s_commentContent = new FormulaCellContentComment();
 
         static FormulaCellContent()
         {
             s_protTypes.Add(new FormulaCellContentDefineConstant(null, null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineFunction(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineWithEquation(null, null, null, null));
+            s_protTypes.Add(new FormulaCellContentDefineWithSimultaneousEquation(null));
             s_protTypes.Add(new FormulaCellContent(null, null, null));
-            s_protTypes.Add(s_commentContent);
+            s_protTypes.Add(new FormulaCellContentComment());
+            s_protTypes.Add(new FormulaCellContentContinuation(null));
         }
 
 
@@ -53,13 +54,22 @@ namespace GoodSeat.Clapte.Models
         /// <returns>初期化された数式セル内容オブジェクト。</returns>
         public static FormulaCellContent CreateFormulaCellContent(string formulaText, Solver solver, params FormulaCell[] previous)
         {
-            // 速度改善のため、空白文字のみの構成はコメントにしてすぐ返す
-            if (string.IsNullOrWhiteSpace(formulaText)) return s_commentContent.CreateFrom(formulaText, solver, previous);
+            // コメント等、評価の必要のない内容の初期化を試みる
+            var noCalculateCell = s_protTypes.Select(p => p.TryCreateNoCalculateTarget(formulaText, solver, previous))
+                                             .FirstOrDefault(p => p != null);
+            if (noCalculateCell != null) return noCalculateCell;
 
+            // 継続行の処理
+            foreach (var content in previous.Select(cell => cell.Content).Reverse())
+            {
+                if (!(content is FormulaCellContentContinuation)) break;
+                formulaText = content.FormulaText + formulaText;
+            }
+
+            // 変数・関数定義参照
             var proc = solver.GetProcessOf<EvaluateUserDefineProcess>();
             proc.CustomDefineConstants.Clear();
             proc.CustomDefineFunctions.Clear();
-
             foreach (var cell in previous)
             {
                 foreach (var funcName in cell.Content.GetAllDefinedFunctionNames())
@@ -71,6 +81,7 @@ namespace GoodSeat.Clapte.Models
                 }
             }
 
+            // セルの初期化
             foreach (var protType in s_protTypes)
             {
                 var content = protType.CreateFrom(formulaText, solver, previous);
@@ -168,6 +179,15 @@ namespace GoodSeat.Clapte.Models
             return content;
         }
 
+        /// <summary>
+        /// 指定文字列から、評価にあたって計算処理の不要な数式セルの内容の初期化を試みます。
+        /// </summary>
+        /// <param name="formulaText">初期化対象のテキスト。</param>
+        /// <param name="solver">数式の構文解析に用いるソルバ。</param>
+        /// <param name="previous">前方に宣言されているか変数の数式セル。</param>
+        /// <returns>初期化された数式セル内容オブジェクト。生成対象とならなかった場合には、null。</returns>
+        protected virtual FormulaCellContent TryCreateNoCalculateTarget(string formulaText, Solver solver, params FormulaCell[] previous)
+        { return null; }
 
 
         /// <summary>
@@ -296,10 +316,17 @@ namespace GoodSeat.Clapte.Models
             }
 
             // 結果をセット
-            var result = OnEvaluate(solver);
-            ResultText = result.ResultText;
-            if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText.Replace("\n", " ").Replace("\r", "");
-            else if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
+            try
+            {
+                var result = OnEvaluate(solver);
+                ResultText = result.ResultText;
+                if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText.Replace("\n", " ").Replace("\r", "");
+                else if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
+            }
+            catch (Exception e)
+            {
+                ResultText = "!!! " + e.Message.Replace("\n", " ").Replace("\r", "");
+            }
         }
 
         /// <summary>

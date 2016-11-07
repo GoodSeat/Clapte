@@ -8,6 +8,8 @@ using GoodSeat.Liffom.Processes;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Clapte.Solvers;
 using System.Threading;
+using GoodSeat.Liffom.Formulas.Operators;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Clapte.Solvers.Processes
 {
@@ -89,7 +91,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
                 if (result != null)
                 {
-                    input = result;
+                    input = ModifyAnswerOfSingleUnit(result);
                     return null;
                 }
                 else
@@ -100,6 +102,33 @@ namespace GoodSeat.Clapte.Solvers.Processes
             finally
             {
                 Formula.FormulaProcessing -= Formula_FormulaProcessing;
+            }
+        }
+
+        /// <summary>
+        /// 方程式の解を表す数式に単独の単位が含まれる場合に、当該数式に係数1を付加します。
+        /// </summary>
+        /// <param name="result">対象とする数式。</param>
+        /// <returns>単独の単位項に係数1を付与した数式。</returns>
+        private Formula ModifyAnswerOfSingleUnit(Formula result)
+        {
+            if (result is Equal)
+            {
+                Equal equal = result as Equal;
+                equal.RightHandSide = ModifyAnswerOfSingleUnit(equal.RightHandSide);
+                return equal;
+            }
+            else if (result is Argument)
+            {
+                return new Argument(result.Select(f => ModifyAnswerOfSingleUnit(f)).ToArray());
+            }
+            else if (result is Unit)
+            {
+                return 1 * result;
+            }
+            else
+            {
+                return result;
             }
         }
 

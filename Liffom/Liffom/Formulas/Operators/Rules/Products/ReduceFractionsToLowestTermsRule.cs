@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Extensions;
@@ -43,9 +44,9 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 
             Formula rem = null;
             var f1 = a.Divide(gcd, out rem);
-            FormulaAssertionException.Assert(rem.IsZero());
+            FormulaAssertionException.Assert(rem.IsZero() || rem.All(f => f.IsZero()));
             var f2 = b.Divide(gcd, out rem);
-            FormulaAssertionException.Assert(rem.IsZero());
+            FormulaAssertionException.Assert(rem.IsZero() || rem.All(f => f.IsZero()));
 
             if (f2 == 1) return f1;
             else if (f1 == 1) return f2 ^ -1;

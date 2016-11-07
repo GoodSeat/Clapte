@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
@@ -177,6 +178,7 @@ namespace GoodSeat.Liffom.Extensions
                 {
                     Formula c = GetTermCoefficientOf(term, x, out exponent);
 
+                    if (c.IsZero()) continue;
                     if (!(exponent is Numeric)) return exponent;
                     if (maxExponent == null || exponent > maxExponent) maxExponent = exponent as Numeric;
                 }
@@ -188,7 +190,7 @@ namespace GoodSeat.Liffom.Extensions
                 if (!(exponent is Numeric)) return exponent;
                 maxExponent = exponent as Numeric;
             }
-            return maxExponent;
+            return maxExponent ?? 0;
         }
 
         /// <summary>
@@ -493,8 +495,7 @@ namespace GoodSeat.Liffom.Extensions
             }
 
             // 係数1があるならすでに原始多項式
-            foreach (var coef in coefMap.Values)
-                if (coef == 1) return f;
+            if (coefMap.Values.Contains(1)) return f;
 
             Formula gcd = null;
             foreach (var pair in coefMap)
@@ -532,6 +533,7 @@ namespace GoodSeat.Liffom.Extensions
             if (f1.IsZero()) return f2;
             if (f2.IsZero()) return f1;
             if (f1 is Numeric && f2 is Numeric) return NumericGCD(f1 as Numeric, f2 as Numeric);
+            if (f1.IsNumericOnly() && f2.IsNumericOnly()) return NumericGCD(f1.Numerate() as Numeric, f2.Numerate() as Numeric);
 
             var x = RepresentativeVariable(f1, f2);
             if (x == null) x = f1.RepresentativeVariable();
@@ -554,6 +556,7 @@ namespace GoodSeat.Liffom.Extensions
             if (f1.IsZero()) return f2;
             if (f2.IsZero()) return f1;
             if (f1 is Numeric && f2 is Numeric) return NumericGCD(f1 as Numeric, f2 as Numeric);
+            if (f1.IsNumericOnly() && f2.IsNumericOnly()) return NumericGCD(f1.Numerate() as Numeric, f2.Numerate() as Numeric);
 
             var deg1 = f1.Degree(x) as Numeric;
             if (deg1 == null || !deg1.IsInteger) throw new FormulaProcessException(string.Format("{0}は整数多項式ではありません。", f1));

@@ -44,7 +44,7 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 等式リストを指定して、連立方程式の解を算出します。
         /// </summary>
-        /// <param name="formulas">求階対象の等式リスト。</param>
+        /// <param name="formulas">求解対象の等式リスト。</param>
         /// <param name="targets">解を算出する可変数の変数。</param>
         /// <returns>解を表す等式リスト。</returns>
         public List<List<Equal>> Solve(List<Equal> formulas, params Variable[] targets)
