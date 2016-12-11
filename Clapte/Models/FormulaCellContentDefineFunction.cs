@@ -116,7 +116,7 @@ namespace GoodSeat.Clapte.Models
             if (result.ResultLevel == Result.Level.Success)
             {
                 EvaluatedDefine = new FunctionDefine(DefineTarget);
-                EvaluatedDefine.Define = FormulaText;
+                EvaluatedDefine.Define = result.ResultFormula.ToString();
                 DefineTarget.UseFormula = result.ResultFormula;
 
                 result.ResultText = string.Format("{0} = {1}", DefineTarget.NameForView, result.ResultFormula);
