@@ -29,7 +29,7 @@ namespace GoodSeat.Clapte.Models
         }
 
         /// <summary>
-        ///    定義対象の変数を取得します。
+        /// 定義対象の変数を取得します。
         /// </summary>
         public Variable DefineTarget { get; private set; }
 

@@ -11,14 +11,14 @@ using System.Drawing;
 namespace GoodSeat.Clapte.Views
 {
     /// <summary>
-    /// Azukiコントロールを対象とした、関数の引数ヘルプ機能を表します。
+    /// <see cref="AzukiControl"/>を対象とした、関数の引数ヘルプ機能を表します。
     /// </summary>
     public sealed class FunctionArgumentHelp : IDisposable
     {
         /// <summary>
-        /// Azukiコントロールを対象とした、関数の引数ヘルプ機能を初期化します。
+        /// <see cref="AzukiControl"/>を対象とした、関数の引数ヘルプ機能を初期化します。
         /// </summary>
-        /// <param name="azuki">補助機能を提供する対象となるAzukiコントロール。</param>
+        /// <param name="azuki">補助機能を提供する対象となる<see cref="AzukiControl"/>。</param>
         /// <param name="owner">補助候補のリストボックスを表示する先のコントロール。</param>
         /// <param name="enumerator">入力補助の候補列挙オブジェクト。</param>
         public FunctionArgumentHelp(AzukiControl azuki, Control owner, IInputSupportEnumerator enumerator)
@@ -43,7 +43,7 @@ namespace GoodSeat.Clapte.Views
         }
 
         /// <summary>
-        /// 対象となるAzukiコントロールを設定もしくは取得します。
+        /// 対象となる<see cref="AzukiControl"/>を設定もしくは取得します。
         /// </summary>
         AzukiControl Azuki { get; set; }
 
@@ -53,7 +53,7 @@ namespace GoodSeat.Clapte.Views
         Control Owner { get; set; }
 
         /// <summary>
-        /// AzukiのOwnerに対する相対位置を設定します。
+        /// <see cref="Azuki"/>の<see cref="Owner"/>に対する相対位置を設定します。
         /// </summary>
         public Point ModifyLocation { private get; set; }
 
