@@ -36,6 +36,12 @@ namespace GoodSeat.Clapte.ViewModels
             {
                 int indentCount = text.Length - text.TrimStart().Length;
                 Indent = text.Substring(0, indentCount).Replace("\r","").Replace("\n","");
+
+                // インデントは継続行の先頭に従う
+                foreach (var cell in previousCells.Reverse()) {
+                    if (!cell.Target.Content.IsContinuation) break;
+                    Indent = cell.Indent;
+                }
             }
         }
 

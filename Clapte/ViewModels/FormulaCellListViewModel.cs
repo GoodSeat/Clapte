@@ -242,7 +242,7 @@ namespace GoodSeat.Clapte.ViewModels
                 FormulaCellEvaluateWorkers.Add(worker);
             }
 
-            if (SolversUpdated != null) SolversUpdated(this, EventArgs.Empty);
+            SolversUpdated?.Invoke(this, EventArgs.Empty);
         }
 
 
@@ -317,15 +317,113 @@ namespace GoodSeat.Clapte.ViewModels
         /// <param name="text">数式セルリストの生成元文字列。</param>
         private List<FormulaCellViewModel> CreateFormulaCellList(string text, BackgroundWorker worker)
         {
-            var result = new List<FormulaCellViewModel>();
-            foreach (string line in text.Split('\n'))
+            // 行順、解決順インデックス、文字列 のタプルのリスト
+            List<Tuple<int, int[], string>> lines = new List<Tuple<int, int[], string>>();
+
+            // 行順、解決順インデックスを振る
+            int lineIndex = 0; // 行順
+            List<int> sectionNum = new List<int>(); // 解決順インデックス
+            Tuple<int, string> continueInfo = null; // 継続行の情報(解決順インデント、先頭の"|"を含む行文字列)
+            foreach (string lineText in text.Replace("\r", "").Split('\n'))
+            {
+                int currentIndent = GetWhereIndentAndSolveText(lineText).Item1;
+                string currentText = lineText;
+
+                if (lineText.EndsWith(" _")) // 継続行の処理
+                {
+                    if (continueInfo == null || continueInfo.Item1 == currentIndent)
+                    {
+                        string preText = (continueInfo != null) ? continueInfo.Item2 + "\n" : "";
+                        continueInfo = Tuple.Create(currentIndent, preText + lineText);
+                        continue;
+                    }
+                    else
+                    {
+                        var newInf = Tuple.Create(currentIndent, lineText);
+                        currentIndent = continueInfo.Item1;
+                        currentText = continueInfo.Item2;
+                        continueInfo = newInf;
+                    }
+                }
+                else if (continueInfo != null) // 継続行の結合
+                {
+                    currentText = continueInfo.Item2 + "\n" + currentText;
+                    continueInfo = null;
+                }
+
+                while (sectionNum.Count > currentIndent + 1) sectionNum.RemoveAt(sectionNum.Count - 1);
+
+                if (sectionNum.Count - 1 < currentIndent) sectionNum.Add(0);
+                else
+                {
+                    int chapter = sectionNum.Last();
+                    sectionNum.RemoveAt(sectionNum.Count - 1);
+                    sectionNum.Add(++chapter);
+                }
+
+                lines.Add(Tuple.Create(lineIndex++, sectionNum.ToArray(), currentText));
+            }
+
+            lines.Sort((item1, item2) => CompareSection(item1?.Item2, item2?.Item2)); // 解決順でソート
+
+            // 解決順で数式セルを評価
+            var result = new List<Tuple<int, FormulaCellViewModel>>();
+            foreach (var item in lines)
             {
                 if (worker.CancellationPending) break;
                 if (RecreateFlag) break;
 
-                result.Add(new FormulaCellViewModel(line, BaseSolver, result.ToArray()));
+                foreach (string textLine in item.Item3.Split('\n')) // 継続行の処理
+                {
+                    var textTarget = GetWhereIndentAndSolveText(textLine).Item2;
+                    result.Add(Tuple.Create(item.Item1, new FormulaCellViewModel(textTarget, BaseSolver, result.Select(r => r.Item2).ToArray())));
+                }
             }
-            return result;
+
+            // 行順に戻して返す
+            return result.OrderBy(r => r.Item1).Select(r => r.Item2).ToList();
+        }
+
+        /// <summary>
+        /// 解決順を表す数列を比較した結果を返します。
+        /// </summary>
+        /// <param name="sectionNum1">比較対象の数列1。</param>
+        /// <param name="sectionNum2">比較対象の数列2。/param>
+        /// <returns>比較結果。</returns>
+        private int CompareSection(IEnumerable<int> sectionNum1, IEnumerable<int> sectionNum2)
+        {
+            var section1 = sectionNum1;
+            var section2 = sectionNum2;
+            while (true)
+            {
+                if (section1 == null && section2 == null) return 0;
+                if (section1.Count() == 0 && section2.Count() == 0) return 0;
+                if (section2 == null || section2.Count() == 0) return -1;
+                if (section1 == null || section1.Count() == 0) return 1;
+                if (section1.First() < section2.First()) return -1;
+                if (section1.First() > section2.First()) return 1;
+
+                section1 = section1.Skip(1);
+                section2 = section2.Skip(1);
+            }
+        }
+
+        /// <summary>
+        /// 指定文字列の評価順インデントと、評価対象とする文字列を取得します。
+        /// </summary>
+        /// <param name="text">判定対象の文字列。</param>
+        /// <returns>指定文字列の評価順インデントと、評価対象とする文字列からなるタプル。</returns>
+        /// <example>
+        /// "|  |  x = 4 " -> (2, "      x = 4 ")
+        /// </example>
+        private Tuple<int, string> GetWhereIndentAndSolveText(string text)
+        {
+            int trimCount = text.Length - text.Trim().TrimStart(' ', '|').Length;
+
+            string trimText = text.Substring(0, trimCount);
+            int indentCount = trimText.Count(c => c == '|');
+
+            return Tuple.Create(indentCount, trimText.Replace('|', ' ') + text.Substring(trimCount));
         }
 
         /// <summary>

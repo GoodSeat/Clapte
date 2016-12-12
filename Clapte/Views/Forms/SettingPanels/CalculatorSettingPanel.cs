@@ -81,7 +81,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             FontInfo fontInfo = new FontInfo(_installedFonts.Families[_comboFont.SelectedIndex].Name, (int)_numFontSize.Value, FontStyle.Regular);
             Target.FontInfo = fontInfo;
             Target.ShowUnderLine = _checkUnderline.Checked;
-            Target.ShowTabChara = _checkVisibleTab.Checked ;
+            Target.ShowTabChara = _checkVisibleTab.Checked;
             Target.ShowEolChara = _checkVisibleEol.Checked;
 
             Target.AutoShowInputSupport = _checkAutoShowInputSupport.Checked;

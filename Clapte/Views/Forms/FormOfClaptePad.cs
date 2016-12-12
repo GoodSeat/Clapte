@@ -525,15 +525,6 @@ namespace GoodSeat.Clapte.Views.Forms
             _toolTipHelp.Show(helpTarget.Information, textBox, position, 5000);
         }
 
-        private void _inputTextBox_FontChanged(object sender, EventArgs e)
-        {
-            if (_inputTextBox.FontInfo == _resultTextBox.FontInfo) return;
-            if (sender == _inputTextBox)
-                _resultTextBox.FontInfo = _inputTextBox.FontInfo;
-            else
-                _inputTextBox.FontInfo = _resultTextBox.FontInfo;
-        }
-
         private void _btnSave_Click(object sender, EventArgs e)
         {
             if (_saveFileDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
