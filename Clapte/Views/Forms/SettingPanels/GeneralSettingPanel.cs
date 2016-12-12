@@ -57,6 +57,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         /// </summary>
         void DownloadSetting()
         {
+            _checkIsCalculatorMode.Checked = FormOfMain.IsCalculatorMode;
             _numMaxLength.Value = TargetSolver.MaxInputTextLength;
             _numMaxUnitLength.Value = TargetSolver.MaxVariableTextLength;
 
@@ -96,6 +97,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         /// </summary>
         public override void OnDeterminSetting()
         {
+            FormOfMain.IsCalculatorMode = _checkIsCalculatorMode.Checked;
             TargetSolver.MaxInputTextLength = (int)_numMaxLength.Value;
             TargetSolver.MaxVariableTextLength = (int)_numMaxUnitLength.Value;
 

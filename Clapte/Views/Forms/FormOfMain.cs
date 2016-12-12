@@ -44,8 +44,6 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         public FormOfMain()
         {
-            IsCalculatorMode = false;
-
             InitializeComponent();
             this.Disposed += new EventHandler(FormOfMain_Disposed);
 
@@ -129,11 +127,7 @@ namespace GoodSeat.Clapte.Views.Forms
             this.WindowState = FormWindowState.Minimized;
 
             // 計算機モード
-            if (IsCalculatorMode)
-            {
-                _menuCalculator_Click(sender, e);
-                _notifyIconClapte.Visible = false;
-            }
+            if (IsCalculatorMode) _menuCalculator_Click(sender, e);
 #if DEBUG
             ToolStripMenuItem testFormuMenu = new ToolStripMenuItem("テストフォーム起動(&F)");
             _menuClapte.Items.Add(testFormuMenu);
@@ -411,6 +405,11 @@ namespace GoodSeat.Clapte.Views.Forms
             ClapteCore.OnSerialize(clapteCoreElement);
             clapteSettingElement.AddElements(clapteCoreElement);
 
+            // 計算機モード設定の復元
+            XmlElement calculatorModeElement = new XmlElement("CalculatorMode");
+            calculatorModeElement.Value = IsCalculatorMode.ToString();
+            clapteSettingElement.AddElements(calculatorModeElement);
+
             return clapteSettingElement;
         }
 
@@ -441,6 +440,12 @@ namespace GoodSeat.Clapte.Views.Forms
 
             // ClapteCoreViewModelオブジェクトの復元
             ClapteCore.OnDeserialize(clapteSettingElement["ClapteCore"]);
+
+            // 計算機モード設定の復元
+            if (clapteSettingElement.GetElement("CalculatorMode") != null)
+                IsCalculatorMode = bool.Parse(clapteSettingElement.GetElement("CalculatorMode").Value);
+            else
+                IsCalculatorMode = false;
         }
 
         #endregion

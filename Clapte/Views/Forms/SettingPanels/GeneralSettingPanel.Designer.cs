@@ -51,8 +51,12 @@
             this._checkAlt = new System.Windows.Forms.CheckBox();
             this._checkCopyWithClick = new System.Windows.Forms.CheckBox();
             this._numBalloonTime = new GoodSeat.Clapte.Views.Controls.NumericSlider();
+            this._groupMode = new System.Windows.Forms.GroupBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this._checkIsCalculatorMode = new System.Windows.Forms.CheckBox();
             this._groupInput.SuspendLayout();
             this._groupResult.SuspendLayout();
+            this._groupMode.SuspendLayout();
             this.SuspendLayout();
             // 
             // _numMaxLength
@@ -156,7 +160,7 @@
             this._groupInput.Controls.Add(this._labelMaxLength);
             this._groupInput.Controls.Add(this._numMaxLength);
             this._groupInput.Controls.Add(this._checkPermitOmitMultipleMark);
-            this._groupInput.Location = new System.Drawing.Point(4, 7);
+            this._groupInput.Location = new System.Drawing.Point(4, 103);
             this._groupInput.Name = "_groupInput";
             this._groupInput.Size = new System.Drawing.Size(396, 98);
             this._groupInput.TabIndex = 9;
@@ -248,7 +252,7 @@
             this._groupResult.Controls.Add(this._numBalloonTime);
             this._groupResult.Controls.Add(this._cmbResultCharType);
             this._groupResult.Controls.Add(this._labelCharType);
-            this._groupResult.Location = new System.Drawing.Point(4, 117);
+            this._groupResult.Location = new System.Drawing.Point(4, 211);
             this._groupResult.Name = "_groupResult";
             this._groupResult.Size = new System.Drawing.Size(396, 196);
             this._groupResult.TabIndex = 11;
@@ -440,18 +444,56 @@
             0});
             this._numBalloonTime.VisibleBackBar = true;
             // 
+            // _groupMode
+            // 
+            this._groupMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupMode.Controls.Add(this.label1);
+            this._groupMode.Controls.Add(this._checkIsCalculatorMode);
+            this._groupMode.Location = new System.Drawing.Point(4, 3);
+            this._groupMode.Name = "_groupMode";
+            this._groupMode.Size = new System.Drawing.Size(396, 92);
+            this._groupMode.TabIndex = 12;
+            this._groupMode.TabStop = false;
+            this._groupMode.Text = "Clapteの動作";
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(10, 42);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(378, 36);
+            this.label1.TabIndex = 5;
+            this.label1.Text = "計算機モードを有効にすると、以下のような動作となります。\r\n・Clapte起動時に計算機を起動します。\r\n・計算機の右上の「×」をクリックして計算機を閉じた時に、" +
+    "Clapteを終了します。";
+            // 
+            // _checkIsCalculatorMode
+            // 
+            this._checkIsCalculatorMode.AutoSize = true;
+            this._checkIsCalculatorMode.Checked = true;
+            this._checkIsCalculatorMode.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._checkIsCalculatorMode.Location = new System.Drawing.Point(19, 19);
+            this._checkIsCalculatorMode.Name = "_checkIsCalculatorMode";
+            this._checkIsCalculatorMode.Size = new System.Drawing.Size(88, 16);
+            this._checkIsCalculatorMode.TabIndex = 4;
+            this._checkIsCalculatorMode.Text = "計算機モード";
+            this._checkIsCalculatorMode.UseVisualStyleBackColor = true;
+            // 
             // GeneralSettingPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Controls.Add(this._groupMode);
             this.Controls.Add(this._groupResult);
             this.Controls.Add(this._groupInput);
             this.Name = "GeneralSettingPanel";
-            this.Size = new System.Drawing.Size(408, 331);
+            this.Size = new System.Drawing.Size(408, 420);
             this._groupInput.ResumeLayout(false);
             this._groupInput.PerformLayout();
             this._groupResult.ResumeLayout(false);
             this._groupResult.PerformLayout();
+            this._groupMode.ResumeLayout(false);
+            this._groupMode.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -481,5 +523,8 @@
         private System.Windows.Forms.ComboBox _cmbOutputUnit;
         private System.Windows.Forms.Label _labelOutputUnit;
         private System.Windows.Forms.CheckBox _checkPermitAllResult;
+        private System.Windows.Forms.GroupBox _groupMode;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckBox _checkIsCalculatorMode;
     }
 }
