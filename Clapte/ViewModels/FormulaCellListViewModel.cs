@@ -317,95 +317,53 @@ namespace GoodSeat.Clapte.ViewModels
         /// <param name="text">数式セルリストの生成元文字列。</param>
         private List<FormulaCellViewModel> CreateFormulaCellList(string text, BackgroundWorker worker)
         {
-            // 行順、解決順インデックス、文字列 のタプルのリスト
-            List<Tuple<int, int[], string>> lines = new List<Tuple<int, int[], string>>();
+            // 行番号を振る
+            var lines = new List<Tuple<int, string>>();
+            int lineIndex = 0;
+            foreach (string lineText in text.Replace("\r", "").Split('\n')) lines.Add(Tuple.Create(lineIndex++, lineText));
 
-            // 行順、解決順インデックスを振る
-            int lineIndex = 0; // 行順
-            List<int> sectionNum = new List<int>(); // 解決順インデックス
-            Tuple<int, string> continueInfo = null; // 継続行の情報(解決順インデント、先頭の"|"を含む行文字列)
-            foreach (string lineText in text.Replace("\r", "").Split('\n'))
-            {
-                int currentIndent = GetWhereIndentAndSolveText(lineText).Item1;
-                string currentText = lineText;
-
-                if (lineText.EndsWith(" _")) // 継続行の処理
-                {
-                    if (continueInfo == null || continueInfo.Item1 == currentIndent)
-                    {
-                        string preText = (continueInfo != null) ? continueInfo.Item2 + "\n" : "";
-                        continueInfo = Tuple.Create(currentIndent, preText + lineText);
-                        continue;
-                    }
-                    else
-                    {
-                        var newInf = Tuple.Create(currentIndent, lineText);
-                        currentIndent = continueInfo.Item1;
-                        currentText = continueInfo.Item2;
-                        continueInfo = newInf;
-                    }
-                }
-                else if (continueInfo != null) // 継続行の結合
-                {
-                    currentText = continueInfo.Item2 + "\n" + currentText;
-                    continueInfo = null;
-                }
-
-                while (sectionNum.Count > currentIndent + 1) sectionNum.RemoveAt(sectionNum.Count - 1);
-
-                if (sectionNum.Count - 1 < currentIndent) sectionNum.Add(0);
-                else
-                {
-                    int chapter = sectionNum.Last();
-                    sectionNum.RemoveAt(sectionNum.Count - 1);
-                    sectionNum.Add(++chapter);
-                }
-
-                lines.Add(Tuple.Create(lineIndex++, sectionNum.ToArray(), currentText));
-            }
-
-            lines.Sort((item1, item2) => CompareSection(item1?.Item2, item2?.Item2)); // 解決順でソート
-
-            // 解決順で数式セルを評価
-            var result = new List<Tuple<int, FormulaCellViewModel>>();
-            foreach (var item in lines)
+            // 数式の解決順に並び替える
+            var linesSolveOrder = new List<Tuple<int, string>>();
+            var lineStack = new Stack<List<Tuple<int, string>>>();
+            foreach (var line in lines)
             {
                 if (worker.CancellationPending) break;
                 if (RecreateFlag) break;
 
-                foreach (string textLine in item.Item3.Split('\n')) // 継続行の処理
+                int currentIndent = GetWhereIndentAndSolveText(line.Item2).Item1;
+
+                bool solve = false;
+                while (currentIndent < lineStack.Count - 1)
                 {
-                    var textTarget = GetWhereIndentAndSolveText(textLine).Item2;
-                    result.Add(Tuple.Create(item.Item1, new FormulaCellViewModel(textTarget, BaseSolver, result.Select(r => r.Item2).ToArray())));
+                    linesSolveOrder.AddRange(lineStack.Pop());
+                    solve = true;
                 }
+                if (!solve) solve = string.IsNullOrEmpty(line.Item2.Replace(" ", "").Replace("|", ""));
+
+                if (solve && lineStack.Count > 0)
+                {
+                    linesSolveOrder.AddRange(lineStack.Peek());
+                    lineStack.Peek().Clear();
+                }
+
+                if (currentIndent >= lineStack.Count) lineStack.Push(new List<Tuple<int, string>>());
+                lineStack.Peek().Add(line);
+            }
+            while (lineStack.Count > 0) linesSolveOrder.AddRange(lineStack.Pop());
+
+            // 解決順で数式セルを評価
+            var result = new List<Tuple<int, FormulaCellViewModel>>();
+            foreach (var item in linesSolveOrder)
+            {
+                if (worker.CancellationPending) break;
+                if (RecreateFlag) break;
+
+                var textTarget = GetWhereIndentAndSolveText(item.Item2).Item2;
+                result.Add(Tuple.Create(item.Item1, new FormulaCellViewModel(textTarget, BaseSolver, result.Select(r => r.Item2).ToArray())));
             }
 
             // 行順に戻して返す
             return result.OrderBy(r => r.Item1).Select(r => r.Item2).ToList();
-        }
-
-        /// <summary>
-        /// 解決順を表す数列を比較した結果を返します。
-        /// </summary>
-        /// <param name="sectionNum1">比較対象の数列1。</param>
-        /// <param name="sectionNum2">比較対象の数列2。/param>
-        /// <returns>比較結果。</returns>
-        private int CompareSection(IEnumerable<int> sectionNum1, IEnumerable<int> sectionNum2)
-        {
-            var section1 = sectionNum1;
-            var section2 = sectionNum2;
-            while (true)
-            {
-                if (section1 == null && section2 == null) return 0;
-                if (section1.Count() == 0 && section2.Count() == 0) return 0;
-                if (section2 == null || section2.Count() == 0) return -1;
-                if (section1 == null || section1.Count() == 0) return 1;
-                if (section1.First() < section2.First()) return -1;
-                if (section1.First() > section2.First()) return 1;
-
-                section1 = section1.Skip(1);
-                section2 = section2.Skip(1);
-            }
         }
 
         /// <summary>
