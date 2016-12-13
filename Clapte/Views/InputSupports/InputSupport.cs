@@ -143,7 +143,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
 
             int startIndex;
             var target = Azuki.GetPreCaretWord(out startIndex);
-            if (target == null || target == "。" || target == "、" || target == "," || target == ".")
+            if (target == null || target == "。" || target == "、" || target == "," || target == "." || target == " " || target == "　")
             {
                 EscapeInputSupport();
                 return;
