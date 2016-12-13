@@ -110,9 +110,7 @@ namespace GoodSeat.Clapte.ViewModels
                 _systemConstants = new List<ConstantDefine>();
                 foreach (var constant in Constant.GetEnableConstants())
                 {
-                    var def = new ConstantDefine(constant.DistinguishedName);
-                    def.Information = constant.Information;
-                    def.Define = constant.Value.ToString();
+                    var def = new ConstantDefine(constant);
                     _systemConstants.Add(def);
                 }
             }

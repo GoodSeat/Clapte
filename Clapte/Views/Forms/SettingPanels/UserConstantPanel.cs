@@ -133,11 +133,12 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             if (asSystem)
             {
-            //    string name = "";
-            //    foreach (string n in (v as Constant).GetAllDistinguishedNames())
-            //        name += n + ", ";
-            //    name = name.TrimEnd(' ', ',');
+                string name = "";
+                foreach (string n in (def.Target as Constant).GetAllDistinguishedNames())
+                    name += n + ", ";
+                name = name.TrimEnd(' ', ',');
 
+                row.Cells[0].Value = name;
                 row.Cells[0].Style.BackColor = Color.WhiteSmoke;
                 row.Cells[1].Style.BackColor = Color.WhiteSmoke;
                 row.Cells[2].Style.BackColor = Color.WhiteSmoke;
