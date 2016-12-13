@@ -73,7 +73,7 @@
             this.toolStripSeparator1,
             this._menuExit});
             this._menuClapte.Name = "_menuClapte";
-            this._menuClapte.Size = new System.Drawing.Size(170, 198);
+            this._menuClapte.Size = new System.Drawing.Size(182, 198);
             this._menuClapte.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._menuClapte_Closing);
             this._menuClapte.Opening += new System.ComponentModel.CancelEventHandler(this._menuClapte_Opening);
             // 
@@ -82,71 +82,72 @@
             this._menuEnable.Checked = true;
             this._menuEnable.CheckState = System.Windows.Forms.CheckState.Checked;
             this._menuEnable.Name = "_menuEnable";
-            this._menuEnable.Size = new System.Drawing.Size(169, 22);
+            this._menuEnable.Size = new System.Drawing.Size(181, 22);
             this._menuEnable.Text = "有効(&A)";
             this._menuEnable.Click += new System.EventHandler(this._menuEnable_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(178, 6);
             // 
             // _menuConsiderValid
             // 
             this._menuConsiderValid.Name = "_menuConsiderValid";
-            this._menuConsiderValid.Size = new System.Drawing.Size(169, 22);
+            this._menuConsiderValid.Size = new System.Drawing.Size(181, 22);
             this._menuConsiderValid.Text = "有効数字考慮(&V)";
             this._menuConsiderValid.Click += new System.EventHandler(this._menuConsiderValid_Click);
             // 
             // _menuMode
             // 
             this._menuMode.Name = "_menuMode";
-            this._menuMode.Size = new System.Drawing.Size(169, 22);
+            this._menuMode.Size = new System.Drawing.Size(181, 22);
             this._menuMode.Text = "分数計算モード(&F)";
             this._menuMode.Click += new System.EventHandler(this._menuMode_Click);
             // 
             // _menuOmitPower
             // 
             this._menuOmitPower.Name = "_menuOmitPower";
-            this._menuOmitPower.Size = new System.Drawing.Size(169, 22);
+            this._menuOmitPower.Size = new System.Drawing.Size(181, 22);
             this._menuOmitPower.Text = "^ の省略を許可(&O)";
             this._menuOmitPower.Click += new System.EventHandler(this._menuOmitPower_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(178, 6);
             // 
             // _menuSetting
             // 
             this._menuSetting.Name = "_menuSetting";
-            this._menuSetting.Size = new System.Drawing.Size(169, 22);
+            this._menuSetting.Size = new System.Drawing.Size(181, 22);
             this._menuSetting.Text = "設定(&S)";
             this._menuSetting.Click += new System.EventHandler(this._menuSetting_Click);
             // 
             // _menuCalculator
             // 
             this._menuCalculator.Name = "_menuCalculator";
-            this._menuCalculator.Size = new System.Drawing.Size(169, 22);
+            this._menuCalculator.Size = new System.Drawing.Size(181, 22);
             this._menuCalculator.Text = "計算機(&C)";
             this._menuCalculator.Click += new System.EventHandler(this._menuCalculator_Click);
             // 
             // _menuHelp
             // 
             this._menuHelp.Name = "_menuHelp";
-            this._menuHelp.Size = new System.Drawing.Size(169, 22);
+            this._menuHelp.Size = new System.Drawing.Size(181, 22);
             this._menuHelp.Text = "ヘルプ(&H)";
+            this._menuHelp.Visible = false;
             this._menuHelp.Click += new System.EventHandler(this._menuHelp_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(166, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(178, 6);
             // 
             // _menuExit
             // 
             this._menuExit.Name = "_menuExit";
-            this._menuExit.Size = new System.Drawing.Size(169, 22);
+            this._menuExit.Size = new System.Drawing.Size(181, 22);
             this._menuExit.Text = "終了(&X)";
             this._menuExit.Click += new System.EventHandler(this._menuExit_Click);
             // 

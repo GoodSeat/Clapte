@@ -168,11 +168,6 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
-        private void _btnHelp_Click(object sender, EventArgs e)
-        {
-            ClapteHelp.Show(this, _treeList.SelectedNode.Text);
-        }
-
 
     }
 }

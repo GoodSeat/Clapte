@@ -28,7 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.components = new System.ComponentModel.Container();
             System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("計算");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("計算機");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("監視対象外");
@@ -45,11 +44,9 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfSetting));
             this._treeList = new System.Windows.Forms.TreeView();
             this._containerAll = new System.Windows.Forms.SplitContainer();
-            this._btnHelp = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             ((System.ComponentModel.ISupportInitialize)(this._containerAll)).BeginInit();
             this._containerAll.Panel1.SuspendLayout();
             this._containerAll.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._btnHelp)).BeginInit();
             this.SuspendLayout();
             // 
             // _treeList
@@ -106,28 +103,11 @@
             this._containerAll.SplitterDistance = 120;
             this._containerAll.TabIndex = 17;
             // 
-            // _btnHelp
-            // 
-            this._btnHelp.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnHelp.Cursor = System.Windows.Forms.Cursors.Hand;
-            this._btnHelp.DownMove = 1;
-            this._btnHelp.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Help;
-            this._btnHelp.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Help_Unfocus;
-            this._btnHelp.Location = new System.Drawing.Point(518, 8);
-            this._btnHelp.Name = "_btnHelp";
-            this._btnHelp.Size = new System.Drawing.Size(16, 16);
-            this._btnHelp.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this._btnHelp.TabIndex = 0;
-            this._btnHelp.TabStop = false;
-            this._btnHelp.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Help_Unfocus;
-            this._btnHelp.Click += new System.EventHandler(this._btnHelp_Click);
-            // 
             // FormOfSetting
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
             this.ClientSize = new System.Drawing.Size(574, 485);
-            this.Controls.Add(this._btnHelp);
             this.Controls.Add(this._containerAll);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(250, 200);
@@ -138,11 +118,9 @@
             this.Text = "Clapteの設定";
             this.Load += new System.EventHandler(this.FormOfSetting_Load);
             this.Controls.SetChildIndex(this._containerAll, 0);
-            this.Controls.SetChildIndex(this._btnHelp, 0);
             this._containerAll.Panel1.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._containerAll)).EndInit();
             this._containerAll.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._btnHelp)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -152,6 +130,5 @@
 
         private System.Windows.Forms.TreeView _treeList;
         private System.Windows.Forms.SplitContainer _containerAll;
-        private Components.ImageButton _btnHelp;
     }
 }
