@@ -6,6 +6,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.Solvers.Processes;
+using GoodSeat.Liffom.Formulas.Constants;
 
 namespace GoodSeat.Clapte.Models
 {
@@ -65,7 +66,11 @@ namespace GoodSeat.Clapte.Models
             if (equal == null) return null;
 
             var target = equal.LeftHandSide as Variable;
-            if (target == null) return null;
+            if (target == null)
+            {
+                if (equal.LeftHandSide is Constant) target = new Variable(equal.LeftHandSide.ToString());
+                else return null;
+            }
             if (target.Mark == SolveEquationProcess.PermanentSolveTarget) return null; // "?"は変数名として許可しない
 
             if (equal.RightHandSide.Contains(target)) return null;
@@ -88,6 +93,9 @@ namespace GoodSeat.Clapte.Models
         /// <returns>評価結果を表す文字列。</returns>
         protected override Result OnEvaluate(Solver solver)
         {
+            if (Constant.GetEnableConstants().FirstOrDefault(cst => cst.GetAllDistinguishedNames().Contains(DefineTarget.Mark)) != null)
+                throw new ClapteProcessException(string.Format("変数名 {0} はシステムで定義されているため、再定義できません。", DefineTarget.Mark));
+
             var result = solver.Solve(FormulaText);
 
             if (result.ResultLevel == Result.Level.Success)
