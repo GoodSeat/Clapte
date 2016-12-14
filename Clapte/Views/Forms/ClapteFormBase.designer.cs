@@ -34,11 +34,11 @@
             this._toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
             this._btnOption = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnClose = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
-            this._btnTopMost = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._picTitleBar = new GoodSeat.Clapte.Views.Components.ChameleonPictureBox(this.components);
             this._btnOK = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnCancel = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._frameBottomRight = new GoodSeat.Clapte.Views.Components.ChameleonPictureBox(this.components);
+            this._btnTopMost = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._frameRight = new GoodSeat.Clapte.Views.Components.ChameleonPictureBox(this.components);
             this._frameTopRight = new GoodSeat.Clapte.Views.Components.ChameleonPictureBox(this.components);
             this._frameBottom = new GoodSeat.Clapte.Views.Components.ChameleonPictureBox(this.components);
@@ -48,11 +48,11 @@
             this._frameTopLeft = new GoodSeat.Clapte.Views.Components.ChameleonPictureBox(this.components);
             ((System.ComponentModel.ISupportInitialize)(this._btnOption)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnClose)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this._btnTopMost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTitleBar)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnOK)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnCancel)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameBottomRight)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnTopMost)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameTopRight)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameBottom)).BeginInit();
@@ -76,7 +76,7 @@
             this._labelTitle.TextAlign = System.Drawing.ContentAlignment.TopRight;
             this._labelTitle.Visible = false;
             // 
-            // _toolHelpTip
+            // _toolTipHelp
             // 
             this._toolTipHelp.BackColor = System.Drawing.Color.White;
             // 
@@ -84,7 +84,7 @@
             // 
             this._btnOption.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this._btnOption.BackColor = System.Drawing.Color.White;
-            this._btnOption.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnOption.Cursor = System.Windows.Forms.Cursors.Default;
             this._btnOption.DownMove = 1;
             this._btnOption.FocusImage = null;
             this._btnOption.Location = new System.Drawing.Point(476, 9);
@@ -93,7 +93,6 @@
             this._btnOption.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnOption.TabIndex = 15;
             this._btnOption.TabStop = false;
-            this._toolTipHelp.SetToolTip(this._btnOption, "オプションを表示します");
             this._btnOption.UnFocusImage = null;
             this._btnOption.Visible = false;
             this._btnOption.Click += new System.EventHandler(this._btnOption_Click);
@@ -115,24 +114,6 @@
             this._toolTipHelp.SetToolTip(this._btnClose, "閉じる");
             this._btnClose.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
             this._btnClose.Click += new System.EventHandler(this._btnClose_Click);
-            // 
-            // _btnTopMost
-            // 
-            this._btnTopMost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this._btnTopMost.BackColor = System.Drawing.Color.White;
-            this._btnTopMost.Cursor = System.Windows.Forms.Cursors.Hand;
-            this._btnTopMost.DownMove = 1;
-            this._btnTopMost.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin;
-            this._btnTopMost.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
-            this._btnTopMost.Location = new System.Drawing.Point(495, 9);
-            this._btnTopMost.Name = "_btnTopMost";
-            this._btnTopMost.Size = new System.Drawing.Size(18, 16);
-            this._btnTopMost.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this._btnTopMost.TabIndex = 11;
-            this._btnTopMost.TabStop = false;
-            this._toolTipHelp.SetToolTip(this._btnTopMost, "最前面表示の有効化／無効化");
-            this._btnTopMost.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
-            this._btnTopMost.Click += new System.EventHandler(this._btnTopMost_Click);
             // 
             // _picTitleBar
             // 
@@ -191,6 +172,24 @@
             this._frameBottomRight.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this._frameBottomRight.TabIndex = 8;
             this._frameBottomRight.TabStop = false;
+            // 
+            // _btnTopMost
+            // 
+            this._btnTopMost.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnTopMost.BackColor = System.Drawing.Color.White;
+            this._btnTopMost.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnTopMost.DownMove = 1;
+            this._btnTopMost.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin;
+            this._btnTopMost.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
+            this._btnTopMost.Location = new System.Drawing.Point(495, 9);
+            this._btnTopMost.Name = "_btnTopMost";
+            this._btnTopMost.Size = new System.Drawing.Size(18, 16);
+            this._btnTopMost.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnTopMost.TabIndex = 11;
+            this._btnTopMost.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnTopMost, "最前面表示の有効化／無効化");
+            this._btnTopMost.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
+            this._btnTopMost.Click += new System.EventHandler(this._btnTopMost_Click);
             // 
             // _frameRight
             // 
@@ -312,11 +311,11 @@
             this.Load += new System.EventHandler(this.ClapteFormBase_Load);
             ((System.ComponentModel.ISupportInitialize)(this._btnOption)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnClose)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this._btnTopMost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picTitleBar)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnOK)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnCancel)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameBottomRight)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnTopMost)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameTopRight)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._frameBottom)).EndInit();

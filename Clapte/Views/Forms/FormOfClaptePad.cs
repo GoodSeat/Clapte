@@ -247,7 +247,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         void HotLoad()
         {
-            if (File.Exists(_hotSaveFilename)) _inputTextBox.Text = File.ReadAllText(_hotSaveFilename, Encoding.Default);
+            if (File.Exists(_hotSaveFilename))  _inputTextBox.Text = File.ReadAllText(_hotSaveFilename, Encoding.Default);
         }
 
         /// <summary>
@@ -549,6 +549,8 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _picStatus_VisibleChanged(object sender, EventArgs e) { _btnAbort.Visible = _picStatus.Visible; }
 
+        private void _btnMinimize_Click(object sender, EventArgs e) { WindowState = FormWindowState.Minimized; }
+
         #region コンテキストメニュー
 
         private void _contextMenuEdit_Opening(object sender, CancelEventArgs e)
@@ -686,6 +688,5 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         #endregion
-
     }
 }
