@@ -66,6 +66,8 @@ namespace GoodSeat.Clapte.Solvers.Processes
             input = input.Replace("］", "]");
             input = input.Replace("＜", "<");
             input = input.Replace("＞", ">");
+            input = input.Replace("≧", ">=");
+            input = input.Replace("≦", "<=");
             input = input.Replace("＝", "=");
 
             input = input.TrimEnd(' ', '=');

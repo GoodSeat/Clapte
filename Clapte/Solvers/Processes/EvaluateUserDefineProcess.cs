@@ -188,7 +188,6 @@ namespace GoodSeat.Clapte.Solvers.Processes
             callStack.Push(v);
             try
             {
-                var parser = Owner.Parser;
                 FunctionDefine target = null;
                 foreach (var def in GetAllValidFunctionDefines())
                 {
@@ -203,7 +202,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
                     return null;
                 }
 
-                Formula define = parser.Parse(target.Define);
+                Formula define = Owner.Parse(target.Define);
                 for (int i = 0; i < v.UseVariable.Count; i++) // 実引数で仮引数を置き換える
                 {
                     if (v[i] == null)
