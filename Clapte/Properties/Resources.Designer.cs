@@ -583,9 +583,9 @@ namespace GoodSeat.Clapte.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap Icon_PushPin_Abort {
+        internal static System.Drawing.Bitmap Icon_PushPin_Unfocus {
             get {
-                object obj = ResourceManager.GetObject("Icon_PushPin_Abort", resourceCulture);
+                object obj = ResourceManager.GetObject("Icon_PushPin_Unfocus", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

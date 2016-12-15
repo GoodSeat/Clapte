@@ -85,7 +85,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             _picTitleBar.Width = Width - 68;
 
-            _btnTopMost.UnFocusImage = TopMost ? Properties.Resources.Icon_PushPin : Properties.Resources.Icon_PushPin_Abort;
+            _btnTopMost.UnFocusImage = TopMost ? Properties.Resources.Icon_PushPin : Properties.Resources.Icon_PushPin_Unfocus;
         }
 
         /// <summary>
@@ -198,7 +198,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             TopMost = !TopMost;
 
-            _btnTopMost.UnFocusImage = TopMost ? Properties.Resources.Icon_PushPin : Properties.Resources.Icon_PushPin_Abort;
+            _btnTopMost.UnFocusImage = TopMost ? Properties.Resources.Icon_PushPin : Properties.Resources.Icon_PushPin_Unfocus;
         }
 
         protected override void WndProc(ref Message m)

@@ -105,7 +105,7 @@
             this._btnClose.DownMove = 1;
             this._btnClose.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter;
             this._btnClose.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
-            this._btnClose.Location = new System.Drawing.Point(516, 10);
+            this._btnClose.Location = new System.Drawing.Point(514, 10);
             this._btnClose.Name = "_btnClose";
             this._btnClose.Size = new System.Drawing.Size(14, 14);
             this._btnClose.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -180,15 +180,15 @@
             this._btnTopMost.Cursor = System.Windows.Forms.Cursors.Hand;
             this._btnTopMost.DownMove = 1;
             this._btnTopMost.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin;
-            this._btnTopMost.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
-            this._btnTopMost.Location = new System.Drawing.Point(495, 9);
+            this._btnTopMost.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Unfocus;
+            this._btnTopMost.Location = new System.Drawing.Point(495, 6);
             this._btnTopMost.Name = "_btnTopMost";
-            this._btnTopMost.Size = new System.Drawing.Size(18, 16);
+            this._btnTopMost.Size = new System.Drawing.Size(20, 20);
             this._btnTopMost.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnTopMost.TabIndex = 11;
             this._btnTopMost.TabStop = false;
             this._toolTipHelp.SetToolTip(this._btnTopMost, "最前面表示の有効化／無効化");
-            this._btnTopMost.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Abort;
+            this._btnTopMost.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_PushPin_Unfocus;
             this._btnTopMost.Click += new System.EventHandler(this._btnTopMost_Click);
             // 
             // _frameRight

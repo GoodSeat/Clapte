@@ -202,9 +202,6 @@
   <data name="Icon_Save" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_Save.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
-  <data name="Icon_PushPin_Abort" type="System.Resources.ResXFileRef, System.Windows.Forms">
-    <value>..\Resources\Icon_PushPin_Abort.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
-  </data>
   <data name="Icon_DeleteVariable_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_DeleteVariable_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
@@ -318,5 +315,8 @@
   </data>
   <data name="Icon_Setting_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_Setting_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_PushPin_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_PushPin_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
 </root>

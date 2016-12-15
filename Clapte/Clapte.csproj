@@ -301,6 +301,8 @@
     <Content Include="Icon_Clapte.ico" />
     <Content Include="Icon_Clapte_Notify.ico" />
     <Content Include="Icon_Clapte_Notify_Deactive.ico" />
+    <None Include="Resources\Icon_PushPin_Unfocus.png" />
+    <None Include="Resources\Icon_PushPin.png" />
     <None Include="Resources\Icon_Setting_Unfocus.png" />
     <None Include="Resources\Icon_Setting.png" />
     <None Include="Resources\status_anim.gif" />
@@ -347,8 +349,6 @@
     <None Include="Resources\Icon_AddVariable.png" />
     <None Include="Resources\Icon_AddFunction_Unfocus.png" />
     <None Include="Resources\Icon_AddFunction.png" />
-    <None Include="Resources\Icon_PushPin.png" />
-    <None Include="Resources\Icon_PushPin_Abort.png" />
     <None Include="Resources\Icon_PickApplication.png" />
     <None Include="Resources\Icon_PickApplication_Unfocus.png" />
     <None Include="Resources\Frame_TopRight.png" />
