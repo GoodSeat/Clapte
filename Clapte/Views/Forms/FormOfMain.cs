@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -6,7 +7,6 @@ using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
 using GoodSeat.Sio.Xml;
-using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Liffom;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
@@ -73,6 +73,9 @@ namespace GoodSeat.Clapte.Views.Forms
             ClapteCore.Solver.Target.UserConstants = UserConstants.Target;
             ClapteCore.Solver.Target.UserFunctions = UserFunctions.Target;
             ClapteCore.Solver.SettingUpdated += new EventHandler(Solver_SettingUpdated);
+
+            if (!File.Exists("ClaptePadHotText.txth") && File.Exists("ClaptePadHelp.txt"))
+                File.Copy("ClaptePadHelp.txt", "ClaptePadHotText.txth");
 
             _formOfClaptePad = new FormOfClaptePad(this);
         }

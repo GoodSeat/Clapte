@@ -247,7 +247,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         void HotLoad()
         {
-            if (File.Exists(_hotSaveFilename))  _inputTextBox.Text = File.ReadAllText(_hotSaveFilename, Encoding.Default);
+            if (File.Exists(_hotSaveFilename))  _inputTextBox.Text = File.ReadAllText(_hotSaveFilename);
         }
 
         /// <summary>
