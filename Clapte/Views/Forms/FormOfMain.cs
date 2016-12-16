@@ -122,7 +122,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             InitializeModelView();
 
-            LoadSetting("Setting.xml");
+            if (!LoadSetting("Setting.xml")) LoadSetting("Updates.xml");
 
             this.WindowState = FormWindowState.Minimized;
 
@@ -419,6 +419,17 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <param name="clapteSettingElement">Clapteの設定を表すXmlElementオブジェクト。</param>
         public void RestoreFromXmlElement(XmlElement clapteSettingElement)
         {
+            // Ver1.0の上位互換用
+            if (string.IsNullOrEmpty(clapteSettingElement.GetAttribute("Version")) &&
+                string.IsNullOrEmpty(clapteSettingElement.GetAttribute("TargetVersion")))
+            {
+                clapteSettingElement = clapteSettingElement.GetElement("Solver");
+                MessageBox.Show(
+                    "Clapte Ver 1.x の設定ファイルを検知しました。\nユーザー定義の定数、関数、単位テーブルを引き継ぎます。\n\n※ その他の設定についてはデフォルトに初期化されます。",
+                    "Clapte Ver 1.x からの設定の引継",
+                    MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+
             // 計算機の設定の復元
             if (clapteSettingElement.GetElement("ClaptePad") != null)
                 ClaptePadView.OnDeserialize(clapteSettingElement["ClaptePad"]);
@@ -439,7 +450,8 @@ namespace GoodSeat.Clapte.Views.Forms
             }
 
             // ClapteCoreViewModelオブジェクトの復元
-            ClapteCore.OnDeserialize(clapteSettingElement["ClapteCore"]);
+            if (clapteSettingElement.GetElement("ClapteCore") != null)
+                ClapteCore.OnDeserialize(clapteSettingElement["ClapteCore"]);
 
             // 計算機モード設定の復元
             if (clapteSettingElement.GetElement("CalculatorMode") != null)
@@ -476,7 +488,8 @@ namespace GoodSeat.Clapte.Views.Forms
         /// 外部ファイルから設定を読み込みます。
         /// </summary>
         /// <param name="fileName">読込対象のファイル名。</param>
-        private void LoadSetting(string fileName)
+        /// <returns>設定を読み込んだか否か。</returns>
+        private bool LoadSetting(string fileName)
         {
             try
             {
@@ -485,20 +498,14 @@ namespace GoodSeat.Clapte.Views.Forms
                 {
                     file.Load();
                     RestoreFromXmlElement(file.Element);
+                    return true;
                 }
-
-//                XmlFile updateFile = new XmlFile("Updates.xml");
-//                if (updateFile.ExistTargetFile)
-//                {
-//                    if (_clapteWatcher == null) _clapteWatcher = new ClapteWatcher(this);
-//                    updateFile.Load();
-////                    _clapteWatcher.Solver.UpdateDeserialize(updateFile.Element);
-//                }
             }
             catch (Exception e)
             {
                 TaskTrayIcon.ShowBalloonTip(10000, "読込エラー", "設定の読み込みに失敗しました。設定を確認してください。\n\nエラーの説明:\n" + e.Message, ToolTipIcon.Error);
             }
+            return false;
         }
 
         #endregion
