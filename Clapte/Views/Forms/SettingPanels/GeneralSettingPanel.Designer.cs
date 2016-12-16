@@ -34,6 +34,8 @@
             this._labelCharType = new System.Windows.Forms.Label();
             this._cmbResultCharType = new System.Windows.Forms.ComboBox();
             this._groupInput = new System.Windows.Forms.GroupBox();
+            this._checkParseFactorial = new System.Windows.Forms.CheckBox();
+            this._checkParseAbs = new System.Windows.Forms.CheckBox();
             this._checkPermitOmitPowerMark = new System.Windows.Forms.CheckBox();
             this._labelMaxUnitLength = new System.Windows.Forms.Label();
             this._numMaxUnitLength = new GoodSeat.Clapte.Views.Controls.NumericSlider();
@@ -120,7 +122,7 @@
             this._checkPermitOmitMultipleMark.AutoSize = true;
             this._checkPermitOmitMultipleMark.Checked = true;
             this._checkPermitOmitMultipleMark.CheckState = System.Windows.Forms.CheckState.Checked;
-            this._checkPermitOmitMultipleMark.Location = new System.Drawing.Point(27, 74);
+            this._checkPermitOmitMultipleMark.Location = new System.Drawing.Point(27, 94);
             this._checkPermitOmitMultipleMark.Name = "_checkPermitOmitMultipleMark";
             this._checkPermitOmitMultipleMark.Size = new System.Drawing.Size(153, 16);
             this._checkPermitOmitMultipleMark.TabIndex = 3;
@@ -154,6 +156,8 @@
             // 
             this._groupInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupInput.Controls.Add(this._checkParseFactorial);
+            this._groupInput.Controls.Add(this._checkParseAbs);
             this._groupInput.Controls.Add(this._checkPermitOmitPowerMark);
             this._groupInput.Controls.Add(this._labelMaxUnitLength);
             this._groupInput.Controls.Add(this._numMaxUnitLength);
@@ -162,15 +166,37 @@
             this._groupInput.Controls.Add(this._checkPermitOmitMultipleMark);
             this._groupInput.Location = new System.Drawing.Point(4, 103);
             this._groupInput.Name = "_groupInput";
-            this._groupInput.Size = new System.Drawing.Size(396, 98);
+            this._groupInput.Size = new System.Drawing.Size(396, 117);
             this._groupInput.TabIndex = 9;
             this._groupInput.TabStop = false;
             this._groupInput.Text = "数式認識";
             // 
+            // _checkParseFactorial
+            // 
+            this._checkParseFactorial.AutoSize = true;
+            this._checkParseFactorial.Location = new System.Drawing.Point(214, 73);
+            this._checkParseFactorial.Name = "_checkParseFactorial";
+            this._checkParseFactorial.Size = new System.Drawing.Size(116, 16);
+            this._checkParseFactorial.TabIndex = 8;
+            this._checkParseFactorial.Text = "階乗記号(!)を認識";
+            this._checkParseFactorial.UseVisualStyleBackColor = true;
+            // 
+            // _checkParseAbs
+            // 
+            this._checkParseAbs.AutoSize = true;
+            this._checkParseAbs.Checked = true;
+            this._checkParseAbs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._checkParseAbs.Location = new System.Drawing.Point(27, 73);
+            this._checkParseAbs.Name = "_checkParseAbs";
+            this._checkParseAbs.Size = new System.Drawing.Size(136, 16);
+            this._checkParseAbs.TabIndex = 7;
+            this._checkParseAbs.Text = "絶対値記号(|~|)を認識";
+            this._checkParseAbs.UseVisualStyleBackColor = true;
+            // 
             // _checkPermitOmitPowerMark
             // 
             this._checkPermitOmitPowerMark.AutoSize = true;
-            this._checkPermitOmitPowerMark.Location = new System.Drawing.Point(214, 75);
+            this._checkPermitOmitPowerMark.Location = new System.Drawing.Point(214, 94);
             this._checkPermitOmitPowerMark.Name = "_checkPermitOmitPowerMark";
             this._checkPermitOmitPowerMark.Size = new System.Drawing.Size(152, 16);
             this._checkPermitOmitPowerMark.TabIndex = 6;
@@ -180,7 +206,7 @@
             // _labelMaxUnitLength
             // 
             this._labelMaxUnitLength.AutoSize = true;
-            this._labelMaxUnitLength.Location = new System.Drawing.Point(21, 48);
+            this._labelMaxUnitLength.Location = new System.Drawing.Point(21, 47);
             this._labelMaxUnitLength.Name = "_labelMaxUnitLength";
             this._labelMaxUnitLength.Size = new System.Drawing.Size(170, 12);
             this._labelMaxUnitLength.TabIndex = 5;
@@ -197,7 +223,7 @@
             this._numMaxUnitLength.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numMaxUnitLength.EnableUpDown = false;
             this._numMaxUnitLength.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numMaxUnitLength.Location = new System.Drawing.Point(207, 44);
+            this._numMaxUnitLength.Location = new System.Drawing.Point(207, 43);
             this._numMaxUnitLength.Maximum = new decimal(new int[] {
             20,
             0,
@@ -252,9 +278,9 @@
             this._groupResult.Controls.Add(this._numBalloonTime);
             this._groupResult.Controls.Add(this._cmbResultCharType);
             this._groupResult.Controls.Add(this._labelCharType);
-            this._groupResult.Location = new System.Drawing.Point(4, 211);
+            this._groupResult.Location = new System.Drawing.Point(4, 226);
             this._groupResult.Name = "_groupResult";
-            this._groupResult.Size = new System.Drawing.Size(396, 196);
+            this._groupResult.Size = new System.Drawing.Size(396, 189);
             this._groupResult.TabIndex = 11;
             this._groupResult.TabStop = false;
             this._groupResult.Text = "出力";
@@ -298,7 +324,7 @@
             this._txtBoxHotkey.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._txtBoxHotkey.Enabled = false;
             this._txtBoxHotkey.Font = new System.Drawing.Font("Times New Roman", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._txtBoxHotkey.Location = new System.Drawing.Point(203, 170);
+            this._txtBoxHotkey.Location = new System.Drawing.Point(203, 163);
             this._txtBoxHotkey.Name = "_txtBoxHotkey";
             this._txtBoxHotkey.ReadOnly = true;
             this._txtBoxHotkey.Size = new System.Drawing.Size(40, 15);
@@ -311,7 +337,7 @@
             // 
             this._labelHotkey.AutoSize = true;
             this._labelHotkey.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._labelHotkey.Location = new System.Drawing.Point(159, 170);
+            this._labelHotkey.Location = new System.Drawing.Point(159, 163);
             this._labelHotkey.Name = "_labelHotkey";
             this._labelHotkey.Size = new System.Drawing.Size(41, 15);
             this._labelHotkey.TabIndex = 47;
@@ -320,7 +346,7 @@
             // _checkCopyWithHotkey
             // 
             this._checkCopyWithHotkey.AutoSize = true;
-            this._checkCopyWithHotkey.Location = new System.Drawing.Point(21, 148);
+            this._checkCopyWithHotkey.Location = new System.Drawing.Point(21, 141);
             this._checkCopyWithHotkey.Name = "_checkCopyWithHotkey";
             this._checkCopyWithHotkey.Size = new System.Drawing.Size(139, 16);
             this._checkCopyWithHotkey.TabIndex = 8;
@@ -332,7 +358,7 @@
             // 
             this._labelEnableHotkey.AutoSize = true;
             this._labelEnableHotkey.ForeColor = System.Drawing.Color.Blue;
-            this._labelEnableHotkey.Location = new System.Drawing.Point(251, 172);
+            this._labelEnableHotkey.Location = new System.Drawing.Point(251, 165);
             this._labelEnableHotkey.Name = "_labelEnableHotkey";
             this._labelEnableHotkey.Size = new System.Drawing.Size(69, 12);
             this._labelEnableHotkey.TabIndex = 48;
@@ -341,7 +367,7 @@
             // _checkCopyWithSame
             // 
             this._checkCopyWithSame.AutoSize = true;
-            this._checkCopyWithSame.Location = new System.Drawing.Point(210, 124);
+            this._checkCopyWithSame.Location = new System.Drawing.Point(210, 117);
             this._checkCopyWithSame.Name = "_checkCopyWithSame";
             this._checkCopyWithSame.Size = new System.Drawing.Size(164, 16);
             this._checkCopyWithSame.TabIndex = 7;
@@ -355,7 +381,7 @@
             this._checkCtrl.CheckState = System.Windows.Forms.CheckState.Checked;
             this._checkCtrl.Enabled = false;
             this._checkCtrl.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._checkCtrl.Location = new System.Drawing.Point(108, 168);
+            this._checkCtrl.Location = new System.Drawing.Point(108, 161);
             this._checkCtrl.Name = "_checkCtrl";
             this._checkCtrl.Size = new System.Drawing.Size(45, 19);
             this._checkCtrl.TabIndex = 45;
@@ -379,7 +405,7 @@
             this._checkAlt.CheckState = System.Windows.Forms.CheckState.Checked;
             this._checkAlt.Enabled = false;
             this._checkAlt.Font = new System.Drawing.Font("Times New Roman", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this._checkAlt.Location = new System.Drawing.Point(66, 168);
+            this._checkAlt.Location = new System.Drawing.Point(66, 161);
             this._checkAlt.Name = "_checkAlt";
             this._checkAlt.Size = new System.Drawing.Size(42, 19);
             this._checkAlt.TabIndex = 46;
@@ -390,7 +416,7 @@
             // _checkCopyWithClick
             // 
             this._checkCopyWithClick.AutoSize = true;
-            this._checkCopyWithClick.Location = new System.Drawing.Point(21, 124);
+            this._checkCopyWithClick.Location = new System.Drawing.Point(21, 117);
             this._checkCopyWithClick.Name = "_checkCopyWithClick";
             this._checkCopyWithClick.Size = new System.Drawing.Size(173, 16);
             this._checkCopyWithClick.TabIndex = 6;
@@ -487,7 +513,7 @@
             this.Controls.Add(this._groupResult);
             this.Controls.Add(this._groupInput);
             this.Name = "GeneralSettingPanel";
-            this.Size = new System.Drawing.Size(408, 420);
+            this.Size = new System.Drawing.Size(408, 423);
             this._groupInput.ResumeLayout(false);
             this._groupInput.PerformLayout();
             this._groupResult.ResumeLayout(false);
@@ -526,5 +552,7 @@
         private System.Windows.Forms.GroupBox _groupMode;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox _checkIsCalculatorMode;
+        private System.Windows.Forms.CheckBox _checkParseFactorial;
+        private System.Windows.Forms.CheckBox _checkParseAbs;
     }
 }

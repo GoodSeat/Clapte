@@ -84,6 +84,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _checkCopyWithSame.Checked = Target.ActionWithSameCopy;
             _checkCopyWithHotkey.Checked = TargetHotkeyManager.Enable;
 
+            _checkParseAbs.Checked = TargetSolver.ParseAbsPunctuation;
+            _checkParseFactorial.Checked = TargetSolver.ParseFactorial;
             _checkPermitOmitMultipleMark.Checked = TargetSolver.PermitOmitProductMark;
             _checkPermitOmitPowerMark.Checked = TargetSolver.PermitOmitPowerMark;
 
@@ -124,6 +126,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.ActionWithSameCopy = _checkCopyWithSame.Checked;
             TargetHotkeyManager.Enable = _checkCopyWithHotkey.Checked;
 
+            TargetSolver.ParseAbsPunctuation = _checkParseAbs.Checked;
+            TargetSolver.ParseFactorial = _checkParseFactorial.Checked;
             TargetSolver.PermitOmitProductMark = _checkPermitOmitMultipleMark.Checked;
             TargetSolver.PermitOmitPowerMark = _checkPermitOmitPowerMark.Checked;
         }
