@@ -69,6 +69,8 @@
             this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this._btnSetting = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnMinimize = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -110,7 +112,7 @@
             this._inputTextBox.ShowsHScrollBar = false;
             this._inputTextBox.ShowsLineNumber = false;
             this._inputTextBox.ShowsVScrollBar = false;
-            this._inputTextBox.Size = new System.Drawing.Size(330, 324);
+            this._inputTextBox.Size = new System.Drawing.Size(432, 444);
             this._inputTextBox.TabIndex = 16;
             this._inputTextBox.ViewWidth = 4097;
             this._inputTextBox.CaretMoved += new System.EventHandler(this._inputTextBox_CaretMoved);
@@ -136,9 +138,11 @@
             this.toolStripSeparator4,
             this._menuCommentOut,
             this._menuUnCommentOut,
-            this._menuSolveSimultaneousEquation});
+            this._menuSolveSimultaneousEquation,
+            this.toolStripSeparator7,
+            this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(204, 314);
+            this._contextMenuEdit.Size = new System.Drawing.Size(204, 342);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
@@ -263,8 +267,8 @@
             // _splitContainer.Panel2
             // 
             this._splitContainer.Panel2.Controls.Add(this._resultTextBox);
-            this._splitContainer.Size = new System.Drawing.Size(520, 324);
-            this._splitContainer.SplitterDistance = 330;
+            this._splitContainer.Size = new System.Drawing.Size(682, 444);
+            this._splitContainer.SplitterDistance = 432;
             this._splitContainer.TabIndex = 17;
             // 
             // _btnAllDelete
@@ -276,7 +280,7 @@
             this._btnAllDelete.DownMove = 1;
             this._btnAllDelete.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter;
             this._btnAllDelete.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
-            this._btnAllDelete.Location = new System.Drawing.Point(315, 1);
+            this._btnAllDelete.Location = new System.Drawing.Point(417, 1);
             this._btnAllDelete.Name = "_btnAllDelete";
             this._btnAllDelete.Size = new System.Drawing.Size(15, 15);
             this._btnAllDelete.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
@@ -312,7 +316,7 @@
             this._resultTextBox.ShowsDirtBar = false;
             this._resultTextBox.ShowsHScrollBar = false;
             this._resultTextBox.ShowsLineNumber = false;
-            this._resultTextBox.Size = new System.Drawing.Size(186, 324);
+            this._resultTextBox.Size = new System.Drawing.Size(246, 444);
             this._resultTextBox.TabIndex = 17;
             this._resultTextBox.ViewWidth = 4097;
             this._resultTextBox.VScroll += new System.EventHandler(this._resultTextBox_VScroll);
@@ -482,7 +486,7 @@
             this._btnMinimize.DownMove = 1;
             this._btnMinimize.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub;
             this._btnMinimize.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub_Unfocus;
-            this._btnMinimize.Location = new System.Drawing.Point(480, 14);
+            this._btnMinimize.Location = new System.Drawing.Point(642, 14);
             this._btnMinimize.Name = "_btnMinimize";
             this._btnMinimize.Size = new System.Drawing.Size(18, 13);
             this._btnMinimize.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -492,11 +496,23 @@
             this._btnMinimize.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub_Unfocus;
             this._btnMinimize.Click += new System.EventHandler(this._btnMinimize_Click);
             // 
+            // toolStripSeparator7
+            // 
+            this.toolStripSeparator7.Name = "toolStripSeparator7";
+            this.toolStripSeparator7.Size = new System.Drawing.Size(200, 6);
+            // 
+            // _menuInsertHelp
+            // 
+            this._menuInsertHelp.Name = "_menuInsertHelp";
+            this._menuInsertHelp.Size = new System.Drawing.Size(203, 22);
+            this._menuInsertHelp.Text = "ヘルプの挿入(&H)";
+            this._menuInsertHelp.Click += new System.EventHandler(this._menuInsertHelp_Click);
+            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(538, 360);
+            this.ClientSize = new System.Drawing.Size(700, 480);
             this.Controls.Add(this._btnMinimize);
             this.Controls.Add(this._btnSetting);
             this.Controls.Add(this._picStatus);
@@ -576,5 +592,7 @@
         private System.Windows.Forms.ToolStripMenuItem _menuCommentOut;
         private System.Windows.Forms.ToolStripMenuItem _menuUnCommentOut;
         private Components.ImageButton _btnMinimize;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
+        private System.Windows.Forms.ToolStripMenuItem _menuInsertHelp;
     }
 }

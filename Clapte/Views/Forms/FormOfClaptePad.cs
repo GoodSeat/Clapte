@@ -24,6 +24,7 @@ namespace GoodSeat.Clapte.Views.Forms
     public partial class FormOfClaptePad : ClapteFormBase, ISerializable
     {
         private string _hotSaveFilename = "ClaptePadHotText.txth";
+        private string _claptePadHelpFilename = "ClaptePadHelp.txt";
 
         /// <summary>
         /// ClaptePadフォームを初期化します。(デザイナ用)
@@ -247,7 +248,8 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         void HotLoad()
         {
-            if (File.Exists(_hotSaveFilename))  _inputTextBox.Text = File.ReadAllText(_hotSaveFilename);
+            if (File.Exists(_hotSaveFilename)) _inputTextBox.Text = File.ReadAllText(_hotSaveFilename);
+            else                               _menuInsertHelp_Click(this, EventArgs.Empty);
         }
 
         /// <summary>
@@ -255,7 +257,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         void HotSave()
         {
-            File.WriteAllText(_hotSaveFilename, _inputTextBox.Text, Encoding.Default);
+            File.WriteAllText(_hotSaveFilename, _inputTextBox.Text, Encoding.UTF8);
         }
 
         /// <summary>
@@ -529,14 +531,14 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             if (_saveFileDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
-            File.WriteAllText(_saveFileDialog.FileName, _inputTextBox.Text, Encoding.Default);
+            File.WriteAllText(_saveFileDialog.FileName, _inputTextBox.Text, Encoding.UTF8);
         }
 
         private void _btnLoad_Click(object sender, EventArgs e)
         {
             if (_openFileDialog.ShowDialog() != System.Windows.Forms.DialogResult.OK) return;
 
-            _inputTextBox.Text = File.ReadAllText(_openFileDialog.FileName, Encoding.Default);
+            _inputTextBox.Text = File.ReadAllText(_openFileDialog.FileName);
         }
 
         private void _btnSetting_Click(object sender, EventArgs e) { OwnerMainForm.OpenSetting(); }
@@ -609,6 +611,19 @@ namespace GoodSeat.Clapte.Views.Forms
                 if (textResult.StartsWith(" ")) return textResult.Substring(1);
                 return textResult;
             });
+        }
+
+        private void _menuInsertHelp_Click(object sender, EventArgs e)
+        {
+            if (!File.Exists(_claptePadHelpFilename))
+            {
+                if (sender == _menuInsertHelp) MessageBox.Show(_claptePadHelpFilename + "がありません。", "ヘルプ参照エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                return;
+            }
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = _inputTextBox.Text + "\r\n" + File.ReadAllText(_claptePadHelpFilename);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
         }
 
         #endregion

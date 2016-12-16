@@ -316,9 +316,9 @@
             this._checkAutoShowInputSupport.AutoSize = true;
             this._checkAutoShowInputSupport.Location = new System.Drawing.Point(14, 18);
             this._checkAutoShowInputSupport.Name = "_checkAutoShowInputSupport";
-            this._checkAutoShowInputSupport.Size = new System.Drawing.Size(193, 16);
+            this._checkAutoShowInputSupport.Size = new System.Drawing.Size(257, 16);
             this._checkAutoShowInputSupport.TabIndex = 18;
-            this._checkAutoShowInputSupport.Text = "入力毎に入力補完を自動表示する";
+            this._checkAutoShowInputSupport.Text = "入力毎に入力補完を自動表示する (Ctrl+Enter)";
             this._checkAutoShowInputSupport.UseVisualStyleBackColor = true;
             // 
             // _checkAutoShowArgumentHint
@@ -326,9 +326,9 @@
             this._checkAutoShowArgumentHint.AutoSize = true;
             this._checkAutoShowArgumentHint.Location = new System.Drawing.Point(14, 62);
             this._checkAutoShowArgumentHint.Name = "_checkAutoShowArgumentHint";
-            this._checkAutoShowArgumentHint.Size = new System.Drawing.Size(187, 16);
+            this._checkAutoShowArgumentHint.Size = new System.Drawing.Size(230, 16);
             this._checkAutoShowArgumentHint.TabIndex = 19;
-            this._checkAutoShowArgumentHint.Text = "関数の引数ヘルプを自動表示する";
+            this._checkAutoShowArgumentHint.Text = "関数の引数ヘルプを自動表示する (Ctrl+h)";
             this._checkAutoShowArgumentHint.UseVisualStyleBackColor = true;
             // 
             // _checkVisibleEol

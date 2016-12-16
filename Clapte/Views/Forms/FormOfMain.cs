@@ -74,9 +74,6 @@ namespace GoodSeat.Clapte.Views.Forms
             ClapteCore.Solver.Target.UserFunctions = UserFunctions.Target;
             ClapteCore.Solver.SettingUpdated += new EventHandler(Solver_SettingUpdated);
 
-            if (!File.Exists("ClaptePadHotText.txth") && File.Exists("ClaptePadHelp.txt"))
-                File.Copy("ClaptePadHelp.txt", "ClaptePadHotText.txth");
-
             _formOfClaptePad = new FormOfClaptePad(this);
         }
 
