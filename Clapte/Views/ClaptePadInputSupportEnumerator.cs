@@ -48,6 +48,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
         public ClaptePadInputSupportEnumerator(FormulaCellListViewModel target)
         {
             Target = target;
+            AlsoInfomation = true;
         }
 
         /// <summary>

@@ -28,14 +28,8 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this._groupNewton = new System.Windows.Forms.GroupBox();
-            this.label12 = new System.Windows.Forms.Label();
-            this._numTryMaxCountNewton = new GoodSeat.Clapte.Views.Controls.NumericSlider();
-            this._numErrorToleranceNewton = new GoodSeat.Clapte.Views.Controls.NumericSlider();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this._numInitialSolutionNewton = new GoodSeat.Clapte.Views.Controls.NumericSlider();
+            this._groupSolveEquation = new System.Windows.Forms.GroupBox();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this._groupBrent = new System.Windows.Forms.GroupBox();
             this.label11 = new System.Windows.Forms.Label();
             this._numLowerLimitBrent = new GoodSeat.Clapte.Views.Controls.NumericSlider();
@@ -46,13 +40,15 @@
             this.label7 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
+            this._groupNewton = new System.Windows.Forms.GroupBox();
+            this.label12 = new System.Windows.Forms.Label();
+            this._numTryMaxCountNewton = new GoodSeat.Clapte.Views.Controls.NumericSlider();
+            this._numErrorToleranceNewton = new GoodSeat.Clapte.Views.Controls.NumericSlider();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
+            this.label1 = new System.Windows.Forms.Label();
+            this._numInitialSolutionNewton = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._checkDontCopyVariable = new System.Windows.Forms.CheckBox();
-            this._groupPresicion = new System.Windows.Forms.GroupBox();
-            this._labelPrecisionDigit = new System.Windows.Forms.Label();
-            this._numPrecisionDigit = new GoodSeat.Clapte.Views.Controls.NumericSlider();
-            this._radioPrecisionCustom = new System.Windows.Forms.RadioButton();
-            this._radioPrecisionDecimal = new System.Windows.Forms.RadioButton();
-            this._radioPrecisionDouble = new System.Windows.Forms.RadioButton();
             this._groupSolver = new System.Windows.Forms.GroupBox();
             this.label9 = new System.Windows.Forms.Label();
             this._numLimitTime = new GoodSeat.Clapte.Views.Controls.NumericSlider();
@@ -62,219 +58,53 @@
             this._cmbValidPrecision = new System.Windows.Forms.ComboBox();
             this._labelRounding = new System.Windows.Forms.Label();
             this._labelPrecision = new System.Windows.Forms.Label();
-            this._groupSolveEquation = new System.Windows.Forms.GroupBox();
-            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this._groupNewton.SuspendLayout();
-            this._groupBrent.SuspendLayout();
-            this._groupPresicion.SuspendLayout();
-            this._groupSolver.SuspendLayout();
+            this._groupPresicion = new System.Windows.Forms.GroupBox();
+            this._labelPrecisionDigit = new System.Windows.Forms.Label();
+            this._numPrecisionDigit = new GoodSeat.Clapte.Views.Controls.NumericSlider();
+            this._radioPrecisionCustom = new System.Windows.Forms.RadioButton();
+            this._radioPrecisionDecimal = new System.Windows.Forms.RadioButton();
+            this._radioPrecisionDouble = new System.Windows.Forms.RadioButton();
             this._groupSolveEquation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
+            this._groupBrent.SuspendLayout();
+            this._groupNewton.SuspendLayout();
+            this._groupSolver.SuspendLayout();
+            this._groupPresicion.SuspendLayout();
             this.SuspendLayout();
             // 
-            // _groupNewton
+            // _groupSolveEquation
             // 
-            this._groupNewton.Controls.Add(this.label12);
-            this._groupNewton.Controls.Add(this._numTryMaxCountNewton);
-            this._groupNewton.Controls.Add(this._numErrorToleranceNewton);
-            this._groupNewton.Controls.Add(this.label3);
-            this._groupNewton.Controls.Add(this.label2);
-            this._groupNewton.Controls.Add(this.label1);
-            this._groupNewton.Controls.Add(this._numInitialSolutionNewton);
-            this._groupNewton.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._groupNewton.Location = new System.Drawing.Point(0, 0);
-            this._groupNewton.Name = "_groupNewton";
-            this._groupNewton.Size = new System.Drawing.Size(185, 141);
-            this._groupNewton.TabIndex = 0;
-            this._groupNewton.TabStop = false;
-            this._groupNewton.Text = "ニュートン法";
+            this._groupSolveEquation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupSolveEquation.Controls.Add(this.splitContainer1);
+            this._groupSolveEquation.Controls.Add(this._checkDontCopyVariable);
+            this._groupSolveEquation.Location = new System.Drawing.Point(6, 166);
+            this._groupSolveEquation.Name = "_groupSolveEquation";
+            this._groupSolveEquation.Size = new System.Drawing.Size(397, 172);
+            this._groupSolveEquation.TabIndex = 12;
+            this._groupSolveEquation.TabStop = false;
+            this._groupSolveEquation.Text = "方程式の求解";
             // 
-            // label12
+            // splitContainer1
             // 
-            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(107, 54);
-            this.label12.Name = "label12";
-            this.label12.Size = new System.Drawing.Size(26, 12);
-            this.label12.TabIndex = 11;
-            this.label12.Text = "1.0E";
+            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.splitContainer1.Location = new System.Drawing.Point(10, 20);
+            this.splitContainer1.Name = "splitContainer1";
             // 
-            // _numTryMaxCountNewton
+            // splitContainer1.Panel1
             // 
-            this._numTryMaxCountNewton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._numTryMaxCountNewton.BackBarColor = System.Drawing.Color.Lavender;
-            this._numTryMaxCountNewton.ClickChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numTryMaxCountNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this._numTryMaxCountNewton.EnableUpDown = false;
-            this._numTryMaxCountNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numTryMaxCountNewton.Location = new System.Drawing.Point(107, 78);
-            this._numTryMaxCountNewton.Maximum = new decimal(new int[] {
-            10000,
-            0,
-            0,
-            0});
-            this._numTryMaxCountNewton.Minimum = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numTryMaxCountNewton.Name = "_numTryMaxCountNewton";
-            this._numTryMaxCountNewton.Precision = 0;
-            this._numTryMaxCountNewton.Sensitivity = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this._numTryMaxCountNewton.ShowButton = true;
-            this._numTryMaxCountNewton.Size = new System.Drawing.Size(60, 20);
-            this._numTryMaxCountNewton.SlideChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numTryMaxCountNewton.TabIndex = 5;
-            this._numTryMaxCountNewton.UnderBar = false;
-            this._numTryMaxCountNewton.Unit = "";
-            this._numTryMaxCountNewton.UseToolTip = true;
-            this._numTryMaxCountNewton.Value = new decimal(new int[] {
-            500,
-            0,
-            0,
-            0});
-            this._numTryMaxCountNewton.VisibleBackBar = true;
+            this.splitContainer1.Panel1.Controls.Add(this._groupBrent);
             // 
-            // _numErrorToleranceNewton
+            // splitContainer1.Panel2
             // 
-            this._numErrorToleranceNewton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._numErrorToleranceNewton.BackBarColor = System.Drawing.Color.Lavender;
-            this._numErrorToleranceNewton.ClickChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numErrorToleranceNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this._numErrorToleranceNewton.EnableUpDown = false;
-            this._numErrorToleranceNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numErrorToleranceNewton.Location = new System.Drawing.Point(135, 50);
-            this._numErrorToleranceNewton.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this._numErrorToleranceNewton.Minimum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            -2147483648});
-            this._numErrorToleranceNewton.Name = "_numErrorToleranceNewton";
-            this._numErrorToleranceNewton.Precision = 0;
-            this._numErrorToleranceNewton.Sensitivity = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this._numErrorToleranceNewton.ShowButton = true;
-            this._numErrorToleranceNewton.Size = new System.Drawing.Size(33, 20);
-            this._numErrorToleranceNewton.SlideChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numErrorToleranceNewton.TabIndex = 4;
-            this._numErrorToleranceNewton.UnderBar = false;
-            this._numErrorToleranceNewton.Unit = "";
-            this._numErrorToleranceNewton.UseToolTip = true;
-            this._numErrorToleranceNewton.Value = new decimal(new int[] {
-            7,
-            0,
-            0,
-            -2147483648});
-            this._numErrorToleranceNewton.VisibleBackBar = false;
-            // 
-            // label3
-            // 
-            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 82);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(77, 12);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "最大試行回数";
-            // 
-            // label2
-            // 
-            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 55);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(53, 12);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "許容誤差";
-            // 
-            // label1
-            // 
-            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(51, 28);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(41, 12);
-            this.label1.TabIndex = 1;
-            this.label1.Text = "初期解";
-            // 
-            // _numInitialSolutionNewton
-            // 
-            this._numInitialSolutionNewton.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._numInitialSolutionNewton.BackBarColor = System.Drawing.Color.Lavender;
-            this._numInitialSolutionNewton.ClickChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numInitialSolutionNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this._numInitialSolutionNewton.EnableUpDown = false;
-            this._numInitialSolutionNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numInitialSolutionNewton.Location = new System.Drawing.Point(108, 22);
-            this._numInitialSolutionNewton.Maximum = new decimal(new int[] {
-            100000000,
-            0,
-            0,
-            0});
-            this._numInitialSolutionNewton.Minimum = new decimal(new int[] {
-            100000000,
-            0,
-            0,
-            -2147483648});
-            this._numInitialSolutionNewton.Name = "_numInitialSolutionNewton";
-            this._numInitialSolutionNewton.Precision = 4;
-            this._numInitialSolutionNewton.Sensitivity = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this._numInitialSolutionNewton.ShowButton = true;
-            this._numInitialSolutionNewton.Size = new System.Drawing.Size(60, 20);
-            this._numInitialSolutionNewton.SlideChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numInitialSolutionNewton.TabIndex = 0;
-            this._numInitialSolutionNewton.UnderBar = false;
-            this._numInitialSolutionNewton.Unit = "";
-            this._numInitialSolutionNewton.UseToolTip = true;
-            this._numInitialSolutionNewton.Value = new decimal(new int[] {
-            0,
-            0,
-            0,
-            196608});
-            this._numInitialSolutionNewton.VisibleBackBar = false;
+            this.splitContainer1.Panel2.Controls.Add(this._groupNewton);
+            this.splitContainer1.Size = new System.Drawing.Size(375, 141);
+            this.splitContainer1.SplitterDistance = 186;
+            this.splitContainer1.TabIndex = 3;
             // 
             // _groupBrent
             // 
@@ -537,128 +367,217 @@
             this.label4.TabIndex = 2;
             this.label4.Text = "解の存在下限値";
             // 
+            // _groupNewton
+            // 
+            this._groupNewton.Controls.Add(this.label12);
+            this._groupNewton.Controls.Add(this._numTryMaxCountNewton);
+            this._groupNewton.Controls.Add(this._numErrorToleranceNewton);
+            this._groupNewton.Controls.Add(this.label3);
+            this._groupNewton.Controls.Add(this.label2);
+            this._groupNewton.Controls.Add(this.label1);
+            this._groupNewton.Controls.Add(this._numInitialSolutionNewton);
+            this._groupNewton.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._groupNewton.Location = new System.Drawing.Point(0, 0);
+            this._groupNewton.Name = "_groupNewton";
+            this._groupNewton.Size = new System.Drawing.Size(185, 141);
+            this._groupNewton.TabIndex = 0;
+            this._groupNewton.TabStop = false;
+            this._groupNewton.Text = "ニュートン法";
+            // 
+            // label12
+            // 
+            this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label12.AutoSize = true;
+            this.label12.Location = new System.Drawing.Point(107, 54);
+            this.label12.Name = "label12";
+            this.label12.Size = new System.Drawing.Size(26, 12);
+            this.label12.TabIndex = 11;
+            this.label12.Text = "1.0E";
+            // 
+            // _numTryMaxCountNewton
+            // 
+            this._numTryMaxCountNewton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._numTryMaxCountNewton.BackBarColor = System.Drawing.Color.Lavender;
+            this._numTryMaxCountNewton.ClickChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numTryMaxCountNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this._numTryMaxCountNewton.EnableUpDown = false;
+            this._numTryMaxCountNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this._numTryMaxCountNewton.Location = new System.Drawing.Point(107, 78);
+            this._numTryMaxCountNewton.Maximum = new decimal(new int[] {
+            10000,
+            0,
+            0,
+            0});
+            this._numTryMaxCountNewton.Minimum = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numTryMaxCountNewton.Name = "_numTryMaxCountNewton";
+            this._numTryMaxCountNewton.Precision = 0;
+            this._numTryMaxCountNewton.Sensitivity = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this._numTryMaxCountNewton.ShowButton = true;
+            this._numTryMaxCountNewton.Size = new System.Drawing.Size(60, 20);
+            this._numTryMaxCountNewton.SlideChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numTryMaxCountNewton.TabIndex = 5;
+            this._numTryMaxCountNewton.UnderBar = false;
+            this._numTryMaxCountNewton.Unit = "";
+            this._numTryMaxCountNewton.UseToolTip = true;
+            this._numTryMaxCountNewton.Value = new decimal(new int[] {
+            500,
+            0,
+            0,
+            0});
+            this._numTryMaxCountNewton.VisibleBackBar = true;
+            // 
+            // _numErrorToleranceNewton
+            // 
+            this._numErrorToleranceNewton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._numErrorToleranceNewton.BackBarColor = System.Drawing.Color.Lavender;
+            this._numErrorToleranceNewton.ClickChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numErrorToleranceNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this._numErrorToleranceNewton.EnableUpDown = false;
+            this._numErrorToleranceNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this._numErrorToleranceNewton.Location = new System.Drawing.Point(135, 50);
+            this._numErrorToleranceNewton.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this._numErrorToleranceNewton.Minimum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            -2147483648});
+            this._numErrorToleranceNewton.Name = "_numErrorToleranceNewton";
+            this._numErrorToleranceNewton.Precision = 0;
+            this._numErrorToleranceNewton.Sensitivity = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this._numErrorToleranceNewton.ShowButton = true;
+            this._numErrorToleranceNewton.Size = new System.Drawing.Size(33, 20);
+            this._numErrorToleranceNewton.SlideChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numErrorToleranceNewton.TabIndex = 4;
+            this._numErrorToleranceNewton.UnderBar = false;
+            this._numErrorToleranceNewton.Unit = "";
+            this._numErrorToleranceNewton.UseToolTip = true;
+            this._numErrorToleranceNewton.Value = new decimal(new int[] {
+            7,
+            0,
+            0,
+            -2147483648});
+            this._numErrorToleranceNewton.VisibleBackBar = false;
+            // 
+            // label3
+            // 
+            this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label3.AutoSize = true;
+            this.label3.Location = new System.Drawing.Point(15, 82);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(77, 12);
+            this.label3.TabIndex = 3;
+            this.label3.Text = "最大試行回数";
+            // 
+            // label2
+            // 
+            this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label2.AutoSize = true;
+            this.label2.Location = new System.Drawing.Point(39, 55);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(53, 12);
+            this.label2.TabIndex = 2;
+            this.label2.Text = "許容誤差";
+            // 
+            // label1
+            // 
+            this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(51, 28);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(41, 12);
+            this.label1.TabIndex = 1;
+            this.label1.Text = "初期解";
+            // 
+            // _numInitialSolutionNewton
+            // 
+            this._numInitialSolutionNewton.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._numInitialSolutionNewton.BackBarColor = System.Drawing.Color.Lavender;
+            this._numInitialSolutionNewton.ClickChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numInitialSolutionNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this._numInitialSolutionNewton.EnableUpDown = false;
+            this._numInitialSolutionNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this._numInitialSolutionNewton.Location = new System.Drawing.Point(108, 22);
+            this._numInitialSolutionNewton.Maximum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            0});
+            this._numInitialSolutionNewton.Minimum = new decimal(new int[] {
+            100000000,
+            0,
+            0,
+            -2147483648});
+            this._numInitialSolutionNewton.Name = "_numInitialSolutionNewton";
+            this._numInitialSolutionNewton.Precision = 4;
+            this._numInitialSolutionNewton.Sensitivity = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this._numInitialSolutionNewton.ShowButton = true;
+            this._numInitialSolutionNewton.Size = new System.Drawing.Size(60, 20);
+            this._numInitialSolutionNewton.SlideChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numInitialSolutionNewton.TabIndex = 0;
+            this._numInitialSolutionNewton.UnderBar = false;
+            this._numInitialSolutionNewton.Unit = "";
+            this._numInitialSolutionNewton.UseToolTip = true;
+            this._numInitialSolutionNewton.Value = new decimal(new int[] {
+            0,
+            0,
+            0,
+            196608});
+            this._numInitialSolutionNewton.VisibleBackBar = false;
+            // 
             // _checkDontCopyVariable
             // 
             this._checkDontCopyVariable.AutoSize = true;
-            this._checkDontCopyVariable.Location = new System.Drawing.Point(10, 172);
+            this._checkDontCopyVariable.Location = new System.Drawing.Point(10, 164);
             this._checkDontCopyVariable.Name = "_checkDontCopyVariable";
             this._checkDontCopyVariable.Size = new System.Drawing.Size(257, 16);
             this._checkDontCopyVariable.TabIndex = 2;
             this._checkDontCopyVariable.Text = "結果コピー時、“【変数】 = ”の部分はコピーしない";
             this._checkDontCopyVariable.UseVisualStyleBackColor = true;
-            // 
-            // _groupPresicion
-            // 
-            this._groupPresicion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._groupPresicion.Controls.Add(this._labelPrecisionDigit);
-            this._groupPresicion.Controls.Add(this._numPrecisionDigit);
-            this._groupPresicion.Controls.Add(this._radioPrecisionCustom);
-            this._groupPresicion.Controls.Add(this._radioPrecisionDecimal);
-            this._groupPresicion.Controls.Add(this._radioPrecisionDouble);
-            this._groupPresicion.Location = new System.Drawing.Point(6, 10);
-            this._groupPresicion.Name = "_groupPresicion";
-            this._groupPresicion.Size = new System.Drawing.Size(397, 49);
-            this._groupPresicion.TabIndex = 3;
-            this._groupPresicion.TabStop = false;
-            this._groupPresicion.Text = "数値精度(有効桁数)";
-            // 
-            // _labelPrecisionDigit
-            // 
-            this._labelPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._labelPrecisionDigit.AutoSize = true;
-            this._labelPrecisionDigit.Enabled = false;
-            this._labelPrecisionDigit.Location = new System.Drawing.Point(278, 22);
-            this._labelPrecisionDigit.Name = "_labelPrecisionDigit";
-            this._labelPrecisionDigit.Size = new System.Drawing.Size(53, 12);
-            this._labelPrecisionDigit.TabIndex = 10;
-            this._labelPrecisionDigit.Text = "有効桁数";
-            // 
-            // _numPrecisionDigit
-            // 
-            this._numPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._numPrecisionDigit.BackBarColor = System.Drawing.Color.Lavender;
-            this._numPrecisionDigit.ClickChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numPrecisionDigit.Cursor = System.Windows.Forms.Cursors.SizeWE;
-            this._numPrecisionDigit.Enabled = false;
-            this._numPrecisionDigit.EnableUpDown = false;
-            this._numPrecisionDigit.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numPrecisionDigit.Location = new System.Drawing.Point(332, 18);
-            this._numPrecisionDigit.Maximum = new decimal(new int[] {
-            1000,
-            0,
-            0,
-            0});
-            this._numPrecisionDigit.Minimum = new decimal(new int[] {
-            4,
-            0,
-            0,
-            0});
-            this._numPrecisionDigit.Name = "_numPrecisionDigit";
-            this._numPrecisionDigit.Precision = 0;
-            this._numPrecisionDigit.Sensitivity = new decimal(new int[] {
-            2,
-            0,
-            0,
-            0});
-            this._numPrecisionDigit.ShowButton = true;
-            this._numPrecisionDigit.Size = new System.Drawing.Size(44, 20);
-            this._numPrecisionDigit.SlideChange = new decimal(new int[] {
-            1,
-            0,
-            0,
-            0});
-            this._numPrecisionDigit.TabIndex = 9;
-            this._numPrecisionDigit.UnderBar = false;
-            this._numPrecisionDigit.Unit = "";
-            this._numPrecisionDigit.UseToolTip = true;
-            this._numPrecisionDigit.Value = new decimal(new int[] {
-            30,
-            0,
-            0,
-            0});
-            this._numPrecisionDigit.VisibleBackBar = true;
-            // 
-            // _radioPrecisionCustom
-            // 
-            this._radioPrecisionCustom.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._radioPrecisionCustom.AutoSize = true;
-            this._radioPrecisionCustom.Location = new System.Drawing.Point(200, 20);
-            this._radioPrecisionCustom.Name = "_radioPrecisionCustom";
-            this._radioPrecisionCustom.Size = new System.Drawing.Size(71, 16);
-            this._radioPrecisionCustom.TabIndex = 2;
-            this._radioPrecisionCustom.TabStop = true;
-            this._radioPrecisionCustom.Text = "任意精度";
-            this._radioPrecisionCustom.UseVisualStyleBackColor = true;
-            this._radioPrecisionCustom.CheckedChanged += new System.EventHandler(this._radioPrecisionCustom_CheckedChanged);
-            // 
-            // _radioPrecisionDecimal
-            // 
-            this._radioPrecisionDecimal.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._radioPrecisionDecimal.AutoSize = true;
-            this._radioPrecisionDecimal.Location = new System.Drawing.Point(109, 20);
-            this._radioPrecisionDecimal.Name = "_radioPrecisionDecimal";
-            this._radioPrecisionDecimal.Size = new System.Drawing.Size(59, 16);
-            this._radioPrecisionDecimal.TabIndex = 1;
-            this._radioPrecisionDecimal.TabStop = true;
-            this._radioPrecisionDecimal.Text = "高精度";
-            this._radioPrecisionDecimal.UseVisualStyleBackColor = true;
-            // 
-            // _radioPrecisionDouble
-            // 
-            this._radioPrecisionDouble.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._radioPrecisionDouble.AutoSize = true;
-            this._radioPrecisionDouble.Location = new System.Drawing.Point(30, 20);
-            this._radioPrecisionDouble.Name = "_radioPrecisionDouble";
-            this._radioPrecisionDouble.Size = new System.Drawing.Size(47, 16);
-            this._radioPrecisionDouble.TabIndex = 0;
-            this._radioPrecisionDouble.TabStop = true;
-            this._radioPrecisionDouble.Text = "通常";
-            this._radioPrecisionDouble.UseVisualStyleBackColor = true;
+            this._checkDontCopyVariable.Visible = false;
             // 
             // _groupSolver
             // 
@@ -798,36 +717,118 @@
             this._labelPrecision.TabIndex = 7;
             this._labelPrecision.Text = "有効数字";
             // 
-            // _groupSolveEquation
+            // _groupPresicion
             // 
-            this._groupSolveEquation.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            this._groupPresicion.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._groupSolveEquation.Controls.Add(this.splitContainer1);
-            this._groupSolveEquation.Controls.Add(this._checkDontCopyVariable);
-            this._groupSolveEquation.Location = new System.Drawing.Point(6, 166);
-            this._groupSolveEquation.Name = "_groupSolveEquation";
-            this._groupSolveEquation.Size = new System.Drawing.Size(397, 198);
-            this._groupSolveEquation.TabIndex = 12;
-            this._groupSolveEquation.TabStop = false;
-            this._groupSolveEquation.Text = "方程式の求解";
+            this._groupPresicion.Controls.Add(this._labelPrecisionDigit);
+            this._groupPresicion.Controls.Add(this._numPrecisionDigit);
+            this._groupPresicion.Controls.Add(this._radioPrecisionCustom);
+            this._groupPresicion.Controls.Add(this._radioPrecisionDecimal);
+            this._groupPresicion.Controls.Add(this._radioPrecisionDouble);
+            this._groupPresicion.Location = new System.Drawing.Point(6, 10);
+            this._groupPresicion.Name = "_groupPresicion";
+            this._groupPresicion.Size = new System.Drawing.Size(397, 49);
+            this._groupPresicion.TabIndex = 3;
+            this._groupPresicion.TabStop = false;
+            this._groupPresicion.Text = "数値精度(有効桁数)";
             // 
-            // splitContainer1
+            // _labelPrecisionDigit
             // 
-            this.splitContainer1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this.splitContainer1.Location = new System.Drawing.Point(10, 20);
-            this.splitContainer1.Name = "splitContainer1";
+            this._labelPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._labelPrecisionDigit.AutoSize = true;
+            this._labelPrecisionDigit.Enabled = false;
+            this._labelPrecisionDigit.Location = new System.Drawing.Point(278, 22);
+            this._labelPrecisionDigit.Name = "_labelPrecisionDigit";
+            this._labelPrecisionDigit.Size = new System.Drawing.Size(53, 12);
+            this._labelPrecisionDigit.TabIndex = 10;
+            this._labelPrecisionDigit.Text = "有効桁数";
             // 
-            // splitContainer1.Panel1
+            // _numPrecisionDigit
             // 
-            this.splitContainer1.Panel1.Controls.Add(this._groupBrent);
+            this._numPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._numPrecisionDigit.BackBarColor = System.Drawing.Color.Lavender;
+            this._numPrecisionDigit.ClickChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numPrecisionDigit.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this._numPrecisionDigit.Enabled = false;
+            this._numPrecisionDigit.EnableUpDown = false;
+            this._numPrecisionDigit.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
+            this._numPrecisionDigit.Location = new System.Drawing.Point(332, 18);
+            this._numPrecisionDigit.Maximum = new decimal(new int[] {
+            1000,
+            0,
+            0,
+            0});
+            this._numPrecisionDigit.Minimum = new decimal(new int[] {
+            4,
+            0,
+            0,
+            0});
+            this._numPrecisionDigit.Name = "_numPrecisionDigit";
+            this._numPrecisionDigit.Precision = 0;
+            this._numPrecisionDigit.Sensitivity = new decimal(new int[] {
+            2,
+            0,
+            0,
+            0});
+            this._numPrecisionDigit.ShowButton = true;
+            this._numPrecisionDigit.Size = new System.Drawing.Size(44, 20);
+            this._numPrecisionDigit.SlideChange = new decimal(new int[] {
+            1,
+            0,
+            0,
+            0});
+            this._numPrecisionDigit.TabIndex = 9;
+            this._numPrecisionDigit.UnderBar = false;
+            this._numPrecisionDigit.Unit = "";
+            this._numPrecisionDigit.UseToolTip = true;
+            this._numPrecisionDigit.Value = new decimal(new int[] {
+            30,
+            0,
+            0,
+            0});
+            this._numPrecisionDigit.VisibleBackBar = true;
             // 
-            // splitContainer1.Panel2
+            // _radioPrecisionCustom
             // 
-            this.splitContainer1.Panel2.Controls.Add(this._groupNewton);
-            this.splitContainer1.Size = new System.Drawing.Size(375, 141);
-            this.splitContainer1.SplitterDistance = 186;
-            this.splitContainer1.TabIndex = 3;
+            this._radioPrecisionCustom.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._radioPrecisionCustom.AutoSize = true;
+            this._radioPrecisionCustom.Location = new System.Drawing.Point(200, 20);
+            this._radioPrecisionCustom.Name = "_radioPrecisionCustom";
+            this._radioPrecisionCustom.Size = new System.Drawing.Size(71, 16);
+            this._radioPrecisionCustom.TabIndex = 2;
+            this._radioPrecisionCustom.TabStop = true;
+            this._radioPrecisionCustom.Text = "任意精度";
+            this._radioPrecisionCustom.UseVisualStyleBackColor = true;
+            this._radioPrecisionCustom.CheckedChanged += new System.EventHandler(this._radioPrecisionCustom_CheckedChanged);
+            // 
+            // _radioPrecisionDecimal
+            // 
+            this._radioPrecisionDecimal.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._radioPrecisionDecimal.AutoSize = true;
+            this._radioPrecisionDecimal.Location = new System.Drawing.Point(109, 20);
+            this._radioPrecisionDecimal.Name = "_radioPrecisionDecimal";
+            this._radioPrecisionDecimal.Size = new System.Drawing.Size(59, 16);
+            this._radioPrecisionDecimal.TabIndex = 1;
+            this._radioPrecisionDecimal.TabStop = true;
+            this._radioPrecisionDecimal.Text = "高精度";
+            this._radioPrecisionDecimal.UseVisualStyleBackColor = true;
+            // 
+            // _radioPrecisionDouble
+            // 
+            this._radioPrecisionDouble.Anchor = System.Windows.Forms.AnchorStyles.Top;
+            this._radioPrecisionDouble.AutoSize = true;
+            this._radioPrecisionDouble.Location = new System.Drawing.Point(30, 20);
+            this._radioPrecisionDouble.Name = "_radioPrecisionDouble";
+            this._radioPrecisionDouble.Size = new System.Drawing.Size(47, 16);
+            this._radioPrecisionDouble.TabIndex = 0;
+            this._radioPrecisionDouble.TabStop = true;
+            this._radioPrecisionDouble.Text = "通常";
+            this._radioPrecisionDouble.UseVisualStyleBackColor = true;
             // 
             // CalculateSettingPanel
             // 
@@ -838,20 +839,20 @@
             this.Controls.Add(this._groupPresicion);
             this.Name = "CalculateSettingPanel";
             this.Size = new System.Drawing.Size(409, 379);
-            this._groupNewton.ResumeLayout(false);
-            this._groupNewton.PerformLayout();
-            this._groupBrent.ResumeLayout(false);
-            this._groupBrent.PerformLayout();
-            this._groupPresicion.ResumeLayout(false);
-            this._groupPresicion.PerformLayout();
-            this._groupSolver.ResumeLayout(false);
-            this._groupSolver.PerformLayout();
             this._groupSolveEquation.ResumeLayout(false);
             this._groupSolveEquation.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
             this.splitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
             this.splitContainer1.ResumeLayout(false);
+            this._groupBrent.ResumeLayout(false);
+            this._groupBrent.PerformLayout();
+            this._groupNewton.ResumeLayout(false);
+            this._groupNewton.PerformLayout();
+            this._groupSolver.ResumeLayout(false);
+            this._groupSolver.PerformLayout();
+            this._groupPresicion.ResumeLayout(false);
+            this._groupPresicion.PerformLayout();
             this.ResumeLayout(false);
 
         }
