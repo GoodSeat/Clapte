@@ -167,7 +167,12 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         void RemoveUserFunction(int index)
         {
             var def = _dataGridFunction.Rows[index].Tag as FunctionDefine;
-            if (!(def.Target is UserFunction)) return;
+            if (!(def.Target is UserFunction))
+            {
+                _labelError.Text = "システム定義の関数は削除できません。";
+                _labelError.Visible = true;
+                return;
+            }
 
             _dataGridFunction.Rows.RemoveAt(index);
             RemoveInvalidColumns();
@@ -329,7 +334,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         // 関数削除
         private void _btnDelete_Click(object sender, EventArgs e)
         {
-            _labelError.Text = "削除対象の行ヘッダーをクリックして、行を選択してください。";
+            _labelError.Text = "削除対象の行ヘッダーをクリックして、行を選択してから削除してください。";
             _labelError.Visible = true;
             foreach (DataGridViewRow row in _dataGridFunction.SelectedRows)
             {

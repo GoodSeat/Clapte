@@ -252,7 +252,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         // 選択変数の削除
         private void _btnDelete_Click(object sender, EventArgs e)
         {
-            _labelError.Text = "削除対象の行ヘッダーをクリックして、行を選択してください。";
+            _labelError.Text = "削除対象の行ヘッダーをクリックして、行を選択してから削除してください。";
             _labelError.Visible = true;
 
             List<ConstantDefine> removeList = new List<ConstantDefine>();
@@ -261,7 +261,12 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 _labelError.Visible = false;
 
                 var def = row.Tag as ConstantDefine;
-                if (def.Target is Constant) continue;
+                if (def.Target is Constant)
+                {
+                    _labelError.Text = "システム定義の定数は削除できません。";
+                    _labelError.Visible = true;
+                    return;
+                }
 
                 _dataGridVariable.Rows.Remove(row);
                 removeList.Add(def);
