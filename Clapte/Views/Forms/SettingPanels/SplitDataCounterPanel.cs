@@ -58,6 +58,17 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                     }
                     _checkListData.SetItemChecked(index, true);
                 }
+                if ((Target.CopyTargetData & data) == data)
+                {
+                    int index = 0;
+                    int target = (int)data;
+                    while (target != 1)
+                    {
+                        index++;
+                        target /= 2;
+                    }
+                    _checkListCopy.SetItemChecked(index, true);
+                }
             }
         }
 
@@ -80,9 +91,16 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 else if (index == 4) Target.Counter.SplitCharList.Add(',');
             }
 
-            int targetData = 0;
-            foreach (int index in _checkListData.CheckedIndices) targetData += (int)Math.Pow(2, index);
-            Target.CountTargetData = (SplitDataCounter.CountingData)targetData;
+            { // 集計対象
+                int targetData = 0;
+                foreach (int index in _checkListData.CheckedIndices) targetData += (int)Math.Pow(2, index);
+                Target.CountTargetData = (SplitDataCounter.CountingData)targetData;
+            }
+            { // コピー対象
+                int targetData = 0;
+                foreach (int index in _checkListCopy.CheckedIndices) targetData += (int)Math.Pow(2, index);
+                Target.CopyTargetData = (SplitDataCounter.CountingData)targetData;
+            }
         }
 
         int GetIndexOf(char c)

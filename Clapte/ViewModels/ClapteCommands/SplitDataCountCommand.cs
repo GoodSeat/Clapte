@@ -93,18 +93,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
                 }
                 if (TextOf(data) == null) continue;
 
-                if ((CopyTargetData & data) == data)
-                {
-                    if (hit) return data;
-                }
-            }
-            if (!hit) return SplitDataCounter.CountingData.None;
-
-            foreach (SplitDataCounter.CountingData data in Enum.GetValues(typeof(SplitDataCounter.CountingData)))
-            {
-                if (TextOf(data) == null) continue;
-
-                if ((CopyTargetData & data) == data) return data;
+                if (hit && (CopyTargetData & data) == data) return data;
             }
             return SplitDataCounter.CountingData.None;
         }
@@ -121,6 +110,8 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
             foreach (var data in Enum.GetValues(typeof(SplitDataCounter.CountingData)))
             {
                 var countData = (SplitDataCounter.CountingData)data;
+                if ((CountTargetData & countData) == SplitDataCounter.CountingData.None) continue;
+
                 string txt = TextOf(countData);
                 if (txt == null) continue;
 
@@ -128,8 +119,7 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
             }
             if (string.IsNullOrEmpty(result)) return null;
 
-            var nextCopyData = GetNextCopyData();
-            var nextCopyDataText = TextOf(nextCopyData);
+            var nextCopyDataText = TextOf(GetNextCopyData());
             if (nextCopyDataText != null) result += string.Format("\n\n操作の続行で、{0}をコピーします。", nextCopyDataText);
 
             return new ClapteCommandResult("区切り数値集計結果", result.TrimStart('\n'), ToolTipIcon.Info, true);
@@ -147,10 +137,11 @@ namespace GoodSeat.Clapte.ViewModels.ClapteCommands
                 Clipboard.SetText(text);
                 LastCopiedData = copyData;
 
-                var nextCopyData = GetNextCopyData();
-                var nextCopyDataText = TextOf(nextCopyData);
-
-                return new ClapteCommandResult("集計結果コピー", string.Format("\"{0}\"({1})をコピーしました。\n\n操作の続行で、{2}をコピーします。", text, copyDataText, nextCopyDataText), ToolTipIcon.Info, true);
+                var nextCopyDataText = TextOf(GetNextCopyData());
+                if (nextCopyDataText != null)
+                    return new ClapteCommandResult("集計結果コピー", string.Format("\"{0}\"({1})をコピーしました。\n\n操作の続行で、{2}をコピーします。", text, copyDataText, nextCopyDataText), ToolTipIcon.Info, true);
+                else
+                    return new ClapteCommandResult("集計結果コピー", string.Format("\"{0}\"({1})をコピーしました。", text, copyDataText), ToolTipIcon.Info, false);
             }
             catch
             {

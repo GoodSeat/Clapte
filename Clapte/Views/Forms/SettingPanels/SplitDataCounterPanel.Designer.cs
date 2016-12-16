@@ -29,13 +29,15 @@
         private void InitializeComponent()
         {
             this._groupSetting = new System.Windows.Forms.GroupBox();
-            this._numMaxLength = new Clapte.Views.Controls.NumericSlider();
+            this._numMaxLength = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._labelMaxLength = new System.Windows.Forms.Label();
             this._checkListData = new System.Windows.Forms.CheckedListBox();
             this._labelContents = new System.Windows.Forms.Label();
             this._checkListSplit = new System.Windows.Forms.CheckedListBox();
             this._labelSplitMark = new System.Windows.Forms.Label();
             this._checkEnable = new System.Windows.Forms.CheckBox();
+            this._checkListCopy = new System.Windows.Forms.CheckedListBox();
+            this.label1 = new System.Windows.Forms.Label();
             this._groupSetting.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -44,6 +46,8 @@
             this._groupSetting.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
             | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupSetting.Controls.Add(this.label1);
+            this._groupSetting.Controls.Add(this._checkListCopy);
             this._groupSetting.Controls.Add(this._numMaxLength);
             this._groupSetting.Controls.Add(this._labelMaxLength);
             this._groupSetting.Controls.Add(this._checkListData);
@@ -53,7 +57,7 @@
             this._groupSetting.Enabled = false;
             this._groupSetting.Location = new System.Drawing.Point(6, 8);
             this._groupSetting.Name = "_groupSetting";
-            this._groupSetting.Size = new System.Drawing.Size(288, 248);
+            this._groupSetting.Size = new System.Drawing.Size(379, 339);
             this._groupSetting.TabIndex = 0;
             this._groupSetting.TabStop = false;
             // 
@@ -115,8 +119,7 @@
             // 
             // _checkListData
             // 
-            this._checkListData.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
+            this._checkListData.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._checkListData.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._checkListData.CheckOnClick = true;
@@ -128,8 +131,9 @@
             "最大値",
             "最小値"});
             this._checkListData.Location = new System.Drawing.Point(22, 162);
+            this._checkListData.MultiColumn = true;
             this._checkListData.Name = "_checkListData";
-            this._checkListData.Size = new System.Drawing.Size(243, 72);
+            this._checkListData.Size = new System.Drawing.Size(334, 58);
             this._checkListData.TabIndex = 3;
             // 
             // _labelContents
@@ -157,7 +161,7 @@
             this._checkListSplit.Location = new System.Drawing.Point(22, 73);
             this._checkListSplit.MultiColumn = true;
             this._checkListSplit.Name = "_checkListSplit";
-            this._checkListSplit.Size = new System.Drawing.Size(243, 58);
+            this._checkListSplit.Size = new System.Drawing.Size(334, 58);
             this._checkListSplit.TabIndex = 1;
             // 
             // _labelSplitMark
@@ -179,6 +183,35 @@
             this._checkEnable.Text = "区切り数値の集計を有効にする";
             this._checkEnable.UseVisualStyleBackColor = true;
             // 
+            // _checkListCopy
+            // 
+            this._checkListCopy.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._checkListCopy.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._checkListCopy.CheckOnClick = true;
+            this._checkListCopy.FormattingEnabled = true;
+            this._checkListCopy.Items.AddRange(new object[] {
+            "数値個数",
+            "合計",
+            "平均",
+            "最大値",
+            "最小値"});
+            this._checkListCopy.Location = new System.Drawing.Point(22, 252);
+            this._checkListCopy.MultiColumn = true;
+            this._checkListCopy.Name = "_checkListCopy";
+            this._checkListCopy.Size = new System.Drawing.Size(334, 72);
+            this._checkListCopy.TabIndex = 6;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(14, 235);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(84, 12);
+            this.label1.TabIndex = 7;
+            this.label1.Text = "コピー対象データ";
+            // 
             // SplitDataCounterPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
@@ -186,7 +219,7 @@
             this.Controls.Add(this._checkEnable);
             this.Controls.Add(this._groupSetting);
             this.Name = "SplitDataCounterPanel";
-            this.Size = new System.Drawing.Size(298, 260);
+            this.Size = new System.Drawing.Size(389, 351);
             this._groupSetting.ResumeLayout(false);
             this._groupSetting.PerformLayout();
             this.ResumeLayout(false);
@@ -204,5 +237,7 @@
         private System.Windows.Forms.CheckedListBox _checkListSplit;
         private System.Windows.Forms.Label _labelSplitMark;
         private System.Windows.Forms.CheckBox _checkEnable;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.CheckedListBox _checkListCopy;
     }
 }
