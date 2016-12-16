@@ -198,7 +198,12 @@ namespace GoodSeat.Sio.Xml
         /// <summary>
         /// XmlElementをファイルに書き込みます。
         /// </summary>
-        public void Save()
+        public void Save() { Save(Encoding.Default); }
+        /// <summary>
+        /// XmlElementをファイルに書き込みます。
+        /// </summary>
+        /// <param name="encoding">保存時に用いる文字エンコーディング。</param>
+        public void Save(Encoding encoding)
         {
             if (_element == null) throw new InvalidOperationException("保存対象のXmlElementが指定されていません。");
             
@@ -211,7 +216,7 @@ namespace GoodSeat.Sio.Xml
 
                 xmlDoc.AppendChild(_element.ConvertToSystemXmlElement(xmlDoc));
 
-                var writer = new StreamWriter(_path, false, Encoding.Default);
+                var writer = new StreamWriter(_path, false, encoding);
                 xmlDoc.Save(writer);
             }
             catch { }

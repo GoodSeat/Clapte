@@ -474,7 +474,7 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 XmlFile file = new XmlFile(fileName);
                 file.Element = CreateSerializeXmlElement();
-                file.Save();
+                file.Save(Encoding.UTF8);
             }
             catch (Exception e)
             {
