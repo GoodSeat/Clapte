@@ -425,7 +425,7 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 clapteSettingElement = clapteSettingElement.GetElement("Solver");
                 MessageBox.Show(
-                    "Clapte Ver 1.x の設定ファイルを検知しました。\nユーザー定義の定数、関数、単位テーブルを引き継ぎます。\n\n※ その他の設定についてはデフォルトに初期化されます。",
+                    "Clapte Ver 1.x の設定ファイルを検知しました。\n定数、関数、単位テーブルの設定を引き継ぎます。\n\n※ その他の設定についてはデフォルトに初期化されますので、ご注意ください。",
                     "Clapte Ver 1.x からの設定の引継",
                     MessageBoxButtons.OK, MessageBoxIcon.Information);
             }
