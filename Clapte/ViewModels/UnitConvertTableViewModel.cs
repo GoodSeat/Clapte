@@ -7,6 +7,7 @@ using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formats.Numerics;
 
 namespace GoodSeat.Clapte.ViewModels
 {
@@ -123,8 +124,13 @@ namespace GoodSeat.Clapte.ViewModels
             }
             xmlElement.AddAttribute("Comment", record.UnitComment);
 
-            if (record.ConversionAddition.ToString() != "0") xmlElement.AddAttribute("Add", record.ConversionAddition.ToString());
-            if (record.ConversionRatio.ToString() != "1") xmlElement.AddAttribute("Multiple", record.ConversionRatio.ToString());
+            var add = record.ConversionAddition.Copy();
+            add.Format.SetProperty(new ConsiderSignificantFiguresFormatProperty(true));
+            if (add.ToString() != "0") xmlElement.AddAttribute("Add", add.ToString());
+
+            var ratio = record.ConversionRatio.Copy();
+            ratio.Format.SetProperty(new ConsiderSignificantFiguresFormatProperty(true)); 
+            if (ratio.ToString() != "1") xmlElement.AddAttribute("Multiple", ratio.ToString());
 
             return xmlElement;
         }
