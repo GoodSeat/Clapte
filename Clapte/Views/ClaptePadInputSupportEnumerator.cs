@@ -68,59 +68,74 @@ namespace GoodSeat.Clapte.Views.InputSupports
 
         private IEnumerable<ConstantDefine> GetAllConstantDefines(string startsWith)
         {
+            List<string> considerdNames = new List<string>();
             for (int i = CurrentCaretLineNumber; i >= 0; i--)
             {
                 if (Target[i] == null) continue;
                 var cell = Target[i].Target;
 
-                var list = new List<ConstantDefine>(cell.Content.GetAllConstantDefines().Where(def =>
-                            def != null && def.Name.StartsWith(startsWith)));
-                if (cell.CommentText.Contains(startsWith)) list = new List<ConstantDefine>(cell.Content.GetAllConstantDefines());
-
-                foreach (var def in list)
+                foreach (var def in cell.Content.GetAllConstantDefines().Where(d => d != null && !considerdNames.Contains(d.Name)))
                 {
-                    if (def == null) continue;
+                    considerdNames.Add(def.Name);
+                    if (!def.Name.StartsWith(startsWith))
+                    {
+                        if (!AlsoInfomation || !cell.CommentText.Contains(startsWith)) continue;
+                    }
+
                     def.Information = cell.CacheText; // cell.CommentText.TrimStart(' ', '#');
                     yield return def;
                 }
             }
 
-            Func<ConstantDefine, bool> isTarget = def => def != null && def.Name.StartsWith(startsWith);
-            if (AlsoInfomation) isTarget = def => def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith));
+            Func<ConstantDefine, bool> isTarget = def => def != null && def.Name.StartsWith(startsWith) && !considerdNames.Contains(def.Name);
+            if (AlsoInfomation) isTarget = def => def != null && !considerdNames.Contains(def.Name) && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith));
 
-            foreach (var def in Target.ConstantList.Target.Where(isTarget)) yield return def;
-            foreach (var def in Target.ConstantList.GetSystemConstants().Where(isTarget)) yield return def;
+            foreach (var def in Target.ConstantList.Target.Where(isTarget)) { yield return def; considerdNames.Add(def.Name); }
+            foreach (var def in Target.ConstantList.GetSystemConstants().Where(isTarget)) { yield return def; considerdNames.Add(def.Name); }
         }
 
         private IEnumerable<FunctionDefine> GetAllFunctionDefines(string startsWith)
         {
+            List<string> considerdNames = new List<string>();
             for (int i = CurrentCaretLineNumber - 1; i >= 0; i--)
             {
                 if (Target[i] == null) continue;
                 var cell = Target[i].Target;
 
-                List<FunctionDefine> list = new List<FunctionDefine>(cell.Content.GetAllFunctionDefines().Where(def =>
-                            def != null && def.Name.StartsWith(startsWith)));
-                if (cell.CommentText.Contains(startsWith)) list = new List<FunctionDefine>(cell.Content.GetAllFunctionDefines());
-
-                foreach (var def in list)
+                foreach (var def in cell.Content.GetAllFunctionDefines().Where(d => d != null && !considerdNames.Contains(d.Name)))
                 {
-                    if (def == null) continue;
+                    considerdNames.Add(def.Name);
+                    if (!def.Name.StartsWith(startsWith))
+                    {
+                        if (!AlsoInfomation || !cell.CommentText.Contains(startsWith)) continue;
+                    }
+
                     def.Information = cell.CacheText; // cell.CommentText.TrimStart(' ', '#');
                     yield return def;
                 }
             }
             
-            Func<FunctionDefine, bool> isTarget = def => def != null && def.Name.StartsWith(startsWith);
-            if (AlsoInfomation) isTarget = def => def != null && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith));
+            Func<FunctionDefine, bool> isTarget = def => def != null && def.Name.StartsWith(startsWith) && !considerdNames.Contains(def.Name);
+            if (AlsoInfomation) isTarget = def => def != null && !considerdNames.Contains(def.Name) && (def.Name.StartsWith(startsWith) || def.Information.Contains(startsWith));
 
-            foreach (var def in Target.FunctionList.Target.Where(isTarget)) yield return def;
-            foreach (var def in Target.FunctionList.GetSystemFunctions().Where(isTarget)) yield return def;
+            foreach (var def in Target.FunctionList.Target.Where(isTarget)) { yield return def; considerdNames.Add(def.Name); }
+            foreach (var def in Target.FunctionList.GetSystemFunctions().Where(isTarget)) { yield return def; considerdNames.Add(def.Name); }
         }
 
         private IEnumerable<Tuple<String, Unit, UnitConvertRecord>> GetAllUnitDefines(string startsWith, CandidateType targetType)
         {
             bool bAllPrefix = ((targetType & CandidateType.UnitAllPrefix) == CandidateType.UnitAllPrefix);
+
+            var unitNames = new List<string>();
+            foreach (var table in UnitConvertTable.ValidTables.Values)
+            {
+                foreach (var def in table.GetAllRecords(true))
+                {
+                    if (!(def.ConvertUnit is Unit)) continue;
+                    Unit u = def.ConvertUnit as Unit;
+                    unitNames.Add(u.UnitName);
+                }
+            }
 
             foreach (var table in UnitConvertTable.ValidTables.Values)
             {
@@ -148,6 +163,8 @@ namespace GoodSeat.Clapte.Views.InputSupports
                         helpText += " (" + def.ConversionRatio + "[" + baseDef + "]" + ratio + ")";
 
                         var sample = new Unit(unitName, prefix);
+                        if (prefix.Mark != "" && unitNames.Contains(sample.ToString())) continue; // min はミリインチではなく、分
+
                         yield return Tuple.Create(helpText, sample, def);
                     }
                 }
