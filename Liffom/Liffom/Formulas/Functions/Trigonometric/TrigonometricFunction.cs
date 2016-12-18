@@ -150,7 +150,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             {
                 foreach (var rad in GetTriRadsOf(triRad))
                 {
-                    if (rad == arg)
+                    if (rad == arg || rad.Numerate() == arg)
                     {
                         hitRad = triRad;
                         break;
