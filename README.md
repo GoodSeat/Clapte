@@ -31,7 +31,8 @@
 Clapte は MIT License で配布されます。
 ```
 MIT license  
-Copyright(c) 2015 GoodSeat
+Copyright(c) 2016 GoodSeat
+[https://sites.google.com/site/eatbaconandham/clapte/license]
 ```
 
 MIT Licenseでは、以下の2点に同意いただければ、目的を問わず自由に利用してかまいません。
@@ -46,6 +47,7 @@ MIT Licenseでは、以下の2点に同意いただければ、目的を問わ�
 ```
 zlib license  
 Copyright(c) 2008-2013 Suguru YAMAMOTO
+[https://opensource.org/licenses/Zlib]
 ```
 
 ---
@@ -121,7 +123,7 @@ Copyright(c) 2008-2013 Suguru YAMAMOTO
 ---
 ## 8. 更新履歴 ##
 
-#### 2016.12.xx ver2.0.0 ####
+#### 2016.12.18 ver2.0.0 ####
 * 追加
     * 計算機を刷新。
     * Clapteの多重起動時、計算機を表示するように修正。
