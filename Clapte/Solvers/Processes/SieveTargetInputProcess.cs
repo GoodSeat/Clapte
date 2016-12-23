@@ -42,8 +42,9 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// 入力された文字列を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力文字列。</param>
+        /// <param name="onlyCheckInput">数式の構文解析のみを目的とし、文字列のチェックのみを行うか否か。</param>
         /// <returns>エラー情報。エラーのない場合、null。</returns>
-        public override Error CheckInputText(ref string input)
+        public override Error CheckInputText(ref string input, bool onlyCheckInput)
         {
             if (input.Length > MaxInputTextLength)
                 return new Error(Error.Level.Abort, "計算対象とする数式の最大文字列長を超過します。");
@@ -56,11 +57,10 @@ namespace GoodSeat.Clapte.Solvers.Processes
                     if (!s_ops.Any(op => s1.EndsWith(op)) && !s_ops.Any(op => s2.StartsWith(op))) isValid = false;
                     return s2;
                 });
-                if (!isValid)
-                    return new Error(Error.Level.Abort, "無効な位置の改行を含む計算式です。");
+                if (!isValid) return new Error(Error.Level.Abort, "無効な位置の改行を含む計算式です。");
             }
             
-            return base.CheckInputText(ref input);
+            return base.CheckInputText(ref input, onlyCheckInput);
         }
 
         /// <summary>

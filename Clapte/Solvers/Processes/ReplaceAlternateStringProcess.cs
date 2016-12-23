@@ -35,8 +35,9 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// 計算対象となった入力数式を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力数式。</param>
+        /// <param name="onlyCheckInput">数式の構文解析のみを目的とし、文字列のチェックのみを行うか否か。</param>
         /// <returns>エラー情報。エラーのない場合、null。</returns>
-        public override Error CheckInputText(ref string input) 
+        public override Error CheckInputText(ref string input, bool onlyCheckInput) 
         {
             foreach (string s in IgnoreTextList) input = input.Replace(s, " ");
 

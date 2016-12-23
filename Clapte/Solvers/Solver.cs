@@ -21,6 +21,10 @@ namespace GoodSeat.Clapte.Solvers
         enum Step
         {
             /// <summary>
+            /// 入力文字列の検査を表します。
+            /// </summary>
+            CheckInputTextOnly,
+            /// <summary>
             /// 入力文字列の検査段階を表します。
             /// </summary>
             CheckInputText,
@@ -187,7 +191,7 @@ namespace GoodSeat.Clapte.Solvers
             Formula formula = null;
             Result result = null;
 
-            result = DoProcess(Step.CheckInputText, ref input, ref formula, errors);
+            result = DoProcess(Step.CheckInputTextOnly, ref input, ref formula, errors);
             if (result != null) throw new FormulaParseException(result.ResultText);
 
             return Parser.Parse(input);
@@ -208,9 +212,13 @@ namespace GoodSeat.Clapte.Solvers
                 Error error = null;
                 switch (step)
                 {
-                    case Step.CheckInputText: 
-                        error = process.CheckInputText(ref text);
+                    case Step.CheckInputTextOnly: 
+                        error = process.CheckInputText(ref text, true);
                         break;
+                    case Step.CheckInputText: 
+                        error = process.CheckInputText(ref text, false);
+                        break;
+
                     case Step.CheckInputFormula: 
                         error = process.CheckInputFormula(ref formula);
                         break;

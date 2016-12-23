@@ -37,19 +37,20 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// 入力された文字列を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力文字列。</param>
+        /// <param name="onlyCheckInput">数式の構文解析のみを目的とし、文字列のチェックのみを行うか否か。</param>
         /// <returns>エラー情報。エラーのない場合、null。</returns>
-        public override Error CheckInputText(ref string input) 
+        public override Error CheckInputText(ref string input, bool onlyCheckInput) 
         {
-            ExistSplitComma = false;
+            if (!onlyCheckInput) ExistSplitComma = false;
 
             var matchs = SplitNumericRegex.Matches(input);
             foreach (var match in matchs)
             {
-                ExistSplitComma = true;
+                if (!onlyCheckInput) ExistSplitComma = true;
                 input = input.Replace(match.ToString(), match.ToString().Replace(",", ""));
             }
 
-            return base.CheckInputText(ref input);
+            return base.CheckInputText(ref input, onlyCheckInput);
         }
 
         /// <summary>

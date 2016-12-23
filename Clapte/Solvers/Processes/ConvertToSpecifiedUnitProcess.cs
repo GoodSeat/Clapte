@@ -45,35 +45,48 @@ namespace GoodSeat.Clapte.Solvers.Processes
             ApplyDeformToken = token;
         }
 
-        public override Error CheckInputText(ref string input)
+        /// <summary>
+        /// 入力された文字列を対象として、処理を行います。
+        /// </summary>
+        /// <param name="input">処理対象の入力文字列。</param>
+        /// <param name="onlyCheckInput">数式の構文解析のみを目的とし、文字列のチェックのみを行うか否か。</param>
+        /// <returns>エラー情報。エラーのない場合、null。</returns>
+        public override Error CheckInputText(ref string input, bool onlyCheckInput)
         {
-            CurrentTargetUnit = null;
+            if (!onlyCheckInput) CurrentTargetUnit = null;
 
             Match match = TargetUnitRegex.Match(input);
-            if (!match.Success) return base.CheckInputText(ref input);
+            if (!match.Success) return base.CheckInputText(ref input, onlyCheckInput);
             
             string targetUnit = match.Groups["targetUnit"].Value;
             var parsed = Owner.Parser.Parse(targetUnit);
 
             if (!(parsed is Argument)) // parsedが引数の場合、マトリクスもしくは行ベクトルの可能性
             {
-                CurrentTargetUnit = parsed;
+                var targetUnitFormula = parsed;
 
                 // 変数を同名の単位で置き換え
-                foreach (var variable in CurrentTargetUnit.GetExistFactors<Variable>())
-                    CurrentTargetUnit = CurrentTargetUnit.Substituted(variable, new Unit(variable.Mark));
+                foreach (var variable in targetUnitFormula.GetExistFactors<Variable>())
+                    targetUnitFormula = targetUnitFormula.Substituted(variable, new Unit(variable.Mark));
                 // 定数を同名の単位で置き換え
-                foreach (var constant in CurrentTargetUnit.GetExistFactors<Constant>())
-                    CurrentTargetUnit = CurrentTargetUnit.Substituted(constant, new Unit(constant.DistinguishedName));
+                foreach (var constant in targetUnitFormula.GetExistFactors<Constant>())
+                    targetUnitFormula = targetUnitFormula.Substituted(constant, new Unit(constant.DistinguishedName));
 
-                if (!CurrentTargetUnit.IsUnit(true)) return new Error(Error.Level.Abort, "目標単位として指定された文字列を、単位として認識できません。");
+                if (!targetUnitFormula.IsUnit(true)) return new Error(Error.Level.Abort, "目標単位として指定された文字列を、単位として認識できません。");
 
                 input = TargetUnitRegex.Replace(input, "");
+
+                if (!onlyCheckInput) CurrentTargetUnit = targetUnitFormula;
             }
 
-            return base.CheckInputText(ref input);
+            return base.CheckInputText(ref input, onlyCheckInput);
         }
 
+        /// <summary>
+        /// 計算対象となった入力数式を対象として、処理を行います。
+        /// </summary>
+        /// <param name="input">処理対象の入力数式。</param>
+        /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error CheckOutputFormula(ref Formula output)
         {
             if (CurrentTargetUnit != null)

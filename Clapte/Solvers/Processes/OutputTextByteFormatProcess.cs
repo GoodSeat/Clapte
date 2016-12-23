@@ -79,16 +79,29 @@ namespace GoodSeat.Clapte.Solvers.Processes
             return Strings.StrConv(target, (VbStrConv)type, 0);
         }
 
-        public override Error CheckInputText(ref string input)
+        /// <summary>
+        /// 計算対象となった入力数式を対象として、処理を行います。
+        /// </summary>
+        /// <param name="input">処理対象の入力数式。</param>
+        /// <param name="onlyCheckInput">数式の構文解析のみを目的とし、文字列のチェックのみを行うか否か。</param>
+        /// <returns>エラー情報。エラーのない場合、null。</returns>
+        public override Error CheckInputText(ref string input, bool onlyCheckInput)
         {
-            if (OutputCharaType == CharaType.Auto)
-                CurrentCharaType = GetMajorCharaType(input);
-            else
-                CurrentCharaType = OutputCharaType;
-
-            return base.CheckInputText(ref input);
+            if (!onlyCheckInput)
+            {
+                if (OutputCharaType == CharaType.Auto)
+                    CurrentCharaType = GetMajorCharaType(input);
+                else
+                    CurrentCharaType = OutputCharaType;
+            }
+            return base.CheckInputText(ref input, onlyCheckInput);
         }
 
+        /// <summary>
+        /// 計算結果として得られた数式を対象として、処理を行います。
+        /// </summary>
+        /// <param name="output">処理対象の出力数式。</param>
+        /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error CheckOutputText(ref string output) 
         {
             output = ReplaceCharaTypeWith(CurrentCharaType, output);

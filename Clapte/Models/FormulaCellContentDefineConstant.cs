@@ -55,7 +55,7 @@ namespace GoodSeat.Clapte.Models
             var preText = formulaText;
             {
                 var unitProc = new ConvertToSpecifiedUnitProcess(solver);
-                unitProc.CheckInputText(ref formulaText);
+                unitProc.CheckInputText(ref formulaText, true);
             }
             var targetUnitText = preText.Substring(0, preText.Length - formulaText.Length); // [cm] 等の部分
 

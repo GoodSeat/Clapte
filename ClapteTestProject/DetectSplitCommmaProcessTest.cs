@@ -77,7 +77,7 @@ namespace GoodSeat.ClapteTestProject
 				string input = "1,352,012.2525 + 1,235.5";
 				string inputExpected = "1352012.2525 + 1235.5";
 				Error expected = null;
-				Error actual = target.CheckInputText(ref input);
+				Error actual = target.CheckInputText(ref input, false);
 				Assert.AreEqual(inputExpected, input);
 				Assert.AreEqual(expected, actual);
 			}
@@ -85,7 +85,7 @@ namespace GoodSeat.ClapteTestProject
 				string input = "1,52,012.2525 + 1,235.5";
 				string inputExpected = "1,52012.2525 + 1235.5";
 				Error expected = null;
-				Error actual = target.CheckInputText(ref input);
+				Error actual = target.CheckInputText(ref input, false);
 				Assert.AreEqual(inputExpected, input);
 				Assert.AreEqual(expected, actual);
 			}
@@ -93,7 +93,7 @@ namespace GoodSeat.ClapteTestProject
 				string input = "1,352,012";
 				string inputExpected = "1352012";
 				Error expected = null;
-				Error actual = target.CheckInputText(ref input);
+				Error actual = target.CheckInputText(ref input, false);
 				Assert.AreEqual(inputExpected, input);
 				Assert.AreEqual(expected, actual);
 			}
@@ -108,7 +108,7 @@ namespace GoodSeat.ClapteTestProject
 			DetectSplitCommmaProcess target = new DetectSplitCommmaProcess(null);
 			{
 				string input = "1,352,012.2525 + 1,235.5";
-				target.CheckInputText(ref input);
+				target.CheckInputText(ref input, false);
 
 				Formula output = new Numeric(1352012.2525);
 				Error actual = target.CheckOutputFormula(ref output);
@@ -116,7 +116,7 @@ namespace GoodSeat.ClapteTestProject
 			}
 			{
 				string input = "1352012.2525 + 1235.5";
-				target.CheckInputText(ref input);
+				target.CheckInputText(ref input, false);
 
 				Formula output = new Numeric(1352012.2525);
 				Error actual = target.CheckOutputFormula(ref output);

@@ -54,8 +54,9 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// 入力された文字列を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力文字列。</param>
+        /// <param name="onlyCheckInput">数式の構文解析のみを目的とし、文字列のチェックのみを行うか否か。</param>
         /// <returns>エラー情報。エラーのない場合、null。</returns>
-        public override Error CheckInputText(ref string input)
+        public override Error CheckInputText(ref string input, bool onlyCheckInput)
         {
             var parser = Owner.Parser;
             var funcLexer = parser.GetLexerOf<FunctionLexer>();
@@ -134,7 +135,6 @@ namespace GoodSeat.Clapte.Solvers.Processes
             callStack.Push(v);
             try
             {
-                var parser = Owner.Parser;
                 ConstantDefine target = null;
                 foreach (var def in GetAllValidConstantDefines())
                 {
@@ -151,7 +151,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
                 if (target.Define != null)
                 {
-                    Formula define = parser.Parse(target.Define);
+                    Formula define = Owner.Parse(target.Define);
                     define = SubsutitueUserDefines(define, callStack); // 定義内の別のユーザー定義定数・関数を置き換える
                     UserConstantCache.Add(v, define);
                 }
