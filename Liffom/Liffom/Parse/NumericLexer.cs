@@ -30,7 +30,16 @@ namespace GoodSeat.Liffom.Parse
 
         public override IEnumerable<Token> Tokenize(string text)
         {
-            yield return new FormulaToken(text, new Numeric(text));
+            FormulaToken result = null;
+            try
+            {
+                result = new FormulaToken(text, new Numeric(text));
+            }
+            catch (OverflowException e)
+            {
+                throw new FormulaParseException(string.Format("オーバーフローが発生しました。\"{0}\"は数値として大きすぎるか、もしくは小さすぎます。", text), e);
+            }
+            yield return result;
         }
     }
 }

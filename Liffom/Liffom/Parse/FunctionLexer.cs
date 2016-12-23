@@ -72,10 +72,10 @@ namespace GoodSeat.Liffom.Parse
         {
             Reflector<Function> addReflector = new Reflector<Function>(functionType);
             var sample = addReflector.CreateInstance();
-            if (sample == null) throw new FormulaParseException(string.Format("{0}は有効な関数の型ではありません。", functionType));
+            if (sample == null) throw new FormulaParseException(string.Format("{0} は有効な関数の型ではありません。", functionType));
 
             var name = sample.DistinguishedName;
-            if (_functionMap.ContainsKey(name)) throw new FormulaParseException(string.Format("{0}はすでに関数名として登録されています。", name));
+            if (_functionMap.ContainsKey(name)) throw new FormulaParseException(string.Format("{0} はすでに関数名として登録されています。", name));
 
             _functionMap.Add(name, addReflector);
         }

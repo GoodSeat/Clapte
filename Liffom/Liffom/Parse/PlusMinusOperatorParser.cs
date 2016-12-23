@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Parse
                 else
                     return new Product(false, -1, target);
             }
-            else throw new FormulaParseException(mark + "は、想定していない正負記号です。");
+            else throw new FormulaParseException(mark + " は、想定していない正負記号です。");
         }
     }
 }

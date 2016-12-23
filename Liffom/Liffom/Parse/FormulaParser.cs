@@ -264,7 +264,7 @@ namespace GoodSeat.Liffom.Parse
 
             var startPunctuation = startToken as PunctuationToken;
             var endPunctuation = endToken as PunctuationToken;
-            if (!startPunctuation.IsValidSetPunctuation(endPunctuation)) throw new FormulaParseException("数式文字列中の区切りが正しく対応しませんでした。");
+            if (!startPunctuation.IsValidSetPunctuation(endPunctuation)) throw new FormulaParseException("数式文字列中の括弧・区切りが正しく対応しません。");
 
             var parsedToken = ParseInner(startPunctuation.NextToken, endPunctuation.PreviousToken);
             if (parsedToken == null) throw new FormulaParseException(startPunctuation.NextToken.GetBaseText(endPunctuation) + "の解析に失敗しました。");
@@ -323,7 +323,7 @@ namespace GoodSeat.Liffom.Parse
                 if (start == end) break;
             }
 
-            if (start != end) throw new FormulaParseException("演算トークンを正しく解決できませんでした。");
+            if (start != end) throw new FormulaParseException("演算子トークンを正しく解決できませんでした。");
             return start as FormulaToken;
         }
 

@@ -46,7 +46,7 @@ namespace GoodSeat.Liffom.Parse
                     sumList.Add(new Product(true, -1, pair.Value));
                 }
                 else if (mark == "+") sumList.Add(pair.Value);
-                else throw new FormulaParseException(mark + "は、想定していない和算記号です。");
+                else throw new FormulaParseException(mark + " は、想定していない和算記号です。");
             }
 
             if (sumList.Count == 1) return sumList[0];

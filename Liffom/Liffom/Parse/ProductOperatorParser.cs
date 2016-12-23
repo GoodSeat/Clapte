@@ -35,7 +35,7 @@ namespace GoodSeat.Liffom.Parse
                     productList.Add(den);
                 }
                 else if (mark == "*" || mark == "･") productList.Add(pair.Value);
-                else throw new FormulaParseException(mark + "は、想定していない積算記号です。");
+                else throw new FormulaParseException(mark + " は、想定していない積算記号です。");
             }
 
             if (productList.Count == 1) return productList[0];
