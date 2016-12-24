@@ -50,7 +50,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             if (abs == 0)
             {
                 if (expNumeric >= 0) return 0;
-                else return null;        // 0^-1など、0の負数累乗は定義できない。
+                else throw new FormulaRuleException("0による除算が発生しました。", new DivideByZeroException());
             }
             Numeric rad = Imaginary.Arg(R, E); // 元の偏角
 
@@ -69,8 +69,11 @@ namespace GoodSeat.Liffom.Formulas.Rules
             cos = new Numeric(cos.Figure.Round(15)); 
             sin = new Numeric(sin.Figure.Round(15)); 
 
-            Numeric newReal = cos.Figure * newAbs.Figure;
-            Numeric newImag = sin.Figure * newAbs.Figure;
+            Numeric newReal = new Numeric(0);
+            if (cos.Figure != 0) newReal = cos.Figure * newAbs.Figure;
+            Numeric newImag = new Numeric(0);
+            if (sin.Figure != 0) newImag = sin.Figure * newAbs.Figure;
+
             if (newReal == 0)
             {
                 if (newImag == 1) return Imaginary.i;

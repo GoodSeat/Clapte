@@ -38,6 +38,10 @@ namespace GoodSeat.Liffom.Formulas.Rules
             // 単位表に登録のある単位があるなら、0がかかることを明示するため消去しない（℃→Kの換算などで必要な情報となるため）
             if (f2.Contains(s_isRegistedUnit)) return false;
 
+            // 0除算とならないことを確認
+            var rule = CalculatePowerNumericRule.Entity;
+            f2 = rule.TryMatchRule(f2);
+
             return true;
         }
 
