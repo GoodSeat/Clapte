@@ -74,6 +74,16 @@ namespace GoodSeat.Liffom.Formulas.Functions
             return this;
         }
 
+        public override Formula this[int i]
+        {
+            get
+            {
+                if (i == 1 && base[i] == null) return new Numeric(10.0);
+                return base[i];
+            }
+            set { base[i] = value; }
+        }
+
         public override int MinimumArgumentQty
         {
             get { return 1; }
