@@ -68,7 +68,7 @@ namespace GoodSeat.Clapte.Views
             int index = azuki.GetIndexFromPosition(position);
             Point checkPosition = azuki.GetPositionFromIndex(index);
             if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;
-            return index;
+            return Math.Min(index, azuki.Document.Length - 1);
         }
 
 

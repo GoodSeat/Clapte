@@ -34,6 +34,7 @@ namespace GoodSeat.Clapte.Views
             HelpBox.ForeColor = Color.Blue;
             HelpBox.Visible = false;
             HelpBox.Enter += (sender, e) => HelpBox.Visible = false;
+            HelpBox.ScrollBars = RichTextBoxScrollBars.None;
             owner.Controls.Add(HelpBox);
 
             azuki.FontChanged += new EventHandler(azuki_FontChanged);
@@ -132,8 +133,8 @@ namespace GoodSeat.Clapte.Views
         private void SetHelpBoxPosition(int index)
         {
             Point p = Azuki.GetPositionFromIndex(index);
-            HelpBox.Location = new Point(p.X + ModifyLocation.X, p.Y + ModifyLocation.Y - (int)HelpBox.Font.Size * 2);
-            HelpBox.Size = new Size((int)(HelpBox.PreferredSize.Width * 1.2), (int)(HelpBox.PreferredSize.Height * 1.5));
+            HelpBox.Size = new Size((int)(HelpBox.PreferredSize.Width * 1.2), (int)(HelpBox.PreferredSize.Height * 1.2));
+            HelpBox.Location = new Point(p.X + ModifyLocation.X, p.Y + ModifyLocation.Y - HelpBox.Height);
         }
 
         /// <summary>
