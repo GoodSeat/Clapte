@@ -130,6 +130,15 @@ namespace GoodSeat.Clapte.Models
         }
 
         /// <summary>
+        /// 付加情報の種別を表します。
+        /// </summary>
+        public enum AdditionalInformationType
+        {
+            /// <summary>構文解析のエラー。</summary>
+            ParseError
+        }
+
+        /// <summary>
         /// 初期化元となった数式文字列を取得します。
         /// </summary>
         public string FormulaText { get; private set; }
@@ -148,6 +157,11 @@ namespace GoodSeat.Clapte.Models
         /// 評価結果を表す文字列を設定もしくは取得します。
         /// </summary>
         public string ResultText { get; set; }
+
+        /// <summary>
+        /// 何らかの付加情報を表す文字列を設定もしくは取得します。
+        /// </summary>
+        public Tuple<AdditionalInformationType, string> AdditionalInformation { get; set; }
 
         /// <summary>
         /// 元の数式を結果のテキストに含めるか否かを設定もしくは取得します。

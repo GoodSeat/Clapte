@@ -32,6 +32,12 @@ namespace GoodSeat.Clapte.Models
             var content = new FormulaCellContentComment();
 
             content.ResultText = formulaText;
+            try
+            {
+                var split = formulaText.Split('#')[0];
+                if (!string.IsNullOrWhiteSpace(split)) solver.Parse(split);
+            }
+            catch (Exception e) { content.AdditionalInformation = Tuple.Create(AdditionalInformationType.ParseError, e.Message); }
             return content;
         }
 

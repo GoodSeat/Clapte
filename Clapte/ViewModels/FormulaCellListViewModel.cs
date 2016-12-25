@@ -4,9 +4,10 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading;
-using GoodSeat.Sio.Xml;
-using GoodSeat.Clapte.Solvers;
 using System.Windows.Forms;
+using GoodSeat.Sio.Xml;
+using GoodSeat.Clapte.Models;
+using GoodSeat.Clapte.Solvers;
 using GoodSeat.Liffom.Formulas;
 
 namespace GoodSeat.Clapte.ViewModels
@@ -475,10 +476,7 @@ namespace GoodSeat.Clapte.ViewModels
         /// 指定行の結果を取得します。
         /// </summary>
         /// <param name="row">取得対象の行番号。</param>
-        /// <returns>
-        /// 指定行に対応する数式セルの評価結果。
-        /// 複数行にわたる数式セルでは、対応するResultオブジェクトは1行目に対してのみ返され、その他の行ではnullが返されます。
-        /// </returns>
+        /// <returns>指定行に対応する数式セルの評価結果。</returns>
         public string GetResultOf(int row)
         {
             if (row >= FormulaCellList.Count) return null;
@@ -500,6 +498,20 @@ namespace GoodSeat.Clapte.ViewModels
             result = targetViewModel.Indent + result;
 
             return result;
+        }
+        /// <summary>
+        /// 指定行の付加情報を取得します。
+        /// </summary>
+        /// <param name="row">取得対象の行番号。</param>
+        /// <returns>指定行に対応する数式セルの付加情報。</returns>
+        public Tuple<FormulaCellContent.AdditionalInformationType, string> GetAdditionalInfomationOf(int row)
+        {
+            if (row >= FormulaCellList.Count) return null;
+
+            var targetViewModel = FormulaCellList[row];
+            var target = targetViewModel.Target;
+
+            return target.Content.AdditionalInformation;
         }
 
         /// <summary>

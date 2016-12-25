@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using Sgry.Azuki;
+using GoodSeat.Clapte.Models;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.Views.InputSupports;
 using GoodSeat.Clapte.ViewModels;
@@ -23,8 +24,8 @@ namespace GoodSeat.Clapte.Views.Forms
     /// </summary>
     public partial class FormOfClaptePad : ClapteFormBase, ISerializable
     {
-        private string _hotSaveFilename = "ClaptePadHotText.txth";
-        private string _claptePadHelpFilename = "ClaptePadHelp.txt";
+        private const string _hotSaveFilename = "ClaptePadHotText.txth";
+        private const string _claptePadHelpFilename = "ClaptePadHelp.txt";
 
         /// <summary>
         /// ClaptePadフォームを初期化します。(デザイナ用)
@@ -57,6 +58,8 @@ namespace GoodSeat.Clapte.Views.Forms
             Support.ModifyLocation = _splitContainer.Location;
             ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, this, InputSupportEnumerator);
             ArgumentHelper.ModifyLocation = _splitContainer.Location;
+
+            AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
 
             InitializeTextBox();
 
@@ -211,6 +214,11 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         private ClaptePadInputSupportEnumerator InputSupportEnumerator { get; set; }
 
+        /// <summary>
+        /// 現在の入力ボックス各行に関連付けられた付加情報リストを設定もしくは取得します。
+        /// </summary>
+        private List<Tuple<FormulaCellContent.AdditionalInformationType, string>> AdditionalInformations { get; set; }
+
         #endregion
 
         #region 処理
@@ -241,6 +249,10 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _resultTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
             _resultTextBox.ShowsHScrollBar = false;
+
+            int parseErrorID = (int)FormulaCellContent.AdditionalInformationType.ParseError;
+            Marking.Register(new MarkingInfo(parseErrorID, "構文解析エラー"));
+            _inputTextBox.ColorScheme.SetMarkingDecoration(parseErrorID, new UnderlineTextDecoration(LineStyle.Waved, Color.Red));
         }
 
         /// <summary>
@@ -415,11 +427,29 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         private void Target_ResultChanged(object sender, EventArgs e)
         {
+            var document = _inputTextBox.Document;
+            foreach (var type in Enum.GetValues(typeof(FormulaCellContent.AdditionalInformationType)))
+            {
+                document.Unmark(0, document.Length, (int)type);
+            }
+            AdditionalInformations.Clear();
+
             string resultText = "";
-            for (int i = 0; i < _inputTextBox.Document.LineCount; i++)
+            for (int i = 0; i < document.LineCount; i++)
             {
                 var result = Target.GetResultOf(i);
                 resultText += result + "\r\n";
+
+                var addInfo = Target.GetAdditionalInfomationOf(i);
+                if (addInfo != null)
+                {
+                    string lineText = document.GetLineContent(i);
+                    int head = document.GetLineHeadIndex(i);
+                    int indent = lineText.Length - lineText.TrimStart().Length;
+                    int len = lineText.Split('#')[0].TrimEnd().Length;
+                    document.Mark(head + indent, head + len, (int)addInfo.Item1);
+                }
+                AdditionalInformations.Add(addInfo);
             }
             SetVisibleOfScrollBar();
 
@@ -430,6 +460,7 @@ namespace GoodSeat.Clapte.Views.Forms
             IgnoreScroll = false;
 
             Highlighter.Renew(_inputTextBox.Text);
+            _inputTextBox.Refresh();
         }
 
         /// <summary>
@@ -506,25 +537,32 @@ namespace GoodSeat.Clapte.Views.Forms
             int lineIndex;
             string postText;
             string targetText = textBox.GetMouseHoverWord(out lineIndex, out postText);
-            if (targetText == null)
+            char? targetChar = textBox.GetMouseHoverChar();
+            int? markID = textBox.GetMouseHoverMarkID();
+
+            string helpText = null;
+            if (targetChar.HasValue && targetText != null && targetText.Contains(targetChar.Value))
+            {
+                var helpTarget = InputSupportEnumerator.GetInputSupportCandidateFromText(targetText, lineIndex, postText);
+                helpText = helpTarget?.Information;
+            }
+            if (helpText == null && markID.HasValue)
+            {
+                helpText = AdditionalInformations[lineIndex]?.Item2;
+            }
+
+            if (helpText == null)
             {
                 hideTooltipHelp();
                 return;
             }
 
-            var helpTarget = InputSupportEnumerator.GetInputSupportCandidateFromText(targetText, lineIndex, postText);
-            if (helpTarget == null)
-            {
-                hideTooltipHelp();
-                return;
-            }
-
-            if (_toolTipHelp.Tag is string && (string)_toolTipHelp.Tag == helpTarget.Information) return;
+            if (_toolTipHelp.Tag is string && (string)_toolTipHelp.Tag == helpText) return;
 
             Point position = textBox.PointToClient(Cursor.Position);
             position.Offset(0, textBox.View.LineHeight);
-            _toolTipHelp.Tag = helpTarget.Information;
-            _toolTipHelp.Show(helpTarget.Information, textBox, position, 5000);
+            _toolTipHelp.Tag = helpText;
+            _toolTipHelp.Show(helpText, textBox, position, 5000);
         }
 
         private void _btnSave_Click(object sender, EventArgs e)

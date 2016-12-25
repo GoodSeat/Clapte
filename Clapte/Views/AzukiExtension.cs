@@ -58,6 +58,47 @@ namespace GoodSeat.Clapte.Views
 
 
         /// <summary>
+        /// マウスカーソルが指し示す位置の文字インデックスを取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <returns>マウスカーソル位置の文字インデックス。</returns>
+        public static int? GetMouseHoverIndex(this AzukiControl azuki)
+        {
+            Point position = azuki.PointToClient(Cursor.Position);
+            int index = azuki.GetIndexFromPosition(position);
+            Point checkPosition = azuki.GetPositionFromIndex(index);
+            if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;
+            return index;
+        }
+
+
+        /// <summary>
+        /// マウスカーソルが指し示す位置に存在する文字を取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <returns>マウスカーソル位置の文字。</returns>
+        public static char? GetMouseHoverChar(this AzukiControl azuki)
+        {
+            int? index = GetMouseHoverIndex(azuki);
+            if (!index.HasValue) return null;
+            return azuki.Document.GetCharAt(index.Value);
+        }
+
+        /// <summary>
+        /// マウスカーソルが指し示す位置に存在するマークIDを取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <returns>マウスカーソル位置の文字。</returns>
+        public static int? GetMouseHoverMarkID(this AzukiControl azuki)
+        {
+            int? index = GetMouseHoverIndex(azuki);
+            if (!index.HasValue) return null;
+
+            var ids = azuki.Document.GetMarkingsAt(index.Value);
+            return (ids.Length == 0) ? (int?)null : ids.First();
+        }
+
+        /// <summary>
         /// マウスカーソルが指し示す位置に存在する単語を取得します。
         /// </summary>
         /// <param name="azuki">対象のAzukiControl。</param>
@@ -70,7 +111,7 @@ namespace GoodSeat.Clapte.Views
             postText = "";
 
             Point position = azuki.PointToClient(Cursor.Position);
-            position.X += 5; // カーソル前の単語を取ってくるので、カーソル位置を本来より少し右側に詐称しないと取得される単語が不自然。
+            position.X += 8; // カーソル前の単語を取ってくるので、カーソル位置を本来より少し右側に詐称しないと取得される単語が不自然。
             int index = azuki.GetIndexFromPosition(position);
             Point checkPosition = azuki.GetPositionFromIndex(index);
             if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;
