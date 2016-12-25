@@ -85,7 +85,7 @@ namespace GoodSeat.Clapte.Models
         /// <summary>
         /// この数式セルで定義される変数名をすべて返す反復子を取得します。
         /// </summary>
-        public override IEnumerable<string> GetAllDefinedFunctionNames() { yield return DefineTarget.Name; }
+        public override IEnumerable<Tuple<string, List<Variable>>> GetAllDefinedFunctionNames() { yield return Tuple.Create(DefineTarget.Name, DefineTarget.UseVariable); }
 
         /// <summary>
         /// この数式セルの数式を評価します。

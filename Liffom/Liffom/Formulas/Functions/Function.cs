@@ -98,6 +98,14 @@ namespace GoodSeat.Liffom.Formulas.Functions
         {
             set
             {
+                if (value.Count > MaximumArgumentQty || value.Count < MinimumArgumentQty)
+                {
+                    string errMsg = string.Format("関数\"{0}\"の引数の数が不正です。", DistinguishedName);
+                    string errInf = string.Format("{0}個の引数を指定してください。", MaximumArgumentQty);
+                    if (MaximumArgumentQty != MinimumArgumentQty)
+                        errInf = string.Format("{0}～{1}個の引数を指定してください。", MinimumArgumentQty, MaximumArgumentQty);
+                    throw new FormulaParseException(errMsg + errInf, new ArgumentOutOfRangeException());
+                }
                 _argument = value;
                 AddNull();
             }

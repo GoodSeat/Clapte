@@ -326,7 +326,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 int line = 0;
                 foreach (var cell in Target)
                 {
-                    if (cell.Target.Content.GetAllDefinedFunctionNames().Contains(def.Name)) jump = line;
+                    if (cell.Target.Content.GetAllDefinedFunctionNames().Select(u => u.Item1).Contains(def.Name)) jump = line;
                     if (line++ >= lineIndex) break;
                 }
                 if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
@@ -460,7 +460,7 @@ namespace GoodSeat.Clapte.Views.Forms
             IgnoreScroll = false;
 
             Highlighter.Renew(_inputTextBox.Text);
-            _inputTextBox.Refresh();
+            _inputTextBox.Refresh(); // Markの表示のため
         }
 
         /// <summary>

@@ -79,10 +79,11 @@ namespace GoodSeat.Clapte.Models
             proc.CustomDefineFunctions.Clear();
             foreach (var cell in previous)
             {
-                foreach (var funcName in cell.Content.GetAllDefinedFunctionNames())
+                foreach (var userFunc in cell.Content.GetAllDefinedFunctionNames())
                 {
                     FunctionDefine def = new FunctionDefine();
-                    UserFunction func = new UserFunction(funcName);
+                    UserFunction func = new UserFunction(userFunc.Item1);
+                    func.UseVariable = userFunc.Item2;
                     def.Target = func;
                     proc.CustomDefineFunctions.Add(def);
                 }
@@ -266,7 +267,7 @@ namespace GoodSeat.Clapte.Models
                 {
                     foreach (var define in previous[i].Content.GetAllDefinedFunctionNames())
                     {
-                        if (define != name) continue;
+                        if (define.Item1 != name) continue;
 
                         result.Add(previous[i]);
                         picked = true;
@@ -286,9 +287,9 @@ namespace GoodSeat.Clapte.Models
         public virtual IEnumerable<string> GetAllDefinedVariableNames() { yield break; }
 
         /// <summary>
-        /// この数式セルで定義される関数名をすべて返す反復子を取得します。
+        /// この数式セルで定義される関数名とその引数変数リストをすべて返す反復子を取得します。
         /// </summary>
-        public virtual IEnumerable<string> GetAllDefinedFunctionNames() { yield break; }
+        public virtual IEnumerable<Tuple<string, List<Variable>>> GetAllDefinedFunctionNames() { yield break; }
 
 
         /// <summary>
