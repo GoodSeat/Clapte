@@ -64,10 +64,13 @@ namespace GoodSeat.Clapte.Views
         /// <returns>マウスカーソル位置の文字インデックス。</returns>
         public static int? GetMouseHoverIndex(this AzukiControl azuki)
         {
+            if (azuki.Document.Length == 0) return null;
+
             Point position = azuki.PointToClient(Cursor.Position);
             int index = azuki.GetIndexFromPosition(position);
             Point checkPosition = azuki.GetPositionFromIndex(index);
             if (Math.Abs(position.X - checkPosition.X) > 20 || Math.Abs(position.Y - checkPosition.Y) > 20) return null;
+
             return Math.Min(index, azuki.Document.Length - 1);
         }
 
