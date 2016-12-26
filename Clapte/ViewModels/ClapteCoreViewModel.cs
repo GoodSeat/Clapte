@@ -7,6 +7,7 @@ using GoodSeat.Clapte.Solvers;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Clapte.Models.Windows;
+using GoodSeat.Liffom.Utilities;
 
 namespace GoodSeat.Clapte.ViewModels
 {
@@ -37,8 +38,15 @@ namespace GoodSeat.Clapte.ViewModels
             Commands.Add(new DeleteConstantCommand(this)); // ユーザー定義定数の削除コマンド
             Commands.Add(new DeleteFunctionCommand(this)); // ユーザー定義関数の削除コマンド
             Commands.Add(new MultiLineCommand(this));      // 複数行の定義コマンド解釈
+
+            InitializeCommandEAP = new TryInitializeCommandEAP();
+            InitializeCommandEAP.ProcessCompleted += TryInitializeCommandEAP_ProcessCompleted;
         }
 
+        /// <summary>
+        /// コマンドの初期化を試みるEAPを設定若しくは取得します。
+        /// </summary>
+        TryInitializeCommandEAP InitializeCommandEAP { get; set; }
 
 
         /// <summary>
@@ -145,12 +153,38 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         /// <summary>
+        /// ClapteCommand用の命令テキストを非同期に通知します。
+        /// </summary>
+        /// <param name="text">命令テキスト。</param>
+        public void InformTextCommandAsync(string text)
+        {
+            if (InitializeCommandEAP.IsBusy(Commands))
+                Message = new ClapteCommandResult("非同期処理の実行中", "現在、他の処理を実行中です。しばらくお待ちください。", System.Windows.Forms.ToolTipIcon.Warning, false);
+            else if (ActionWithSameCopy && text == LastTextCommand && IsValidTime() && CurrentCommand != null)
+                InformAction();
+            else
+                InitializeCommandEAP.DoAsync(Commands, text);
+        }
+        private void TryInitializeCommandEAP_ProcessCompleted(object sender, EAPCompletedEventArgs<Tuple<ClapteCommandResult, string, ClapteCommand>> e)
+        {
+            if (e.Result != null)
+            {
+                var result = e.Result;
+                Message = result.Item1;
+                LastTextCommand = result.Item2;
+                CurrentCommand = result.Item3;
+            }
+        }
+
+
+        /// <summary>
         /// 最後に初期化されたコマンドに関連付けられたアクションを実行します。
         /// </summary>
         public void InformAction()
         {
             if (!IsValidTime()) return;
             if (CurrentCommand == null) return;
+            if (InitializeCommandEAP.IsBusy(Commands)) return;
 
             Message = CurrentCommand.DoAction();
             if (!Message.EnableNextAction) CurrentCommand = null;
@@ -216,5 +250,28 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         #endregion
+
+        /// <summary>
+        /// ClapteCommandの初期化を非同期に実行するイベントベース非同期パターンを表します。
+        /// </summary>
+        private class TryInitializeCommandEAP : EAP<Tuple<ClapteCommandResult, string, ClapteCommand>, string>
+        {
+            public override bool IsSupportMultipleConcurrentInvocations { get { return true; } }
+
+            public override int TargetArgumentsMinQty { get { return 1; } }
+
+            protected override Tuple<ClapteCommandResult, string, ClapteCommand> OnDo(object userState, params string[] targets)
+            {
+                var text = targets[0].ToString();
+                var commands = userState as List<ClapteCommand>;
+
+                for (int i = 0; i < commands.Count; i++)
+                {
+                    var result = commands[i].TryInitializeCommand(text);
+                    if (result != null) return Tuple.Create(result, text, commands[i]) ;
+                }
+                return null;
+            }
+        }
     }
 }

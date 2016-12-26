@@ -205,7 +205,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 {
                     if (Clipboard.ContainsText())
                     {
-                        ClapteCore.InformTextCommand(Clipboard.GetText());
+                        ClapteCore.InformTextCommandAsync(Clipboard.GetText());
                     }
                 }
                 catch (Exception exc)
