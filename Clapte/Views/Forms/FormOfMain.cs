@@ -311,6 +311,9 @@ namespace GoodSeat.Clapte.Views.Forms
         // ClapteCoreからのメッセージ更新通知時
         void ClapteCore_MessageUpdate(object sender, EventArgs e)
         {
+            TaskTrayIcon.Visible = false; // 既に表示済みのバルーン表示を強制的に消す
+            TaskTrayIcon.Visible = true;
+
             var result = ClapteCore.Message;
             TaskTrayIcon.ShowBalloonTip(ClapteCore.LimitTime * 1000, result.Title, result.Message, result.Icon);
         }
