@@ -272,7 +272,11 @@ namespace GoodSeat.Liffom.Parse
         {
             string target = text.Substring(0, text.Length - 1);
             var sample = GetHitFunction(target, false);
-            if (sample == null) sample = new UserFunction(target);
+            if (sample == null)
+            {
+                sample = new UserFunction(target);
+                (sample as UserFunction).NoCheckArgumentQty = true;
+            }
 
             yield return new FunctionToken(target, sample);
 

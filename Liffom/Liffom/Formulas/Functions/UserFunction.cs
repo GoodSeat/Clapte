@@ -97,6 +97,11 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// </summary>
         public Dictionary<Variable, string> ArgumentInformation { get { return _argsInformation; } }
 
+        /// <summary>
+        /// 引数の数のチェックを省略するか否かを設定もしくは取得します。
+        /// </summary>
+        public bool NoCheckArgumentQty { get; set; }
+
         public override string DistinguishedName { get { return _name; } }
 
         public override Formula CalculateFunction()
@@ -109,7 +114,9 @@ namespace GoodSeat.Liffom.Formulas.Functions
             return ret.Calculate();
         }
 
-        public override int MinimumArgumentQty { get { return _variableList.Count; } }
+        public override int MinimumArgumentQty { get { return NoCheckArgumentQty ? 0 : _variableList.Count; } }
+
+        public override int MaximumArgumentQty { get { return NoCheckArgumentQty ? 100 : base.MaximumArgumentQty; } }
 
         public override string GetInformation(out List<string> args)
         {

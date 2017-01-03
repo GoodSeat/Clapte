@@ -153,6 +153,7 @@ namespace GoodSeat.LiffomTestProject
                 break;
             }
             var expected = new UserFunction("test");
+            expected.NoCheckArgumentQty = true;
             expected.Argument = new Argument(new Variable("a"), new Variable("b"));
             AddParseTestCase(target, "test(a, b)", expected);
         }
