@@ -82,7 +82,9 @@ namespace GoodSeat.LiffomTestProject
             double error = 0.001d;
             Formula expected = 15d;
             Formula actual;
-            actual = SolveEquation_Accessor.GetModifiedSolution(f, x, solution, error);
+
+            var solver = new SolveAlgebraicEquation();
+            actual = solver.GetModifiedSolution(f, x, solution, error);
             Assert.AreEqual(expected, actual);
         }
 

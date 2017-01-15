@@ -20,6 +20,11 @@ namespace GoodSeat.Liffom.Processes
         /// </summary>
         public override int TargetArgumentsMinQty { get { return 2; } }
 
+        /// <summary>
+        /// 求められた解に対して、有効桁数の設定処理を行うか否かを設定もしくは取得します。
+        /// </summary>
+        public bool CheckSignificantDigits { get; set; }
+
 
         /// <summary>
         /// 指定された数式に対して、処理を実行します。
@@ -58,18 +63,20 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="solution">近似解。</param>
         /// <param name="error">近似解を求めるのに使用した許容誤差値。</param>
         /// <returns>解の真値。</returns>
-        protected static Formula GetModifiedSolution(Formula f, Variable x, Formula solution, double error)
+        public Formula GetModifiedSolution(Formula f, Variable x, Formula solution, double error)
         {
             // 解のまるめ (f(x)にxを代入したとき、ちゃんと0となるまで解を丸める)
             solution = GetRoundSolution(f, x, solution, error);
 
-            // 解の有効桁数を無限大としてf(x)に代入した時の有効桁数を取得
-            int initialValidDigit, initialPrecision;
-            bool needCheckValid = GetInitialPrecision(f, x, solution, out initialValidDigit, out initialPrecision);
+            if (CheckSignificantDigits)
+            {
+                // 解の有効桁数を無限大としてf(x)に代入した時の有効桁数を取得
+                int initialValidDigit, initialPrecision;
+                bool needCheckValid = GetInitialPrecision(f, x, solution, out initialValidDigit, out initialPrecision);
 
-            // 有効桁数の設定
-            if (needCheckValid) solution = GetPrecisionModifiedSolution(f, x, solution, initialValidDigit);
-
+                // 有効桁数の設定
+                if (needCheckValid) solution = GetPrecisionModifiedSolution(f, x, solution, initialValidDigit);
+            }
             return solution;
         }
 
@@ -167,7 +174,7 @@ namespace GoodSeat.Liffom.Processes
                 {
                     foreach (Numeric n in solution.GetExistFactors<Numeric>())
                     {
-                        if (n.SignificantDigits == 100) continue;
+                        if (n.SignificantDigits == n.Figure.Value.MaxValidDigits) continue;
                         n.SignificantDigits = i;
                     }
                     return solution;

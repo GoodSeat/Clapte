@@ -270,6 +270,9 @@ namespace GoodSeat.Clapte.ViewModels
             if (BrentMethod != null) solveList.Add(BrentMethod);
             if (solveList.Count != 0) list.Add(new SolveEquationProcess(solver, MaxTime, solveList.ToArray()));
 
+            // 有効数字考慮設定
+            solveList.ForEach(s => s.CheckSignificantDigits = ConsiderValidDigit);
+
             // 計算処理
             List<DeformToken> tokenList = new List<DeformToken>();
             if (Mode == CalculateMode.Fraction)
