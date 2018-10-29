@@ -36,7 +36,12 @@ namespace GoodSeat.Liffom.Formulas.Rules
         {
             if (!(f1 is Numeric)) return false;
             if (!(f2 is Power)) return false;
+
             var power = f2 as Power;
+
+            if (!(power.Base is Numeric) || !(power.Base as Numeric).IsInteger) return false;
+            if (!(f1 as Numeric).IsInteger) return false;
+
             return power.Base is Numeric && power.Exponent == -1;
         }
 
