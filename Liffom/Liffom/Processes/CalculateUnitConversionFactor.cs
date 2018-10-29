@@ -42,8 +42,8 @@ namespace GoodSeat.Liffom.Processes
         List<Unit> _toDenominator;
 
         Formula _modifyFrom;        // 変換元単位の分母分子間の約分補正係数
-        Formula _modifyTo;            // 変換先単位の分母分子間の約分補正係数
-        Formula _modifyMolecular;    // 変換元と変換先単位の分子同士の約分補正係数
+        Formula _modifyTo;          // 変換先単位の分母分子間の約分補正係数
+        Formula _modifyMolecular;   // 変換元と変換先単位の分子同士の約分補正係数
         Formula _modifyDenominator; // 変換元と変換先単位の分母同士の約分補正係数
 
         List<Unit> _fromMolecularMinimum;
@@ -51,10 +51,10 @@ namespace GoodSeat.Liffom.Processes
         List<Unit> _toMolecularMinimum;
         List<Unit> _toDenominatorMinimum;
 
-        Formula _modifyFromMinimum;            // 変換元単位の分母分子間の約分補正係数
-        Formula _modifyToMinimum;            // 変換先単位の分母分子間の約分補正係数
-        Formula _modifyMolecularMinimum;    // 変換元と変換先単位の分子同士の約分補正係数
-        Formula _modifyDenominatorMinimum;  // 変換元と変換先単位の分母同士の約分補正係数
+        Formula _modifyFromMinimum;        // 変換元単位の分母分子間の約分補正係数
+        Formula _modifyToMinimum;          // 変換先単位の分母分子間の約分補正係数
+        Formula _modifyMolecularMinimum;   // 変換元と変換先単位の分子同士の約分補正係数
+        Formula _modifyDenominatorMinimum; // 変換元と変換先単位の分母同士の約分補正係数
 
         /// <summary>
         /// 変換時の加算値を取得します。変換先の単位扱い数式は含まれません。
@@ -109,8 +109,8 @@ namespace GoodSeat.Liffom.Processes
 
             if (!ConvertSuccessed) ReplicateMinmumMemento();
 
-            Formula molecular   = _modifyTo    * _modifyMolecular   * new Product(_fromMolecular.ToArray())   * new Product(_toDenominator.ToArray()) ;
-            Formula denominator = _modifyFrom  * _modifyDenominator * new Product(_fromDenominator.ToArray()) * new Product(_toMolecular.ToArray());
+            Formula molecular   = _modifyTo   * _modifyMolecular   * new Product(_fromMolecular.ToArray())   * new Product(_toDenominator.ToArray()) ;
+            Formula denominator = _modifyFrom * _modifyDenominator * new Product(_fromDenominator.ToArray()) * new Product(_toMolecular.ToArray());
             return (molecular / denominator).Simplify();
         }
 
@@ -119,13 +119,13 @@ namespace GoodSeat.Liffom.Processes
         /// </summary>
         private void InitializeField()
         {
-            _fromMolecular     = new List<Unit>();
+            _fromMolecular   = new List<Unit>();
             _fromDenominator = new List<Unit>();
             _toMolecular     = new List<Unit>();
-            _toDenominator     = new List<Unit>();
+            _toDenominator   = new List<Unit>();
 
-            _modifyFrom            = 1;
-            _modifyTo            = 1;
+            _modifyFrom         = 1;
+            _modifyTo           = 1;
             _modifyMolecular    = 1;
             _modifyDenominator  = 1;
 
@@ -157,15 +157,15 @@ namespace GoodSeat.Liffom.Processes
                 _toMolecularMinimum.Clear();
                 _toDenominatorMinimum.Clear();
             }
-            _fromMolecularMinimum.AddRange    (_fromMolecular   );
+            _fromMolecularMinimum.AddRange  (_fromMolecular   );
             _fromDenominatorMinimum.AddRange(_fromDenominator );
             _toMolecularMinimum.AddRange    (_toMolecular     );
-            _toDenominatorMinimum.AddRange    (_toDenominator   );
+            _toDenominatorMinimum.AddRange  (_toDenominator   );
 
-            _modifyFromMinimum            = _modifyFrom;       
+            _modifyFromMinimum          = _modifyFrom;       
             _modifyToMinimum            = _modifyTo;                     
-            _modifyMolecularMinimum        = _modifyMolecular;  
-            _modifyDenominatorMinimum    = _modifyDenominator;
+            _modifyMolecularMinimum     = _modifyMolecular;  
+            _modifyDenominatorMinimum   = _modifyDenominator;
         }
 
         /// <summary>
@@ -183,10 +183,10 @@ namespace GoodSeat.Liffom.Processes
             _toMolecular.AddRange(_toMolecularMinimum     );
             _toDenominator.AddRange(_toDenominatorMinimum   );
 
-            _modifyFrom            = _modifyFromMinimum;       
-            _modifyTo            = _modifyToMinimum;                     
+            _modifyFrom         = _modifyFromMinimum;       
+            _modifyTo           = _modifyToMinimum;                     
             _modifyMolecular    = _modifyMolecularMinimum;  
-            _modifyDenominator    = _modifyDenominatorMinimum;
+            _modifyDenominator  = _modifyDenominatorMinimum;
         }
 
 
@@ -224,10 +224,10 @@ namespace GoodSeat.Liffom.Processes
         /// </summary>
         private void RenewModifyCoefficients()
         {
-            _modifyFrom           *= GetModifyToLowestTerms  (ref _fromMolecular,    ref _fromDenominator);    // 変換元の分母分子約分補正係数
-            _modifyTo           *= GetModifyToLowestTerms  (ref _toMolecular,    ref _toDenominator);    // 変換先の分母分子約分補正係数
-            _modifyMolecular   *= GetModifyBetweenUnitList(ref _fromMolecular,    ref _toMolecular);        // 分子同士の約分補正係数
-            _modifyDenominator *= GetModifyBetweenUnitList(ref _fromDenominator,ref _toDenominator);    // 分母同士の約分補正係数
+            _modifyFrom        *= GetModifyToLowestTerms  (ref _fromMolecular,   ref _fromDenominator); // 変換元の分母分子約分補正係数
+            _modifyTo          /= GetModifyToLowestTerms  (ref _toMolecular,     ref _toDenominator);   // 変換先の分母分子約分補正係数
+            _modifyMolecular   *= GetModifyBetweenUnitList(ref _fromMolecular,   ref _toMolecular);     // 分子同士の約分補正係数
+            _modifyDenominator *= GetModifyBetweenUnitList(ref _fromDenominator, ref _toDenominator);   // 分母同士の約分補正係数
         }
         
         /// <summary>
