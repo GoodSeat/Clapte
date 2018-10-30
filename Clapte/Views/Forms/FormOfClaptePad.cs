@@ -550,6 +550,7 @@ namespace GoodSeat.Clapte.Views.Forms
             bool isOnSelected = mouseIndex > begin && mouseIndex < end;
             if (isOnSelected && selectedText.Length > 1)
             {
+                selectedText = Regex.Replace(selectedText, "#[^\n]*", "");
                 selectedText = Regex.Replace(selectedText, " _ *\r?\n", "");
                 int n = lineIndex;
                 var line = Target.ElementAt(n);
@@ -557,10 +558,11 @@ namespace GoodSeat.Clapte.Views.Forms
 
                 var preCells = line.Target.Content.PreDemandEvaluateFormulaCells.Where(c => !c.Content.IsContinuation).ToArray();
                 var cell = new FormulaCell(selectedText, Target.BaseSolver.Target, preCells);
-                if (cell.Content.GetAllDefinedVariableNames().Count() == 0 && cell.Content.GetAllDefinedFunctionNames().Count() == 0 && cell.CanEvaluate)
+                var content = cell.Content;
+                if (!(content is FormulaCellContentComment) && content.GetAllDefinedVariableNames().Count() == 0 && content.GetAllDefinedFunctionNames().Count() == 0 && cell.CanEvaluate)
                 {
                     if (!cell.Evaluated) cell.Evaluate(Target.BaseSolver.Target);
-                    helpText = cell.Content.FormulaText + " = " + cell.Content.ResultText;
+                    if (content.ResultLevel.GetValueOrDefault(Result.Level.Error) == Result.Level.Success) helpText = content.FormulaText + " = " + content.ResultText;
                 }
             }
             if (helpText == null && targetChar.HasValue && targetText != null && targetText.Contains(targetChar.Value))
