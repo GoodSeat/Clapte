@@ -51,11 +51,13 @@
             this._menuUnCommentOut = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
-            this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
-            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this._menuExpand = new System.Windows.Forms.ToolStripMenuItem();
             this._menuTidyUp = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSimplify = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuSubstitute = new System.Windows.Forms.ToolStripMenuItem();
+            this.変数がありませんToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._btnAllDelete = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._resultTextBox = new Sgry.Azuki.WinForms.AzukiControl();
@@ -147,6 +149,7 @@
             this._menuExpand,
             this._menuTidyUp,
             this._menuSimplify,
+            this._menuSubstitute,
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
@@ -264,18 +267,6 @@
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(200, 6);
             // 
-            // _menuInsertHelp
-            // 
-            this._menuInsertHelp.Name = "_menuInsertHelp";
-            this._menuInsertHelp.Size = new System.Drawing.Size(203, 22);
-            this._menuInsertHelp.Text = "ヘルプの挿入(&H)";
-            this._menuInsertHelp.Click += new System.EventHandler(this._menuInsertHelp_Click);
-            // 
-            // toolStripSeparator8
-            // 
-            this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(200, 6);
-            // 
             // _menuExpand
             // 
             this._menuExpand.Name = "_menuExpand";
@@ -296,6 +287,33 @@
             this._menuSimplify.Size = new System.Drawing.Size(203, 22);
             this._menuSimplify.Text = "式の単純化(&S)";
             this._menuSimplify.Click += new System.EventHandler(this._menuSimplify_Click);
+            // 
+            // _menuSubstitute
+            // 
+            this._menuSubstitute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.変数がありませんToolStripMenuItem});
+            this._menuSubstitute.Name = "_menuSubstitute";
+            this._menuSubstitute.Size = new System.Drawing.Size(203, 22);
+            this._menuSubstitute.Text = "変数の代入(&R)";
+            this._menuSubstitute.DropDownOpening += new System.EventHandler(this._menuSubstitute_DropDownOpening);
+            // 
+            // 変数がありませんToolStripMenuItem
+            // 
+            this.変数がありませんToolStripMenuItem.Name = "変数がありませんToolStripMenuItem";
+            this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.変数がありませんToolStripMenuItem.Text = "変数がありません";
+            // 
+            // toolStripSeparator8
+            // 
+            this.toolStripSeparator8.Name = "toolStripSeparator8";
+            this.toolStripSeparator8.Size = new System.Drawing.Size(200, 6);
+            // 
+            // _menuInsertHelp
+            // 
+            this._menuInsertHelp.Name = "_menuInsertHelp";
+            this._menuInsertHelp.Size = new System.Drawing.Size(203, 22);
+            this._menuInsertHelp.Text = "ヘルプの挿入(&H)";
+            this._menuInsertHelp.Click += new System.EventHandler(this._menuInsertHelp_Click);
             // 
             // _splitContainer
             // 
@@ -632,5 +650,7 @@
         private System.Windows.Forms.ToolStripMenuItem _menuExpand;
         private System.Windows.Forms.ToolStripMenuItem _menuTidyUp;
         private System.Windows.Forms.ToolStripMenuItem _menuSimplify;
+        private System.Windows.Forms.ToolStripMenuItem _menuSubstitute;
+        private System.Windows.Forms.ToolStripMenuItem 変数がありませんToolStripMenuItem;
     }
 }

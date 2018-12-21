@@ -419,6 +419,54 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        /// <summary>
+        /// 数式の変形関数を受け取り、変形結果をキャレットの次の行に挿入します。
+        /// </summary>
+        /// <param name="deform">適用する数式の変形処理。</param>
+        private void DeformFormula(Func<Formula, Formula> deform)
+        {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+
+            string result = "# 数式処理に失敗しました。";
+            try
+            {
+                // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
+                var f1 = FormulaOnCaret();
+                var f2 = deform(f1);
+                f2.Format = Target.BaseSolver.Target.OutputFormat;
+                result = f2.ToString();
+            }
+            catch (Exception e)
+            {
+                result += e.Message;
+            }
+
+            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            texts.Insert(lineIndex + 1, result);
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = string.Join("\r\n", texts);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
+        }
+
+        /// <summary>
+        /// 現在のキャレット上にある数式を取得します。
+        /// </summary>
+        /// <returns></returns>
+        Formula FormulaOnCaret()
+        {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+
+            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            var line = Target.ElementAt(lineIndex);
+
+            // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
+            return Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
+        }
+
         #endregion
 
         #region イベント対応
@@ -703,34 +751,40 @@ namespace GoodSeat.Clapte.Views.Forms
             DeformFormula(f => f.Simplify());
         }
 
-        private void DeformFormula(Func<Formula, Formula> deform)
+        private void _menuSubstitute_DropDownOpening(object sender, EventArgs e)
         {
-            int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
+            _menuSubstitute.DropDown.Items.Clear();
 
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
-            var line = Target.ElementAt(lineIndex);
+            Formula f = null;
+            try { f = FormulaOnCaret(); }
+            catch { }
 
-            string result = "# 数式処理に失敗しました。";
-            try
+            if (f != null)
             {
-                // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
-                var f1 = Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
-                var f2 = deform(f1);
-                f2.Format = Target.BaseSolver.Target.OutputFormat;
-                result = f2.ToString();
+                foreach (var v in f.GetExistFactors<Variable>())
+                {
+                    var menu = new ToolStripMenuItem(v.ToString() + " =");
+                    var valueBox = new ToolStripTextBox();
+                    menu.DropDown.Items.Add(valueBox);
+                    _menuSubstitute.DropDown.Items.Add(menu);
+
+                    valueBox.KeyUp += (s, e2) =>
+                    {
+                        if (e2.KeyCode != Keys.Enter) return;
+                        if (string.IsNullOrWhiteSpace(valueBox.Text)) return;
+                        DeformFormula(f2 => f2.Substituted(v, Target.BaseSolver.Target.Parse(valueBox.Text)));
+
+                        _contextMenuEdit.Hide();
+                    };
+                }
             }
-            catch (Exception e)
+
+            if (_menuSubstitute.DropDown.Items.Count == 0)
             {
-                result += e.Message;
+                var menuDummy = new ToolStripMenuItem("変数がありません");
+                menuDummy.Enabled = false;
+                _menuSubstitute.DropDown.Items.Add(menuDummy);
             }
-
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
-            texts.Insert(lineIndex + 1, result);
-
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
         }
 
         #endregion
