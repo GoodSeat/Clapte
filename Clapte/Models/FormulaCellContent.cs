@@ -160,6 +160,11 @@ namespace GoodSeat.Clapte.Models
         public string ResultText { get; set; }
 
         /// <summary>
+        /// 評価済み結果の概要レベルを取得します。
+        /// </summary>
+        public Result.Level? ResultLevel { get; private set; }
+
+        /// <summary>
         /// 何らかの付加情報を表す文字列を設定もしくは取得します。
         /// </summary>
         public Tuple<AdditionalInformationType, string> AdditionalInformation { get; set; }
@@ -363,6 +368,7 @@ namespace GoodSeat.Clapte.Models
             {
                 var result = OnEvaluate(solver);
                 ResultText = result.ResultText;
+                ResultLevel = result.ResultLevel;
                 if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText.Replace("\n", " ").Replace("\r", "");
                 else if (ContainBaseFormulaInResult) ResultText = FormulaText + " = " + ResultText;
             }

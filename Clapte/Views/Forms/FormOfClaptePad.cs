@@ -16,6 +16,7 @@ using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
+using System.Text.RegularExpressions;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -541,7 +542,30 @@ namespace GoodSeat.Clapte.Views.Forms
             int? markID = textBox.GetMouseHoverMarkID();
 
             string helpText = null;
-            if (targetChar.HasValue && targetText != null && targetText.Contains(targetChar.Value))
+
+            int mouseIndex = textBox.GetMouseHoverIndex().GetValueOrDefault(-1);
+            var selectedText = textBox.GetSelectedText();
+            int begin, end;
+            textBox.GetSelection(out begin, out end);
+            bool isOnSelected = mouseIndex > begin && mouseIndex < end;
+            if (isOnSelected && selectedText.Length > 1)
+            {
+                selectedText = Regex.Replace(selectedText, "#[^\n]*", "");
+                selectedText = Regex.Replace(selectedText, " _ *\r?\n", "");
+                int n = lineIndex;
+                var line = Target.ElementAt(n);
+                while (line.Target.Content.IsContinuation) line = Target.ElementAt(++n);
+
+                var preCells = line.Target.Content.PreDemandEvaluateFormulaCells.Where(c => !c.Content.IsContinuation).ToArray();
+                var cell = new FormulaCell(selectedText, Target.BaseSolver.Target, preCells);
+                var content = cell.Content;
+                if (!(content is FormulaCellContentComment) && content.GetAllDefinedVariableNames().Count() == 0 && content.GetAllDefinedFunctionNames().Count() == 0 && cell.CanEvaluate)
+                {
+                    if (!cell.Evaluated) cell.Evaluate(Target.BaseSolver.Target);
+                    if (content.ResultLevel.GetValueOrDefault(Result.Level.Error) == Result.Level.Success) helpText = content.FormulaText + " = " + content.ResultText;
+                }
+            }
+            if (helpText == null && targetChar.HasValue && targetText != null && targetText.Contains(targetChar.Value))
             {
                 var helpTarget = InputSupportEnumerator.GetInputSupportCandidateFromText(targetText, lineIndex, postText);
                 helpText = helpTarget?.Information;
@@ -551,7 +575,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 helpText = AdditionalInformations[lineIndex]?.Item2;
             }
 
-            if (helpText == null)
+            if (string.IsNullOrEmpty(helpText))
             {
                 hideTooltipHelp();
                 return;
