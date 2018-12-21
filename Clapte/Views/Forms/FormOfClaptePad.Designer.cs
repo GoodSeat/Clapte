@@ -77,6 +77,7 @@
             this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this._btnSetting = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnMinimize = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._menuFactorize = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -149,11 +150,12 @@
             this._menuExpand,
             this._menuTidyUp,
             this._menuSimplify,
+            this._menuFactorize,
             this._menuSubstitute,
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(204, 414);
+            this._contextMenuEdit.Size = new System.Drawing.Size(204, 458);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
@@ -560,6 +562,13 @@
             this._btnMinimize.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub_Unfocus;
             this._btnMinimize.Click += new System.EventHandler(this._btnMinimize_Click);
             // 
+            // _menuFactorize
+            // 
+            this._menuFactorize.Name = "_menuFactorize";
+            this._menuFactorize.Size = new System.Drawing.Size(203, 22);
+            this._menuFactorize.Text = "式の因数分解(&F)";
+            this._menuFactorize.Click += new System.EventHandler(this._menuFactorize_Click);
+            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -652,5 +661,6 @@
         private System.Windows.Forms.ToolStripMenuItem _menuSimplify;
         private System.Windows.Forms.ToolStripMenuItem _menuSubstitute;
         private System.Windows.Forms.ToolStripMenuItem 変数がありませんToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _menuFactorize;
     }
 }

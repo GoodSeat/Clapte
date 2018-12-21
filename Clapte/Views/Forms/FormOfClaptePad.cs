@@ -751,6 +751,14 @@ namespace GoodSeat.Clapte.Views.Forms
             DeformFormula(f => f.Simplify());
         }
 
+        private void _menuFactorize_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => {
+                Liffom.Processes.Factorize proc = new Liffom.Processes.Factorize();
+                return proc.Do(f.Simplify());
+                });
+        }
+
         private void _menuSubstitute_DropDownOpening(object sender, EventArgs e)
         {
             _menuSubstitute.DropDown.Items.Clear();
