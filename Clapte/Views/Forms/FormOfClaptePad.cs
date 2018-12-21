@@ -382,6 +382,8 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <param name="convert">元の文字列と、その行が選択行のうちの最終行か否かを受け取り、文字列を変換する処理。</param>
         private void EditSelectedLines(Func<string, bool, string> convert)
         {
+            int caretIndex = _inputTextBox.CaretIndex;
+
             int begin, end;
             _inputTextBox.GetSelection(out begin, out end);
 
@@ -405,6 +407,8 @@ namespace GoodSeat.Clapte.Views.Forms
             int visible1stLine = _inputTextBox.FirstVisibleLine;
             _inputTextBox.Text = string.Join("\r\n", texts);
             _inputTextBox.FirstVisibleLine = visible1stLine;
+
+            _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
         protected override void OnCancel(EventArgs e)
@@ -425,6 +429,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <param name="deform">適用する数式の変形処理。</param>
         private void DeformFormula(Func<Formula, Formula> deform)
         {
+            int caretIndex = _inputTextBox.CaretIndex;
             int begin, end;
             _inputTextBox.GetSelection(out begin, out end);
             int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
@@ -449,6 +454,8 @@ namespace GoodSeat.Clapte.Views.Forms
             int visible1stLine = _inputTextBox.FirstVisibleLine;
             _inputTextBox.Text = string.Join("\r\n", texts);
             _inputTextBox.FirstVisibleLine = visible1stLine;
+
+            _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
         /// <summary>
@@ -676,6 +683,24 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuDelete.Enabled = _inputTextBox.CanCut;
 
             _menuSolveSimultaneousEquation.Enabled = _inputTextBox.GetSelectedText().Contains("\n");
+
+            try
+            {
+                var f = FormulaOnCaret();
+                _menuExpand.Enabled = true;
+                _menuTidyUp.Enabled = true;
+                _menuSimplify.Enabled = true;
+                _menuFactorize.Enabled = true;
+                _menuSubstitute.Enabled = true;
+            }
+            catch
+            {
+                _menuExpand.Enabled = false;
+                _menuTidyUp.Enabled = false;
+                _menuSimplify.Enabled = false;
+                _menuFactorize.Enabled = false;
+                _menuSubstitute.Enabled = false;
+            }
         }
 
         private void _menuUndo_Click(object sender, EventArgs e) { if (_inputTextBox.CanUndo) _inputTextBox.Undo(); }
