@@ -688,6 +688,51 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.FirstVisibleLine = visible1stLine;
         }
 
+        private void _menuExpand_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => f.Expand());
+        }
+
+        private void _menuTidyUp_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => f.Combine());
+        }
+
+        private void _menuSimplify_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => f.Simplify());
+        }
+
+        private void DeformFormula(Func<Formula, Formula> deform)
+        {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+
+            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            var line = Target.ElementAt(lineIndex);
+
+            string result = "# 数式処理に失敗しました。";
+            try
+            {
+                // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
+                var f1 = Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
+                var f2 = deform(f1);
+                f2.Format = Target.BaseSolver.Target.OutputFormat;
+                result = f2.ToString();
+            }
+            catch (Exception e)
+            {
+                result += e.Message;
+            }
+
+            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            texts.Insert(lineIndex + 1, result);
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = string.Join("\r\n", texts);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
+        }
+
         #endregion
 
         #endregion
