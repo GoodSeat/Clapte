@@ -382,6 +382,8 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <param name="convert">元の文字列と、その行が選択行のうちの最終行か否かを受け取り、文字列を変換する処理。</param>
         private void EditSelectedLines(Func<string, bool, string> convert)
         {
+            int caretIndex = _inputTextBox.CaretIndex;
+
             int begin, end;
             _inputTextBox.GetSelection(out begin, out end);
 
@@ -405,6 +407,8 @@ namespace GoodSeat.Clapte.Views.Forms
             int visible1stLine = _inputTextBox.FirstVisibleLine;
             _inputTextBox.Text = string.Join("\r\n", texts);
             _inputTextBox.FirstVisibleLine = visible1stLine;
+
+            _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
         protected override void OnCancel(EventArgs e)
@@ -417,6 +421,57 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 this.Hide();
             }
+        }
+
+        /// <summary>
+        /// 数式の変形関数を受け取り、変形結果をキャレットの次の行に挿入します。
+        /// </summary>
+        /// <param name="deform">適用する数式の変形処理。</param>
+        private void DeformFormula(Func<Formula, Formula> deform)
+        {
+            int caretIndex = _inputTextBox.CaretIndex;
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+
+            string result = "# 数式処理に失敗しました。";
+            try
+            {
+                // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
+                var f1 = FormulaOnCaret();
+                var f2 = deform(f1);
+                f2.Format = Target.BaseSolver.Target.OutputFormat;
+                result = f2.ToString();
+            }
+            catch (Exception e)
+            {
+                result += e.Message;
+            }
+
+            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            texts.Insert(lineIndex + 1, result);
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = string.Join("\r\n", texts);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
+
+            _inputTextBox.SetSelection(caretIndex, caretIndex);
+        }
+
+        /// <summary>
+        /// 現在のキャレット上にある数式を取得します。
+        /// </summary>
+        /// <returns></returns>
+        Formula FormulaOnCaret()
+        {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+
+            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            var line = Target.ElementAt(lineIndex);
+
+            // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
+            return Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
         }
 
         #endregion
@@ -634,6 +689,24 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuDelete.Enabled = _inputTextBox.CanCut;
 
             _menuSolveSimultaneousEquation.Enabled = _inputTextBox.GetSelectedText().Contains("\n");
+
+            try
+            {
+                var f = FormulaOnCaret();
+                _menuExpand.Enabled = true;
+                _menuTidyUp.Enabled = true;
+                _menuSimplify.Enabled = true;
+                _menuFactorize.Enabled = true;
+                _menuSubstitute.Enabled = true;
+            }
+            catch
+            {
+                _menuExpand.Enabled = false;
+                _menuTidyUp.Enabled = false;
+                _menuSimplify.Enabled = false;
+                _menuFactorize.Enabled = false;
+                _menuSubstitute.Enabled = false;
+            }
         }
 
         private void _menuUndo_Click(object sender, EventArgs e) { if (_inputTextBox.CanUndo) _inputTextBox.Undo(); }
@@ -692,6 +765,65 @@ namespace GoodSeat.Clapte.Views.Forms
             int visible1stLine = _inputTextBox.FirstVisibleLine;
             _inputTextBox.Text = _inputTextBox.Text + "\r\n" + File.ReadAllText(_claptePadHelpFilename);
             _inputTextBox.FirstVisibleLine = visible1stLine;
+        }
+
+        private void _menuExpand_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => f.Expand());
+        }
+
+        private void _menuTidyUp_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => f.Combine());
+        }
+
+        private void _menuSimplify_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => f.Simplify());
+        }
+
+        private void _menuFactorize_Click(object sender, EventArgs e)
+        {
+            DeformFormula(f => {
+                Liffom.Processes.Factorize proc = new Liffom.Processes.Factorize();
+                return proc.Do(f.Simplify());
+                });
+        }
+
+        private void _menuSubstitute_DropDownOpening(object sender, EventArgs e)
+        {
+            _menuSubstitute.DropDown.Items.Clear();
+
+            Formula f = null;
+            try { f = FormulaOnCaret(); }
+            catch { }
+
+            if (f != null)
+            {
+                foreach (var v in f.GetExistFactors<Variable>())
+                {
+                    var menu = new ToolStripMenuItem(v.ToString() + " =");
+                    var valueBox = new ToolStripTextBox();
+                    menu.DropDown.Items.Add(valueBox);
+                    _menuSubstitute.DropDown.Items.Add(menu);
+
+                    valueBox.KeyUp += (s, e2) =>
+                    {
+                        if (e2.KeyCode != Keys.Enter) return;
+                        if (string.IsNullOrWhiteSpace(valueBox.Text)) return;
+                        DeformFormula(f2 => f2.Substituted(v, Target.BaseSolver.Target.Parse(valueBox.Text)));
+
+                        _contextMenuEdit.Hide();
+                    };
+                }
+            }
+
+            if (_menuSubstitute.DropDown.Items.Count == 0)
+            {
+                var menuDummy = new ToolStripMenuItem("変数がありません");
+                menuDummy.Enabled = false;
+                _menuSubstitute.DropDown.Items.Add(menuDummy);
+            }
         }
 
         #endregion
