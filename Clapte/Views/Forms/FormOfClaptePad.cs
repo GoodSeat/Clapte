@@ -500,6 +500,12 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        private void _inputTextBox_FontChanged(object sender, EventArgs e)
+        {
+            if (sender == _inputTextBox) _resultTextBox.Font = _inputTextBox.Font;
+            else _inputTextBox.Font = _resultTextBox.Font;
+        }
+
         private void _inputTextBox_VScroll(object sender, EventArgs e)
         {
             _resultTextBox.View.ScrollPos = _inputTextBox.View.ScrollPos;
