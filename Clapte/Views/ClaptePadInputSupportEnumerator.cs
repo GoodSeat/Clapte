@@ -149,6 +149,8 @@ namespace GoodSeat.Clapte.Views.InputSupports
                     var unitName = u.UnitName;
                     var basePrefix = u.Prefix;
 
+                    if (startsWith.Length < 2) continue; // 1文字以下ではプレフィックスは考慮しない
+
                     foreach (var prefix in Prefix.GetAllPrefix(true))
                     {
                         if (prefix.Mark != "" && !bAllPrefix) continue;
