@@ -49,13 +49,15 @@
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this._menuCommentOut = new System.Windows.Forms.ToolStripMenuItem();
             this._menuUnCommentOut = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuDeformFormula = new System.Windows.Forms.ToolStripMenuItem();
             this._menuExpand = new System.Windows.Forms.ToolStripMenuItem();
             this._menuTidyUp = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSimplify = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuFactorize = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSubstitute = new System.Windows.Forms.ToolStripMenuItem();
             this.変数がありませんToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
@@ -77,7 +79,6 @@
             this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this._btnSetting = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnMinimize = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
-            this._menuFactorize = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -145,17 +146,14 @@
             this.toolStripSeparator4,
             this._menuCommentOut,
             this._menuUnCommentOut,
-            this._menuSolveSimultaneousEquation,
             this.toolStripSeparator7,
-            this._menuExpand,
-            this._menuTidyUp,
-            this._menuSimplify,
-            this._menuFactorize,
+            this._menuDeformFormula,
             this._menuSubstitute,
+            this._menuSolveSimultaneousEquation,
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(204, 458);
+            this._contextMenuEdit.Size = new System.Drawing.Size(204, 370);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
@@ -257,38 +255,49 @@
             this._menuUnCommentOut.Text = "コメントアウト解除(&L)";
             this._menuUnCommentOut.Click += new System.EventHandler(this._menuUnCommentOut_Click);
             // 
-            // _menuSolveSimultaneousEquation
-            // 
-            this._menuSolveSimultaneousEquation.Name = "_menuSolveSimultaneousEquation";
-            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(203, 22);
-            this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
-            this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
-            // 
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
             this.toolStripSeparator7.Size = new System.Drawing.Size(200, 6);
             // 
+            // _menuDeformFormula
+            // 
+            this._menuDeformFormula.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._menuExpand,
+            this._menuTidyUp,
+            this._menuSimplify,
+            this._menuFactorize});
+            this._menuDeformFormula.Name = "_menuDeformFormula";
+            this._menuDeformFormula.Size = new System.Drawing.Size(203, 22);
+            this._menuDeformFormula.Text = "数式の変形(&F)";
+            // 
             // _menuExpand
             // 
             this._menuExpand.Name = "_menuExpand";
-            this._menuExpand.Size = new System.Drawing.Size(203, 22);
-            this._menuExpand.Text = "式の展開(&E)";
+            this._menuExpand.Size = new System.Drawing.Size(154, 22);
+            this._menuExpand.Text = "展開(&E)";
             this._menuExpand.Click += new System.EventHandler(this._menuExpand_Click);
             // 
             // _menuTidyUp
             // 
             this._menuTidyUp.Name = "_menuTidyUp";
-            this._menuTidyUp.Size = new System.Drawing.Size(203, 22);
-            this._menuTidyUp.Text = "式の整理(&I)";
+            this._menuTidyUp.Size = new System.Drawing.Size(154, 22);
+            this._menuTidyUp.Text = "整理(&C)";
             this._menuTidyUp.Click += new System.EventHandler(this._menuTidyUp_Click);
             // 
             // _menuSimplify
             // 
             this._menuSimplify.Name = "_menuSimplify";
-            this._menuSimplify.Size = new System.Drawing.Size(203, 22);
-            this._menuSimplify.Text = "式の単純化(&S)";
+            this._menuSimplify.Size = new System.Drawing.Size(154, 22);
+            this._menuSimplify.Text = "展開と整理(&S)";
             this._menuSimplify.Click += new System.EventHandler(this._menuSimplify_Click);
+            // 
+            // _menuFactorize
+            // 
+            this._menuFactorize.Name = "_menuFactorize";
+            this._menuFactorize.Size = new System.Drawing.Size(154, 22);
+            this._menuFactorize.Text = "因数分解(&F)";
+            this._menuFactorize.Click += new System.EventHandler(this._menuFactorize_Click);
             // 
             // _menuSubstitute
             // 
@@ -304,6 +313,13 @@
             this.変数がありませんToolStripMenuItem.Name = "変数がありませんToolStripMenuItem";
             this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.変数がありませんToolStripMenuItem.Text = "変数がありません";
+            // 
+            // _menuSolveSimultaneousEquation
+            // 
+            this._menuSolveSimultaneousEquation.Name = "_menuSolveSimultaneousEquation";
+            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(203, 22);
+            this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
+            this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
             // 
             // toolStripSeparator8
             // 
@@ -562,13 +578,6 @@
             this._btnMinimize.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub_Unfocus;
             this._btnMinimize.Click += new System.EventHandler(this._btnMinimize_Click);
             // 
-            // _menuFactorize
-            // 
-            this._menuFactorize.Name = "_menuFactorize";
-            this._menuFactorize.Size = new System.Drawing.Size(203, 22);
-            this._menuFactorize.Text = "式の因数分解(&F)";
-            this._menuFactorize.Click += new System.EventHandler(this._menuFactorize_Click);
-            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -656,11 +665,12 @@
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator7;
         private System.Windows.Forms.ToolStripMenuItem _menuInsertHelp;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator8;
+        private System.Windows.Forms.ToolStripMenuItem _menuSubstitute;
+        private System.Windows.Forms.ToolStripMenuItem 変数がありませんToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem _menuDeformFormula;
         private System.Windows.Forms.ToolStripMenuItem _menuExpand;
         private System.Windows.Forms.ToolStripMenuItem _menuTidyUp;
         private System.Windows.Forms.ToolStripMenuItem _menuSimplify;
-        private System.Windows.Forms.ToolStripMenuItem _menuSubstitute;
-        private System.Windows.Forms.ToolStripMenuItem 変数がありませんToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem _menuFactorize;
     }
 }
