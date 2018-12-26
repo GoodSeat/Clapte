@@ -81,11 +81,18 @@ namespace GoodSeat.Liffom.Formulas.Operators
         {
             string result = "";
             bool initial = true;
+            Formula pre_f = null;
             foreach (Formula f in Formulas)
             {
                 if (f.IsUnit())
                 {
+                    bool trimAst = false;
                     if (!this.IsUnit())
+                    {
+                        if (!(pre_f is Operator) || (pre_f as Operator).EvaluatePriority >= EvaluatePriority) trimAst = true;
+                    }
+
+                    if (trimAst)
                         result = result.TrimEnd('*') + f.ToString() + "*";
                     else
                         result += f.ToString() + "･";
@@ -98,6 +105,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
 
                 if (initial && f == -1) result = result.Replace("-1*", "-");
                 initial = false;
+                pre_f = f;
             }
             return result.TrimEnd('*').TrimEnd('･').Replace("*1/", "/").Replace("･1/", "/");
         }
