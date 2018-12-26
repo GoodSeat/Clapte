@@ -15,11 +15,31 @@ namespace GoodSeat.Clapte.Solvers.Processes
     public class ReplaceVariableToUnitProcess : Process
     {
         /// <summary>
+        /// 動作モードを表します。
+        /// </summary>
+        public enum Mode
+        {
+            /// <summary>
+            /// 明示的に除外された変数を除き、すべての記号を単位として認識します。
+            /// </summary>
+            AllAutoDetect,
+            /// <summary>
+            /// 単位表に登録された記号のみを単位として認識します。
+            /// </summary>
+            OnlyRegisterd,
+            /// <summary>
+            /// 明示的に単位として指定された記号のみを単位として認識します。
+            /// </summary>
+            OnlyExplicit
+        }
+
+        /// <summary>
         /// 数式中の変数を、同名の単位に置き換える処理を初期化します。
         /// </summary>
-        public ReplaceVariableToUnitProcess(Solver owner) : base(owner)
+        public ReplaceVariableToUnitProcess(Solver owner, Mode mode) : base(owner)
         {
             IgnoreVariableNames = new List<string>();
+            ReplaceMode = mode;
         }
 
         /// <summary>
@@ -28,12 +48,19 @@ namespace GoodSeat.Clapte.Solvers.Processes
         public List<string> IgnoreVariableNames { get; set; }
 
         /// <summary>
+        /// 動作モードを設定若しくは取得します。
+        /// </summary>
+        public Mode ReplaceMode { get; set; }
+
+        /// <summary>
         /// 計算対象となった入力数式を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力数式。</param>
         /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error CheckInputFormula(ref Formula input)
         {
+            if (ReplaceMode == Mode.OnlyExplicit) return null;
+
             if (input is Equal) // 方程式扱いの判定
             {
                 // 未定義の変数が一つだけなら方程式とみなし、単位には変換しない
@@ -68,7 +95,10 @@ namespace GoodSeat.Clapte.Solvers.Processes
                 if (variable.Mark == SolveEquationProcess.PermanentSolveTarget) continue; // ただし、?は常に除外
                 if (IgnoreVariableNames.Contains(variable.Mark)) continue;
 
-                input = input.Substituted(variable, new Unit(variable.Mark), false);
+                var unit = new Unit(variable.Mark);
+                if (ReplaceMode == Mode.OnlyRegisterd && unit.BelongTable == null) continue;
+
+                input = input.Substituted(variable, unit, false);
             }
             return null;
         }

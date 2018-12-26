@@ -78,6 +78,13 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 case UnitFormatType.EncloseWithBrackets: _cmbOutputUnit.SelectedIndex = 3; break;
                 default: _cmbOutputUnit.SelectedIndex = 0; break;
             }
+            switch (TargetSolver.DetectUnitMode)
+            {
+                case ReplaceVariableToUnitProcess.Mode.AllAutoDetect: _cmbDetectUnitMode.SelectedIndex = 0; break;
+                case ReplaceVariableToUnitProcess.Mode.OnlyRegisterd: _cmbDetectUnitMode.SelectedIndex = 1; break;
+                case ReplaceVariableToUnitProcess.Mode.OnlyExplicit: _cmbDetectUnitMode.SelectedIndex = 2; break;
+                default: _cmbDetectUnitMode.SelectedIndex = 0; break;
+            }
             _checkPermitAllResult.Checked = !TargetSolver.PermitOnlySingleTermResult ;
 
             _checkCopyWithClick.Checked = TargetMainForm.ActionWithBalloonClick;
@@ -120,6 +127,13 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 case 3: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithBrackets; break;
                 default: throw new NotImplementedException(); 
             }
+            switch (_cmbDetectUnitMode.SelectedIndex)
+            {
+                case 0: TargetSolver.DetectUnitMode = ReplaceVariableToUnitProcess.Mode.AllAutoDetect; break;
+                case 1: TargetSolver.DetectUnitMode = ReplaceVariableToUnitProcess.Mode.OnlyRegisterd; break;
+                case 2: TargetSolver.DetectUnitMode = ReplaceVariableToUnitProcess.Mode.OnlyExplicit; break;
+                default: throw new NotImplementedException(); 
+            }
             TargetSolver.PermitOnlySingleTermResult = !_checkPermitAllResult.Checked;
 
             TargetMainForm.ActionWithBalloonClick = _checkCopyWithClick.Checked;
@@ -159,5 +173,10 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             if (!_checkCopyWithHotkey.Checked) TargetHotkeyManager.UnregisterHotKey();
         }
 
+        private void _cmbDetectUnitMode_SelectedIndexChanged(object sender, EventArgs e)
+        {
+            _labelMaxUnitLength.Enabled = (_cmbDetectUnitMode.SelectedIndex == 0);
+            _numMaxUnitLength.Enabled = (_cmbDetectUnitMode.SelectedIndex == 0);
+        }
     }
 }

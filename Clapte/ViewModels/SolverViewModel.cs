@@ -61,6 +61,7 @@ namespace GoodSeat.Clapte.ViewModels
             this.MaxTime = 3000;
 
             PermitOmitProductMark = true;
+            DetectUnitMode = ReplaceVariableToUnitProcess.Mode.AllAutoDetect;
 
             UpdateSetting();
         }
@@ -115,6 +116,11 @@ namespace GoodSeat.Clapte.ViewModels
         /// 乗算記号の省略表記を許可するか否かを設定もしくは取得します。
         /// </summary>
         public bool PermitOmitPowerMark { get; set; }
+
+        /// <summary>
+        /// 単位の認識モードを設定若しくは取得します。
+        /// </summary>
+        public ReplaceVariableToUnitProcess.Mode DetectUnitMode { get; set; }
 
         #endregion
 
@@ -236,7 +242,7 @@ namespace GoodSeat.Clapte.ViewModels
             result.Add(new EvaluateUserDefineProcess(solver));
             
             // 変数を単位で置き換え
-            result.Add(new ReplaceVariableToUnitProcess(solver));
+            result.Add(new ReplaceVariableToUnitProcess(solver, DetectUnitMode));
 
             // 計算処理
             result.Add(CreateCalculateProcess(solver));
@@ -359,12 +365,17 @@ namespace GoodSeat.Clapte.ViewModels
         public void OnDeserialize(XmlElement xmlElement)
         {
             XmlElement inputElement = xmlElement["InputSetting"];
+            var inputVersion = double.Parse(inputElement.GetAttribute("Version", "1.0"));
             MaxInputTextLength = int.Parse(inputElement.GetAttribute("MaxInputTextLength"));
             MaxVariableTextLength = int.Parse(inputElement.GetAttribute("MaxVariableTextLength"));
             ParseAbsPunctuation = bool.Parse(inputElement.GetAttribute("ParseAbsPunctuation"));
             ParseFactorial = bool.Parse(inputElement.GetAttribute("ParseFactorial"));
             PermitOmitProductMark = bool.Parse(inputElement.GetAttribute("PermitOmitProductMark", "True"));
             PermitOmitPowerMark = bool.Parse(inputElement.GetAttribute("PermitOmitPowerMark", "False"));
+            if (inputVersion >= 1.1)
+            {
+                DetectUnitMode = (ReplaceVariableToUnitProcess.Mode)Enum.Parse(typeof(ReplaceVariableToUnitProcess.Mode), inputElement.GetAttribute("DetectUnitMode"));
+            }
 
             XmlElement calculateElement = xmlElement["CalculateSetting"];
             Mode = (CalculateMode)Enum.Parse(typeof(CalculateMode), calculateElement.GetAttribute("Mode"));
@@ -397,12 +408,14 @@ namespace GoodSeat.Clapte.ViewModels
         public void OnSerialize(XmlElement xmlElement)
         {
             XmlElement inputElement = new XmlElement("InputSetting");
+            inputElement.AddAttribute("Version", "1.1");
             inputElement.AddAttribute("MaxInputTextLength", MaxInputTextLength.ToString());
             inputElement.AddAttribute("MaxVariableTextLength", MaxVariableTextLength.ToString());
             inputElement.AddAttribute("ParseAbsPunctuation", ParseAbsPunctuation.ToString());
             inputElement.AddAttribute("ParseFactorial", ParseFactorial.ToString());
             inputElement.AddAttribute("PermitOmitProductMark", PermitOmitProductMark.ToString());
             inputElement.AddAttribute("PermitOmitPowerMark", PermitOmitPowerMark.ToString());
+            inputElement.AddAttribute("DetectUnitMode", DetectUnitMode.ToString());
             xmlElement.AddElements(inputElement);
 
             XmlElement calculateElement = new XmlElement("CalculateSetting");

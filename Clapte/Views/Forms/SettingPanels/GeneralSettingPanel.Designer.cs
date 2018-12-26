@@ -28,12 +28,15 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this._numMaxLength = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._labelMaxLength = new System.Windows.Forms.Label();
             this._checkPermitOmitMultipleMark = new System.Windows.Forms.CheckBox();
             this._labelCharType = new System.Windows.Forms.Label();
             this._cmbResultCharType = new System.Windows.Forms.ComboBox();
             this._groupInput = new System.Windows.Forms.GroupBox();
+            this._cmbDetectUnitMode = new System.Windows.Forms.ComboBox();
+            this.label1 = new System.Windows.Forms.Label();
             this._checkParseFactorial = new System.Windows.Forms.CheckBox();
             this._checkParseAbs = new System.Windows.Forms.CheckBox();
             this._checkPermitOmitPowerMark = new System.Windows.Forms.CheckBox();
@@ -54,8 +57,8 @@
             this._checkCopyWithClick = new System.Windows.Forms.CheckBox();
             this._numBalloonTime = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._groupMode = new System.Windows.Forms.GroupBox();
-            this.label1 = new System.Windows.Forms.Label();
             this._checkIsCalculatorMode = new System.Windows.Forms.CheckBox();
+            this._toolTipHelp = new System.Windows.Forms.ToolTip(this.components);
             this._groupInput.SuspendLayout();
             this._groupResult.SuspendLayout();
             this._groupMode.SuspendLayout();
@@ -98,6 +101,7 @@
             0,
             0});
             this._numMaxLength.TabIndex = 0;
+            this._toolTipHelp.SetToolTip(this._numMaxLength, "クリップボード計算の対象とする、最大の文字列長を指定します。\r\nクリップボードにコピーされた文字列の長さがこの長さを超過する場合には、計算を実行しません。");
             this._numMaxLength.UnderBar = false;
             this._numMaxLength.Unit = "文字";
             this._numMaxLength.UseToolTip = true;
@@ -116,13 +120,14 @@
             this._labelMaxLength.Size = new System.Drawing.Size(152, 12);
             this._labelMaxLength.TabIndex = 1;
             this._labelMaxLength.Text = "計算対象とする最大文字列長";
+            this._toolTipHelp.SetToolTip(this._labelMaxLength, "クリップボード計算の対象とする、最大の文字列長を指定します。");
             // 
             // _checkPermitOmitMultipleMark
             // 
             this._checkPermitOmitMultipleMark.AutoSize = true;
             this._checkPermitOmitMultipleMark.Checked = true;
             this._checkPermitOmitMultipleMark.CheckState = System.Windows.Forms.CheckState.Checked;
-            this._checkPermitOmitMultipleMark.Location = new System.Drawing.Point(27, 94);
+            this._checkPermitOmitMultipleMark.Location = new System.Drawing.Point(27, 122);
             this._checkPermitOmitMultipleMark.Name = "_checkPermitOmitMultipleMark";
             this._checkPermitOmitMultipleMark.Size = new System.Drawing.Size(153, 16);
             this._checkPermitOmitMultipleMark.TabIndex = 3;
@@ -156,6 +161,8 @@
             // 
             this._groupInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupInput.Controls.Add(this._cmbDetectUnitMode);
+            this._groupInput.Controls.Add(this.label1);
             this._groupInput.Controls.Add(this._checkParseFactorial);
             this._groupInput.Controls.Add(this._checkParseAbs);
             this._groupInput.Controls.Add(this._checkPermitOmitPowerMark);
@@ -164,17 +171,44 @@
             this._groupInput.Controls.Add(this._labelMaxLength);
             this._groupInput.Controls.Add(this._numMaxLength);
             this._groupInput.Controls.Add(this._checkPermitOmitMultipleMark);
-            this._groupInput.Location = new System.Drawing.Point(4, 103);
+            this._groupInput.Location = new System.Drawing.Point(4, 52);
             this._groupInput.Name = "_groupInput";
-            this._groupInput.Size = new System.Drawing.Size(396, 117);
+            this._groupInput.Size = new System.Drawing.Size(396, 150);
             this._groupInput.TabIndex = 9;
             this._groupInput.TabStop = false;
             this._groupInput.Text = "数式認識";
             // 
+            // _cmbDetectUnitMode
+            // 
+            this._cmbDetectUnitMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._cmbDetectUnitMode.FormattingEnabled = true;
+            this._cmbDetectUnitMode.Items.AddRange(new object[] {
+            "全ての記号を認識",
+            "登録単位のみ認識",
+            "[ ]で囲われた部分のみ認識"});
+            this._cmbDetectUnitMode.Location = new System.Drawing.Point(203, 71);
+            this._cmbDetectUnitMode.Name = "_cmbDetectUnitMode";
+            this._cmbDetectUnitMode.Size = new System.Drawing.Size(163, 20);
+            this._cmbDetectUnitMode.TabIndex = 10;
+            this._toolTipHelp.SetToolTip(this._cmbDetectUnitMode, "単位記号の認識方法を指定します。\r\n「全ての記号を認識」：定数以外の全ての記号を単位記号として認識します。\r\n「登録単位のみ認識」：単位換算表に登録された記号のみ" +
+        "を単位記号として認識します。\r\n「[ ]で囲われた部分のみ認識」：[ ]で囲われた部分のみを単位記号として認識します。");
+            this._cmbDetectUnitMode.SelectedIndexChanged += new System.EventHandler(this._cmbDetectUnitMode_SelectedIndexChanged);
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(22, 74);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(115, 12);
+            this.label1.TabIndex = 9;
+            this.label1.Text = "単位記号の認識モード";
+            this._toolTipHelp.SetToolTip(this.label1, "単位記号の認識方法を指定します。\r\n「全ての記号を認識」：定数以外の全ての記号を単位記号として認識します。\r\n「登録単位のみ認識」：単位換算表に登録された記号のみ" +
+        "を単位記号として認識します。\r\n「[ ]で囲われた部分のみ認識」：[ ]で囲われた部分のみを単位記号として認識します。");
+            // 
             // _checkParseFactorial
             // 
             this._checkParseFactorial.AutoSize = true;
-            this._checkParseFactorial.Location = new System.Drawing.Point(214, 73);
+            this._checkParseFactorial.Location = new System.Drawing.Point(214, 101);
             this._checkParseFactorial.Name = "_checkParseFactorial";
             this._checkParseFactorial.Size = new System.Drawing.Size(116, 16);
             this._checkParseFactorial.TabIndex = 8;
@@ -186,7 +220,7 @@
             this._checkParseAbs.AutoSize = true;
             this._checkParseAbs.Checked = true;
             this._checkParseAbs.CheckState = System.Windows.Forms.CheckState.Checked;
-            this._checkParseAbs.Location = new System.Drawing.Point(27, 73);
+            this._checkParseAbs.Location = new System.Drawing.Point(27, 101);
             this._checkParseAbs.Name = "_checkParseAbs";
             this._checkParseAbs.Size = new System.Drawing.Size(136, 16);
             this._checkParseAbs.TabIndex = 7;
@@ -196,21 +230,24 @@
             // _checkPermitOmitPowerMark
             // 
             this._checkPermitOmitPowerMark.AutoSize = true;
-            this._checkPermitOmitPowerMark.Location = new System.Drawing.Point(214, 94);
+            this._checkPermitOmitPowerMark.Location = new System.Drawing.Point(214, 122);
             this._checkPermitOmitPowerMark.Name = "_checkPermitOmitPowerMark";
             this._checkPermitOmitPowerMark.Size = new System.Drawing.Size(152, 16);
             this._checkPermitOmitPowerMark.TabIndex = 6;
             this._checkPermitOmitPowerMark.Text = "累乗記号(^)の省略を許可";
+            this._toolTipHelp.SetToolTip(this._checkPermitOmitPowerMark, "累乗を表す\"^\"の省略を許可するか否かを指定します。\r\n省略を許可する場合、\"x^2\"と\"x2\"は同じ意味となります。\r\n（省略を許可する場合、定数名に数字を使用" +
+        "できないことに注意してください。）");
             this._checkPermitOmitPowerMark.UseVisualStyleBackColor = true;
             // 
             // _labelMaxUnitLength
             // 
             this._labelMaxUnitLength.AutoSize = true;
-            this._labelMaxUnitLength.Location = new System.Drawing.Point(21, 47);
+            this._labelMaxUnitLength.Location = new System.Drawing.Point(21, 48);
             this._labelMaxUnitLength.Name = "_labelMaxUnitLength";
             this._labelMaxUnitLength.Size = new System.Drawing.Size(170, 12);
             this._labelMaxUnitLength.TabIndex = 5;
             this._labelMaxUnitLength.Text = "単位として認識する最大文字列長";
+            this._toolTipHelp.SetToolTip(this._labelMaxUnitLength, "単位記号として自動認識する最大の文字列長を指定します。");
             // 
             // _numMaxUnitLength
             // 
@@ -249,6 +286,7 @@
             0,
             0});
             this._numMaxUnitLength.TabIndex = 4;
+            this._toolTipHelp.SetToolTip(this._numMaxUnitLength, "単位記号として自動認識する最大の文字列長を指定します。\r\n（単位記号の認識モードが\"全ての記号を認識\"の場合のみ有効です。）");
             this._numMaxUnitLength.UnderBar = false;
             this._numMaxUnitLength.Unit = "文字";
             this._numMaxUnitLength.UseToolTip = true;
@@ -278,7 +316,7 @@
             this._groupResult.Controls.Add(this._numBalloonTime);
             this._groupResult.Controls.Add(this._cmbResultCharType);
             this._groupResult.Controls.Add(this._labelCharType);
-            this._groupResult.Location = new System.Drawing.Point(4, 226);
+            this._groupResult.Location = new System.Drawing.Point(4, 207);
             this._groupResult.Name = "_groupResult";
             this._groupResult.Size = new System.Drawing.Size(396, 189);
             this._groupResult.TabIndex = 11;
@@ -474,24 +512,13 @@
             // 
             this._groupMode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
-            this._groupMode.Controls.Add(this.label1);
             this._groupMode.Controls.Add(this._checkIsCalculatorMode);
             this._groupMode.Location = new System.Drawing.Point(4, 3);
             this._groupMode.Name = "_groupMode";
-            this._groupMode.Size = new System.Drawing.Size(396, 92);
+            this._groupMode.Size = new System.Drawing.Size(396, 44);
             this._groupMode.TabIndex = 12;
             this._groupMode.TabStop = false;
             this._groupMode.Text = "Clapteの動作";
-            // 
-            // label1
-            // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(10, 42);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(378, 36);
-            this.label1.TabIndex = 5;
-            this.label1.Text = "計算機モードを有効にすると、以下のような動作となります。\r\n・Clapte起動時に計算機を起動します。\r\n・計算機の右上の「×」をクリックして計算機を閉じた時に、" +
-    "Clapteを終了します。";
             // 
             // _checkIsCalculatorMode
             // 
@@ -503,6 +530,8 @@
             this._checkIsCalculatorMode.Size = new System.Drawing.Size(88, 16);
             this._checkIsCalculatorMode.TabIndex = 4;
             this._checkIsCalculatorMode.Text = "計算機モード";
+            this._toolTipHelp.SetToolTip(this._checkIsCalculatorMode, "計算機モードを有効にすると、以下のような動作となります。\r\n・Clapte起動時に計算機を起動します。\r\n・計算機の右上の「×」をクリックして計算機を閉じた時に、" +
+        "Clapteを終了します。");
             this._checkIsCalculatorMode.UseVisualStyleBackColor = true;
             // 
             // GeneralSettingPanel
@@ -550,9 +579,11 @@
         private System.Windows.Forms.Label _labelOutputUnit;
         private System.Windows.Forms.CheckBox _checkPermitAllResult;
         private System.Windows.Forms.GroupBox _groupMode;
-        private System.Windows.Forms.Label label1;
         private System.Windows.Forms.CheckBox _checkIsCalculatorMode;
         private System.Windows.Forms.CheckBox _checkParseFactorial;
         private System.Windows.Forms.CheckBox _checkParseAbs;
+        private System.Windows.Forms.ToolTip _toolTipHelp;
+        private System.Windows.Forms.ComboBox _cmbDetectUnitMode;
+        private System.Windows.Forms.Label label1;
     }
 }

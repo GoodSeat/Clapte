@@ -95,7 +95,7 @@ namespace GoodSeat.ClapteTestProject
 			result.Add(new EvaluateUserDefineProcess(solver));
 			
 			// 変数を単位で置き換え
-			result.Add(new ReplaceVariableToUnitProcess(solver));
+			result.Add(new ReplaceVariableToUnitProcess(solver, ReplaceVariableToUnitProcess.Mode.AllAutoDetect));
 
 			// 計算処理
 			result.Add(CreateCalculateProcess(solver, mode));
