@@ -438,7 +438,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>円周率を表す数値。</returns>
         public override Value GetPi()
         {
-            BigInteger oOne = BigInteger.Pow(10, MaxValidDigits + 2);
+            BigInteger oOne = BigInteger.Pow(10, MaxValidDigits + 3);
 
             BigInteger x = oOne;
             BigInteger y = oOne >> 1;
@@ -446,7 +446,7 @@ namespace GoodSeat.Liffom.Reals
             BigInteger sq = 0;
 
             //サラミンブレント法でPIを算出
-            int iLoop = (int)Math.Log(MaxValidDigits + 2, 2.0) + 1;
+            int iLoop = (int)Math.Log(MaxValidDigits + 3, 2.0) + 1;
             for (int i = 1; i < iLoop; i++)
             {
                 BigInteger pb = (x + y) >> 1;

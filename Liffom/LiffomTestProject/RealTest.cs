@@ -300,6 +300,24 @@ namespace GoodSeat.LiffomTestProject
         }
 
         /// <summary>
+        /// BigDecimalValue のπの計算テスト
+        /// </summary>
+        [TestCategory("数値"), TestMethod()]
+        public void BigDecimalValuePiTest()
+        {
+            BigDecimalValue.MaxDigits = 1000;
+            var dummy = new BigDecimalValue();
+            var pi = dummy.GetPi();
+            var textPi = pi.ToString();
+            Assert.AreEqual("0199", textPi.Substring(textPi.Length - 4));
+
+            // 以下は時間がかかりすぎるのでコメントアウト
+            // var e = dummy.GetNapiers();
+            // var texte = e.ToString();
+            // Assert.AreEqual("5035", texte.Substring(texte.Length - 4));
+        }
+
+        /// <summary>
         /// BigDecimalValue の構文解析テスト
         /// </summary>
         [TestCategory("数値"), TestMethod()]
