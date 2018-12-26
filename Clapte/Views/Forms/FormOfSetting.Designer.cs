@@ -39,7 +39,7 @@
             treeNode4});
             System.Windows.Forms.TreeNode treeNode6 = new System.Windows.Forms.TreeNode("定数");
             System.Windows.Forms.TreeNode treeNode7 = new System.Windows.Forms.TreeNode("関数");
-            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("単位変換表");
+            System.Windows.Forms.TreeNode treeNode8 = new System.Windows.Forms.TreeNode("単位換算表");
             System.Windows.Forms.TreeNode treeNode9 = new System.Windows.Forms.TreeNode("バージョン情報");
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfSetting));
             this._treeList = new System.Windows.Forms.TreeView();
@@ -73,7 +73,7 @@
             treeNode7.Name = "_nodeFunction";
             treeNode7.Text = "関数";
             treeNode8.Name = "_nodeConvertUnit";
-            treeNode8.Text = "単位変換表";
+            treeNode8.Text = "単位換算表";
             treeNode9.Name = "_nodeVersion";
             treeNode9.Text = "バージョン情報";
             this._treeList.Nodes.AddRange(new System.Windows.Forms.TreeNode[] {

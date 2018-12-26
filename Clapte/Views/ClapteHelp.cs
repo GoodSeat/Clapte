@@ -20,7 +20,7 @@ namespace GoodSeat.Clapte.Views
             s_pathMap.Add("方程式", "03_reference/01_settingDialog/04_solveEquation.html");
             s_pathMap.Add("定数", "03_reference/01_settingDialog/05_constant.html");
             s_pathMap.Add("関数", "03_reference/01_settingDialog/06_function.html");
-            s_pathMap.Add("単位変換表", "03_reference/01_settingDialog/07_unitTable.html");
+            s_pathMap.Add("単位換算表", "03_reference/01_settingDialog/07_unitTable.html");
             s_pathMap.Add("バージョン情報", "03_reference/01_settingDialog/08_versionInfo.html");
         }
         /// <summary>

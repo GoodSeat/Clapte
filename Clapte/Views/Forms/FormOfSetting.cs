@@ -75,7 +75,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     return new UserConstantPanel(OwnerMainForm.UserConstants, OwnerMainForm.ClapteCore);
                 case "関数":
                     return new UserFunctionPanel(OwnerMainForm.UserFunctions, OwnerMainForm.ClapteCore);
-                case "単位変換表":
+                case "単位換算表":
                     return new UnitConvertTablePanel();
                 case "区切り数値集計":
                     return new SplitDataCounterPanel(OwnerMainForm.ClapteCore.SplitDataCountCommand);
