@@ -58,11 +58,25 @@ namespace GoodSeat.Liffom.Processes
 
             var pattern = a * b;
 
-            foreach (var convert in target.GetExistFactors(f => f.PatternMatch(pattern)))
+            Formula.IsTargetFormula isTarget = (f => f.PatternMatch(pattern));
+
+            bool convertNumeric = (target is Numeric); // 無次元単位への変換に対する例外処理
+            if (convertNumeric) isTarget = (f => f is Numeric);
+
+            foreach (var convert in target.GetExistFactors(isTarget))
             {
-                convert.PatternMatch(pattern);
-                var aMatched = a.MatchedFormula;
-                var bMatched = b.MatchedFormula;
+                Formula aMatched = null, bMatched = null;
+                if (!convertNumeric)
+                {
+                    convert.PatternMatch(pattern);
+                    aMatched = a.MatchedFormula;
+                    bMatched = b.MatchedFormula;
+                }
+                else
+                {
+                    aMatched = convert;
+                    bMatched = 1;
+                }
 
                 var factor = conversion.Do(bMatched, targetUnit);
                 Formula coef = factor * aMatched;

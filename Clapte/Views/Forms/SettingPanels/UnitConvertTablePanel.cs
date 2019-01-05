@@ -245,7 +245,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
                 unitName = "[" + unitName.TrimStart('[').TrimEnd(']') + "]";
                 Formula unit = Formula.Parse(unitName);
-                if (!unit.Combine().IsUnit()) throw new Exception(unitName + "は単位名として無効です。");
+                if (!unit.Combine().IsUnit(true)) throw new Exception(unitName + "は単位名として無効です。");
 
                 // 接頭辞の名前を含む場合、単位名か接頭辞か選択させる
                 if (unit is Unit)
