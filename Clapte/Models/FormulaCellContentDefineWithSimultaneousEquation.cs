@@ -194,7 +194,7 @@ namespace GoodSeat.Clapte.Models
                     var solutions = proc.Solve(new List<Equal>(eqs.OfType<Equal>()), DefineTargets.ToArray());
                     if (solutions == null || solutions.Count == 0) return result;
 
-                    List<string> resultTexts = CreateResultTexts(solutions);
+                    List<string> resultTexts = CreateResultTexts(solutions, solver.OutputFormat);
 
                     result.ResultLevel = Result.Level.Success;
                     result.ResultText = resultTexts.FirstOrDefault();
@@ -215,8 +215,9 @@ namespace GoodSeat.Clapte.Models
         /// 連立方程式の解の組合せから、結果表記のテキストリストを生成して取得します。
         /// </summary>
         /// <param name="solutions">連立方程式の解の組合せ。</param>
+        /// <param name="format">テキストの生成に使用する書式。</param>
         /// <returns>連立方程式の結果を表すテキストのリスト。</returns>
-        private List<string> CreateResultTexts(List<List<Equal>> solutions)
+        private List<string> CreateResultTexts(List<List<Equal>> solutions, Liffom.Formats.Format format)
         {
             var resultTexts = new List<string>();
             foreach (var defs in solutions)
@@ -225,6 +226,8 @@ namespace GoodSeat.Clapte.Models
                 {
                     Variable val = def.LeftHandSide as Variable;
                     if (val == null) throw new ClapteProcessException();
+
+                    def.Format = format;
 
                     if (EvaluatedDefines.ContainsKey(val))
                     {
@@ -237,7 +240,7 @@ namespace GoodSeat.Clapte.Models
                         EvaluatedDefines.Add(val, list);
                     }
                 }
-                resultTexts.Add(string.Join(", ", defs.Select(s => s.ToString())).Replace("=", " = "));
+                resultTexts.Add(string.Join(", ", defs.Select(s => s.ToString())));
             }
 
             return resultTexts;

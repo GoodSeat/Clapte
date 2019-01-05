@@ -353,8 +353,8 @@ namespace GoodSeat.Clapte.ViewModels
             var divisionFormat = new DivisionFormatProperty(true);
             format.SetProperty(divisionFormat);
 
-            // +、-は空白で囲う
-            var operatorFormat = new OperatorFormatProperty(OperatorFormatProperty.OperatorType.Sum);
+            // +、-、=、< 等は空白で囲う
+            var operatorFormat = new OperatorFormatProperty(OperatorFormatProperty.OperatorType.Sum | OperatorFormatProperty.OperatorType.Boolean | OperatorFormatProperty.OperatorType.Compare);
             format.SetProperty(operatorFormat);
 
             return format;
