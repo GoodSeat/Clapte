@@ -125,6 +125,7 @@ namespace GoodSeat.Clapte.Views.InputSupports
         private IEnumerable<Tuple<String, Unit, UnitConvertRecord>> GetAllUnitDefines(string startsWith, CandidateType targetType)
         {
             bool bAllPrefix = ((targetType & CandidateType.UnitAllPrefix) == CandidateType.UnitAllPrefix);
+            if (startsWith.Length < 2) bAllPrefix = false; // 1文字以下ではプレフィックスは考慮しない
 
             var unitNames = new List<string>();
             foreach (var table in UnitConvertTable.ValidTables.Values)
@@ -148,8 +149,6 @@ namespace GoodSeat.Clapte.Views.InputSupports
                     Unit u = def.ConvertUnit as Unit;
                     var unitName = u.UnitName;
                     var basePrefix = u.Prefix;
-
-                    if (startsWith.Length < 2) continue; // 1文字以下ではプレフィックスは考慮しない
 
                     foreach (var prefix in Prefix.GetAllPrefix(true))
                     {
