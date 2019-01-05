@@ -276,7 +276,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// ツールチップヘルプ表示を終了します。
         /// </summary>
-        private void hideTooltipHelp()
+        private void HideTooltipHelp()
         {
             _toolTipHelp.Hide(_inputTextBox);
             _toolTipHelp.Tag = null;
@@ -474,6 +474,69 @@ namespace GoodSeat.Clapte.Views.Forms
             return Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
         }
 
+        /// <summary>
+        /// 現在のキャレット上の行で指定されている換算目標単位を取得します。換算目標単位の指定がない場合には、nullを返します。
+        /// </summary>
+        /// <returns></returns>
+        string DetectTargetUnitOnCaretLine()
+        {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+
+            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+
+            string text = _inputTextBox.Document.GetLineContent(lineIndex);
+
+            var targetUnitRegex = new Regex(@"^\s*\[(?<targetUnit>[^[\]]+)\]");
+
+            var match = targetUnitRegex.Match(text);
+            return match.Success ? match.Groups["targetUnit"].Value : null;
+        }
+
+        /// <summary>
+        /// 現在のキャレット上の換算目標単位を指定します。nullや空文字が指定された場合、目標単位を削除します。
+        /// </summary>
+        /// <param name="targetUnit"></param>
+        void SetTargetUnitOnCaretLine(string targetUnit)
+        {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+
+            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+
+            string text = _inputTextBox.Document.GetLineContent(lineIndex);
+
+            var targetUnitRegex = new Regex(@"^(?<indent>\s*)\[(?<targetUnit>[^[\]]*)\]");
+            var match = targetUnitRegex.Match(text);
+            var newText = text;
+            if (match.Success)
+            {
+                if (string.IsNullOrWhiteSpace(targetUnit))
+                {
+                    newText = Regex.Replace(text, targetUnitRegex.ToString(), "${indent}");
+                }
+                else
+                {
+                    newText = Regex.Replace(text, targetUnitRegex.ToString(), "${indent}" + "[" + targetUnit + "]");
+                }
+            }
+            else
+            {
+                if (!string.IsNullOrWhiteSpace(targetUnit)) newText = "[" + targetUnit + "] " + text;
+            }
+            if (newText == text) return;
+
+            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            texts[lineIndex] = newText;
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = string.Join("\r\n", texts);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
+
+            int caretIndex = _inputTextBox.Document.GetCharIndexFromLineColumnIndex(lineIndex, 0);
+            _inputTextBox.SetSelection(caretIndex, caretIndex);
+        }
+
         #endregion
 
         #region イベント対応
@@ -638,7 +701,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             if (string.IsNullOrEmpty(helpText))
             {
-                hideTooltipHelp();
+                HideTooltipHelp();
                 return;
             }
 
@@ -698,6 +761,9 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuSimplify.Enabled = true;
                 _menuFactorize.Enabled = true;
                 _menuSubstitute.Enabled = true;
+                _menuConvertUnit.Enabled = true;
+
+                _txtBoxTargetUnit.Text = DetectTargetUnitOnCaretLine();
             }
             catch
             {
@@ -706,6 +772,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuSimplify.Enabled = false;
                 _menuFactorize.Enabled = false;
                 _menuSubstitute.Enabled = false;
+                _menuConvertUnit.Enabled = false;
             }
         }
 
@@ -823,6 +890,15 @@ namespace GoodSeat.Clapte.Views.Forms
                 var menuDummy = new ToolStripMenuItem("変数がありません");
                 menuDummy.Enabled = false;
                 _menuSubstitute.DropDown.Items.Add(menuDummy);
+            }
+        }
+
+        private void _txtBoxTargetUnit_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
+                _contextMenuEdit.Hide();
             }
         }
 

@@ -199,9 +199,9 @@
             this.label1.AutoSize = true;
             this.label1.Location = new System.Drawing.Point(22, 74);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(115, 12);
+            this.label1.Size = new System.Drawing.Size(111, 12);
             this.label1.TabIndex = 9;
-            this.label1.Text = "単位記号の認識モード";
+            this.label1.Text = "単位記号の認識方法";
             this._toolTipHelp.SetToolTip(this.label1, "単位記号の認識方法を指定します。\r\n「全ての記号を認識」：定数以外の全ての記号を単位記号として認識します。\r\n「登録単位のみ認識」：単位換算表に登録された記号のみ" +
         "を単位記号として認識します。\r\n「[ ]で囲われた部分のみ認識」：[ ]で囲われた部分のみを単位記号として認識します。");
             // 
@@ -533,6 +533,13 @@
             this._toolTipHelp.SetToolTip(this._checkIsCalculatorMode, "計算機モードを有効にすると、以下のような動作となります。\r\n・Clapte起動時に計算機を起動します。\r\n・計算機の右上の「×」をクリックして計算機を閉じた時に、" +
         "Clapteを終了します。");
             this._checkIsCalculatorMode.UseVisualStyleBackColor = true;
+            // 
+            // _toolTipHelp
+            // 
+            this._toolTipHelp.AutoPopDelay = 30000;
+            this._toolTipHelp.InitialDelay = 500;
+            this._toolTipHelp.ReshowDelay = 100;
+            this._toolTipHelp.ShowAlways = true;
             // 
             // GeneralSettingPanel
             // 
