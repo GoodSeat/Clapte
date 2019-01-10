@@ -1,6 +1,6 @@
 using System;
 using System.Collections.Generic;
-using System.Text;
+using System.Linq;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Extensions;
@@ -383,7 +383,7 @@ namespace GoodSeat.Liffom.Processes
         /// <returns></returns>
         private List<Formula> GetFormalSolutions(Equal target, Variable about, List<Formula> solutions)
         {
-            List<Formula> result = new List<Formula>();
+            List<Formula> solRoundeds = new List<Formula>();
             foreach (Formula sol in solutions)
             {
                 if (sol.Contains(about)) continue; // 解に対象の変数が含まれていたら無効
@@ -395,8 +395,22 @@ namespace GoodSeat.Liffom.Processes
 
                 if (!AdmitImaginary && solRounded.Contains(Imaginary.i)) continue;
 
-                result.Add(GetModifiedSolution(target.LeftHandSide, about, solRounded, 0));
+                solRoundeds.Add(solRounded);
             }
+
+            int startRoundPrecision = 0;
+            List<Formula> result = new List<Formula>();
+            do
+            {
+                result.Clear();
+                foreach (Formula solRounded in solRoundeds)
+                {
+                    result.Add(GetModifiedSolution(target.LeftHandSide, about, solRounded, 0, startRoundPrecision));
+                }
+
+                startRoundPrecision++;
+            } while (result.Distinct().Count() != result.Count()); // 丸め処理によって同じ解が出来てしまっていたら、丸め処理の開始精度を上げて再度試みる。
+
             result.Sort();
             return result;
         }

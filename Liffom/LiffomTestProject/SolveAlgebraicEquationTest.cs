@@ -99,6 +99,7 @@ namespace GoodSeat.LiffomTestProject
                     "?=(696.96*sqrt(2387208.57775164/696.96)*2963.2318^-1, -696.96*sqrt(2387208.57775164/696.96)*2963.2318^-1)");
                 SolveEquationTest.AddTestCase(target, "x^100 + 3 = 0", "x", "x=(-3)^(1/100)");
                 SolveEquationTest.AddTestCase(target, "x^9 - 6*x^6 + 11*x^3 - 6 = 0", "x", "x=(1^(1/3),2^(1/3),3^(1/3))");
+                SolveEquationTest.AddTestCase(target, "x^3 + 6*x^2 + 8*x + 3 = 0", "x", "x=(-4.302775637732,-1,-0.697224362268006)");
             }
         }
 

@@ -62,11 +62,12 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="x">f(x)=0 における x。</param>
         /// <param name="solution">近似解。</param>
         /// <param name="error">近似解を求めるのに使用した許容誤差値。</param>
+        /// <param name="startRoundPrecision">丸め処理の試行を開始する精度桁数。</param>
         /// <returns>解の真値。</returns>
-        public Formula GetModifiedSolution(Formula f, Variable x, Formula solution, double error)
+        public Formula GetModifiedSolution(Formula f, Variable x, Formula solution, double error, int startRoundPrecision = 0)
         {
             // 解のまるめ (f(x)にxを代入したとき、ちゃんと0となるまで解を丸める)
-            solution = GetRoundSolution(f, x, solution, error);
+            solution = GetRoundSolution(f, x, solution, error, startRoundPrecision);
 
             if (CheckSignificantDigits)
             {
@@ -87,8 +88,9 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="x">方程式 f(x)=0 における x。</param>
         /// <param name="solution">検討対象の解。</param>
         /// <param name="error">計算時に用いた許容誤差値。</param>
+        /// <param name="startPrecision">丸め処理の試行を開始する精度桁数。</param>
         /// <returns></returns>
-        private static Formula GetRoundSolution(Formula f, Variable x, Formula solution, double error)
+        private static Formula GetRoundSolution(Formula f, Variable x, Formula solution, double error, int startPrecision = 0)
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
@@ -97,7 +99,7 @@ namespace GoodSeat.Liffom.Processes
             foreach (Numeric n in solution.GetExistFactors<Numeric>())
                 minExponent = Math.Min(minExponent, n.Figure.Exponent - Numeric.MaxValidDigits);
 
-            for (int test = testDigit; test >= minExponent; test--)
+            for (int test = testDigit - startPrecision; test >= minExponent; test--)
             {
                 Formula checkSolve = solution.Copy();
                 foreach (Numeric n in checkSolve.GetExistFactors<Numeric>()) n.Figure = n.Figure.Round(-test) as SignificantReal;
