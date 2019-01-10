@@ -487,6 +487,7 @@
             this._menuAddUserDefineResult.Name = "_menuAddUserDefineResult";
             this._menuAddUserDefineResult.Size = new System.Drawing.Size(203, 22);
             this._menuAddUserDefineResult.Text = "ユーザー定義に登録(&G)";
+            this._menuAddUserDefineResult.Visible = false;
             this._menuAddUserDefineResult.Click += new System.EventHandler(this._menuAddUserDefineResult_Click);
             // 
             // _picStatus
