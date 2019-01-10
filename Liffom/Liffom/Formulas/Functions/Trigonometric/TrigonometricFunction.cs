@@ -144,25 +144,35 @@ namespace GoodSeat.Liffom.Formulas.Functions
         {
             Formula arg = Argument[0];
 
-            // 三角関数で有理数として解決可能な有効角度を探す。
-            TriRad hitRad = TriRad.None;
-            foreach (TriRad triRad in GetTriRadTypes())
+            bool checkTriRad = true;
+            if (arg is Numeric)
             {
-                foreach (var rad in GetTriRadsOf(triRad))
-                {
-                    if (rad == arg || rad.Numerate() == arg)
-                    {
-                        hitRad = triRad;
-                        break;
-                    }
-                }
-                if (hitRad != TriRad.None) break;
+                var r = (arg as Numeric).Figure as Reals.SignificantReal;
+                if (r != null) checkTriRad = r.IsInfinityPrecision;
             }
 
-            if (hitRad != TriRad.None)
+            if (checkTriRad)
             {
-                Formula value = GetRationalValueOf(hitRad);
-                if (value != null) return value;
+                // 三角関数で有理数として解決可能な有効角度を探す。
+                TriRad hitRad = TriRad.None;
+                foreach (TriRad triRad in GetTriRadTypes())
+                {
+                    foreach (var rad in GetTriRadsOf(triRad))
+                    {
+                        if (rad == arg || rad.Numerate() == arg)
+                        {
+                            hitRad = triRad;
+                            break;
+                        }
+                    }
+                    if (hitRad != TriRad.None) break;
+                }
+
+                if (hitRad != TriRad.None)
+                {
+                    Formula value = GetRationalValueOf(hitRad);
+                    if (value != null) return value;
+                }
             }
 
             return CalculateTrigonometric(arg);
