@@ -853,7 +853,17 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             DeformFormula(f => {
                 Liffom.Processes.Factorize proc = new Liffom.Processes.Factorize();
-                return proc.Do(f.Simplify());
+                if (f is Liffom.Formulas.Operators.Comparers.Comparer)
+                {
+                    var fc = f as Liffom.Formulas.Operators.Comparers.Comparer;
+                    fc.LeftHandSide = proc.Do(fc.LeftHandSide);
+                    fc.RightHandSide = proc.Do(fc.RightHandSide);
+                    return fc;
+                }
+                else
+                {
+                    return proc.Do(f.Simplify());
+                }
                 });
         }
 
