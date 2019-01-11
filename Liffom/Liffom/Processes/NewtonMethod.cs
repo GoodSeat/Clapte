@@ -19,12 +19,13 @@ namespace GoodSeat.Liffom.Processes
         /// </summary>
         public override bool IsSupportMultipleConcurrentInvocations { get { return true; } }
 
-        double _initialSolution = 0d;    //    初期解
-        double _errorTolerance = 1E-6;            //    許容誤差
-        int _maxTryCount = 500;        // 最大試行回数
+        double _initialSolution = 0d;   // 初期解
+        double _errorTolerance = 1E-6;  // 許容誤差
+        int _maxTryCount = 500;         // 最大試行回数
+        bool _autoInitialSolutinoShift = true; // 与えられた初期解で求解できない場合に、自動で初期解をずらして試行を続行するか
 
-        double _increment = 0.5;                // 再試行時の初期解のずらし基準量
-        double _incrementWidth = 0.25;    // 再試行時の初期解ずらし基準の振れ幅
+        double _increment = 0.5;        // 再試行時の初期解のずらし基準量
+        double _incrementWidth = 0.25;  // 再試行時の初期解ずらし基準の振れ幅
 
         /// <summary>
         /// 初期解を設定もしくは取得します。
@@ -33,6 +34,15 @@ namespace GoodSeat.Liffom.Processes
         {
             get { return _initialSolution; }
             set { _initialSolution = value; }
+        }
+
+         /// <summary>
+         /// 与えられた初期解で求解できない場合に、自動で初期解をずらして試行を続行するか否かを設定若しくは取得します。
+         /// </summary>
+        public bool AutoInitialSolutionShift
+        {
+            get { return _autoInitialSolutinoShift; }
+            set { _autoInitialSolutinoShift = value; }
         }
         
         /// <summary>
@@ -132,21 +142,38 @@ namespace GoodSeat.Liffom.Processes
             // 微分結果の確認
             if (fd.Contains<Differentiate>()) throw new FormulaProcessException(f.ToString() + "を、微分できませんでした。");
 
-            Numeric initialTest = fd.Substituted(x, solution).DeformFormula(token) as Numeric;
-            if (initialTest == null) throw new FormulaProcessException(f.ToString() + "を、微分できませんでした。");
-            if (!fd.Contains(x) && initialTest == 0) throw new FormulaProcessException(f.ToString() + "は解を持ちません。");
+            // 初期解の代入
+            Random random = new Random(0);
+            int tryCount = 0;
+            do
+            {
+                try
+                {
+                    Numeric initialTest = fd.Substituted(x, solution).DeformFormula(token) as Numeric;
+                    if (initialTest == null) throw new FormulaProcessException(f.ToString() + "を、微分できませんでした。");
+                    if (!fd.Contains(x) && initialTest == 0) throw new FormulaProcessException(f.ToString() + "は解を持ちません。");
+                }
+                catch (Exception e) // 0除算などが発生したら、初期解をずらして再試行
+                {
+                    if (!AutoInitialSolutionShift || ++tryCount > 5) throw e;
+                    solution = GetRandomShift(solution, random);
+                    continue;
+                }
+            } while (false);
 
             // 導関数が0になるなら初期値の設定をやり直す。
-            Random random = new Random(0);
-            while (fd.Substituted(x, solution).DeformFormula(token) == 0) 
+            while (fd.Substituted(x, solution).DeformFormula(token) == 0)
+            {
+                if (!AutoInitialSolutionShift) throw new FormulaProcessException(f.ToString() + "の導関数に初期解\"" + solution.ToString() + "\"を代入した結果が0になります。");
                 solution = GetRandomShift(solution, random);
+            }
 
             // 無限ループ検知用の途中解リスト
             List<double> solList = new List<double>();
 
             Real lastSolution = null;
             Real fdSubstituted = null;
-            int tryCount = 0;
+            tryCount = 0;
             do
             {
                 if (IsCanceled(userState)) return null;
