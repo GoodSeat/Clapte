@@ -24,6 +24,11 @@ namespace GoodSeat.Liffom.Reals
         static public int MaxDigits { get; set; }
 
         /// <summary>
+        /// 計算において精度向上のため余分に保持する桁数を取得します。
+        /// </summary>
+        static int AdditinalDigit { get { return 5; } }
+
+        /// <summary>
         /// 数値の文字列形式を、それと等価な任意精度小数点数値に変換します。
         /// </summary>
         /// <param name="s">変換する数値を格納する文字列。</param>
@@ -175,9 +180,9 @@ namespace GoodSeat.Liffom.Reals
                 component *= -1;
                 isNegative = true;
             }
-            if (HoldDigits > MaxDigits) // 表示桁の丸め
+            if (HoldDigits > MaxValidDigits) // 表示桁の丸め
             {
-                int exp = HoldDigits - (MaxDigits + 1);
+                int exp = HoldDigits - (MaxValidDigits + 1);
                 if (exp > 0) component /= BigInteger.Pow(10, exp);
 
                 var rem = BigInteger.Remainder(component, 10);
@@ -275,10 +280,10 @@ namespace GoodSeat.Liffom.Reals
                 return;
             }
 
-            // 最大桁数+2桁まで保持する。
-            if (HoldDigits > MaxDigits + 2)
+            // 最大桁数+追加保持桁まで保持する。
+            if (HoldDigits > MaxValidDigits + AdditinalDigit)
             {
-                int exp = HoldDigits - (MaxDigits + 3);
+                int exp = HoldDigits - (MaxValidDigits + AdditinalDigit + 1);
                 if (exp > 0) Component /= BigInteger.Pow(10, exp);
 
                 var rem = BigInteger.Remainder(Component, 10);
@@ -335,7 +340,7 @@ namespace GoodSeat.Liffom.Reals
             if (n2.MinimumDigit != min) b2 *= BigInteger.Pow(10, n2.MinimumDigit - min);
 
             var sum = b1 + b2;
-            if (BigInteger.Abs(sum) < 10 && Math.Max(n1.HoldDigits, n2.HoldDigits) > MaxDigits) return new BigDecimalValue(0d);
+            if (BigInteger.Abs(sum) < 10 && Math.Max(n1.HoldDigits, n2.HoldDigits) > MaxValidDigits) return new BigDecimalValue(0d);
             else return new BigDecimalValue(sum, min);
         }
 
@@ -370,7 +375,7 @@ namespace GoodSeat.Liffom.Reals
             BigInteger rem;
             var div = BigInteger.DivRem(n1.Component, n2.Component, out rem);
 
-            while (rem != 0 && div.ToString().TrimStart('-').Length < MaxDigits + 2)
+            while (rem != 0 && div.ToString().TrimStart('-').Length < MaxValidDigits + AdditinalDigit)
             {
                 var divadd = BigInteger.DivRem(rem * 10, n2.Component, out rem);
                 div = div * 10 + divadd;
@@ -384,7 +389,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">冪数。</param>
         /// <returns>累乗結果。</returns>
-        protected override Value PowerWith(Value r) { return Power(this, r as BigDecimalValue, MaxDigits); }
+        protected override Value PowerWith(Value r) { return Power(this, r as BigDecimalValue, MaxValidDigits); }
 
         /// <summary>
         /// 指定実数と等しいか否かを返します。
@@ -438,7 +443,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>円周率を表す数値。</returns>
         public override Value GetPi()
         {
-            BigInteger oOne = BigInteger.Pow(10, MaxValidDigits + 3);
+            BigInteger oOne = BigInteger.Pow(10, MaxValidDigits + AdditinalDigit + 1);
 
             BigInteger x = oOne;
             BigInteger y = oOne >> 1;
@@ -446,7 +451,7 @@ namespace GoodSeat.Liffom.Reals
             BigInteger sq = 0;
 
             //サラミンブレント法でPIを算出
-            int iLoop = (int)Math.Log(MaxValidDigits + 3, 2.0) + 1;
+            int iLoop = (int)Math.Log(MaxValidDigits + AdditinalDigit + 1, 2.0) + 1;
             for (int i = 1; i < iLoop; i++)
             {
                 BigInteger pb = (x + y) >> 1;
@@ -484,7 +489,7 @@ namespace GoodSeat.Liffom.Reals
             var component = Component;
             var minDigit = MinimumDigit;
 
-            if (HoldDigits > MaxDigits) // 桁の丸め
+            if (HoldDigits > MaxValidDigits) // 桁の丸め
             {
                 component += 5;
                 component /= 10;

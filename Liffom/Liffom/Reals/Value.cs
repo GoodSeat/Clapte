@@ -691,7 +691,7 @@ namespace GoodSeat.Liffom.Reals
         private static Value PowerFactorial(Value x, int n)
         {
             Value res = x.CreateFrom(1d);
-            for (int i = 1; i <= n; i++) res = res * x / (double)i;
+            for (int i = 1; i <= n; i++) res = res * x / x.CreateFrom(i);
             return res;
         }
 
