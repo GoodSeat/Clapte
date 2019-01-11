@@ -62,6 +62,11 @@ namespace GoodSeat.Liffom.Reals
         public abstract int MaxValidDigits { get; }
 
         /// <summary>
+        /// 計算における精度向上のため、保持する内部数値においてMaxValidDigitsに加えて余分に保持している桁数を取得します。
+        /// </summary>
+        public virtual int AdditinalDigit { get { return 0; } }
+
+        /// <summary>
         /// 正規化した時の指数部を取得します。
         /// </summary>
         public abstract int Exponent { get; }
@@ -708,6 +713,8 @@ namespace GoodSeat.Liffom.Reals
         {
             if (x.IsNaN) return x;
 
+            int nExpInitial = (d1 != 0) ? d1.Exponent : f(x, n).Exponent;
+
             int expDelta;
             Value delta;
             Value result = d1;
@@ -725,7 +732,7 @@ namespace GoodSeat.Liffom.Reals
             }
             while (delta != 0d && expDelta <= validDigits + 1);
 
-            result = list.Aggregate((r1, r2) => r1 + r2);
+            if (result.Exponent + d1.AdditinalDigit < nExpInitial) result = result.Round(d1.MaxValidDigits - nExpInitial + d1.AdditinalDigit);
             return result;
         }
 
@@ -821,11 +828,6 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// Value型の変数zのタンジェントを返します。
         /// </summary>
-        /// <remarks>
-        /// <para>        ∞   (-1)^n         </para>
-        /// <para> tanz = Σ --------- z^(2n) </para>
-        /// <para>        n=0  (2n)!          </para>
-        /// </remarks>
         /// <returns>評価後の実数。</returns>
         public static Value Tan(Value x, int validDigits) { return Sin(x, validDigits) / Cos(x, validDigits); }
 
@@ -954,7 +956,10 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="b">底。</param>
         /// <returns>評価後の実数。</returns>
-        public abstract Value Log(Value b);
+        public virtual Value Log(Value b)
+        {
+            return Ln(this, MaxValidDigits) / Ln(b, MaxValidDigits);
+        }
 
         /// <summary>
         /// 指定した小数部桁数に丸めます。

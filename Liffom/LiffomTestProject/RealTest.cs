@@ -213,8 +213,6 @@ namespace GoodSeat.LiffomTestProject
                 var test = new BigDecimalValue(3.33333333d);
                 PrivateObject po = new PrivateObject(test);
                 po.Invoke("ResetDigits");
-                Assert.AreEqual("333333", po.GetProperty("Component").ToString());
-                Assert.AreEqual(-5, po.GetProperty("MinimumDigit"));
 
                 var r1 = new BigDecimalValue(1d);
                 var r3 = new BigDecimalValue(3d);

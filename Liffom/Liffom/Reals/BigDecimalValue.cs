@@ -24,11 +24,6 @@ namespace GoodSeat.Liffom.Reals
         static public int MaxDigits { get; set; }
 
         /// <summary>
-        /// 計算において精度向上のため余分に保持する桁数を取得します。
-        /// </summary>
-        static int AdditinalDigit { get { return 5; } }
-
-        /// <summary>
         /// 数値の文字列形式を、それと等価な任意精度小数点数値に変換します。
         /// </summary>
         /// <param name="s">変換する数値を格納する文字列。</param>
@@ -140,6 +135,11 @@ namespace GoodSeat.Liffom.Reals
         /// このインスタンスの型で考慮可能な最大桁数を取得します。
         /// </summary>
         public override int MaxValidDigits { get { return MaxDigits; } }
+
+        /// <summary>
+        /// 計算における精度向上のため、保持する内部数値においてMaxValidDigitsに加えて余分に保持している桁数を取得します。
+        /// </summary>
+        public override int AdditinalDigit { get { return Math.Max(MaxValidDigits / 2, 4); } }
 
         /// <summary>
         /// このインスタンスの型で考慮可能な最大数値の正規化時の指数を取得します。
@@ -389,7 +389,7 @@ namespace GoodSeat.Liffom.Reals
         /// </summary>
         /// <param name="r">冪数。</param>
         /// <returns>累乗結果。</returns>
-        protected override Value PowerWith(Value r) { return Power(this, r as BigDecimalValue, MaxValidDigits); }
+        protected override Value PowerWith(Value r) { return Power(this, r, MaxValidDigits); }
 
         /// <summary>
         /// 指定実数と等しいか否かを返します。
@@ -466,17 +466,6 @@ namespace GoodSeat.Liffom.Reals
             BigInteger pi = ((x + sq) * oOne) / z;
             int minDigit = -(pi.ToString().Length) + 1;
             return new BigDecimalValue(pi, minDigit);
-        }
-
-        /// <summary>
-        /// 指定した数値を底とする対数を返します。
-        /// </summary>
-        /// <param name="b">底。</param>
-        /// <returns>評価後の実数。</returns>
-        public override Value Log(Value b)
-        {
-            var bd = b as BigDecimalValue;
-            return Ln(this, MaxValidDigits) / Ln(bd, MaxValidDigits);
         }
 
         /// <summary>
