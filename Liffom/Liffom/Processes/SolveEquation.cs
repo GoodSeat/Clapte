@@ -158,7 +158,6 @@ namespace GoodSeat.Liffom.Processes
                 foreach (Numeric n in checkSolution.GetExistFactors<Numeric>())
                 {
                     n.SignificantDigits = i;
-                    n.Figure = new Numeric(double.Parse(n.Figure.ToString())).Figure;
                 }
 
                 Formula checkDigitResult = f.Substituted(x, checkSolution).DeformFormula(token);
