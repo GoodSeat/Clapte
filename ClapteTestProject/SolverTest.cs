@@ -21,14 +21,15 @@ namespace GoodSeat.ClapteTestProject
         /// テストに使用可能な標準的なSolverを初期化して取得します。
         /// </summary>
         /// <param name="mode">計算モード。</param>
+        /// <param name="considerDigit">有効数字を考慮するか。</param>
         /// <returns>初期化されたSolve。</returns>
-        public static Solver CreateStandardSolver(CalculateMode mode)
+        public static Solver CreateStandardSolver(CalculateMode mode, bool considerDigit)
         {
             var solver = new Solver();
 
             solver.Parser = CreateFormulaParser();
-            solver.ProcessList = CreateProcessList(solver, mode);
-            solver.OutputFormat = CreateFormat();
+            solver.ProcessList = CreateProcessList(solver, mode, considerDigit);
+            solver.OutputFormat = CreateFormat(considerDigit);
 
 			return solver;
         }
@@ -71,8 +72,9 @@ namespace GoodSeat.ClapteTestProject
         /// </summary>
 		/// <param name="solver">設定対象となるソルバ。</param>
 		/// <param name="mode">計算モード。</param>
+        /// <param name="considerDigits">有効数字を考慮するか否か。</param>
         /// <returns></returns>
-        static private List<Process> CreateProcessList(Solver solver, CalculateMode mode)
+        static private List<Process> CreateProcessList(Solver solver, CalculateMode mode, bool considerDigits)
         {
 			var result = new List<Process>();
 
@@ -98,7 +100,7 @@ namespace GoodSeat.ClapteTestProject
 			result.Add(new ReplaceVariableToUnitProcess(solver, ReplaceVariableToUnitProcess.Mode.AllAutoDetect));
 
 			// 計算処理
-			result.Add(CreateCalculateProcess(solver, mode));
+			result.Add(CreateCalculateProcess(solver, mode, considerDigits));
 
             // 単位表記の調整
             result.Add(new SetUnitFormatProcess(solver, UnitFormatType.Auto));
@@ -114,8 +116,9 @@ namespace GoodSeat.ClapteTestProject
 		/// </summary>
 		/// <param name="solver">設定対象となるソルバ。</param>
 		/// <param name="mode">計算モード。</param>
+        /// <param name="considerDigits">有効数字を考慮するか否か。</param>
 		/// <returns>初期化された数式の計算処理。</returns>
-		static private Process CreateCalculateProcess(Solver solver, CalculateMode mode)
+		static private Process CreateCalculateProcess(Solver solver, CalculateMode mode, bool considerDigits)
 		{
 			var list = new List<Clapte.Solvers.Processes.Process>();
 
@@ -130,6 +133,9 @@ namespace GoodSeat.ClapteTestProject
 			solveList.Add(new GoodSeat.Liffom.Processes.BrentMethod());
 
 			if (solveList.Count != 0) list.Add(new SolveEquationProcess(solver, 10000, solveList.ToArray()));
+
+            // 有効数字考慮設定
+            solveList.ForEach(s => s.CheckSignificantDigits = considerDigits);
 
 			// 計算処理
 			List<DeformToken> tokenList = new List<DeformToken>();
@@ -152,13 +158,14 @@ namespace GoodSeat.ClapteTestProject
         /// <summary>
         /// Solverの標準的な出力書式を初期化して取得します。
         /// </summary>
+        /// <param name="considerDigits">有効数字を考慮するか否か。</param>
         /// <returns></returns>
-		static private Format CreateFormat()
+		static private Format CreateFormat(bool considerDigits)
 		{
 			Format format = new Format();
 
 			// 有効数値の考慮
-            var considerDigit = new ConsiderSignificantFiguresFormatProperty(false);
+            var considerDigit = new ConsiderSignificantFiguresFormatProperty(considerDigits);
 			format.SetProperty(considerDigit);
 
             // x^-nは、1/x^n形式で表示

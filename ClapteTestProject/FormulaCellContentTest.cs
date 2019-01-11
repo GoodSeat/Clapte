@@ -19,8 +19,9 @@ namespace GoodSeat.ClapteTestProject
 		[TestCategory("ClaptePad"), TestMethod()]
         public void EvaluateTest()
         {
+            // 小数モード、有効数字を考慮しない
             var mode = CalculateMode.Decimal;
-            Solver solver = SolverTest.CreateStandardSolver(mode);
+            Solver solver = SolverTest.CreateStandardSolver(mode, false);
             solver.AbortLevel = Error.Level.Error;
 
             var tests = new List<KeyValuePair<string, string>>();
@@ -37,9 +38,9 @@ namespace GoodSeat.ClapteTestProject
             tests.Add(new KeyValuePair<string, string>("x * 3",                         "15"));
             Check(solver, tests);
 
-
+            // 分数モード、有効数字を考慮しない
             mode = CalculateMode.Fraction;
-            solver = SolverTest.CreateStandardSolver(mode);
+            solver = SolverTest.CreateStandardSolver(mode, false);
             solver.AbortLevel = Error.Level.Error;
 
             tests = new List<KeyValuePair<string, string>>();
@@ -48,6 +49,31 @@ namespace GoodSeat.ClapteTestProject
             tests.Add(new KeyValuePair<string, string>("uLS = 1.5",                     "uLS = 3/2"));
             tests.Add(new KeyValuePair<string, string>("min(a, b) = (a < b) * a + (a >= b) * b", "min(a, b) = a*(a<b)+b*(a≧b)"));
             tests.Add(new KeyValuePair<string, string>("min(1/15 * Fc, 0.9 + 2/75 * Fc) * uLS", "9/5"));
+            Check(solver, tests);
+
+
+            // 小数モード、有効数字を考慮する
+            mode = CalculateMode.Decimal;
+            solver = SolverTest.CreateStandardSolver(mode, true);
+            solver.AbortLevel = Error.Level.Error;
+
+            tests = new List<KeyValuePair<string, string>>();
+            tests.Add(new KeyValuePair<string, string>("log(?,10) = 1.636",             "? = 4.33E+1"));
+            tests.Add(new KeyValuePair<string, string>("sin(2.14)",                     "8.4E-1"));
+            tests.Add(new KeyValuePair<string, string>("sin(0.79rad)",                  "7.1E-1"));
+            tests.Add(new KeyValuePair<string, string>("x^2 + 2x = 120",                "x = -12, 10"));
+            tests.Add(new KeyValuePair<string, string>("x^2 + 2.x = 120",               "x = -1.2E+1, 1.0E+1"));
+            Check(solver, tests);
+
+
+            // 分数モード、有効数字を考慮する
+            mode = CalculateMode.Fraction;
+            solver = SolverTest.CreateStandardSolver(mode, true);
+            solver.AbortLevel = Error.Level.Error;
+
+            tests = new List<KeyValuePair<string, string>>();
+            tests.Add(new KeyValuePair<string, string>("5.324/100",                 "1.331E+3/25000"));
+            tests.Add(new KeyValuePair<string, string>("9.5cm",                     "(1.9E+1/2) cm "));
             Check(solver, tests);
         }
 
