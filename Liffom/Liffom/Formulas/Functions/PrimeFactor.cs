@@ -53,12 +53,12 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// <summary>
         /// 素因数分解を実行します。
         /// </summary>
-        /// <param name="d">対象の数値。</param>
+        /// <param name="n">対象の数値。</param>
         /// <param name="containPower">答えに累乗を含める場合true、全て積とする場合falseを指定。</param>
         /// <returns></returns>
-        public static Formula PrimeFactorize(Value d, bool containPower)
+        public static Formula PrimeFactorize(Numeric n, bool containPower)
         {
-            return PrimeFactorize(d, containPower, d);
+            return PrimeFactorize(n, containPower, n);
         }
 
         /// <summary>
@@ -68,11 +68,11 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// <param name="containPower">答えに累乗を含める場合true、全て積とする場合falseを指定。</param>
         /// <param name="maxTest">因数として試行する最大数値。</param>
         /// <returns>素因数分解された数式。</returns>
-        public static Formula PrimeFactorize(Value d, bool containPower, Value maxTest)
+        public static Formula PrimeFactorize(Numeric n, bool containPower, Value maxTest)
         {
-            Numeric n = new Numeric(d);            
             FormulaAssertionException.Assert(n.IsInteger); // 整数でない数を素因数分解しようとした
-            
+
+            Value d = n.Figure.Value;
             d = d / 1;
 
             var factors = new List<Value>();
@@ -111,7 +111,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             if (d != 1) factors.Add(d);            
             if (factors.Count == 1) return factors[0];
 
-            return CreateFactorFormula(factors, containPower);
+            return CreateFactorFormula(factors, containPower, n.SignificantDigits);
         }
 
         /// <summary>
@@ -119,31 +119,39 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// </summary>
         /// <param name="factors">素因数リスト。</param>
         /// <param name="containPower">累乗を含めるか否か。</param>
+        /// <param name="significantDigits">各数値に設定する有効桁数。</param>
         /// <returns>素因数分解の数式。</returns>
-        private static Formula CreateFactorFormula(List<Value> factors, bool containPower)
+        private static Formula CreateFactorFormula(List<Value> factors, bool containPower, int significantDigits)
         {
             factors.Sort();
             List<Formula> factorFormulas = new List<Formula>();
 
             if (!containPower)
             {
-                factorFormulas.AddRange(factors.Select(d => new Numeric(d)));
+                factorFormulas.AddRange(factors.Select(d =>
+                {
+                    var n = new Numeric(d);
+                    n.SignificantDigits = significantDigits;
+                    return n;
+                }));
             }
             else
             {
                 factors.Add(null); // 番兵
 
                 int pow = 1;
-                Formula current = factors[0];
+                Numeric current = new Numeric(factors[0]);
                 for (int i = 1; i < factors.Count; i++)
                 {
                     if (factors[i] == current) pow++;
                     else
                     {
+                        current.SignificantDigits = significantDigits;
+
                         if (pow == 1) factorFormulas.Add(current);
                         else factorFormulas.Add(current ^ pow);
 
-                        current = factors[i];
+                        current = new Numeric(factors[i]);
                         pow = 1;
                     }
                 }
