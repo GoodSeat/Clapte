@@ -49,7 +49,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
             int exponent = (int)exp.Figure;
             if (exponent == 1) return root[0];
-            if (exponent == 0) return 1; // TODO:これは明確な間違え
+            if (exponent == 0) throw new FormulaRuleException("0による除算が発生しました。", new DivideByZeroException());
             if (exponent < 0) return 1 / new Root(root[0], -1 * exponent);
 
             var io = SieveIOFrom(root[0], exponent);

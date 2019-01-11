@@ -104,8 +104,13 @@ namespace GoodSeat.Liffom.Processes
                 Formula checkSolve = solution.Copy();
                 foreach (Numeric n in checkSolve.GetExistFactors<Numeric>()) n.Figure = n.Figure.Round(-test) as SignificantReal;
 
-                Formula ans = f.Substituted(x, checkSolve).DeformFormula(token);
-                if (ans == 0) return checkSolve;
+                try
+                {
+                    Formula ans = f.Substituted(x, checkSolve).DeformFormula(token);
+                    if (ans == 0) return checkSolve;
+                }
+                catch (DivideByZeroException) { }
+                catch (Exception e) { if (!(e.InnerException is DivideByZeroException)) throw e; }
             }
             return solution;
         }
