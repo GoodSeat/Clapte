@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -266,12 +266,20 @@ namespace GoodSeat.Liffom.Parse
             var endPunctuation = endToken as PunctuationToken;
             if (!startPunctuation.IsValidSetPunctuation(endPunctuation)) throw new FormulaParseException("数式文字列中の括弧・区切りが正しく対応しません。");
 
-            var parsedToken = ParseInner(startPunctuation.NextToken, endPunctuation.PreviousToken);
-            if (parsedToken == null) throw new FormulaParseException(startPunctuation.NextToken.GetBaseText(endPunctuation) + "の解析に失敗しました。");
-            Formula parsed = parsedToken.ParsedFormula;
+            FormulaToken newToken;
+            if (startPunctuation.PreviousToken is FunctionToken && startPunctuation.NextToken == endPunctuation) // 引数なしの関数
+            {
+                newToken = new FormulaToken(startPunctuation.GetBaseText(endPunctuation), new Formulas.Operators.Argument());
+            }
+            else
+            {
+                var parsedToken = ParseInner(startPunctuation.NextToken, endPunctuation.PreviousToken);
+                if (parsedToken == null) throw new FormulaParseException(startPunctuation.NextToken.GetBaseText(endPunctuation) + "の解析に失敗しました。");
+                Formula parsed = parsedToken.ParsedFormula;
 
-            parsed = startPunctuation.OnInnerParsed(parsed); // 区切りトークンに応じた数式加工
-            FormulaToken newToken = new FormulaToken(startPunctuation.GetBaseText(endPunctuation), parsed);
+                parsed = startPunctuation.OnInnerParsed(parsed); // 区切りトークンに応じた数式加工
+                newToken = new FormulaToken(startPunctuation.GetBaseText(endPunctuation), parsed);
+            }
 
             startPunctuation.InsertPrevious(newToken);
             while (newToken.NextToken != endPunctuation) newToken.NextToken.Remove();
