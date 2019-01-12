@@ -94,7 +94,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         public override string GetInformation(out List<string> args)
         {
-            args = new List<string>(); args.Add("角度[rad]");
+            args = new List<string>(); args.Add("角度");
             return "角度のタンジェントを返します。";
         }
 
