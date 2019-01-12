@@ -59,6 +59,7 @@ namespace GoodSeat.Clapte.ViewModels
             this.NewtonMethod = new NewtonMethod();
             this.BrentMethod = new BrentMethod();
             this.MaxTime = 3000;
+            this.PermitOnlySingleTermResult = true;
 
             PermitOmitProductMark = true;
             DetectUnitMode = ReplaceVariableToUnitProcess.Mode.AllAutoDetect;
