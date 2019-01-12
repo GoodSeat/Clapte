@@ -130,7 +130,7 @@ namespace GoodSeat.Liffom.Processes
 
             // 初期解にて計算した時の解の有効数字を取得
             var copy = solution.Copy();
-            foreach (Numeric n in copy.GetExistFactors<Numeric>()) n.SignificantDigits = Numeric.MaxValidDigits * 2;
+            foreach (Numeric n in copy.GetExistFactors<Numeric>()) n.SetInfinitySignificantDigits();
             initialValidDigit = int.MinValue; // 初期解で計算したときの最大有効桁
             initialPrecision = Numeric.MaxValidDigits * 2; // 初期解で計算したときの有効桁数
             Formula checkDigit = f.Substituted(x, copy).DeformFormula(token);

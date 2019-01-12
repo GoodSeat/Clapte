@@ -52,7 +52,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             den.Figure = den.Figure.Round(0);
 
             mol.SignificantDigits = f.SignificantDigits; // 分子の有効桁数をそのままにする
-            den.SignificantDigits = 100; // 分母の有効桁数を無限にする
+            den.SetInfinitySignificantDigits(); // 分母の有効桁数を無限にする
 
             if (den == 1) return mol;
             else if (mol == 1)
