@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -395,6 +395,12 @@ namespace GoodSeat.Clapte.ViewModels
             Mode = (CalculateMode)Enum.Parse(typeof(CalculateMode), calculateElement.GetAttribute("Mode"));
             NumericPrecision = (Numeric.RealType)Enum.Parse(typeof(Numeric.RealType), calculateElement.GetAttribute("NumericPrecision", "DoubleModified"));
             PrecisionDigitOfBigDecimal = int.Parse(calculateElement.GetAttribute("PrecisionDigitOfBigDecimal", "30"));
+            if (NumericPrecision == Numeric.RealType.Decimal) // ver 2.1 におけるDecimalの廃止に対応
+            {
+                NumericPrecision = Numeric.RealType.BigDecimal;
+                PrecisionDigitOfBigDecimal = 28;
+            }
+
             MaxTime = double.Parse(calculateElement.GetAttribute("MaxTime", "3000"));
             MidpointRound = (MidpointRounding)Enum.Parse(typeof(MidpointRounding), calculateElement.GetAttribute("MidpointRound"));
             {

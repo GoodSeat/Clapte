@@ -31,7 +31,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             switch (TargetSolver.NumericPrecision)
             {
                 case Liffom.Formulas.Numeric.RealType.DoubleModified: _radioPrecisionDouble.Checked = true; break;
-                case Liffom.Formulas.Numeric.RealType.Decimal: _radioPrecisionDecimal.Checked = true; break;
                 case Liffom.Formulas.Numeric.RealType.BigDecimal: _radioPrecisionCustom.Checked = true; break;
                 default: throw new NotImplementedException();
             }
@@ -87,7 +86,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             // 計算の設定
             if (_radioPrecisionDouble.Checked) TargetSolver.NumericPrecision = Liffom.Formulas.Numeric.RealType.DoubleModified;
-            if (_radioPrecisionDecimal.Checked) TargetSolver.NumericPrecision = Liffom.Formulas.Numeric.RealType.Decimal;
             if (_radioPrecisionCustom.Checked) TargetSolver.NumericPrecision = Liffom.Formulas.Numeric.RealType.BigDecimal;
             TargetSolver.PrecisionDigitOfBigDecimal = (int)_numPrecisionDigit.Value;
 

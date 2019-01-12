@@ -62,7 +62,6 @@
             this._labelPrecisionDigit = new System.Windows.Forms.Label();
             this._numPrecisionDigit = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._radioPrecisionCustom = new System.Windows.Forms.RadioButton();
-            this._radioPrecisionDecimal = new System.Windows.Forms.RadioButton();
             this._radioPrecisionDouble = new System.Windows.Forms.RadioButton();
             this._groupSolveEquation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
@@ -724,7 +723,6 @@
             this._groupPresicion.Controls.Add(this._labelPrecisionDigit);
             this._groupPresicion.Controls.Add(this._numPrecisionDigit);
             this._groupPresicion.Controls.Add(this._radioPrecisionCustom);
-            this._groupPresicion.Controls.Add(this._radioPrecisionDecimal);
             this._groupPresicion.Controls.Add(this._radioPrecisionDouble);
             this._groupPresicion.Location = new System.Drawing.Point(6, 10);
             this._groupPresicion.Name = "_groupPresicion";
@@ -738,7 +736,7 @@
             this._labelPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._labelPrecisionDigit.AutoSize = true;
             this._labelPrecisionDigit.Enabled = false;
-            this._labelPrecisionDigit.Location = new System.Drawing.Point(278, 22);
+            this._labelPrecisionDigit.Location = new System.Drawing.Point(223, 22);
             this._labelPrecisionDigit.Name = "_labelPrecisionDigit";
             this._labelPrecisionDigit.Size = new System.Drawing.Size(53, 12);
             this._labelPrecisionDigit.TabIndex = 10;
@@ -757,7 +755,7 @@
             this._numPrecisionDigit.Enabled = false;
             this._numPrecisionDigit.EnableUpDown = false;
             this._numPrecisionDigit.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numPrecisionDigit.Location = new System.Drawing.Point(332, 18);
+            this._numPrecisionDigit.Location = new System.Drawing.Point(282, 18);
             this._numPrecisionDigit.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -797,32 +795,20 @@
             // 
             this._radioPrecisionCustom.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._radioPrecisionCustom.AutoSize = true;
-            this._radioPrecisionCustom.Location = new System.Drawing.Point(200, 20);
+            this._radioPrecisionCustom.Location = new System.Drawing.Point(158, 20);
             this._radioPrecisionCustom.Name = "_radioPrecisionCustom";
-            this._radioPrecisionCustom.Size = new System.Drawing.Size(71, 16);
+            this._radioPrecisionCustom.Size = new System.Drawing.Size(59, 16);
             this._radioPrecisionCustom.TabIndex = 2;
             this._radioPrecisionCustom.TabStop = true;
-            this._radioPrecisionCustom.Text = "任意精度";
+            this._radioPrecisionCustom.Text = "高精度";
             this._radioPrecisionCustom.UseVisualStyleBackColor = true;
             this._radioPrecisionCustom.CheckedChanged += new System.EventHandler(this._radioPrecisionCustom_CheckedChanged);
-            // 
-            // _radioPrecisionDecimal
-            // 
-            this._radioPrecisionDecimal.Anchor = System.Windows.Forms.AnchorStyles.Top;
-            this._radioPrecisionDecimal.AutoSize = true;
-            this._radioPrecisionDecimal.Location = new System.Drawing.Point(109, 20);
-            this._radioPrecisionDecimal.Name = "_radioPrecisionDecimal";
-            this._radioPrecisionDecimal.Size = new System.Drawing.Size(59, 16);
-            this._radioPrecisionDecimal.TabIndex = 1;
-            this._radioPrecisionDecimal.TabStop = true;
-            this._radioPrecisionDecimal.Text = "高精度";
-            this._radioPrecisionDecimal.UseVisualStyleBackColor = true;
             // 
             // _radioPrecisionDouble
             // 
             this._radioPrecisionDouble.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._radioPrecisionDouble.AutoSize = true;
-            this._radioPrecisionDouble.Location = new System.Drawing.Point(30, 20);
+            this._radioPrecisionDouble.Location = new System.Drawing.Point(59, 20);
             this._radioPrecisionDouble.Name = "_radioPrecisionDouble";
             this._radioPrecisionDouble.Size = new System.Drawing.Size(47, 16);
             this._radioPrecisionDouble.TabIndex = 0;
@@ -878,7 +864,6 @@
         private System.Windows.Forms.CheckBox _checkDontCopyVariable;
         private System.Windows.Forms.GroupBox _groupPresicion;
         private System.Windows.Forms.RadioButton _radioPrecisionCustom;
-        private System.Windows.Forms.RadioButton _radioPrecisionDecimal;
         private System.Windows.Forms.RadioButton _radioPrecisionDouble;
         private System.Windows.Forms.Label _labelPrecisionDigit;
         private Controls.NumericSlider _numPrecisionDigit;
