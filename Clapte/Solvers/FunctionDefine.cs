@@ -55,10 +55,13 @@ namespace GoodSeat.Clapte.Solvers
         {
             get
             {
-                if (Target is UserFunction) return _comment;
-
-                List<string> arg;
-                return Target.GetInformation(out arg);
+                var inf = _comment;
+                if (!(Target is UserFunction))
+                {
+                    List<string> arg;
+                    inf = Target.GetInformation(out arg);
+                }
+                return string.IsNullOrEmpty(inf) ? "" : inf;
             }
             set
             {

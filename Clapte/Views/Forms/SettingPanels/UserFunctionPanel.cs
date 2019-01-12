@@ -218,7 +218,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 function = new UserFunction(split[0]);
                 string args = split[1].TrimEnd(')');
 
-                Formula formula = Formula.Parse(args);
+                Formula formula = string.IsNullOrWhiteSpace(args) ? null : Formula.Parse(args);
                 Argument arg = formula as Argument;
                 if (formula is Variable) arg = new Argument(formula);
                 if (arg != null)
@@ -381,8 +381,14 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             if (e.ColumnIndex == 0) // 関数名称変更
             {
+                var parser = SolverViewModel.CreateFormulaParser(true, false, true, true);
+                parser.GetLexerOf<Liffom.Parse.FunctionLexer>().ScanNotDefinedUserFunction = true;
+
                 UserFunction createdFunction = CreateUserFunctionFrom(GetStringFrom(_dataGridFunction[e.ColumnIndex, e.RowIndex].Value), e);
-                if (createdFunction.Name == "") throw new Exception("入力された関数名は無効です。");
+
+                Formula f;
+                bool result = parser.TryParse(createdFunction.NameForView, out f);
+                if (!(f is Function)) throw new Exception("入力された関数名は無効です。");
 
                 editTarget.Name = createdFunction.Name;
                 editTarget.UseVariable.Clear();

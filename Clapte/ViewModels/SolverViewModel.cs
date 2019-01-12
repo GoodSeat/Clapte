@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -312,26 +312,39 @@ namespace GoodSeat.Clapte.ViewModels
         /// <returns>初期化された数式の構文解析器。</returns>
         private FormulaParser CreateFormulaParser()
         {
+            return CreateFormulaParser(ParseAbsPunctuation, PermitOmitPowerMark, PermitOmitProductMark, ParseFactorial);
+        }
+
+        /// <summary>
+        /// Clapteにおける数式の構文解析器を初期化して取得します。
+        /// </summary>
+        /// <param name="parseAbsPunctuation">絶対値記号を解析するか。</param>
+        /// <param name="permitOmitPowerMark">累乗記号の省略を許可するか。</param>
+        /// <param name="permitOmitProductMark">乗算記号の省略を許可するか。</param>
+        /// <param name="parseFactorial">階乗記号の解析するか。</param>
+        /// <returns>初期化された数式の構文解析器。</returns>
+        static public FormulaParser CreateFormulaParser(bool parseAbsPunctuation, bool permitOmitPowerMark, bool permitOmitProductMark, bool parseFactorial)
+        {
             var parser = new FormulaParser();
             parser.Lexers.Add(new NumericLexer()); // 数値
             parser.Lexers.Add(new ParenthesesLexer()); // 丸括弧
             parser.Lexers.Add(new BracketLexer(true, true)); // 角括弧
             parser.Lexers.Add(new BraceLexer()); // 波括弧
-            if (ParseAbsPunctuation) parser.Lexers.Add(new AbsolutePunctuationLexer()); // 絶対値記号
+            if (parseAbsPunctuation) parser.Lexers.Add(new AbsolutePunctuationLexer()); // 絶対値記号
             parser.Lexers.Add(new SpaceLexer()); // 空白トークン
             parser.Lexers.Add(new FunctionLexer(parser, true)); // 関数
             parser.Lexers.Add(new ConstantLexer(true)); // 定数
             parser.Lexers.Add(new VariableLexer(parser, false)); // 変数
 
-            if (PermitOmitPowerMark) parser.AddOperatorParsers(new AbbreviatedPowerOperatorParser(parser)); // 乗算記号の省略を許可(通常の乗算より優先度を上げる)
+            if (permitOmitPowerMark) parser.AddOperatorParsers(new AbbreviatedPowerOperatorParser(parser)); // 乗算記号の省略を許可(通常の乗算より優先度を上げる)
             parser.AddOperatorParsers(new PowerOperatorParser()); // 累乗
             parser.AddOperatorParsers(new PowerOfMatrixOperatorParser()); // 行列の累乗
             parser.AddOperatorParsers(new PlusMinusOperatorParser()); // 正負記号
-            if (PermitOmitProductMark) parser.AddOperatorParsers(new AbbreviatedProductOperatorParser()); // 積算記号の省略を許可(通常の積算より優先度を上げる)
+            if (permitOmitProductMark) parser.AddOperatorParsers(new AbbreviatedProductOperatorParser()); // 積算記号の省略を許可(通常の積算より優先度を上げる)
             parser.AddOperatorParsers(new ProductOfMatrixOperatorParser()); // 行列の乗算
             parser.AddOperatorParsers(new ProductOperatorParser()); // 乗算・除算
             parser.AddOperatorParsers(new SumOperatorParser()); // 和算・減算
-            if (ParseFactorial) parser.AddOperatorParsers(new FactorialOperatorParser()); // 階乗記号(!)
+            if (parseFactorial) parser.AddOperatorParsers(new FactorialOperatorParser()); // 階乗記号(!)
             parser.AddOperatorParsers(new ComparerOperatorParser()); // 比較演算子
             parser.AddOperatorParsers(new BooleanOperatorParser()); // 論理演算子
             parser.AddOperatorParsers(new ArgumentOperatorParser()); // 引数演算子

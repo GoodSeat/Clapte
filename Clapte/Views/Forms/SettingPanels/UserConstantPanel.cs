@@ -8,6 +8,7 @@ using System.Windows.Forms;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Sio;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Clapte.Solvers;
@@ -189,7 +190,16 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             if (_dataGridVariable[1, e.RowIndex].Value == null) value = "0";
             else value = GetStringFrom(_dataGridVariable[1, e.RowIndex].Value);
 
-            if (CheckDefineAsFormula) ClapteCore.Solver.Target.Parser.Parse(value);
+            var parser = SolverViewModel.CreateFormulaParser(true, false, true, true);
+
+            Formula f;
+            bool result = parser.TryParse(newName, out f);
+            if (!result || (!(f is Variable) && !(f is Unit))) 
+            {
+                throw new Exception("\"" + newName + "\"を変数名として使用することはできません。");
+            }
+
+            if (CheckDefineAsFormula) parser.Parse(value);
 
             // 設定
             target.Name = newName;
