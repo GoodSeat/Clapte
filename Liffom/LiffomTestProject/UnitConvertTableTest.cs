@@ -34,6 +34,9 @@ namespace GoodSeat.LiffomTestProject
                 if (!ExistTableOf("time"))
                 {
                     UnitConvertTable timeTable = new UnitConvertTable(new Unit("s"), "Time");
+                    UnitConvertRecord hRecord = new UnitConvertRecord(new Unit("h"), Formula.Parse("3600"));
+                    timeTable.AddRecord(hRecord);
+                    UnitConvertTable.AddTable(timeTable);
                 }
                 if (!ExistTableOf("angle"))
                 {
@@ -48,6 +51,13 @@ namespace GoodSeat.LiffomTestProject
                 {
                     UnitConvertTable lengthTable = new UnitConvertTable(new Unit("m"), "Length");
                     UnitConvertTable.AddTable(lengthTable);
+                }
+                if (!ExistTableOf("speed"))
+                {
+                    UnitConvertTable speedTable = new UnitConvertTable(Formula.Parse("[m/s]"), "Speed");
+                    UnitConvertRecord knRecord = new UnitConvertRecord(new Unit("kn"), Formula.Parse("463/900"));
+                    speedTable.AddRecord(knRecord);
+                    UnitConvertTable.AddTable(speedTable);
                 }
                 if (!ExistTableOf("pressure"))
                 {

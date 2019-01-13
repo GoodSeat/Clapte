@@ -107,6 +107,7 @@ namespace GoodSeat.LiffomTestProject
             AddTestCase("[atm*l]", "[J]", "101.325");
             AddTestCase("[rad]", "1");
             AddTestCase("[kg]", "[kg*cm/m]", "100");
+            AddTestCase("[kn*h]", "[m]", "1852");
         }
 
         private void AddTestCase(string from, string to, string expectedConversionFactor)

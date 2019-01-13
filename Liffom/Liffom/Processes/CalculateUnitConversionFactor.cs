@@ -109,8 +109,8 @@ namespace GoodSeat.Liffom.Processes
 
             if (!ConvertSuccessed) ReplicateMinmumMemento();
 
-            Formula molecular   = _modifyTo   * _modifyMolecular   * new Product(_fromMolecular.ToArray())   * new Product(_toDenominator.ToArray()) ;
-            Formula denominator = _modifyFrom * _modifyDenominator * new Product(_fromDenominator.ToArray()) * new Product(_toMolecular.ToArray());
+            Formula molecular   = _modifyMolecular   * _modifyTo   * new Product(_fromMolecular.ToArray())   * new Product(_toDenominator.ToArray()) ;
+            Formula denominator = _modifyDenominator / _modifyFrom * new Product(_fromDenominator.ToArray()) * new Product(_toMolecular.ToArray());
             return (molecular / denominator).Simplify();
         }
 
