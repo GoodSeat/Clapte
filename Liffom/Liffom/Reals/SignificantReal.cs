@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -282,6 +282,7 @@ namespace GoodSeat.Liffom.Reals
 
             var result = new SignificantReal(Value + r.Value);
             result.SignificantDigits = result.Exponent - postMinPrecision + 1;
+            if (n1.IsInfinityPrecision && n2.IsInfinityPrecision) result.SignificantDigits = Math.Min(n1.SignificantDigits, n2.SignificantDigits);
 
             return result;
         }
