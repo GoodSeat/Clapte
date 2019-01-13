@@ -40,7 +40,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             var power = f2 as Power;
 
             if (!(power.Base is Numeric) || !(power.Base as Numeric).IsInteger) return false;
-            if (!(f1 as Numeric).IsInteger) return false;
+            if (OnlyMolecularIsInteger && !(f1 as Numeric).IsInteger) return false;
 
             return power.Base is Numeric && power.Exponent == -1;
         }
@@ -52,12 +52,25 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
             if (denominator == 0) return null;
 
-            int postPrecision = Math.Min(molecular.SignificantDigits, denominator.SignificantDigits);
+            int modifyMolecular = 0;
+            if (!molecular.IsInteger)
+            {
+                modifyMolecular = 1;
+                molecular = (molecular * 10).Numerate() as Numeric;
+                while (!molecular.IsInteger)
+                {
+                    modifyMolecular += 1;
+                    molecular.Figure *= 10;
+                }
+            }
+
             Numeric newMolecular, newDenominator;
             GetReductedFactor(molecular, denominator, out newMolecular, out newDenominator);
 
-            newMolecular.SignificantDigits = postPrecision;
-            newDenominator.SignificantDigits = postPrecision;
+            newMolecular.SignificantDigits = molecular.SignificantDigits;
+            newDenominator.SignificantDigits = denominator.SignificantDigits;
+
+            if (modifyMolecular != 0) newMolecular.Figure /= Math.Pow(10, modifyMolecular);
 
             if (newMolecular == molecular || newDenominator == denominator) return null;
             return newMolecular / newDenominator;
@@ -85,6 +98,11 @@ namespace GoodSeat.Liffom.Formulas.Rules
                 newDenominator = new Numeric((denominator.Figure / gcd.Figure).Round(0));
             }
         }
+
+        /// <summary>
+        /// 分子が整数の場合のみを対象とするか否かを設定もしくは取得します。
+        /// </summary>
+        bool OnlyMolecularIsInteger { get; set; } = false;
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Product; }
 
