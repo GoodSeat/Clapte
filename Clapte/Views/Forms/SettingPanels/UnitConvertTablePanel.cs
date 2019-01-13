@@ -187,10 +187,10 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 foreach (UnitConvertRecord dataConvert in _currentTable.GetAllRecords(true))
                 {
                     Formula convert = _currentTable.GetConversionRatio(data.ConvertUnit, dataConvert.ConvertUnit);
-//                    convert = convert.Numerate();
+                    convert = convert.Simplify();
                     convert.Format = format;
 
-                    if (i+ 2 == columnNo)
+                    if (i + 2 == columnNo)
                     {
                         row.Cells[columnNo].ReadOnly = true;
                         row.Cells[columnNo].Style.BackColor = Color.WhiteSmoke;
@@ -201,7 +201,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
                 foreach (UnitConvertRecord dataConvert in _currentTable.GetAllRecords(true))
                 {
                     Formula convert = _currentTable.GetConvertAddition(data.ConvertUnit, dataConvert.ConvertUnit);
-//                    convert = convert.Numerate();
+                    convert = convert.Simplify();
                     convert.Format = format;
 
                     if (i + CountOfCurrentRecord + 2 == columnNo)

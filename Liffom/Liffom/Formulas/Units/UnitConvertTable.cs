@@ -297,25 +297,25 @@ namespace GoodSeat.Liffom.Formulas.Units
 
             if (from == BaseUnit.ConvertUnit && toData.ConvertUnit == to) // 対象が基準単位そのものならば、誤差が生じないよう、設定値をそのまま反映する
             {
-                toData.ConversionRatio = (1 / ratio).Combine();
+                toData.ConversionRatio = (1 / ratio).Simplify();
             }
             else if (to == BaseUnit.ConvertUnit && fromData.ConvertUnit == from) // 対象が基準単位そのものならば、誤差が生じないよう、設定値をそのまま反映する
             {
-                fromData.ConversionRatio = ratio.Combine();
+                fromData.ConversionRatio = ratio.Simplify();
             }
             else if (fromData is BaseUnitConvertRecord) // 変換元が基準の場合は例外的に変換先を直す
             {
                 Formula modif = currentConvert / ratio;
                 Formula preConversionRatio = toData.ConversionRatio;
                 foreach (Numeric n in preConversionRatio.GetExistFactors<Numeric>()) n.SetInfinitySignificantDigits(); // 設定後の有効桁数に合わせるため、無限を設定
-                toData.ConversionRatio = (modif * preConversionRatio).Combine();
+                toData.ConversionRatio = (modif * preConversionRatio).Simplify();
             }
             else
             {
                 Formula modif = ratio / currentConvert;
                 Formula preConversionRatio = fromData.ConversionRatio;
                 foreach (Numeric n in preConversionRatio.GetExistFactors<Numeric>()) n.SetInfinitySignificantDigits(); // 設定後の有効桁数に合わせるため、無限を設定
-                fromData.ConversionRatio = (modif * preConversionRatio).Combine();
+                fromData.ConversionRatio = (modif * preConversionRatio).Simplify();
             }
         }
 
@@ -340,7 +340,7 @@ namespace GoodSeat.Liffom.Formulas.Units
             Formula toConvert = toData.ConversionRatio.Copy() * toModify;
 
             Formula convert = fromConvert / toConvert;
-            Formula result = convert.Combine();
+            Formula result = convert.Simplify();
             foreach (Numeric n in result.GetExistFactors<Numeric>())
                 if (n.SignificantDigits > Numeric.MaxValidDigits) n.SetInfinitySignificantDigits();
 
@@ -378,9 +378,9 @@ namespace GoodSeat.Liffom.Formulas.Units
             foreach (Numeric n in toConvertAdd.GetExistFactors<Numeric>()) n.SetInfinitySignificantDigits(); // 設定後の有効桁数に合わせるため、無限を設定
 
             if ((!(toData is BaseUnitConvertRecord) && !modifyFrom) || fromData is BaseUnitConvertRecord)
-                toData.ConversionAddition = (fromConvertAdd - delta).Combine();
+                toData.ConversionAddition = (fromConvertAdd - delta).Simplify();
             else
-                fromData.ConversionAddition = (toConvertAdd + delta).Combine();
+                fromData.ConversionAddition = (toConvertAdd + delta).Simplify();
         }
 
         /// <summary>
@@ -402,7 +402,7 @@ namespace GoodSeat.Liffom.Formulas.Units
             Formula fromConvert = fromData.ConversionAddition * fromModify; // 基準単位
             Formula toConvert = toData.ConversionAddition * toModify; // 基準単位
             Formula addition = (fromConvert - toConvert) / toData.ConversionRatio; // 変換後単位
-            Formula result = addition.Combine();
+            Formula result = addition.Simplify();
             foreach (Numeric n in result.GetExistFactors<Numeric>()) if (n.SignificantDigits > Numeric.MaxValidDigits) n.SetInfinitySignificantDigits();
 
             if (from == to)
