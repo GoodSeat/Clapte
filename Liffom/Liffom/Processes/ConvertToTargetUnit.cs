@@ -17,18 +17,29 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 数式中の単位を指定した目標単位に一括変換する処理を初期化します。
         /// </summary>
-        public ConvertToTargetUnit() { }
+        /// <param name="convertAddition">換算加算値も考慮して変換を行うか。</param>
+        public ConvertToTargetUnit(bool convertAddition) { AlsoConvertAddition = convertAddition; }
 
         /// <summary>
         /// 数式中の単位を指定した目標単位に一括変換する処理を初期化します。
         /// </summary>
         /// <param name="deformToken">変換時に適用する変形の識別トークン。</param>
-        public ConvertToTargetUnit(DeformToken deformToken) { ApplyDeformToken = deformToken; }
+        /// <param name="convertAddition">換算加算値も考慮して変換を行うか。</param>
+        public ConvertToTargetUnit(DeformToken deformToken, bool convertAddition)
+        {
+            ApplyDeformToken = deformToken;
+            AlsoConvertAddition = convertAddition;
+        }
 
         /// <summary>
         /// 返還後の単位系数に適用する変形トークンを設定もしくは取得します。
         /// </summary>
         public DeformToken ApplyDeformToken { get; set; }
+
+        /// <summary>
+        /// 換算加算値も考慮して変換を行うか否かを設定もしくは取得します。
+        /// </summary>
+        public bool AlsoConvertAddition { get; set; }
 
         /// <summary>
         /// 一意のユーザー情報を指定して、複数の同時呼び出しを許可するか否かを取得します。
@@ -80,6 +91,8 @@ namespace GoodSeat.Liffom.Processes
 
                 var factor = conversion.Do(bMatched, targetUnit);
                 Formula coef = factor * aMatched;
+                if (convert == target && conversion.ConversionAddition != null) coef = coef + conversion.ConversionAddition;
+
                 if (ApplyDeformToken != null) coef = coef.DeformFormula(ApplyDeformToken);
 
                 var result = new Product(false, coef, targetUnit);

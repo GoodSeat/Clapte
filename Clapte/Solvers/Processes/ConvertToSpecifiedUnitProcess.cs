@@ -91,7 +91,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
         {
             if (CurrentTargetUnit != null)
             {
-                ConvertToTargetUnit convert = new ConvertToTargetUnit();
+                ConvertToTargetUnit convert = new ConvertToTargetUnit(true);
                 convert.ApplyDeformToken = ApplyDeformToken;
 
                 var result = convert.Do(output, CurrentTargetUnit);
