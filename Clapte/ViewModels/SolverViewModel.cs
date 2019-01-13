@@ -267,7 +267,7 @@ namespace GoodSeat.Clapte.ViewModels
             var list = new List<Clapte.Solvers.Processes.Process>();
 
             // 目標単位の認識と変換
-            if (Mode == CalculateMode.Fraction) list.Add(new ConvertToSpecifiedUnitProcess(solver, Formula.CombineToken));
+            if (Mode == CalculateMode.Fraction) list.Add(new ConvertToSpecifiedUnitProcess(solver, Formula.SimplifyToken));
             else list.Add(new ConvertToSpecifiedUnitProcess(solver, Formula.NumerateToken));
 
             // 等式に対する方程式の求解
