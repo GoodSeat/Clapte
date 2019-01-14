@@ -76,13 +76,45 @@ namespace GoodSeat.LiffomTestProject
             UnitConvertTableTest.RegistBasicUnitRecord();
 
             ConvertToTargetUnit target = new ConvertToTargetUnit(true);
-            var test = Formula.Parse("5[kgf] + 5[N]");
-            var targetUnit = new Unit("kN");
-            var actual = target.Do(test, targetUnit).Numerate();
+            {
+                var test = Formula.Parse("5[kgf] + 5[N]");
+                var targetUnit = new Unit("kN");
+                var actual = target.Do(test, targetUnit).Numerate();
 
-            var expected = Formula.Parse("0.04903325[kN] + 0.005[kN]");
+                var expected = Formula.Parse("0.04903325[kN] + 0.005[kN]");
 
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
+            {
+                var test = Formula.Parse("-17.78[degC]"); // ファーレンハイトの寒剤(wikipediaより)
+
+                Assert.AreEqual(Formula.Parse("255.37[K]"), target.Do(test, new Unit("K")).Numerate());
+                Assert.AreEqual(Formula.Parse("-17.78[degC]"), target.Do(test, new Unit("degC")).Numerate());
+                Assert.AreEqual(Formula.Parse("-0.004[degF]"), target.Do(test, new Unit("degF")).Numerate());
+                Assert.AreEqual(Formula.Parse("459.666[degR]"), target.Do(test, new Unit("degR")).Numerate());
+                Assert.AreEqual(Formula.Parse("176.67[degD]"), target.Do(test, new Unit("degD")).Numerate());
+                Assert.AreEqual(Formula.Parse("-5.8674[degN]"), target.Do(test, new Unit("degN")).Numerate());
+                Assert.AreEqual(Formula.Parse("-14.224[degRe]"), target.Do(test, new Unit("degRe")).Numerate());
+                Assert.AreEqual(Formula.Parse("-1.8345[degRo]"), target.Do(test, new Unit("degRo")).Numerate());
+            }
+            {
+                var test = Formula.Parse("10440[degR]"); // 太陽の表面温度
+
+                Assert.AreEqual(Formula.Parse("5800[K]"), target.Do(test, new Unit("K")).Numerate());
+                Assert.AreEqual(Formula.Parse("5526.85[degC]"), target.Do(test, new Unit("degC")).Numerate());
+                Assert.AreEqual(Formula.Parse("9980.33[degF]"), target.Do(test, new Unit("degF")).Numerate());
+                Assert.AreEqual(Formula.Parse("10440[degR]"), target.Do(test, new Unit("degR")).Numerate());
+                Assert.AreEqual(Formula.Parse("-8140.275[degD]"), target.Do(test, new Unit("degD")).Numerate());
+                Assert.AreEqual(Formula.Parse("1823.8605[degN]"), target.Do(test, new Unit("degN")).Numerate());
+                Assert.AreEqual(Formula.Parse("4421.48[degRe]"), target.Do(test, new Unit("degRe")).Numerate());
+                Assert.AreEqual(Formula.Parse("2909.09625[degRo]"), target.Do(test, new Unit("degRo")).Numerate());
+            }
+            {
+                // 加算式などの場合、換算加算値を考慮して変換してしまうと意味が変わってしまう可能性があるため、考慮せずに変換する
+                var test = Formula.Parse("0[degC] + 0[K]");
+
+                Assert.AreEqual(Formula.Parse("0[degC] + 0[degC]"), target.Do(test, new Unit("degC")).Numerate());
+            }
         }
     }
 }

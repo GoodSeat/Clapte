@@ -82,6 +82,38 @@ namespace GoodSeat.LiffomTestProject
                     energyTable.AddRecord(defineJRecord);
                     UnitConvertTable.AddTable(energyTable);
                 }
+                if (!ExistTableOf("temperature"))
+                {
+                    UnitConvertTable temperatureTable = new UnitConvertTable(new Unit("K"), "Temperature");
+                    UnitConvertRecord degCRecord = new UnitConvertRecord(new Unit("degC"), 1, "摂氏度");
+                    degCRecord.ConversionAddition = 27315E-2;
+                    temperatureTable.AddRecord(degCRecord);
+
+                    UnitConvertRecord degFRecord = new UnitConvertRecord(new Unit("degF"), Formula.Parse("5/9"), "華氏度");
+                    degFRecord.ConversionAddition = Formula.Parse("(229835E-2)/9");
+                    temperatureTable.AddRecord(degFRecord);
+
+                    UnitConvertRecord degRRecord = new UnitConvertRecord(new Unit("degR"), Formula.Parse("5/9"), "ランキン温度");
+                    temperatureTable.AddRecord(degRRecord);
+
+                    UnitConvertRecord degDRecord = new UnitConvertRecord(new Unit("degD"), Formula.Parse("-2/3"), "ドリール温度");
+                    degDRecord.ConversionAddition = Formula.Parse("37315E-2");
+                    temperatureTable.AddRecord(degDRecord);
+
+                    UnitConvertRecord degNRecord = new UnitConvertRecord(new Unit("degN"), Formula.Parse("100/33"), "ニュートン温度");
+                    degNRecord.ConversionAddition = Formula.Parse("27315E-2");
+                    temperatureTable.AddRecord(degNRecord);
+
+                    UnitConvertRecord degReRecord = new UnitConvertRecord(new Unit("degRe"), Formula.Parse("5/4"), "レオミュール温度");
+                    degReRecord.ConversionAddition = Formula.Parse("27315E-2");
+                    temperatureTable.AddRecord(degReRecord);
+
+                    UnitConvertRecord degRoRecord = new UnitConvertRecord(new Unit("degRo"), Formula.Parse("40/21"), "レーマー温度");
+                    degRoRecord.ConversionAddition = Formula.Parse("181205E-2/7");
+                    temperatureTable.AddRecord(degRoRecord);
+
+                    UnitConvertTable.AddTable(temperatureTable);
+                }
             }
         }
 
