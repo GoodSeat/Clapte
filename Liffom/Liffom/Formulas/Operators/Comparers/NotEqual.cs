@@ -40,6 +40,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Comparers
             Formula right = RightHandSide.DeformFormula(token);
             
             if (left != right) return Judge.True;
+            else if (left is Numeric && right is Numeric) return Judge.False;
             else return Judge.None;
         }
     }
