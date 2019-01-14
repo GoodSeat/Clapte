@@ -7,6 +7,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Matrices;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas.Constants;
 
 namespace GoodSeat.Liffom.Parse
 {
@@ -79,6 +80,11 @@ namespace GoodSeat.Liffom.Parse
                 {
                     Unit unit = new Unit(variable.Mark);
                     parsed = parsed.Substitute(variable, unit);
+                }
+                foreach (var constant in parsed.GetExistFactors<Constant>())
+                {
+                    Unit unit = new Unit(constant.DistinguishedName);
+                    parsed = parsed.Substitute(constant, unit);
                 }
             }
             parsed.Format.SetProperty(Bracket.SquareBracket);
