@@ -186,7 +186,7 @@
             "全ての記号を認識",
             "登録単位のみ認識",
             "[ ]で囲われた部分のみ認識"});
-            this._cmbDetectUnitMode.Location = new System.Drawing.Point(203, 71);
+            this._cmbDetectUnitMode.Location = new System.Drawing.Point(206, 45);
             this._cmbDetectUnitMode.Name = "_cmbDetectUnitMode";
             this._cmbDetectUnitMode.Size = new System.Drawing.Size(163, 20);
             this._cmbDetectUnitMode.TabIndex = 10;
@@ -197,7 +197,7 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(22, 74);
+            this.label1.Location = new System.Drawing.Point(22, 51);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(111, 12);
             this.label1.TabIndex = 9;
@@ -242,7 +242,7 @@
             // _labelMaxUnitLength
             // 
             this._labelMaxUnitLength.AutoSize = true;
-            this._labelMaxUnitLength.Location = new System.Drawing.Point(21, 48);
+            this._labelMaxUnitLength.Location = new System.Drawing.Point(96, 75);
             this._labelMaxUnitLength.Name = "_labelMaxUnitLength";
             this._labelMaxUnitLength.Size = new System.Drawing.Size(170, 12);
             this._labelMaxUnitLength.TabIndex = 5;
@@ -260,7 +260,7 @@
             this._numMaxUnitLength.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numMaxUnitLength.EnableUpDown = false;
             this._numMaxUnitLength.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numMaxUnitLength.Location = new System.Drawing.Point(207, 43);
+            this._numMaxUnitLength.Location = new System.Drawing.Point(282, 70);
             this._numMaxUnitLength.Maximum = new decimal(new int[] {
             20,
             0,
