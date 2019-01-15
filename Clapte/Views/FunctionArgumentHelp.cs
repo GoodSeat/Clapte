@@ -39,6 +39,7 @@ namespace GoodSeat.Clapte.Views
 
             azuki.FontChanged += new EventHandler(azuki_FontChanged);
             azuki.CaretMoved += new EventHandler(azuki_CaretMoved);
+            azuki.KeyDown += new KeyEventHandler(azuki_KeyDown);
 
             AutoShow = true;
         }
@@ -64,6 +65,11 @@ namespace GoodSeat.Clapte.Views
         RichTextBox HelpBox { get; set; }
 
         /// <summary>
+        /// 最後に明示的に表示をキャンセルされた関数名を設定若しくは取得します。
+        /// </summary>
+        private string ExplicitHideFunctionName { get; set; }
+
+        /// <summary>
         /// 入力補助の候補列挙オブジェクトを設定もしくは取得します。
         /// </summary>
         IInputSupportEnumerator InputSupportEnumerator { get; set; }
@@ -80,7 +86,27 @@ namespace GoodSeat.Clapte.Views
 
         void azuki_CaretMoved(object sender, EventArgs e)
         {
-            if (AutoShow || HelpBox.Visible) ShowArgumentHelp();
+            if (AutoShow || HelpBox.Visible)
+            {
+                if (ExplicitHideFunctionName != null)
+                {
+                    int startIndex, argIndex;
+                    var targetFunctionName = Azuki.GetCurrentFunctionName(out startIndex, out argIndex);
+                    if (targetFunctionName == ExplicitHideFunctionName) return;
+                }
+
+                ShowArgumentHelp();
+            }
+        }
+
+        private void azuki_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape)
+            {
+                HelpBox.Visible = false;
+                int startIndex, argIndex;
+                ExplicitHideFunctionName = Azuki.GetCurrentFunctionName(out startIndex, out argIndex);
+            }
         }
 
         /// <summary>
@@ -88,6 +114,7 @@ namespace GoodSeat.Clapte.Views
         /// </summary>
         public void ShowArgumentHelp()
         {
+            ExplicitHideFunctionName = null;
             HelpBox.Visible = false;
 
             int startIndex, argIndex;
@@ -144,6 +171,7 @@ namespace GoodSeat.Clapte.Views
         {
             Azuki.FontChanged -= new EventHandler(azuki_FontChanged);
             Azuki.CaretMoved -= new EventHandler(azuki_CaretMoved);
+            Azuki.KeyDown -= new KeyEventHandler(azuki_KeyDown);
         }
     }
 }
