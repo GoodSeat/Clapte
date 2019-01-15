@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas.Units.Rules;
 
 namespace GoodSeat.LiffomTestProject
 {
@@ -76,13 +77,23 @@ namespace GoodSeat.LiffomTestProject
             UnitConvertTableTest.RegistBasicUnitRecord();
 
             ConvertToTargetUnit target = new ConvertToTargetUnit(true);
-            var test = Formula.Parse("5[kgf] + 5[N]");
-            var targetUnit = new Unit("kN");
-            var actual = target.Do(test, targetUnit).Numerate();
+            {
+                var test = Formula.Parse("5[kgf] + 5[N]");
+                var targetUnit = new Unit("kN");
+                var actual = target.Do(test, targetUnit).Numerate();
 
-            var expected = Formula.Parse("0.04903325[kN] + 0.005[kN]");
+                var expected = Formula.Parse("0.04903325[kN] + 0.005[kN]");
 
-            Assert.AreEqual(expected, actual);
+                Assert.AreEqual(expected, actual);
+            }
+            {
+                var test = Formula.Parse("1[kn] * 1[h] + 1[m]"); // 1kn = 1852m/h なので、1853mになるはず
+                Assert.AreEqual("(1853/1852)[h･kn]", test.Simplify().ToString());
+            }
+            {
+                var test = Formula.Parse("1[m] +1 [kn] * 1[h]"); // 1kn = 1852m/h なので、1853mになるはず
+                Assert.AreEqual("1853[m]", test.Simplify().ToString());
+            }
         }
     }
 }
