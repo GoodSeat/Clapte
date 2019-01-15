@@ -3,6 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Liffom.Formulas.Units.Rules;
 
 namespace GoodSeat.LiffomTestProject
 {
@@ -114,6 +115,14 @@ namespace GoodSeat.LiffomTestProject
                 var test = Formula.Parse("0[degC] + 0[K]");
 
                 Assert.AreEqual(Formula.Parse("0[degC] + 0[degC]"), target.Do(test, new Unit("degC")).Numerate());
+            }
+            {
+                var test = Formula.Parse("1[kn] * 1[h] + 1[m]"); // 1kn = 1852m/h なので、1853mになるはず
+                Assert.AreEqual("(1853/1852)[h･kn]", test.Simplify().ToString());
+            }
+            {
+                var test = Formula.Parse("1[m] +1 [kn] * 1[h]"); // 1kn = 1852m/h なので、1853mになるはず
+                Assert.AreEqual("1853[m]", test.Simplify().ToString());
             }
         }
     }

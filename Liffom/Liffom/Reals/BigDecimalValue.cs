@@ -139,7 +139,7 @@ namespace GoodSeat.Liffom.Reals
         /// <summary>
         /// 計算における精度向上のため、保持する内部数値においてMaxValidDigitsに加えて余分に保持している桁数を取得します。
         /// </summary>
-        public override int AdditinalDigit { get { return Math.Max(MaxValidDigits / 2, 4); } }
+        public override int AdditinalDigit { get { return Math.Max(MaxValidDigits / 2, 10); } }
 
         /// <summary>
         /// このインスタンスの型で考慮可能な最大数値の正規化時の指数を取得します。

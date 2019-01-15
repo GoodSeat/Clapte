@@ -110,7 +110,9 @@ namespace GoodSeat.Liffom.Processes
             if (!ConvertSuccessed) ReplicateMinmumMemento();
 
             Formula molecular   = _modifyMolecular   * _modifyTo   * new Product(_fromMolecular.ToArray())   * new Product(_toDenominator.ToArray()) ;
-            Formula denominator = _modifyDenominator / _modifyFrom * new Product(_fromDenominator.ToArray()) * new Product(_toMolecular.ToArray());
+            Formula denominator = _modifyDenominator * _modifyFrom * new Product(_fromDenominator.ToArray()) * new Product(_toMolecular.ToArray());
+            molecular   = molecular.Simplify();
+            denominator = denominator.Simplify();
             return (molecular / denominator).Simplify();
         }
 
@@ -224,7 +226,7 @@ namespace GoodSeat.Liffom.Processes
         /// </summary>
         private void RenewModifyCoefficients()
         {
-            _modifyFrom        *= GetModifyToLowestTerms  (ref _fromMolecular,   ref _fromDenominator); // 変換元の分母分子約分補正係数
+            _modifyFrom        /= GetModifyToLowestTerms  (ref _fromMolecular,   ref _fromDenominator); // 変換元の分母分子約分補正係数
             _modifyTo          /= GetModifyToLowestTerms  (ref _toMolecular,     ref _toDenominator);   // 変換先の分母分子約分補正係数
             _modifyMolecular   *= GetModifyBetweenUnitList(ref _fromMolecular,   ref _toMolecular);     // 分子同士の約分補正係数
             _modifyDenominator *= GetModifyBetweenUnitList(ref _fromDenominator, ref _toDenominator);   // 分母同士の約分補正係数
