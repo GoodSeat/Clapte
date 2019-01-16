@@ -117,6 +117,9 @@ namespace GoodSeat.LiffomTestProject
             // 単項演算子のテスト
             AddParseTestCase(target, "a = -3.2 - 2", new Equal(new Variable("a"), new Sum(-3.2, -2)));
 
+            // 階乗のテスト
+            AddParseTestCase(target, "5! = a!", new Equal(new Factorial(5), new Factorial(new Variable("a"))));
+
             // 空テスト
             AddParseTestCase(target, "5 m+5 cm", new Product(5, new Variable("m")) + new Product(5, new Variable("cm")));
             // 単位読込を有効化
