@@ -326,12 +326,15 @@ namespace GoodSeat.Clapte.ViewModels
         static public FormulaParser CreateFormulaParser(bool parseAbsPunctuation, bool permitOmitPowerMark, bool permitOmitProductMark, bool parseFactorial)
         {
             var parser = new FormulaParser();
+
+            var productOperatorParser = new ProductOperatorParser();
+
             parser.Lexers.Add(new NumericLexer()); // 数値
             parser.Lexers.Add(new ParenthesesLexer()); // 丸括弧
             parser.Lexers.Add(new BracketLexer(true, true)); // 角括弧
             parser.Lexers.Add(new BraceLexer()); // 波括弧
             if (parseAbsPunctuation) parser.Lexers.Add(new AbsolutePunctuationLexer()); // 絶対値記号
-            parser.Lexers.Add(new SpaceLexer()); // 空白トークン
+            parser.Lexers.Add(new SpaceLexer(productOperatorParser)); // 空白トークン
             parser.Lexers.Add(new FunctionLexer(parser, true)); // 関数
             parser.Lexers.Add(new ConstantLexer(true)); // 定数
             parser.Lexers.Add(new VariableLexer(parser, false)); // 変数
@@ -342,7 +345,7 @@ namespace GoodSeat.Clapte.ViewModels
             parser.AddOperatorParsers(new PlusMinusOperatorParser()); // 正負記号
             if (permitOmitProductMark) parser.AddOperatorParsers(new AbbreviatedProductOperatorParser()); // 積算記号の省略を許可(通常の積算より優先度を上げる)
             parser.AddOperatorParsers(new ProductOfMatrixOperatorParser()); // 行列の乗算
-            parser.AddOperatorParsers(new ProductOperatorParser()); // 乗算・除算
+            parser.AddOperatorParsers(productOperatorParser); // 乗算・除算
             parser.AddOperatorParsers(new SumOperatorParser()); // 和算・減算
             if (parseFactorial) parser.AddOperatorParsers(new FactorialOperatorParser()); // 階乗記号(!)
             parser.AddOperatorParsers(new ComparerOperatorParser()); // 比較演算子
