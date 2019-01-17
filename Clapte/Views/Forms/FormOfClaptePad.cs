@@ -709,8 +709,11 @@ namespace GoodSeat.Clapte.Views.Forms
 
             Point position = textBox.PointToClient(Cursor.Position);
             position.Offset(0, textBox.View.LineHeight);
+
+            position.X += _inputTextBox.PointToClient(Cursor.Position).X - textBox.PointToClient(Cursor.Position).X;
+
             _toolTipHelp.Tag = helpText;
-            _toolTipHelp.Show(helpText, textBox, position, 5000);
+            _toolTipHelp.Show(helpText, _inputTextBox, position, 5000);
         }
 
         private void _btnSave_Click(object sender, EventArgs e)
