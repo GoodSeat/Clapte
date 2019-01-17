@@ -57,9 +57,9 @@ namespace GoodSeat.Clapte.Views.Forms
 
             InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
             Support = new InputSupport(_inputTextBox, this, InputSupportEnumerator);
-            Support.ModifyLocation = _splitContainer.Location;
+            Support.ModifyLocation = _splitContainerAll.Location;
             ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, this, InputSupportEnumerator);
-            ArgumentHelper.ModifyLocation = _splitContainer.Location;
+            ArgumentHelper.ModifyLocation = _splitContainerAll.Location;
 
             AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
 
@@ -538,6 +538,47 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
+        /// <summary>
+        /// 現在のキャレット位置に基づいて、変形履歴ビューを更新します。
+        /// </summary>
+        void UpdateTreeViewOfDeformHistory()
+        {
+            if (!_menuVisibleDeformHistory.Checked)
+            {
+                _treeViewHistory.Nodes.Clear();
+                return;
+            }
+
+            int line, column;
+            var textBox = _resultTextBox.Focused ? _resultTextBox : _inputTextBox;
+            textBox.Document.GetCaretIndex(out line, out column);
+
+            if (Target.Count() <= line)
+            {
+                _treeViewHistory.Nodes.Clear();
+                return;
+            }
+
+            var cell = Target.ElementAt(line);
+            var history = cell.Target.Content.DeformHistory;
+            if (history == null)
+            {
+                _treeViewHistory.Nodes.Clear();
+                return;
+            }
+
+            if (_treeViewHistory.Nodes.Count != 0)
+            {
+                var historyCurrent = _treeViewHistory.Nodes[0].Tag;
+                if (history == historyCurrent) return;
+            }
+            _treeViewHistory.Nodes.Clear();
+
+            foreach (var n in CreateTreeNodeOfDeformHistories(history))
+            {
+                _treeViewHistory.Nodes.Add(n);
+            }
+        }
 
         /// <summary>
         /// 指定数式変形履歴を表すツリーノードを生成して取得します。
@@ -548,24 +589,28 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             foreach (var historyNode in history)
             {
-                string text = historyNode.FormulaText;
-                if (historyNode.AppliedRule != null) text += " : " + historyNode.AppliedRule.Information;
+                if (historyNode.AppliedRule != null)
+                {
+                    var treeNodeApplied = new TreeNode(" ↓ " + historyNode.AppliedRule.Information);
+                    treeNodeApplied.Tag = historyNode.AppliedRule;
+                    treeNodeApplied.ForeColor = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment);
+                    yield return treeNodeApplied;
+                }
 
-                var treeNode = new TreeNode(text);
+                var treeNode = new TreeNode(historyNode.FormulaText);
                 if (historyNode.AppliedRule == null) treeNode.Tag = history;
                 else treeNode.Tag = historyNode;
 
                 bool anyHasHistory = false;
                 foreach (var historyChild in historyNode.ChildrenHistories)
                 {
+                    if (historyChild.Count() < 2) continue;
+                    anyHasHistory = true;
+
                     var treeNodeChild = new TreeNode(historyChild.ElementAt(0).FormulaText);
-                    if (historyChild.Count() > 1)
+                    foreach (var n in CreateTreeNodeOfDeformHistories(historyChild))
                     {
-                        anyHasHistory = true;
-                        foreach (var n in CreateTreeNodeOfDeformHistories(historyChild))
-                        {
-                            treeNodeChild.Nodes.Add(n);
-                        }
+                        treeNodeChild.Nodes.Add(n);
                     }
                     treeNode.Nodes.Add(treeNodeChild);
                 }
@@ -618,6 +663,8 @@ namespace GoodSeat.Clapte.Views.Forms
 
             Highlighter.Renew(_inputTextBox.Text);
             _inputTextBox.Refresh(); // Markの表示のため
+
+            UpdateTreeViewOfDeformHistory();
         }
 
         /// <summary>
@@ -660,6 +707,8 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             if (sender == _inputTextBox) _resultTextBox.Font = _inputTextBox.Font;
             else _inputTextBox.Font = _resultTextBox.Font;
+
+            _treeViewHistory.Font = _inputTextBox.Font;
         }
 
         private void _inputTextBox_VScroll(object sender, EventArgs e)
@@ -691,28 +740,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.Document.GetCaretIndex(out line, out column);
             InputSupportEnumerator.CurrentCaretLineNumber = line;
 
-            if (Target.Count() <= line) return;
-
-            var cell = Target.ElementAt(line);
-            var history = cell.Target.Content.DeformHistory;
-            if (history == null)
-            {
-                _treeViewHistory.Nodes.Clear();
-            }
-            else
-            {
-                if (_treeViewHistory.Nodes.Count != 0)
-                {
-                    var historyCurrent = _treeViewHistory.Nodes[0].Tag;
-                    if (history == historyCurrent) return;
-                }
-                _treeViewHistory.Nodes.Clear();
-
-                foreach (var n in CreateTreeNodeOfDeformHistories(history))
-                {
-                    _treeViewHistory.Nodes.Add(n);
-                }
-            }
+            UpdateTreeViewOfDeformHistory();
         }
 
         private void _inputTextBox_MouseMove(object sender, MouseEventArgs e)
@@ -816,6 +844,17 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuDelete.Enabled = _inputTextBox.CanCut;
 
             _menuSolveSimultaneousEquation.Enabled = _inputTextBox.GetSelectedText().Contains("\n");
+
+            if (_splitContainerAll.Panel2.Height < 5)
+            {
+                _menuVisibleDeformHistory.Checked = false;
+                _menuVisibleDeformHistoryResult.Checked = false;
+            }
+            else if (!_splitContainerAll.Panel2Collapsed)
+            {
+                _menuVisibleDeformHistory.Checked = true;
+                _menuVisibleDeformHistoryResult.Checked = true;
+            }
 
             try
             {
@@ -973,6 +1012,28 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
                 _contextMenuEdit.Hide();
+            }
+        }
+
+        private void _menuVisibleDeformHistory_Click(object sender, EventArgs e)
+        {
+            _menuVisibleDeformHistory.Checked = !_menuVisibleDeformHistory.Checked;
+            _splitContainerAll.Panel2Collapsed = !_menuVisibleDeformHistory.Checked;
+
+            if (!_splitContainerAll.Panel2Collapsed)
+            {
+                var height = _splitContainerAll.Height;
+                if (_splitContainerAll.Panel2.Height < height / 4) _splitContainerAll.SplitterDistance = height * 3 / 4;
+
+                var textBox = _resultTextBox.Focused ? _resultTextBox : _inputTextBox;
+                if (textBox.Focused) textBox.ScrollToCaret();
+            }
+
+            _menuVisibleDeformHistoryResult.Checked = _menuVisibleDeformHistory.Checked;
+
+            if (_menuVisibleDeformHistoryResult.Checked)
+            {
+                UpdateTreeViewOfDeformHistory();
             }
         }
 
