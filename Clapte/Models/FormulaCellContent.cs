@@ -160,6 +160,11 @@ namespace GoodSeat.Clapte.Models
         public string ResultText { get; set; }
 
         /// <summary>
+        /// 数式評価で行なわれた数式変形の履歴を取得します。
+        /// </summary>
+        public Liffom.Deforms.DeformHistory DeformHistory { get; private set; }
+
+        /// <summary>
         /// 評価済み結果の概要レベルを取得します。
         /// </summary>
         public Result.Level? ResultLevel { get; private set; }
@@ -367,6 +372,8 @@ namespace GoodSeat.Clapte.Models
             try
             {
                 var result = OnEvaluate(solver);
+                DeformHistory = solver.GetProcessOf<CalculateFormulaProcess>().LastCalculateHistory;
+
                 ResultText = result.ResultText;
                 ResultLevel = result.ResultLevel;
                 if (result.ResultLevel != Result.Level.Success) ResultText = "!!! " + ResultText.Replace("\n", " ").Replace("\r", "");

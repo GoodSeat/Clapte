@@ -41,6 +41,11 @@ namespace GoodSeat.Clapte.Solvers.Processes
         public double MaxTime { get; set; }
 
         /// <summary>
+        /// 最後の計算における数式の変形履歴を取得します。
+        /// </summary>
+        public DeformHistory LastCalculateHistory { get; private set; }
+
+        /// <summary>
         /// 計算対象となった入力数式を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力数式。</param>
@@ -52,10 +57,14 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
             try
             {
-                DeformHistory history;
+                LastCalculateHistory = null;
+
+                DeformHistory history = null;
                 Formula result = input;
                 for (int i = 0; i < Tokens.Count; i++)
                     result = result.DeformFormula(Tokens[i], out history);
+
+                LastCalculateHistory = history;
 
                 input = result;
                 return null;

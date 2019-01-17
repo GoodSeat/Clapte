@@ -17,6 +17,7 @@ using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
 using System.Text.RegularExpressions;
+using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -537,6 +538,43 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
+
+        /// <summary>
+        /// 指定数式変形履歴を表すツリーノードを生成して取得します。
+        /// </summary>
+        /// <param name="history">対象とする数式変形履歴。</param>
+        /// <returns>指定数式変形履歴を表すツリーノード。</returns>
+        IEnumerable<TreeNode> CreateTreeNodeOfDeformHistories(DeformHistory history)
+        {
+            foreach (var historyNode in history)
+            {
+                string text = historyNode.FormulaText;
+                if (historyNode.AppliedRule != null) text += " : " + historyNode.AppliedRule.Information;
+
+                var treeNode = new TreeNode(text);
+                if (historyNode.AppliedRule == null) treeNode.Tag = history;
+                else treeNode.Tag = historyNode;
+
+                bool anyHasHistory = false;
+                foreach (var historyChild in historyNode.ChildrenHistories)
+                {
+                    var treeNodeChild = new TreeNode(historyChild.ElementAt(0).FormulaText);
+                    if (historyChild.Count() > 1)
+                    {
+                        anyHasHistory = true;
+                        foreach (var n in CreateTreeNodeOfDeformHistories(historyChild))
+                        {
+                            treeNodeChild.Nodes.Add(n);
+                        }
+                    }
+                    treeNode.Nodes.Add(treeNodeChild);
+                }
+                if (!anyHasHistory) treeNode.Nodes.Clear();
+
+                yield return treeNode;
+            }
+        }
+
         #endregion
 
         #region イベント対応
@@ -652,6 +690,29 @@ namespace GoodSeat.Clapte.Views.Forms
             int line, column;
             _inputTextBox.Document.GetCaretIndex(out line, out column);
             InputSupportEnumerator.CurrentCaretLineNumber = line;
+
+            if (Target.Count() <= line) return;
+
+            var cell = Target.ElementAt(line);
+            var history = cell.Target.Content.DeformHistory;
+            if (history == null)
+            {
+                _treeViewHistory.Nodes.Clear();
+            }
+            else
+            {
+                if (_treeViewHistory.Nodes.Count != 0)
+                {
+                    var historyCurrent = _treeViewHistory.Nodes[0].Tag;
+                    if (history == historyCurrent) return;
+                }
+                _treeViewHistory.Nodes.Clear();
+
+                foreach (var n in CreateTreeNodeOfDeformHistories(history))
+                {
+                    _treeViewHistory.Nodes.Add(n);
+                }
+            }
         }
 
         private void _inputTextBox_MouseMove(object sender, MouseEventArgs e)

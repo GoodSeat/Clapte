@@ -64,6 +64,7 @@
             this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._btnAllDelete = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._treeViewHistory = new System.Windows.Forms.TreeView();
             this._resultTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuResult = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._menuCopyResult = new System.Windows.Forms.ToolStripMenuItem();
@@ -81,6 +82,7 @@
             this._saveFileDialog = new System.Windows.Forms.SaveFileDialog();
             this._btnSetting = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnMinimize = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._splitContainerAll = new System.Windows.Forms.SplitContainer();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -94,6 +96,10 @@
             ((System.ComponentModel.ISupportInitialize)(this._btnSave)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnSetting)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnMinimize)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._splitContainerAll)).BeginInit();
+            this._splitContainerAll.Panel1.SuspendLayout();
+            this._splitContainerAll.Panel2.SuspendLayout();
+            this._splitContainerAll.SuspendLayout();
             this.SuspendLayout();
             // 
             // _inputTextBox
@@ -122,7 +128,7 @@
             this._inputTextBox.ShowsHScrollBar = false;
             this._inputTextBox.ShowsLineNumber = false;
             this._inputTextBox.ShowsVScrollBar = false;
-            this._inputTextBox.Size = new System.Drawing.Size(432, 444);
+            this._inputTextBox.Size = new System.Drawing.Size(432, 296);
             this._inputTextBox.TabIndex = 16;
             this._inputTextBox.ViewWidth = 4097;
             this._inputTextBox.CaretMoved += new System.EventHandler(this._inputTextBox_CaretMoved);
@@ -157,7 +163,7 @@
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(204, 414);
+            this._contextMenuEdit.Size = new System.Drawing.Size(204, 392);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
@@ -368,10 +374,8 @@
             // 
             // _splitContainer
             // 
-            this._splitContainer.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
-            | System.Windows.Forms.AnchorStyles.Left) 
-            | System.Windows.Forms.AnchorStyles.Right)));
-            this._splitContainer.Location = new System.Drawing.Point(9, 30);
+            this._splitContainer.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._splitContainer.Location = new System.Drawing.Point(0, 0);
             this._splitContainer.Name = "_splitContainer";
             // 
             // _splitContainer.Panel1
@@ -382,7 +386,7 @@
             // _splitContainer.Panel2
             // 
             this._splitContainer.Panel2.Controls.Add(this._resultTextBox);
-            this._splitContainer.Size = new System.Drawing.Size(682, 444);
+            this._splitContainer.Size = new System.Drawing.Size(683, 296);
             this._splitContainer.SplitterDistance = 432;
             this._splitContainer.TabIndex = 17;
             // 
@@ -404,6 +408,16 @@
             this._toolTipHelp.SetToolTip(this._btnAllDelete, "テキストを全削除");
             this._btnAllDelete.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
             this._btnAllDelete.Click += new System.EventHandler(this._btnAllDelete_Click);
+            // 
+            // _treeViewHistory
+            // 
+            this._treeViewHistory.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this._treeViewHistory.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._treeViewHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._treeViewHistory.Location = new System.Drawing.Point(0, 0);
+            this._treeViewHistory.Name = "_treeViewHistory";
+            this._treeViewHistory.Size = new System.Drawing.Size(683, 133);
+            this._treeViewHistory.TabIndex = 23;
             // 
             // _resultTextBox
             // 
@@ -431,7 +445,7 @@
             this._resultTextBox.ShowsDirtBar = false;
             this._resultTextBox.ShowsHScrollBar = false;
             this._resultTextBox.ShowsLineNumber = false;
-            this._resultTextBox.Size = new System.Drawing.Size(246, 444);
+            this._resultTextBox.Size = new System.Drawing.Size(247, 296);
             this._resultTextBox.TabIndex = 17;
             this._resultTextBox.ViewWidth = 4097;
             this._resultTextBox.VScroll += new System.EventHandler(this._resultTextBox_VScroll);
@@ -613,18 +627,38 @@
             this._btnMinimize.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Sub_Unfocus;
             this._btnMinimize.Click += new System.EventHandler(this._btnMinimize_Click);
             // 
+            // _splitContainerAll
+            // 
+            this._splitContainerAll.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._splitContainerAll.Location = new System.Drawing.Point(10, 39);
+            this._splitContainerAll.Name = "_splitContainerAll";
+            this._splitContainerAll.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // _splitContainerAll.Panel1
+            // 
+            this._splitContainerAll.Panel1.Controls.Add(this._splitContainer);
+            // 
+            // _splitContainerAll.Panel2
+            // 
+            this._splitContainerAll.Panel2.Controls.Add(this._treeViewHistory);
+            this._splitContainerAll.Size = new System.Drawing.Size(683, 433);
+            this._splitContainerAll.SplitterDistance = 296;
+            this._splitContainerAll.TabIndex = 24;
+            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(700, 480);
+            this.Controls.Add(this._splitContainerAll);
             this.Controls.Add(this._btnMinimize);
             this.Controls.Add(this._btnSetting);
             this.Controls.Add(this._picStatus);
             this.Controls.Add(this._btnAbort);
             this.Controls.Add(this._btnLoad);
             this.Controls.Add(this._btnSave);
-            this.Controls.Add(this._splitContainer);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "FormOfClaptePad";
             this.ShowCancelButton = true;
@@ -633,13 +667,13 @@
             this.Text = "";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.FormOfClaptePad_FormClosing);
             this.Resize += new System.EventHandler(this.FormOfClaptePad_Resize);
-            this.Controls.SetChildIndex(this._splitContainer, 0);
             this.Controls.SetChildIndex(this._btnSave, 0);
             this.Controls.SetChildIndex(this._btnLoad, 0);
             this.Controls.SetChildIndex(this._btnAbort, 0);
             this.Controls.SetChildIndex(this._picStatus, 0);
             this.Controls.SetChildIndex(this._btnSetting, 0);
             this.Controls.SetChildIndex(this._btnMinimize, 0);
+            this.Controls.SetChildIndex(this._splitContainerAll, 0);
             this._contextMenuEdit.ResumeLayout(false);
             this._splitContainer.Panel1.ResumeLayout(false);
             this._splitContainer.Panel2.ResumeLayout(false);
@@ -653,6 +687,10 @@
             ((System.ComponentModel.ISupportInitialize)(this._btnSave)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnSetting)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnMinimize)).EndInit();
+            this._splitContainerAll.Panel1.ResumeLayout(false);
+            this._splitContainerAll.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._splitContainerAll)).EndInit();
+            this._splitContainerAll.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -709,5 +747,7 @@
         private System.Windows.Forms.ToolStripMenuItem _menuFactorize;
         private System.Windows.Forms.ToolStripMenuItem _menuConvertUnit;
         private System.Windows.Forms.ToolStripTextBox _txtBoxTargetUnit;
+        private System.Windows.Forms.TreeView _treeViewHistory;
+        private System.Windows.Forms.SplitContainer _splitContainerAll;
     }
 }
