@@ -656,7 +656,7 @@ namespace GoodSeat.Liffom.Reals
         /// </remarks>
         public static Value Power(Value x, Value y, int validDigits)
         {
-            if (x == 0d) return x.CreateFrom(0);
+            if (x == 0d && y > 0d) return x.CreateFrom(0);
             if (y % 1d == 0d) return Power(x, (int)y);
 
             if (x.Exponent != 0 && x != 10) // (x * 1En)^y -> x^y * 10^(y*n)
