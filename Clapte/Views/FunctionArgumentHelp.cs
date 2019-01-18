@@ -103,7 +103,7 @@ namespace GoodSeat.Clapte.Views
         {
             if (e.KeyCode == Keys.Escape)
             {
-                HelpBox.Visible = false;
+                Hide();
                 int startIndex, argIndex;
                 ExplicitHideFunctionName = Azuki.GetCurrentFunctionName(out startIndex, out argIndex);
             }
@@ -155,6 +155,14 @@ namespace GoodSeat.Clapte.Views
             HelpBox.BringToFront();
 
             SetHelpBoxPosition(startIndex);
+        }
+
+        /// <summary>
+        /// 関数の引数ヘルプを非表示にします。
+        /// </summary>
+        public void Hide()
+        {
+            HelpBox.Visible = false;
         }
 
         private void SetHelpBoxPosition(int index)

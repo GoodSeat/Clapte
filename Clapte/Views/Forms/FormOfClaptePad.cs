@@ -628,6 +628,9 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             _resultTextBox.View.ScrollPos = _inputTextBox.View.ScrollPos;
             _resultTextBox.UpdateScrollBarRange();
+
+            ArgumentHelper.Hide();
+            Support.EscapeInputSupport();
         }
 
         private void _resultTextBox_VScroll(object sender, EventArgs e)
