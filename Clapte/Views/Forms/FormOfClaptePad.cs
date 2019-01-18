@@ -45,6 +45,9 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             InitializeComponent();
 
+            _treeViewHistory.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            _treeViewHistory.DrawNode += _treeViewHistory_DrawNode;
+
             ShowOKButton = false;
             ShowCancelButton = false;
 
@@ -587,6 +590,14 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <returns>指定数式変形履歴を表すツリーノード。</returns>
         IEnumerable<TreeNode> CreateTreeNodeOfDeformHistories(DeformHistory history)
         {
+            var format = Target.BaseSolver.Target.OutputFormat;
+
+            Func<Formula, string> toString = f =>
+            {
+                f.Format = format;
+                return f.ToString();
+            };
+
             foreach (var historyNode in history)
             {
                 if (historyNode.AppliedRule != null)
@@ -597,9 +608,11 @@ namespace GoodSeat.Clapte.Views.Forms
                     yield return treeNodeApplied;
                 }
 
-                var treeNode = new TreeNode(historyNode.FormulaText);
+                var treeNode = new TreeNode(toString(historyNode.Formula));
                 if (historyNode.AppliedRule == null) treeNode.Tag = history;
                 else treeNode.Tag = historyNode;
+
+                treeNode.ContextMenuStrip = _contextMenuHistoryNode;
 
                 bool anyHasHistory = false;
                 foreach (var historyChild in historyNode.ChildrenHistories)
@@ -607,11 +620,16 @@ namespace GoodSeat.Clapte.Views.Forms
                     if (historyChild.Count() < 2) continue;
                     anyHasHistory = true;
 
-                    var treeNodeChild = new TreeNode(historyChild.ElementAt(0).FormulaText);
+                    var text = "└ " + toString(historyChild.First().Formula) + " → " + toString(historyChild.Last().Formula);
+
+                    var treeNodeChild = new TreeNode(text);
+                    treeNodeChild.ForeColor = Color.Gray;
                     foreach (var n in CreateTreeNodeOfDeformHistories(historyChild))
                     {
                         treeNodeChild.Nodes.Add(n);
                     }
+                    treeNodeChild.Tag = historyChild;
+                    treeNodeChild.ContextMenuStrip = _contextMenuHistoryNode;
                     treeNode.Nodes.Add(treeNodeChild);
                 }
                 if (!anyHasHistory) treeNode.Nodes.Clear();
@@ -722,6 +740,29 @@ namespace GoodSeat.Clapte.Views.Forms
             if (IgnoreScroll) return;
             _inputTextBox.View.ScrollPos = _resultTextBox.View.ScrollPos;
             _inputTextBox.UpdateCaretGraphic();
+        }
+
+        private void _treeViewHistory_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            e.DrawDefault = ((e.State & TreeNodeStates.Selected) == 0);
+            if (e.DrawDefault) return;
+
+            Color backColor = e.Node.BackColor;
+            Color foreColor = e.Node.ForeColor;
+            if (backColor == Color.Empty) backColor = Color.LightGray;
+            if (foreColor == Color.Empty) foreColor = ((TreeView)sender).ForeColor;
+
+            var rect = e.Node.Bounds;
+            rect.Width = (int)(rect.Width * 1.1);
+            using (Brush b = new SolidBrush(backColor))
+            {
+                e.Graphics.FillRectangle(b, rect);
+            }
+            using (Brush b = new SolidBrush(foreColor))
+            {
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                e.Graphics.DrawString(e.Node.Text, e.Node.NodeFont ?? ((TreeView)sender).Font, b, rect);
+            }
         }
 
         private void FormOfClaptePad_FormClosing(object sender, FormClosingEventArgs e) { HotSave(); }
@@ -1034,6 +1075,25 @@ namespace GoodSeat.Clapte.Views.Forms
             if (_menuVisibleDeformHistoryResult.Checked)
             {
                 UpdateTreeViewOfDeformHistory();
+            }
+        }
+
+        private void _menuHideDeformHistory_Click(object sender, EventArgs e) { _splitContainerAll.Panel2Collapsed = true; }
+
+        private void _menuExpandHistory_Click(object sender, EventArgs e) { _treeViewHistory.ExpandAll(); }
+
+        private void _menuFoldHistory_Click(object sender, EventArgs e) { _treeViewHistory.CollapseAll(); }
+
+        private void _menuCopyFormulaInHistory_Click(object sender, EventArgs e)
+        {
+            var tag = _treeViewHistory.SelectedNode?.Tag;
+            if (tag is DeformHistory)
+            {
+                Clipboard.SetText((tag as DeformHistory).First().FormulaText);
+            }
+            else if (tag is DeformHistoryNode)
+            {
+                Clipboard.SetText((tag as DeformHistoryNode).FormulaText);
             }
         }
 

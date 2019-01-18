@@ -85,6 +85,13 @@
             this._splitContainerAll = new System.Windows.Forms.SplitContainer();
             this._menuVisibleDeformHistory = new System.Windows.Forms.ToolStripMenuItem();
             this._menuVisibleDeformHistoryResult = new System.Windows.Forms.ToolStripMenuItem();
+            this._contextMenuHistory = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._menuHideDeformHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuExpandHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuFoldHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator9 = new System.Windows.Forms.ToolStripSeparator();
+            this._contextMenuHistoryNode = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._menuCopyFormulaInHistory = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -102,6 +109,8 @@
             this._splitContainerAll.Panel1.SuspendLayout();
             this._splitContainerAll.Panel2.SuspendLayout();
             this._splitContainerAll.SuspendLayout();
+            this._contextMenuHistory.SuspendLayout();
+            this._contextMenuHistoryNode.SuspendLayout();
             this.SuspendLayout();
             // 
             // _inputTextBox
@@ -416,7 +425,9 @@
             // 
             this._treeViewHistory.BackColor = System.Drawing.Color.WhiteSmoke;
             this._treeViewHistory.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._treeViewHistory.ContextMenuStrip = this._contextMenuHistory;
             this._treeViewHistory.Dock = System.Windows.Forms.DockStyle.Fill;
+            this._treeViewHistory.HideSelection = false;
             this._treeViewHistory.Indent = 30;
             this._treeViewHistory.LineColor = System.Drawing.Color.Gray;
             this._treeViewHistory.Location = new System.Drawing.Point(0, 0);
@@ -671,6 +682,56 @@
             this._menuVisibleDeformHistoryResult.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistoryResult.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
             // 
+            // _contextMenuHistory
+            // 
+            this._contextMenuHistory.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._menuHideDeformHistory,
+            this.toolStripSeparator9,
+            this._menuExpandHistory,
+            this._menuFoldHistory});
+            this._contextMenuHistory.Name = "_contextMenuHistory";
+            this._contextMenuHistory.Size = new System.Drawing.Size(238, 76);
+            // 
+            // _menuHideDeformHistory
+            // 
+            this._menuHideDeformHistory.Name = "_menuHideDeformHistory";
+            this._menuHideDeformHistory.Size = new System.Drawing.Size(237, 22);
+            this._menuHideDeformHistory.Text = "計算過程を隠す(&H)";
+            this._menuHideDeformHistory.Click += new System.EventHandler(this._menuHideDeformHistory_Click);
+            // 
+            // _menuExpandHistory
+            // 
+            this._menuExpandHistory.Name = "_menuExpandHistory";
+            this._menuExpandHistory.Size = new System.Drawing.Size(237, 22);
+            this._menuExpandHistory.Text = "計算過程を全て展開(&E)";
+            this._menuExpandHistory.Click += new System.EventHandler(this._menuExpandHistory_Click);
+            // 
+            // _menuFoldHistory
+            // 
+            this._menuFoldHistory.Name = "_menuFoldHistory";
+            this._menuFoldHistory.Size = new System.Drawing.Size(237, 22);
+            this._menuFoldHistory.Text = "計算過程を全て折りたたむ(&F)";
+            this._menuFoldHistory.Click += new System.EventHandler(this._menuFoldHistory_Click);
+            // 
+            // toolStripSeparator9
+            // 
+            this.toolStripSeparator9.Name = "toolStripSeparator9";
+            this.toolStripSeparator9.Size = new System.Drawing.Size(234, 6);
+            // 
+            // _contextMenuHistoryNode
+            // 
+            this._contextMenuHistoryNode.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._menuCopyFormulaInHistory});
+            this._contextMenuHistoryNode.Name = "_contextMenuHistoryNode";
+            this._contextMenuHistoryNode.Size = new System.Drawing.Size(167, 26);
+            // 
+            // _menuCopyFormulaInHistory
+            // 
+            this._menuCopyFormulaInHistory.Name = "_menuCopyFormulaInHistory";
+            this._menuCopyFormulaInHistory.Size = new System.Drawing.Size(166, 22);
+            this._menuCopyFormulaInHistory.Text = "数式をコピー(&C)";
+            this._menuCopyFormulaInHistory.Click += new System.EventHandler(this._menuCopyFormulaInHistory_Click);
+            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -715,6 +776,8 @@
             this._splitContainerAll.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._splitContainerAll)).EndInit();
             this._splitContainerAll.ResumeLayout(false);
+            this._contextMenuHistory.ResumeLayout(false);
+            this._contextMenuHistoryNode.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -775,5 +838,12 @@
         private System.Windows.Forms.SplitContainer _splitContainerAll;
         private System.Windows.Forms.ToolStripMenuItem _menuVisibleDeformHistory;
         private System.Windows.Forms.ToolStripMenuItem _menuVisibleDeformHistoryResult;
+        private System.Windows.Forms.ContextMenuStrip _contextMenuHistory;
+        private System.Windows.Forms.ToolStripMenuItem _menuHideDeformHistory;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator9;
+        private System.Windows.Forms.ToolStripMenuItem _menuExpandHistory;
+        private System.Windows.Forms.ToolStripMenuItem _menuFoldHistory;
+        private System.Windows.Forms.ContextMenuStrip _contextMenuHistoryNode;
+        private System.Windows.Forms.ToolStripMenuItem _menuCopyFormulaInHistory;
     }
 }
