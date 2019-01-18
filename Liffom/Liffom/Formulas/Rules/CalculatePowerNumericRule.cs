@@ -62,12 +62,15 @@ namespace GoodSeat.Liffom.Formulas.Rules
             if (newRad > pi) newRad = new Numeric(newRad % (2 * pi));
             if (newRad < 0) newRad = (newRad + new Numeric(2 * pi)).Numerate() as Numeric;
 
+            var eps = new Numeric(5);
+            eps.Figure = eps.Figure * (eps.Figure.CreateFrom(10d) ^ (-1 * Numeric.MaxValidDigits));
+
             Numeric cos = new Numeric(newRad.Figure.Cos());
             Numeric sin = new Numeric(newRad.Figure.Sin());
-            if (Value.Abs(cos) < 5E-15 || Value.Abs(sin) == 1) cos = new Numeric(0);
-            if (Value.Abs(sin) < 5E-15 || Value.Abs(cos) == 1) sin = new Numeric(0);
-            cos = new Numeric(cos.Figure.Round(15)); 
-            sin = new Numeric(sin.Figure.Round(15)); 
+            if (Value.Abs(cos) < eps || Value.Abs(sin) == 1) cos = new Numeric(0);
+            if (Value.Abs(sin) < eps || Value.Abs(cos) == 1) sin = new Numeric(0);
+            cos = new Numeric(cos.Figure.Round(Numeric.MaxValidDigits)); 
+            sin = new Numeric(sin.Figure.Round(Numeric.MaxValidDigits)); 
 
             Numeric newReal = new Numeric(0);
             if (cos.Figure != 0) newReal = cos.Figure * newAbs.Figure;
