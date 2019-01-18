@@ -48,6 +48,9 @@ namespace GoodSeat.Clapte.Views.Forms
             _treeViewHistory.DrawMode = TreeViewDrawMode.OwnerDrawText;
             _treeViewHistory.DrawNode += _treeViewHistory_DrawNode;
 
+            _inputTextBox.LineDrawn += _inputTextBox_LineDrawn;
+            _resultTextBox.LineDrawn += _inputTextBox_LineDrawn;
+
             ShowOKButton = false;
             ShowCancelButton = false;
 
@@ -140,15 +143,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// キャレット位置に下線を表示するか否かを設定もしくは取得します。
         /// </summary>
-        public bool ShowUnderLine
-        {
-            get { return _inputTextBox.HighlightsCurrentLine; }
-            set
-            {
-                _inputTextBox.HighlightsCurrentLine = value;
-                _resultTextBox.HighlightsCurrentLine = value;
-            }
-        }
+        public bool ShowUnderLine { get; set; }
 
         /// <summary>
         /// 入力から計算までに遅延時間(ms)を設定もしくは取得します。
@@ -254,6 +249,8 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _resultTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
             _resultTextBox.ShowsHScrollBar = false;
+
+            ShowUnderLine = true;
 
             int parseErrorID = (int)FormulaCellContent.AdditionalInformationType.ParseError;
             Marking.Register(new MarkingInfo(parseErrorID, "構文解析エラー"));
@@ -680,9 +677,9 @@ namespace GoodSeat.Clapte.Views.Forms
             IgnoreScroll = false;
 
             Highlighter.Renew(_inputTextBox.Text);
-            _inputTextBox.Refresh(); // Markの表示のため
 
-            UpdateTreeViewOfDeformHistory();
+            _lastCaretLineIndex = -1; // _inputTextBox_CaretMovedメソッド内で、強制的に再描画(マーク描画のため)させるため
+            _inputTextBox_CaretMoved(_inputTextBox, EventArgs.Empty);
         }
 
         /// <summary>
@@ -775,6 +772,8 @@ namespace GoodSeat.Clapte.Views.Forms
             Target.NotifyChangeText(_inputTextBox.Text);
         }
 
+        int _lastCaretLineIndex;
+
         private void _inputTextBox_CaretMoved(object sender, EventArgs e)
         {
             int line, column;
@@ -782,6 +781,39 @@ namespace GoodSeat.Clapte.Views.Forms
             InputSupportEnumerator.CurrentCaretLineNumber = line;
 
             UpdateTreeViewOfDeformHistory();
+
+            bool refreshResult = false;
+            int lineOther;
+            _resultTextBox.Document.GetCaretIndex(out lineOther, out column);
+            if (line != lineOther)
+            {
+                if (line >= _resultTextBox.Document.LineCount) line = _resultTextBox.Document.LineCount - 1;
+                _resultTextBox.Document.SetCaretIndex(line, 0);
+                _resultTextBox.Refresh();
+                refreshResult = true;
+            }
+
+            if (line != _lastCaretLineIndex)
+            {
+                _inputTextBox.Refresh();
+                _lastCaretLineIndex = line;
+                if (!refreshResult) _resultTextBox.Refresh();
+            }
+        }
+
+        private void _resultTextBox_CaretMoved(object sender, EventArgs e)
+        {
+            if (IgnoreScroll) return;
+
+            int line, lineOther, column;
+            _resultTextBox.Document.GetCaretIndex(out line, out column);
+            _inputTextBox.Document.GetCaretIndex(out lineOther, out column);
+
+            if (line != lineOther)
+            {
+                if (line >= _inputTextBox.Document.LineCount) line = _inputTextBox.Document.LineCount - 1;
+                _inputTextBox.Document.SetCaretIndex(line, 0);
+            }
         }
 
         private void _inputTextBox_MouseMove(object sender, MouseEventArgs e)
@@ -871,6 +903,23 @@ namespace GoodSeat.Clapte.Views.Forms
         private void _picStatus_VisibleChanged(object sender, EventArgs e) { _btnAbort.Visible = _picStatus.Visible; }
 
         private void _btnMinimize_Click(object sender, EventArgs e) { WindowState = FormWindowState.Minimized; }
+
+        private void _inputTextBox_LineDrawn(object sender, LineDrawEventArgs e)
+        {
+            var textBox = (Sgry.Azuki.WinForms.AzukiControl)sender;
+
+            //現在行の背景描画
+            int caretIndex = textBox.CaretIndex;
+            int lineIndex = textBox.GetLineIndexFromCharIndex(caretIndex);
+            if (e.LineIndex == lineIndex && ShowUnderLine)
+            {
+                IGraphics ig = e.Graphics;
+                ig.BackColor = textBox.ColorScheme.HighlightColor;
+
+                var pt = e.Position;
+                ig.FillRectangle(pt.X, pt.Y + textBox.View.LineHeight - 1, textBox.Width, 1);
+            }
+        }
 
         #region コンテキストメニュー
 

@@ -120,7 +120,7 @@
             this._inputTextBox.ContextMenuStrip = this._contextMenuEdit;
             this._inputTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this._inputTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._inputTextBox.DrawingOption = ((Sgry.Azuki.DrawingOption)((Sgry.Azuki.DrawingOption.HighlightCurrentLine | Sgry.Azuki.DrawingOption.HighlightsMatchedBracket)));
+            this._inputTextBox.DrawingOption = Sgry.Azuki.DrawingOption.HighlightsMatchedBracket;
             this._inputTextBox.DrawsEolCode = false;
             this._inputTextBox.DrawsFullWidthSpace = false;
             this._inputTextBox.DrawsTab = false;
@@ -131,6 +131,7 @@
             fontInfo1.Style = System.Drawing.FontStyle.Regular;
             this._inputTextBox.FontInfo = fontInfo1;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
+            this._inputTextBox.HighlightsCurrentLine = false;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
             this._inputTextBox.Name = "_inputTextBox";
             this._inputTextBox.ScrollPos = new System.Drawing.Point(0, 0);
@@ -443,7 +444,7 @@
             this._resultTextBox.ContextMenuStrip = this._contextMenuResult;
             this._resultTextBox.Cursor = System.Windows.Forms.Cursors.IBeam;
             this._resultTextBox.Dock = System.Windows.Forms.DockStyle.Fill;
-            this._resultTextBox.DrawingOption = ((Sgry.Azuki.DrawingOption)((Sgry.Azuki.DrawingOption.HighlightCurrentLine | Sgry.Azuki.DrawingOption.HighlightsMatchedBracket)));
+            this._resultTextBox.DrawingOption = Sgry.Azuki.DrawingOption.HighlightsMatchedBracket;
             this._resultTextBox.DrawsEolCode = false;
             this._resultTextBox.DrawsFullWidthSpace = false;
             this._resultTextBox.DrawsTab = false;
@@ -454,6 +455,7 @@
             fontInfo2.Style = System.Drawing.FontStyle.Regular;
             this._resultTextBox.FontInfo = fontInfo2;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
+            this._resultTextBox.HighlightsCurrentLine = false;
             this._resultTextBox.IsReadOnly = true;
             this._resultTextBox.Location = new System.Drawing.Point(0, 0);
             this._resultTextBox.Name = "_resultTextBox";
@@ -465,6 +467,7 @@
             this._resultTextBox.Size = new System.Drawing.Size(247, 440);
             this._resultTextBox.TabIndex = 17;
             this._resultTextBox.ViewWidth = 4097;
+            this._resultTextBox.CaretMoved += new System.EventHandler(this._resultTextBox_CaretMoved);
             this._resultTextBox.VScroll += new System.EventHandler(this._resultTextBox_VScroll);
             this._resultTextBox.FontChanged += new System.EventHandler(this._inputTextBox_FontChanged);
             this._resultTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._inputTextBox_MouseMove);
