@@ -168,7 +168,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         public override string GetText() 
         {
-            return string.Format("{0}({1})", DistinguishedName, Argument.ToString());
+            return string.Format("{0}({1})", DistinguishedName, Argument.GetText());
         }
 
         public override Formula this[int i]
