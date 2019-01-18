@@ -845,19 +845,6 @@ namespace GoodSeat.Liffom.Reals
         {
             if (x > 1d || x < -1d) return x.CreateFrom(double.NaN);
 
-            var modif = x.CreateFrom(0);
-            var pi = x.GetPi();
-            if (x > 0.5d)
-            {
-                x -= 1d;
-                modif = pi / 2d;
-            }
-            else if (x < -0.5d)
-            {
-                x += 1d;
-                modif = -pi / 2d;
-            }
-
             var result = Series(x, 1, x, validDigits, (z, n) => {
                         var zn = Power(z, 2 * n + 1) / (2 * n + 1);
                         for (int i = 1; i < 2 * n + 1; i += 2)
@@ -865,7 +852,6 @@ namespace GoodSeat.Liffom.Reals
                         return zn;
                     });
 
-            if (modif != 0d) result += modif;
             return result;
         }
 
@@ -876,7 +862,7 @@ namespace GoodSeat.Liffom.Reals
         /// acosz = π/2 - arcsin z
         /// </remarks>
         /// <returns>評価後の実数。</returns>
-        public static Value Acos(Value x, int validDigits) { return x.GetPi() - Asin(x, validDigits); }
+        public static Value Acos(Value x, int validDigits) { return x.GetPi() / 2.0 - Asin(x, validDigits); }
 
         /// <summary>
         /// Value型の変数zのアークタンジェントを返します。
