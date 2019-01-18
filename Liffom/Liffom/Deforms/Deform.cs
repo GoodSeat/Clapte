@@ -51,17 +51,25 @@ namespace GoodSeat.Liffom.Deforms
                     if (history.DetectInfinityLoopRuleApply(rule)) continue;
                     RemoveBracketFormatOfTerm(target); // 変形があったら元の意味のない括弧を消す
 
-                    if (rule.TryMatchRule(ref target))
+                    try
                     {
-                        ruleApplied = true;
-                        history.Add(new DeformHistoryNode(target, rule)); // 変形履歴地点を登録
-
-                        if ((isAbortApply != null && isAbortApply(target)) || rule.DeformConclude)
+                        if (rule.TryMatchRule(ref target))
                         {
-                            target.LastDeformToken = token;
-                            return target;
+                            ruleApplied = true;
+                            history.Add(new DeformHistoryNode(target, rule)); // 変形履歴地点を登録
+
+                            if ((isAbortApply != null && isAbortApply(target)) || rule.DeformConclude)
+                            {
+                                target.LastDeformToken = token;
+                                return target;
+                            }
+                            break;
                         }
-                        break;
+                    }
+                    catch (Exception e)
+                    {
+                        history.Add(new DeformHistoryNode(new ErrorFormula(e), rule));
+                        throw e;
                     }
                 }
             } 

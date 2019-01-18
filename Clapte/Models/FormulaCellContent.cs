@@ -372,7 +372,6 @@ namespace GoodSeat.Clapte.Models
             try
             {
                 var result = OnEvaluate(solver);
-                DeformHistory = solver.GetProcessOf<CalculateFormulaProcess>().LastCalculateHistory;
 
                 ResultText = result.ResultText;
                 ResultLevel = result.ResultLevel;
@@ -382,6 +381,10 @@ namespace GoodSeat.Clapte.Models
             catch (Exception e)
             {
                 ResultText = "!!! " + e.Message.Replace("\n", " ").Replace("\r", "");
+            }
+            finally
+            {
+                DeformHistory = solver.GetProcessOf<CalculateFormulaProcess>().LastCalculateHistory;
             }
         }
 

@@ -409,6 +409,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.Text = string.Join("\r\n", texts);
             _inputTextBox.FirstVisibleLine = visible1stLine;
 
+            caretIndex = Math.Min(caretIndex, _inputTextBox.Document.Text.Length - 1);
             _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
@@ -608,6 +609,8 @@ namespace GoodSeat.Clapte.Views.Forms
                 var treeNode = new TreeNode(toString(historyNode.Formula));
                 if (historyNode.AppliedRule == null) treeNode.Tag = history;
                 else treeNode.Tag = historyNode;
+
+                if (historyNode.Formula is ErrorFormula) treeNode.ForeColor = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Error);
 
                 treeNode.ContextMenuStrip = _contextMenuHistoryNode;
 
@@ -917,7 +920,7 @@ namespace GoodSeat.Clapte.Views.Forms
             if (e.LineIndex == lineIndex && ShowUnderLine)
             {
                 IGraphics ig = e.Graphics;
-                ig.BackColor = textBox.ColorScheme.HighlightColor;
+                ig.BackColor = ColorScheme.HighlightColor;
 
                 var pt = e.Position;
                 ig.FillRectangle(pt.X, pt.Y + textBox.View.LineHeight - 1, textBox.Width, 1);

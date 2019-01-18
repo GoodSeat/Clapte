@@ -92,6 +92,7 @@
     <Compile Include="Formulas\Constants\Rules\ConstantNumerateRule.cs" />
     <Compile Include="Formulas\Constants\Rules\EulersFormulaRule.cs" />
     <Compile Include="Formulas\Constants\Rules\IntegerPowerOfImaginaryRule.cs" />
+    <Compile Include="Formulas\ErrorFormula.cs" />
     <Compile Include="Formulas\Formula.Interface.cs" />
     <Compile Include="Formulas\Formula.Operator.cs" />
     <Compile Include="Formulas\Formula.cs" />

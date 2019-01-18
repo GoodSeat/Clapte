@@ -55,22 +55,21 @@ namespace GoodSeat.Clapte.Solvers.Processes
             _calcStartTime = DateTime.Now;
             Formula.FormulaProcessing += Formula_FormulaProcessing;
 
+            LastCalculateHistory = null;
+
+            DeformHistory history = null;
             try
             {
-                LastCalculateHistory = null;
-
-                DeformHistory history = null;
                 Formula result = input;
                 for (int i = 0; i < Tokens.Count; i++)
                     result = result.DeformFormula(Tokens[i], out history);
-
-                LastCalculateHistory = history;
 
                 input = result;
                 return null;
             }
             finally
             {
+                LastCalculateHistory = history;
                 Formula.FormulaProcessing -= Formula_FormulaProcessing;
             }
         }
