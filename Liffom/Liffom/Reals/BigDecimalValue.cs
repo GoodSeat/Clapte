@@ -502,6 +502,18 @@ namespace GoodSeat.Liffom.Reals
             }
         }
 
+        /// <summary>
+        /// このインスタンスの符号を表す数値を取得します。
+        /// </summary>
+        /// <remarks>doubleの範囲を超えた数値を扱うため、overrideしています。</remarks>
+        /// <returns>符号を示す数値。</returns>
+        public override int Sign()
+        {
+            if (Component == 0) return 0;
+            else if (Component > 0) return 1;
+            else return -1;
+        }
+
         #endregion
 
     }

@@ -261,12 +261,12 @@ namespace GoodSeat.Liffom.Reals
             var n2 = r;
 
             bool isNegative = false;
-            if (n1 < 0)
+            if (n1 < n1.CreateFrom(0d))
             {
                 n1 *= -1d;
                 isNegative = true;
             }
-            if (n2 < 0)
+            if (n2 < n2.CreateFrom(0d))
             {
                 n2 *= -1d;
                 isNegative = !isNegative;
@@ -628,9 +628,10 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>累乗。</returns>
         public static Value Power(Value x, int y)
         {
-            if (y == 0) return x.CreateFrom(1d);
+            var zero = x.CreateFrom(0d);
+            if (y == zero) return x.CreateFrom(1d);
             bool isInvert = false;
-            if (y < 0)
+            if (y < zero)
             {
                 isInvert = true;
                 y *= -1;
@@ -656,8 +657,9 @@ namespace GoodSeat.Liffom.Reals
         /// </remarks>
         public static Value Power(Value x, Value y, int validDigits)
         {
-            if (x == 0d && y > 0d) return x.CreateFrom(0);
-            if (y % 1d == 0d) return Power(x, (int)y);
+            var zero = x.CreateFrom(0d);
+            if (x == zero && y > zero) return x.CreateFrom(0);
+            if (y % 1d == zero) return Power(x, (int)y);
 
             if (x.Exponent != 0 && x != 10) // (x * 1En)^y -> x^y * 10^(y*n)
             {
@@ -668,7 +670,7 @@ namespace GoodSeat.Liffom.Reals
             }
 
             bool invert = false;
-            if (y < 0d)
+            if (y < zero)
             {
                 invert = true;
                 y = y * -1d;
@@ -960,7 +962,7 @@ namespace GoodSeat.Liffom.Reals
         /// <returns>絶対値。</returns>
         public virtual Value Abs()
         {
-            if (this >= 0) return this;
+            if (Sign() >= 0) return this;
             else return -this;
         }
 
