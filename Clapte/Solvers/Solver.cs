@@ -95,9 +95,19 @@ namespace GoodSeat.Clapte.Solvers
         /// <returns>指定型の登録済みプロセス。</returns>
         public T GetProcessOf<T>() where T : Process
         {
-            foreach (var process in ProcessList)
+            return GetProcessOf<T>(ProcessList);
+        }
+
+        private T GetProcessOf<T>(IEnumerable<Process> processes) where T : Process
+        {
+            foreach (var process in processes)
             {
                 if (process is T) return process as T;
+                if (process is ProcessSet)
+                {
+                    var result = GetProcessOf<T>((process as ProcessSet).ConsistProcesses);
+                    if (result != null) return result;
+                }
             }
             return null;
         }

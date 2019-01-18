@@ -17,6 +17,7 @@ using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
 using System.Text.RegularExpressions;
+using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -44,6 +45,12 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             InitializeComponent();
 
+            _treeViewHistory.DrawMode = TreeViewDrawMode.OwnerDrawText;
+            _treeViewHistory.DrawNode += _treeViewHistory_DrawNode;
+
+            _inputTextBox.LineDrawn += _inputTextBox_LineDrawn;
+            _resultTextBox.LineDrawn += _inputTextBox_LineDrawn;
+
             ShowOKButton = false;
             ShowCancelButton = false;
 
@@ -56,9 +63,9 @@ namespace GoodSeat.Clapte.Views.Forms
 
             InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
             Support = new InputSupport(_inputTextBox, this, InputSupportEnumerator);
-            Support.ModifyLocation = _splitContainer.Location;
+            Support.ModifyLocation = _splitContainerAll.Location;
             ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, this, InputSupportEnumerator);
-            ArgumentHelper.ModifyLocation = _splitContainer.Location;
+            ArgumentHelper.ModifyLocation = _splitContainerAll.Location;
 
             AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
 
@@ -136,15 +143,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// キャレット位置に下線を表示するか否かを設定もしくは取得します。
         /// </summary>
-        public bool ShowUnderLine
-        {
-            get { return _inputTextBox.HighlightsCurrentLine; }
-            set
-            {
-                _inputTextBox.HighlightsCurrentLine = value;
-                _resultTextBox.HighlightsCurrentLine = value;
-            }
-        }
+        public bool ShowUnderLine { get; set; }
 
         /// <summary>
         /// 入力から計算までに遅延時間(ms)を設定もしくは取得します。
@@ -250,6 +249,8 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _resultTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
             _resultTextBox.ShowsHScrollBar = false;
+
+            ShowUnderLine = true;
 
             int parseErrorID = (int)FormulaCellContent.AdditionalInformationType.ParseError;
             Marking.Register(new MarkingInfo(parseErrorID, "構文解析エラー"));
@@ -537,6 +538,103 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
+        /// <summary>
+        /// 現在のキャレット位置に基づいて、変形履歴ビューを更新します。
+        /// </summary>
+        void UpdateTreeViewOfDeformHistory()
+        {
+            if (!_menuVisibleDeformHistory.Checked)
+            {
+                _treeViewHistory.Nodes.Clear();
+                return;
+            }
+
+            int line, column;
+            var textBox = _resultTextBox.Focused ? _resultTextBox : _inputTextBox;
+            textBox.Document.GetCaretIndex(out line, out column);
+
+            if (Target.Count() <= line)
+            {
+                _treeViewHistory.Nodes.Clear();
+                return;
+            }
+
+            var cell = Target.ElementAt(line);
+            var history = cell.Target.Content.DeformHistory;
+            if (history == null)
+            {
+                _treeViewHistory.Nodes.Clear();
+                return;
+            }
+
+            if (_treeViewHistory.Nodes.Count != 0)
+            {
+                var historyCurrent = _treeViewHistory.Nodes[0].Tag;
+                if (history == historyCurrent) return;
+            }
+            _treeViewHistory.Nodes.Clear();
+
+            foreach (var n in CreateTreeNodeOfDeformHistories(history))
+            {
+                _treeViewHistory.Nodes.Add(n);
+            }
+        }
+
+        /// <summary>
+        /// 指定数式変形履歴を表すツリーノードを生成して取得します。
+        /// </summary>
+        /// <param name="history">対象とする数式変形履歴。</param>
+        /// <returns>指定数式変形履歴を表すツリーノード。</returns>
+        IEnumerable<TreeNode> CreateTreeNodeOfDeformHistories(DeformHistory history)
+        {
+            var format = Target.BaseSolver.Target.OutputFormat;
+
+            Func<Formula, string> toString = f =>
+            {
+                f.Format = format;
+                return f.ToString();
+            };
+
+            foreach (var historyNode in history)
+            {
+                if (historyNode.AppliedRule != null)
+                {
+                    var treeNodeApplied = new TreeNode(" ↓ " + historyNode.AppliedRule.Information);
+                    treeNodeApplied.Tag = historyNode.AppliedRule;
+                    treeNodeApplied.ForeColor = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment);
+                    yield return treeNodeApplied;
+                }
+
+                var treeNode = new TreeNode(toString(historyNode.Formula));
+                if (historyNode.AppliedRule == null) treeNode.Tag = history;
+                else treeNode.Tag = historyNode;
+
+                treeNode.ContextMenuStrip = _contextMenuHistoryNode;
+
+                bool anyHasHistory = false;
+                foreach (var historyChild in historyNode.ChildrenHistories)
+                {
+                    if (historyChild.Count() < 2) continue;
+                    anyHasHistory = true;
+
+                    var text = "└ " + toString(historyChild.First().Formula) + " → " + toString(historyChild.Last().Formula);
+
+                    var treeNodeChild = new TreeNode(text);
+                    treeNodeChild.ForeColor = Color.Gray;
+                    foreach (var n in CreateTreeNodeOfDeformHistories(historyChild))
+                    {
+                        treeNodeChild.Nodes.Add(n);
+                    }
+                    treeNodeChild.Tag = historyChild;
+                    treeNodeChild.ContextMenuStrip = _contextMenuHistoryNode;
+                    treeNode.Nodes.Add(treeNodeChild);
+                }
+                if (!anyHasHistory) treeNode.Nodes.Clear();
+
+                yield return treeNode;
+            }
+        }
+
         #endregion
 
         #region イベント対応
@@ -579,7 +677,9 @@ namespace GoodSeat.Clapte.Views.Forms
             IgnoreScroll = false;
 
             Highlighter.Renew(_inputTextBox.Text);
-            _inputTextBox.Refresh(); // Markの表示のため
+
+            _lastCaretLineIndex = -1; // _inputTextBox_CaretMovedメソッド内で、強制的に再描画(マーク描画のため)させるため
+            _inputTextBox_CaretMoved(_inputTextBox, EventArgs.Empty);
         }
 
         /// <summary>
@@ -622,6 +722,8 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             if (sender == _inputTextBox) _resultTextBox.Font = _inputTextBox.Font;
             else _inputTextBox.Font = _resultTextBox.Font;
+
+            _treeViewHistory.Font = _inputTextBox.Font;
         }
 
         private void _inputTextBox_VScroll(object sender, EventArgs e)
@@ -640,6 +742,29 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.UpdateCaretGraphic();
         }
 
+        private void _treeViewHistory_DrawNode(object sender, DrawTreeNodeEventArgs e)
+        {
+            e.DrawDefault = ((e.State & TreeNodeStates.Selected) == 0);
+            if (e.DrawDefault) return;
+
+            Color backColor = e.Node.BackColor;
+            Color foreColor = e.Node.ForeColor;
+            if (backColor == Color.Empty) backColor = Color.LightGray;
+            if (foreColor == Color.Empty) foreColor = ((TreeView)sender).ForeColor;
+
+            var rect = e.Node.Bounds;
+            rect.Width = (int)(rect.Width * 1.1);
+            using (Brush b = new SolidBrush(backColor))
+            {
+                e.Graphics.FillRectangle(b, rect);
+            }
+            using (Brush b = new SolidBrush(foreColor))
+            {
+                e.Graphics.TextRenderingHint = System.Drawing.Text.TextRenderingHint.ClearTypeGridFit;
+                e.Graphics.DrawString(e.Node.Text, e.Node.NodeFont ?? ((TreeView)sender).Font, b, rect);
+            }
+        }
+
         private void FormOfClaptePad_FormClosing(object sender, FormClosingEventArgs e) { HotSave(); }
 
         private void FormOfClaptePad_Resize(object sender, EventArgs e) { SetVisibleOfScrollBar(); }
@@ -650,11 +775,48 @@ namespace GoodSeat.Clapte.Views.Forms
             Target.NotifyChangeText(_inputTextBox.Text);
         }
 
+        int _lastCaretLineIndex;
+
         private void _inputTextBox_CaretMoved(object sender, EventArgs e)
         {
             int line, column;
             _inputTextBox.Document.GetCaretIndex(out line, out column);
             InputSupportEnumerator.CurrentCaretLineNumber = line;
+
+            UpdateTreeViewOfDeformHistory();
+
+            bool refreshResult = false;
+            int lineOther;
+            _resultTextBox.Document.GetCaretIndex(out lineOther, out column);
+            if (line != lineOther)
+            {
+                if (line >= _resultTextBox.Document.LineCount) line = _resultTextBox.Document.LineCount - 1;
+                _resultTextBox.Document.SetCaretIndex(line, 0);
+                _resultTextBox.Refresh();
+                refreshResult = true;
+            }
+
+            if (line != _lastCaretLineIndex)
+            {
+                _inputTextBox.Refresh();
+                _lastCaretLineIndex = line;
+                if (!refreshResult) _resultTextBox.Refresh();
+            }
+        }
+
+        private void _resultTextBox_CaretMoved(object sender, EventArgs e)
+        {
+            if (IgnoreScroll) return;
+
+            int line, lineOther, column;
+            _resultTextBox.Document.GetCaretIndex(out line, out column);
+            _inputTextBox.Document.GetCaretIndex(out lineOther, out column);
+
+            if (line != lineOther)
+            {
+                if (line >= _inputTextBox.Document.LineCount) line = _inputTextBox.Document.LineCount - 1;
+                _inputTextBox.Document.SetCaretIndex(line, 0);
+            }
         }
 
         private void _inputTextBox_MouseMove(object sender, MouseEventArgs e)
@@ -745,6 +907,23 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _btnMinimize_Click(object sender, EventArgs e) { WindowState = FormWindowState.Minimized; }
 
+        private void _inputTextBox_LineDrawn(object sender, LineDrawEventArgs e)
+        {
+            var textBox = (Sgry.Azuki.WinForms.AzukiControl)sender;
+
+            //現在行の背景描画
+            int caretIndex = textBox.CaretIndex;
+            int lineIndex = textBox.GetLineIndexFromCharIndex(caretIndex);
+            if (e.LineIndex == lineIndex && ShowUnderLine)
+            {
+                IGraphics ig = e.Graphics;
+                ig.BackColor = textBox.ColorScheme.HighlightColor;
+
+                var pt = e.Position;
+                ig.FillRectangle(pt.X, pt.Y + textBox.View.LineHeight - 1, textBox.Width, 1);
+            }
+        }
+
         #region コンテキストメニュー
 
         private void _contextMenuEdit_Opening(object sender, CancelEventArgs e)
@@ -758,6 +937,17 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuDelete.Enabled = _inputTextBox.CanCut;
 
             _menuSolveSimultaneousEquation.Enabled = _inputTextBox.GetSelectedText().Contains("\n");
+
+            if (_splitContainerAll.Panel2.Height < 5)
+            {
+                _menuVisibleDeformHistory.Checked = false;
+                _menuVisibleDeformHistoryResult.Checked = false;
+            }
+            else if (!_splitContainerAll.Panel2Collapsed)
+            {
+                _menuVisibleDeformHistory.Checked = true;
+                _menuVisibleDeformHistoryResult.Checked = true;
+            }
 
             try
             {
@@ -915,6 +1105,47 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
                 _contextMenuEdit.Hide();
+            }
+        }
+
+        private void _menuVisibleDeformHistory_Click(object sender, EventArgs e)
+        {
+            _menuVisibleDeformHistory.Checked = !_menuVisibleDeformHistory.Checked;
+            _splitContainerAll.Panel2Collapsed = !_menuVisibleDeformHistory.Checked;
+
+            if (!_splitContainerAll.Panel2Collapsed)
+            {
+                var height = _splitContainerAll.Height;
+                if (_splitContainerAll.Panel2.Height < height / 4) _splitContainerAll.SplitterDistance = height * 3 / 4;
+
+                var textBox = _resultTextBox.Focused ? _resultTextBox : _inputTextBox;
+                if (textBox.Focused) textBox.ScrollToCaret();
+            }
+
+            _menuVisibleDeformHistoryResult.Checked = _menuVisibleDeformHistory.Checked;
+
+            if (_menuVisibleDeformHistoryResult.Checked)
+            {
+                UpdateTreeViewOfDeformHistory();
+            }
+        }
+
+        private void _menuHideDeformHistory_Click(object sender, EventArgs e) { _splitContainerAll.Panel2Collapsed = true; }
+
+        private void _menuExpandHistory_Click(object sender, EventArgs e) { _treeViewHistory.ExpandAll(); }
+
+        private void _menuFoldHistory_Click(object sender, EventArgs e) { _treeViewHistory.CollapseAll(); }
+
+        private void _menuCopyFormulaInHistory_Click(object sender, EventArgs e)
+        {
+            var tag = _treeViewHistory.SelectedNode?.Tag;
+            if (tag is DeformHistory)
+            {
+                Clipboard.SetText((tag as DeformHistory).First().FormulaText);
+            }
+            else if (tag is DeformHistoryNode)
+            {
+                Clipboard.SetText((tag as DeformHistoryNode).FormulaText);
             }
         }
 
