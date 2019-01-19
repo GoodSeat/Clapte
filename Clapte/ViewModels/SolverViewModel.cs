@@ -201,7 +201,11 @@ namespace GoodSeat.Clapte.ViewModels
         /// <summary>
         /// 有効数値を考慮するか否かを設定もしくは取得します。
         /// </summary>
-        public bool ConsiderValidDigit { get; set; }
+        public bool ConsiderValidDigit
+        {
+            get { return Numeric.ConsiderSignificantDigitsInDeforming; }
+            set { Numeric.ConsiderSignificantDigitsInDeforming = value; }
+        }
 
         #endregion
 

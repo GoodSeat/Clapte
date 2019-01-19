@@ -59,7 +59,8 @@ namespace GoodSeat.Liffom.Formulas
             Power divide = f2 ^ -1;
             divide.Format.SetProperty(new DivisionFormatProperty(true));
 
-            if (f1 is Numeric && (f1 == 1) && (f1 as Numeric).HasInfinitySignificantDigits) return divide;
+            var n = f1 as Numeric;
+            if (n != null && n == 1 && (!Numeric.ConsiderSignificantDigitsInDeforming || n.HasInfinitySignificantDigits)) return divide;
             return f1 * divide;
         }
 

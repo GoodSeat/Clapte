@@ -42,7 +42,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             for (int i = list.Count - 1; i >= 0; i--)
             {
                 var n = list[i] as Numeric;
-                if (n != null && n == 0 && n.HasInfinitySignificantDigits)
+                if (n != null && n == 0 && (!Numeric.ConsiderSignificantDigitsInDeforming || n.HasInfinitySignificantDigits))
                 {
                     list.RemoveAt(i);
                     applied = true;

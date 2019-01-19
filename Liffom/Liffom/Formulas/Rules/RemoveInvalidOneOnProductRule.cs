@@ -45,13 +45,13 @@ namespace GoodSeat.Liffom.Formulas.Rules
         private bool IsInvalidOne(Formula f)
         {
             var n = f as Numeric;
-            if (n != null) return n == 1 && n.HasInfinitySignificantDigits;
+            if (n != null) return n == 1 && (!Numeric.ConsiderSignificantDigitsInDeforming || n.HasInfinitySignificantDigits);
 
             var p = f as Power;
             if (p != null && p.Exponent == -1)
             {
                 var m = p.Base as Numeric;
-                if (m != null) return m == 1 && m.HasInfinitySignificantDigits;
+                if (m != null) return m == 1 && (!Numeric.ConsiderSignificantDigitsInDeforming || m.HasInfinitySignificantDigits);
             }
             return false;
         }

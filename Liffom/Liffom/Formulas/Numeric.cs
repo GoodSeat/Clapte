@@ -20,6 +20,8 @@ namespace GoodSeat.Liffom.Formulas
     {
         static Numeric()
         { 
+            ConsiderSignificantDigitsInDeforming = false;
+
             InnerRealType = RealType.DoubleModified;
 //            InnerRealType = RealType.Decimal;
 //            InnerRealType = RealType.BigDecimal;
@@ -82,7 +84,13 @@ namespace GoodSeat.Liffom.Formulas
         public static Numeric Zero { get; private set; }
 
         /// <summary>
-        /// 考慮する最大有効桁数を設定もしくは取得します。この値より大きな有効桁数を有する場合、当該数値の有効桁数を無限と判定します。
+        /// 数式の変形処理においても、数値の有効桁数を考慮するかを設定もしくは取得します。
+        /// 例えば、1.0*x という式において、1.0が有効数字桁数無限でない数値である場合に、1.0を消去するか否か等に影響します。
+        /// </summary>
+        public static bool ConsiderSignificantDigitsInDeforming { get; set; }
+
+        /// <summary>
+        /// 考慮する最大有効桁数を取得します。この値より大きな有効桁数を有する場合、当該数値の有効桁数を無限と判定します。
         /// </summary>
         public static int MaxValidDigits { get { return Zero.Figure.Value.MaxValidDigits; } }
 
