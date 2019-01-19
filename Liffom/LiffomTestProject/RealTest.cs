@@ -277,6 +277,36 @@ namespace GoodSeat.LiffomTestProject
                 Assert.AreEqual("0.577350269189625764509148780502", result.ToString());
                 //              "0.577350269189625764509148780502" [keisan.casio.jp]
 
+
+                result = Value.Asin(new BigDecimalValue(0.1), 30);
+                Assert.AreEqual("0.100167421161559796345523179453", result.ToString());
+                //              "0.100167421161559796345523179453" [keisan.casio.jp]
+                result = Value.Acos(new BigDecimalValue(0.1), 30);
+                Assert.AreEqual("1.47062890563333682288579851219", result.ToString());
+                //              "1.47062890563333682288579851219" [keisan.casio.jp]
+
+                result = Value.Asin(new BigDecimalValue(-0.1), 30);
+                Assert.AreEqual("-0.100167421161559796345523179453", result.ToString());
+                //              "0.100167421161559796345523179453" [keisan.casio.jp]
+                result = Value.Acos(new BigDecimalValue(-0.1), 30);
+                Assert.AreEqual("1.67096374795645641557684487109", result.ToString());
+                //              "1.67096374795645641557684487109" [keisan.casio.jp]
+
+                result = Value.Asin(new BigDecimalValue(0.9), 30);
+                Assert.AreEqual("1.11976951499863418668667705585", result.ToString());
+                //              "1.11976951499863418668667705585" [keisan.casio.jp]
+                result = Value.Acos(new BigDecimalValue(0.9), 30);
+                Assert.AreEqual("0.451026811796262432544644635794", result.ToString());
+                //              "0.451026811796262432544644635794" [keisan.casio.jp]
+
+                result = Value.Asin(new BigDecimalValue(-0.9), 30);
+                Assert.AreEqual("-1.11976951499863418668667705585", result.ToString());
+                //              "-1.11976951499863418668667705585" [keisan.casio.jp]
+                result = Value.Acos(new BigDecimalValue(-0.9), 30);
+                Assert.AreEqual("2.69056584179353080591799874749", result.ToString());
+                //              "2.69056584179353080591799874749" [keisan.casio.jp]
+
+
                 result = Value.Atan(new BigDecimalValue(1.2), 30);
                 Assert.AreEqual("0.876058050598193423114047521128", result.ToString());
                 //              "0.876058050598193423114047521128" [keisan.casio.jp]

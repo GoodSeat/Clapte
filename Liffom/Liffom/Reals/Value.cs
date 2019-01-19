@@ -847,10 +847,21 @@ namespace GoodSeat.Liffom.Reals
         {
             if (x > 1d || x < -1d) return x.CreateFrom(double.NaN);
 
+            var sin2 = x * x;
+            if (sin2 > 0.5)
+            {
+                var cos2 = 1d - sin2;
+                var cos = cos2 ^ 0.5;
+
+                var theta = Acos(cos, validDigits);
+
+                return (x > 0d) ? theta : -theta;
+            }
+
             var result = Series(x, 1, x, validDigits, (z, n) => {
                         var zn = Power(z, 2 * n + 1) / (2 * n + 1);
                         for (int i = 1; i < 2 * n + 1; i += 2)
-                            zn *= (double)i / ((double)i + 1d);
+                            zn *= x.CreateFrom(i) / x.CreateFrom(i + 1d);
                         return zn;
                     });
 
