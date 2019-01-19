@@ -136,6 +136,7 @@ namespace GoodSeat.Clapte.Models
             if (targetVariables.Count == 0) return null;
             if (!fs.All(f => f is Equal)) return null;
 
+            foreach (var f in fs) f.Format = solver.OutputFormat;
             return new FormulaCellContentDefineWithSimultaneousEquation(string.Join(", ", fs.Select(f => f.ToString())), targetVariables, fs.OfType<Equal>(), previous);
         }
 
@@ -191,10 +192,24 @@ namespace GoodSeat.Clapte.Models
                 try
                 {
                     var proc = new SolveSimultaneousEquation();
+                    proc.CheckSignificantDigits = Numeric.ConsiderSignificantDigitsInDeforming;
                     var solutions = proc.Solve(new List<Equal>(eqs.OfType<Equal>()), DefineTargets.ToArray());
                     if (solutions == null || solutions.Count == 0) return result;
 
-                    List<string> resultTexts = CreateResultTexts(solutions, solver.OutputFormat);
+                    var solutionsDeformed = new List<List<Equal>>();
+                    foreach (var solution in solutions)
+                    {
+                        var solutionDeformed = new List<Equal>();
+                        foreach (var sol in solution)
+                        {
+                            Formula f = sol;
+                            solver.GetProcessOf<CalculateFormulaProcess>().EvaluateFormula(ref f);
+                            solutionDeformed.Add(f as Equal);
+                        }
+                        solutionsDeformed.Add(solutionDeformed);
+                    }
+
+                    List<string> resultTexts = CreateResultTexts(solutionsDeformed, solver.OutputFormat);
 
                     result.ResultLevel = Result.Level.Success;
                     result.ResultText = resultTexts.FirstOrDefault();

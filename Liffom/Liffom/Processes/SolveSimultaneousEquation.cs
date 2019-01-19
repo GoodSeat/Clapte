@@ -29,6 +29,11 @@ namespace GoodSeat.Liffom.Processes
         public override int TargetArgumentsMaxQty { get { return int.MaxValue; } }
 
         /// <summary>
+        /// 求められた解に対して、有効桁数の設定処理を行うか否かを設定もしくは取得します。
+        /// </summary>
+        public bool CheckSignificantDigits { get; set; }
+
+        /// <summary>
         /// 等式リストを指定して、連立方程式の解を非同期に算出します。
         /// </summary>
         /// <param name="formulas">求階対象の等式リスト。</param>
@@ -143,6 +148,7 @@ namespace GoodSeat.Liffom.Processes
         private List<Equal> SolveAnyAbout(Variable x, List<Equal> fs, out Equal fUsed)
         {
             var solver = new SolveAlgebraicEquation();
+            solver.CheckSignificantDigits = CheckSignificantDigits;
 
             fUsed = null;
             var sols = new List<Equal>();
