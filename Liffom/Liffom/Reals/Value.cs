@@ -415,7 +415,8 @@ namespace GoodSeat.Liffom.Reals
                 if (r1.IsPositiveInfinity && r2 != 0d) return r2 > 0d ? r1 : r1.CreateFrom(double.NaN);
                 if (r1.IsNegativeInfinity && r2 != 0d) return r1.CreateFrom(double.NaN);
                 if (r2.IsPositiveInfinity && r1 != 0d) return r1 > 0d ? r2.CreateFrom(double.PositiveInfinity) : r2.CreateFrom(double.NaN);
-                if (r2.IsNegativeInfinity && r1 != 0d) return r2.CreateFrom(double.NaN);                
+                if (r2.IsNegativeInfinity && r1 != 0d) return r2.CreateFrom(double.NaN);
+                if (r1 == 0d && r2 == 0d) return r1.CreateFrom(double.NaN);
             }
 
             return DoOperate2((f1, f2) => f1.PowerWith(f2), r1, r2);
@@ -658,7 +659,12 @@ namespace GoodSeat.Liffom.Reals
         public static Value Power(Value x, Value y, int validDigits)
         {
             var zero = x.CreateFrom(0d);
-            if (x == zero && y > zero) return x.CreateFrom(0);
+            if (x == zero)
+            {
+                if (y > zero) return x.CreateFrom(0);
+                else if (y < zero) throw new Exception("0による除算が発生しました。", new DivideByZeroException());
+                else return x.CreateFrom(double.NaN);
+            }
             if (y % 1d == zero) return Power(x, (int)y);
 
             if (x.Exponent != 0 && x != 10) // (x * 1En)^y -> x^y * 10^(y*n)

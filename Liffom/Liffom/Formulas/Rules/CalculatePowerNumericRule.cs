@@ -49,7 +49,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric abs = Imaginary.Abs(R, E);
             if (abs == 0)
             {
-                if (expNumeric >= 0) return 0;
+                if (expNumeric > 0) return 0;
+                else if (expNumeric == 0) return null;
                 else throw new FormulaRuleException("0による除算が発生しました。", new DivideByZeroException());
             }
             Numeric rad = Imaginary.Arg(R, E); // 元の偏角
