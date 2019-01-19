@@ -63,6 +63,18 @@
             this._numPrecisionDigit = new GoodSeat.Clapte.Views.Controls.NumericSlider();
             this._radioPrecisionCustom = new System.Windows.Forms.RadioButton();
             this._radioPrecisionDouble = new System.Windows.Forms.RadioButton();
+            this._groupResult = new System.Windows.Forms.GroupBox();
+            this._cmbOutputUnit = new System.Windows.Forms.ComboBox();
+            this._labelOutputUnit = new System.Windows.Forms.Label();
+            this._cmbResultCharType = new System.Windows.Forms.ComboBox();
+            this._labelCharType = new System.Windows.Forms.Label();
+            this._groupInput = new System.Windows.Forms.GroupBox();
+            this._cmbDetectUnitMode = new System.Windows.Forms.ComboBox();
+            this.label8 = new System.Windows.Forms.Label();
+            this._checkParseFactorial = new System.Windows.Forms.CheckBox();
+            this._checkParseAbs = new System.Windows.Forms.CheckBox();
+            this._checkPermitOmitPowerMark = new System.Windows.Forms.CheckBox();
+            this._checkPermitOmitMultipleMark = new System.Windows.Forms.CheckBox();
             this._groupSolveEquation.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel1.SuspendLayout();
@@ -72,6 +84,8 @@
             this._groupNewton.SuspendLayout();
             this._groupSolver.SuspendLayout();
             this._groupPresicion.SuspendLayout();
+            this._groupResult.SuspendLayout();
+            this._groupInput.SuspendLayout();
             this.SuspendLayout();
             // 
             // _groupSolveEquation
@@ -80,7 +94,7 @@
             | System.Windows.Forms.AnchorStyles.Right)));
             this._groupSolveEquation.Controls.Add(this.splitContainer1);
             this._groupSolveEquation.Controls.Add(this._checkDontCopyVariable);
-            this._groupSolveEquation.Location = new System.Drawing.Point(6, 166);
+            this._groupSolveEquation.Location = new System.Drawing.Point(6, 234);
             this._groupSolveEquation.Name = "_groupSolveEquation";
             this._groupSolveEquation.Size = new System.Drawing.Size(397, 172);
             this._groupSolveEquation.TabIndex = 12;
@@ -103,6 +117,7 @@
             this.splitContainer1.Panel2.Controls.Add(this._groupNewton);
             this.splitContainer1.Size = new System.Drawing.Size(375, 141);
             this.splitContainer1.SplitterDistance = 186;
+            this.splitContainer1.SplitterWidth = 10;
             this.splitContainer1.TabIndex = 3;
             // 
             // _groupBrent
@@ -378,7 +393,7 @@
             this._groupNewton.Dock = System.Windows.Forms.DockStyle.Fill;
             this._groupNewton.Location = new System.Drawing.Point(0, 0);
             this._groupNewton.Name = "_groupNewton";
-            this._groupNewton.Size = new System.Drawing.Size(185, 141);
+            this._groupNewton.Size = new System.Drawing.Size(179, 141);
             this._groupNewton.TabIndex = 0;
             this._groupNewton.TabStop = false;
             this._groupNewton.Text = "ニュートン法";
@@ -387,7 +402,7 @@
             // 
             this.label12.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label12.AutoSize = true;
-            this.label12.Location = new System.Drawing.Point(107, 54);
+            this.label12.Location = new System.Drawing.Point(104, 54);
             this.label12.Name = "label12";
             this.label12.Size = new System.Drawing.Size(26, 12);
             this.label12.TabIndex = 11;
@@ -405,7 +420,7 @@
             this._numTryMaxCountNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numTryMaxCountNewton.EnableUpDown = false;
             this._numTryMaxCountNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numTryMaxCountNewton.Location = new System.Drawing.Point(107, 78);
+            this._numTryMaxCountNewton.Location = new System.Drawing.Point(104, 78);
             this._numTryMaxCountNewton.Maximum = new decimal(new int[] {
             10000,
             0,
@@ -453,7 +468,7 @@
             this._numErrorToleranceNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numErrorToleranceNewton.EnableUpDown = false;
             this._numErrorToleranceNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numErrorToleranceNewton.Location = new System.Drawing.Point(135, 50);
+            this._numErrorToleranceNewton.Location = new System.Drawing.Point(132, 50);
             this._numErrorToleranceNewton.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -493,7 +508,7 @@
             // 
             this.label3.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(15, 82);
+            this.label3.Location = new System.Drawing.Point(12, 82);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(77, 12);
             this.label3.TabIndex = 3;
@@ -503,7 +518,7 @@
             // 
             this.label2.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(39, 55);
+            this.label2.Location = new System.Drawing.Point(36, 55);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(53, 12);
             this.label2.TabIndex = 2;
@@ -513,7 +528,7 @@
             // 
             this.label1.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(51, 28);
+            this.label1.Location = new System.Drawing.Point(48, 28);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(41, 12);
             this.label1.TabIndex = 1;
@@ -531,7 +546,7 @@
             this._numInitialSolutionNewton.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numInitialSolutionNewton.EnableUpDown = false;
             this._numInitialSolutionNewton.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numInitialSolutionNewton.Location = new System.Drawing.Point(108, 22);
+            this._numInitialSolutionNewton.Location = new System.Drawing.Point(105, 22);
             this._numInitialSolutionNewton.Maximum = new decimal(new int[] {
             100000000,
             0,
@@ -590,17 +605,17 @@
             this._groupSolver.Controls.Add(this._cmbValidPrecision);
             this._groupSolver.Controls.Add(this._labelRounding);
             this._groupSolver.Controls.Add(this._labelPrecision);
-            this._groupSolver.Location = new System.Drawing.Point(7, 67);
+            this._groupSolver.Location = new System.Drawing.Point(7, 142);
             this._groupSolver.Name = "_groupSolver";
-            this._groupSolver.Size = new System.Drawing.Size(396, 87);
+            this._groupSolver.Size = new System.Drawing.Size(396, 86);
             this._groupSolver.TabIndex = 11;
             this._groupSolver.TabStop = false;
-            this._groupSolver.Text = "計算";
+            this._groupSolver.Text = "計算の詳細";
             // 
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(187, 57);
+            this.label9.Location = new System.Drawing.Point(187, 54);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(77, 12);
             this.label9.TabIndex = 55;
@@ -617,7 +632,7 @@
             this._numLimitTime.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numLimitTime.EnableUpDown = false;
             this._numLimitTime.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numLimitTime.Location = new System.Drawing.Point(268, 52);
+            this._numLimitTime.Location = new System.Drawing.Point(268, 49);
             this._numLimitTime.Maximum = new decimal(new int[] {
             30,
             0,
@@ -660,7 +675,7 @@
             this._cmbCalculateMode.Items.AddRange(new object[] {
             "小数計算",
             "分数計算"});
-            this._cmbCalculateMode.Location = new System.Drawing.Point(75, 53);
+            this._cmbCalculateMode.Location = new System.Drawing.Point(75, 50);
             this._cmbCalculateMode.Name = "_cmbCalculateMode";
             this._cmbCalculateMode.Size = new System.Drawing.Size(99, 20);
             this._cmbCalculateMode.TabIndex = 52;
@@ -668,7 +683,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(14, 57);
+            this.label10.Location = new System.Drawing.Point(14, 54);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(57, 12);
             this.label10.TabIndex = 53;
@@ -724,7 +739,7 @@
             this._groupPresicion.Controls.Add(this._numPrecisionDigit);
             this._groupPresicion.Controls.Add(this._radioPrecisionCustom);
             this._groupPresicion.Controls.Add(this._radioPrecisionDouble);
-            this._groupPresicion.Location = new System.Drawing.Point(6, 10);
+            this._groupPresicion.Location = new System.Drawing.Point(6, 4);
             this._groupPresicion.Name = "_groupPresicion";
             this._groupPresicion.Size = new System.Drawing.Size(397, 49);
             this._groupPresicion.TabIndex = 3;
@@ -736,7 +751,7 @@
             this._labelPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._labelPrecisionDigit.AutoSize = true;
             this._labelPrecisionDigit.Enabled = false;
-            this._labelPrecisionDigit.Location = new System.Drawing.Point(223, 22);
+            this._labelPrecisionDigit.Location = new System.Drawing.Point(157, 24);
             this._labelPrecisionDigit.Name = "_labelPrecisionDigit";
             this._labelPrecisionDigit.Size = new System.Drawing.Size(53, 12);
             this._labelPrecisionDigit.TabIndex = 10;
@@ -755,7 +770,7 @@
             this._numPrecisionDigit.Enabled = false;
             this._numPrecisionDigit.EnableUpDown = false;
             this._numPrecisionDigit.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numPrecisionDigit.Location = new System.Drawing.Point(282, 18);
+            this._numPrecisionDigit.Location = new System.Drawing.Point(216, 20);
             this._numPrecisionDigit.Maximum = new decimal(new int[] {
             1000,
             0,
@@ -774,7 +789,7 @@
             0,
             0});
             this._numPrecisionDigit.ShowButton = true;
-            this._numPrecisionDigit.Size = new System.Drawing.Size(44, 20);
+            this._numPrecisionDigit.Size = new System.Drawing.Size(96, 20);
             this._numPrecisionDigit.SlideChange = new decimal(new int[] {
             1,
             0,
@@ -795,7 +810,7 @@
             // 
             this._radioPrecisionCustom.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._radioPrecisionCustom.AutoSize = true;
-            this._radioPrecisionCustom.Location = new System.Drawing.Point(158, 20);
+            this._radioPrecisionCustom.Location = new System.Drawing.Point(92, 22);
             this._radioPrecisionCustom.Name = "_radioPrecisionCustom";
             this._radioPrecisionCustom.Size = new System.Drawing.Size(59, 16);
             this._radioPrecisionCustom.TabIndex = 2;
@@ -808,7 +823,7 @@
             // 
             this._radioPrecisionDouble.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._radioPrecisionDouble.AutoSize = true;
-            this._radioPrecisionDouble.Location = new System.Drawing.Point(59, 20);
+            this._radioPrecisionDouble.Location = new System.Drawing.Point(17, 22);
             this._radioPrecisionDouble.Name = "_radioPrecisionDouble";
             this._radioPrecisionDouble.Size = new System.Drawing.Size(47, 16);
             this._radioPrecisionDouble.TabIndex = 0;
@@ -816,15 +831,163 @@
             this._radioPrecisionDouble.Text = "通常";
             this._radioPrecisionDouble.UseVisualStyleBackColor = true;
             // 
+            // _groupResult
+            // 
+            this._groupResult.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupResult.Controls.Add(this._cmbOutputUnit);
+            this._groupResult.Controls.Add(this._labelOutputUnit);
+            this._groupResult.Controls.Add(this._cmbResultCharType);
+            this._groupResult.Controls.Add(this._labelCharType);
+            this._groupResult.Location = new System.Drawing.Point(3, 412);
+            this._groupResult.Name = "_groupResult";
+            this._groupResult.Size = new System.Drawing.Size(400, 52);
+            this._groupResult.TabIndex = 13;
+            this._groupResult.TabStop = false;
+            this._groupResult.Text = "結果表記";
+            // 
+            // _cmbOutputUnit
+            // 
+            this._cmbOutputUnit.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._cmbOutputUnit.FormattingEnabled = true;
+            this._cmbOutputUnit.Items.AddRange(new object[] {
+            "自動",
+            "空白で分割",
+            "()で括る",
+            "[]で括る"});
+            this._cmbOutputUnit.Location = new System.Drawing.Point(253, 20);
+            this._cmbOutputUnit.Name = "_cmbOutputUnit";
+            this._cmbOutputUnit.Size = new System.Drawing.Size(121, 20);
+            this._cmbOutputUnit.TabIndex = 51;
+            // 
+            // _labelOutputUnit
+            // 
+            this._labelOutputUnit.AutoSize = true;
+            this._labelOutputUnit.Location = new System.Drawing.Point(194, 24);
+            this._labelOutputUnit.Name = "_labelOutputUnit";
+            this._labelOutputUnit.Size = new System.Drawing.Size(53, 12);
+            this._labelOutputUnit.TabIndex = 50;
+            this._labelOutputUnit.Text = "単位表記";
+            // 
+            // _cmbResultCharType
+            // 
+            this._cmbResultCharType.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._cmbResultCharType.FormattingEnabled = true;
+            this._cmbResultCharType.Items.AddRange(new object[] {
+            "自動",
+            "半角",
+            "全角"});
+            this._cmbResultCharType.Location = new System.Drawing.Point(79, 20);
+            this._cmbResultCharType.Name = "_cmbResultCharType";
+            this._cmbResultCharType.Size = new System.Drawing.Size(98, 20);
+            this._cmbResultCharType.TabIndex = 5;
+            // 
+            // _labelCharType
+            // 
+            this._labelCharType.AutoSize = true;
+            this._labelCharType.Location = new System.Drawing.Point(18, 24);
+            this._labelCharType.Name = "_labelCharType";
+            this._labelCharType.Size = new System.Drawing.Size(53, 12);
+            this._labelCharType.TabIndex = 4;
+            this._labelCharType.Text = "文字種類";
+            // 
+            // _groupInput
+            // 
+            this._groupInput.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupInput.Controls.Add(this._cmbDetectUnitMode);
+            this._groupInput.Controls.Add(this.label8);
+            this._groupInput.Controls.Add(this._checkParseFactorial);
+            this._groupInput.Controls.Add(this._checkParseAbs);
+            this._groupInput.Controls.Add(this._checkPermitOmitPowerMark);
+            this._groupInput.Controls.Add(this._checkPermitOmitMultipleMark);
+            this._groupInput.Location = new System.Drawing.Point(7, 59);
+            this._groupInput.Name = "_groupInput";
+            this._groupInput.Size = new System.Drawing.Size(396, 77);
+            this._groupInput.TabIndex = 14;
+            this._groupInput.TabStop = false;
+            this._groupInput.Text = "数式認識";
+            // 
+            // _cmbDetectUnitMode
+            // 
+            this._cmbDetectUnitMode.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
+            this._cmbDetectUnitMode.FormattingEnabled = true;
+            this._cmbDetectUnitMode.Items.AddRange(new object[] {
+            "全ての記号を認識",
+            "登録単位のみ認識",
+            "[ ]で囲われた部分のみ認識"});
+            this._cmbDetectUnitMode.Location = new System.Drawing.Point(152, 22);
+            this._cmbDetectUnitMode.Name = "_cmbDetectUnitMode";
+            this._cmbDetectUnitMode.Size = new System.Drawing.Size(183, 20);
+            this._cmbDetectUnitMode.TabIndex = 10;
+            // 
+            // label8
+            // 
+            this.label8.AutoSize = true;
+            this.label8.Location = new System.Drawing.Point(15, 26);
+            this.label8.Name = "label8";
+            this.label8.Size = new System.Drawing.Size(111, 12);
+            this.label8.TabIndex = 9;
+            this.label8.Text = "単位記号の認識方法";
+            // 
+            // _checkParseFactorial
+            // 
+            this._checkParseFactorial.AutoSize = true;
+            this._checkParseFactorial.Location = new System.Drawing.Point(209, 51);
+            this._checkParseFactorial.Name = "_checkParseFactorial";
+            this._checkParseFactorial.Size = new System.Drawing.Size(116, 16);
+            this._checkParseFactorial.TabIndex = 8;
+            this._checkParseFactorial.Text = "階乗記号(!)を認識";
+            this._checkParseFactorial.UseVisualStyleBackColor = true;
+            this._checkParseFactorial.Visible = false;
+            // 
+            // _checkParseAbs
+            // 
+            this._checkParseAbs.AutoSize = true;
+            this._checkParseAbs.Checked = true;
+            this._checkParseAbs.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._checkParseAbs.Location = new System.Drawing.Point(209, 73);
+            this._checkParseAbs.Name = "_checkParseAbs";
+            this._checkParseAbs.Size = new System.Drawing.Size(136, 16);
+            this._checkParseAbs.TabIndex = 7;
+            this._checkParseAbs.Text = "絶対値記号(|~|)を認識";
+            this._checkParseAbs.UseVisualStyleBackColor = true;
+            this._checkParseAbs.Visible = false;
+            // 
+            // _checkPermitOmitPowerMark
+            // 
+            this._checkPermitOmitPowerMark.AutoSize = true;
+            this._checkPermitOmitPowerMark.Location = new System.Drawing.Point(16, 51);
+            this._checkPermitOmitPowerMark.Name = "_checkPermitOmitPowerMark";
+            this._checkPermitOmitPowerMark.Size = new System.Drawing.Size(152, 16);
+            this._checkPermitOmitPowerMark.TabIndex = 6;
+            this._checkPermitOmitPowerMark.Text = "累乗記号(^)の省略を許可";
+            this._checkPermitOmitPowerMark.UseVisualStyleBackColor = true;
+            // 
+            // _checkPermitOmitMultipleMark
+            // 
+            this._checkPermitOmitMultipleMark.AutoSize = true;
+            this._checkPermitOmitMultipleMark.Checked = true;
+            this._checkPermitOmitMultipleMark.CheckState = System.Windows.Forms.CheckState.Checked;
+            this._checkPermitOmitMultipleMark.Location = new System.Drawing.Point(16, 73);
+            this._checkPermitOmitMultipleMark.Name = "_checkPermitOmitMultipleMark";
+            this._checkPermitOmitMultipleMark.Size = new System.Drawing.Size(153, 16);
+            this._checkPermitOmitMultipleMark.TabIndex = 3;
+            this._checkPermitOmitMultipleMark.Text = "乗算記号(*)の省略を許可";
+            this._checkPermitOmitMultipleMark.UseVisualStyleBackColor = true;
+            this._checkPermitOmitMultipleMark.Visible = false;
+            // 
             // CalculateSettingPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.Controls.Add(this._groupInput);
+            this.Controls.Add(this._groupResult);
             this.Controls.Add(this._groupSolveEquation);
             this.Controls.Add(this._groupSolver);
             this.Controls.Add(this._groupPresicion);
             this.Name = "CalculateSettingPanel";
-            this.Size = new System.Drawing.Size(409, 379);
+            this.Size = new System.Drawing.Size(409, 477);
             this._groupSolveEquation.ResumeLayout(false);
             this._groupSolveEquation.PerformLayout();
             this.splitContainer1.Panel1.ResumeLayout(false);
@@ -839,6 +1002,10 @@
             this._groupSolver.PerformLayout();
             this._groupPresicion.ResumeLayout(false);
             this._groupPresicion.PerformLayout();
+            this._groupResult.ResumeLayout(false);
+            this._groupResult.PerformLayout();
+            this._groupInput.ResumeLayout(false);
+            this._groupInput.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -880,5 +1047,17 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private System.Windows.Forms.Label label12;
         private System.Windows.Forms.Label label11;
+        private System.Windows.Forms.GroupBox _groupResult;
+        private System.Windows.Forms.ComboBox _cmbOutputUnit;
+        private System.Windows.Forms.Label _labelOutputUnit;
+        private System.Windows.Forms.ComboBox _cmbResultCharType;
+        private System.Windows.Forms.Label _labelCharType;
+        private System.Windows.Forms.GroupBox _groupInput;
+        private System.Windows.Forms.ComboBox _cmbDetectUnitMode;
+        private System.Windows.Forms.Label label8;
+        private System.Windows.Forms.CheckBox _checkParseFactorial;
+        private System.Windows.Forms.CheckBox _checkParseAbs;
+        private System.Windows.Forms.CheckBox _checkPermitOmitPowerMark;
+        private System.Windows.Forms.CheckBox _checkPermitOmitMultipleMark;
     }
 }

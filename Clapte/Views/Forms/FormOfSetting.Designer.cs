@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("計算");
+            System.Windows.Forms.TreeNode treeNode1 = new System.Windows.Forms.TreeNode("計算の詳細");
             System.Windows.Forms.TreeNode treeNode2 = new System.Windows.Forms.TreeNode("計算機");
             System.Windows.Forms.TreeNode treeNode3 = new System.Windows.Forms.TreeNode("監視対象外");
             System.Windows.Forms.TreeNode treeNode4 = new System.Windows.Forms.TreeNode("区切り数値集計");
@@ -59,7 +59,7 @@
             this._treeList.Location = new System.Drawing.Point(0, 0);
             this._treeList.Name = "_treeList";
             treeNode1.Name = "_nodeCalculate";
-            treeNode1.Text = "計算";
+            treeNode1.Text = "計算の詳細";
             treeNode2.Name = "_nodeCalculator";
             treeNode2.Text = "計算機";
             treeNode3.Name = "_nodeExclude";
@@ -83,7 +83,7 @@
             treeNode8,
             treeNode9});
             this._treeList.ShowRootLines = false;
-            this._treeList.Size = new System.Drawing.Size(120, 415);
+            this._treeList.Size = new System.Drawing.Size(120, 467);
             this._treeList.TabIndex = 16;
             this._treeList.AfterSelect += new System.Windows.Forms.TreeViewEventHandler(this._treeList_AfterSelect);
             // 
@@ -99,7 +99,7 @@
             // _containerAll.Panel1
             // 
             this._containerAll.Panel1.Controls.Add(this._treeList);
-            this._containerAll.Size = new System.Drawing.Size(546, 415);
+            this._containerAll.Size = new System.Drawing.Size(546, 467);
             this._containerAll.SplitterDistance = 120;
             this._containerAll.TabIndex = 17;
             // 
@@ -107,7 +107,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(96F, 96F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.ClientSize = new System.Drawing.Size(574, 485);
+            this.ClientSize = new System.Drawing.Size(574, 537);
             this.Controls.Add(this._containerAll);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MinimumSize = new System.Drawing.Size(250, 200);

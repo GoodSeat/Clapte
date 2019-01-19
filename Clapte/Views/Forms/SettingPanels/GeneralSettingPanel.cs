@@ -7,7 +7,6 @@ using System.Text;
 using System.Windows.Forms;
 using GoodSeat.Liffom;
 using GoodSeat.Clapte.ViewModels;
-using GoodSeat.Clapte.Solvers.Processes;
 
 namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 {
@@ -63,38 +62,11 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             _numBalloonTime.Value = Target.LimitTime;
 
-            switch (TargetSolver.OutputCharaType)
-            {
-                case CharaType.Auto: _cmbResultCharType.SelectedIndex = 0; break;
-                case CharaType.Half: _cmbResultCharType.SelectedIndex = 1; break;
-                case CharaType.All: _cmbResultCharType.SelectedIndex = 2; break;
-                default: throw new NotImplementedException(); 
-            }
-            switch (TargetSolver.OutputUnitFormatType)
-            {
-                case UnitFormatType.Auto: _cmbOutputUnit.SelectedIndex = 0; break;
-                case UnitFormatType.EncloseWithSpace: _cmbOutputUnit.SelectedIndex = 1; break;
-                case UnitFormatType.EncloseWithParentheses: _cmbOutputUnit.SelectedIndex = 2; break;
-                case UnitFormatType.EncloseWithBrackets: _cmbOutputUnit.SelectedIndex = 3; break;
-                default: _cmbOutputUnit.SelectedIndex = 0; break;
-            }
-            switch (TargetSolver.DetectUnitMode)
-            {
-                case ReplaceVariableToUnitProcess.Mode.AllAutoDetect: _cmbDetectUnitMode.SelectedIndex = 0; break;
-                case ReplaceVariableToUnitProcess.Mode.OnlyRegisterd: _cmbDetectUnitMode.SelectedIndex = 1; break;
-                case ReplaceVariableToUnitProcess.Mode.OnlyExplicit: _cmbDetectUnitMode.SelectedIndex = 2; break;
-                default: _cmbDetectUnitMode.SelectedIndex = 0; break;
-            }
             _checkPermitAllResult.Checked = !TargetSolver.PermitOnlySingleTermResult ;
 
             _checkCopyWithClick.Checked = TargetMainForm.ActionWithBalloonClick;
             _checkCopyWithSame.Checked = Target.ActionWithSameCopy;
             _checkCopyWithHotkey.Checked = TargetHotkeyManager.Enable;
-
-            _checkParseAbs.Checked = TargetSolver.ParseAbsPunctuation;
-            _checkParseFactorial.Checked = TargetSolver.ParseFactorial;
-            _checkPermitOmitMultipleMark.Checked = TargetSolver.PermitOmitProductMark;
-            _checkPermitOmitPowerMark.Checked = TargetSolver.PermitOmitPowerMark;
 
             _txtBoxHotkey.Text = TargetHotkeyManager.Hotkey;
             _checkAlt.Checked = TargetHotkeyManager.Alt;
@@ -112,38 +84,11 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             Target.LimitTime = (int)_numBalloonTime.Value;
 
-            switch (_cmbResultCharType.SelectedIndex)
-            {
-                case 0: TargetSolver.OutputCharaType = CharaType.Auto; break;
-                case 1: TargetSolver.OutputCharaType = CharaType.Half; break;
-                case 2: TargetSolver.OutputCharaType = CharaType.All; break;
-                default: throw new NotImplementedException(); 
-            }
-            switch (_cmbOutputUnit.SelectedIndex)
-            {
-                case 0: TargetSolver.OutputUnitFormatType = UnitFormatType.Auto; break;
-                case 1: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithSpace; break;
-                case 2: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithParentheses; break;
-                case 3: TargetSolver.OutputUnitFormatType = UnitFormatType.EncloseWithBrackets; break;
-                default: throw new NotImplementedException(); 
-            }
-            switch (_cmbDetectUnitMode.SelectedIndex)
-            {
-                case 0: TargetSolver.DetectUnitMode = ReplaceVariableToUnitProcess.Mode.AllAutoDetect; break;
-                case 1: TargetSolver.DetectUnitMode = ReplaceVariableToUnitProcess.Mode.OnlyRegisterd; break;
-                case 2: TargetSolver.DetectUnitMode = ReplaceVariableToUnitProcess.Mode.OnlyExplicit; break;
-                default: throw new NotImplementedException(); 
-            }
             TargetSolver.PermitOnlySingleTermResult = !_checkPermitAllResult.Checked;
 
             TargetMainForm.ActionWithBalloonClick = _checkCopyWithClick.Checked;
             Target.ActionWithSameCopy = _checkCopyWithSame.Checked;
             TargetHotkeyManager.Enable = _checkCopyWithHotkey.Checked;
-
-            TargetSolver.ParseAbsPunctuation = _checkParseAbs.Checked;
-            TargetSolver.ParseFactorial = _checkParseFactorial.Checked;
-            TargetSolver.PermitOmitProductMark = _checkPermitOmitMultipleMark.Checked;
-            TargetSolver.PermitOmitPowerMark = _checkPermitOmitPowerMark.Checked;
         }
 
 
@@ -173,10 +118,5 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             if (!_checkCopyWithHotkey.Checked) TargetHotkeyManager.UnregisterHotKey();
         }
 
-        private void _cmbDetectUnitMode_SelectedIndexChanged(object sender, EventArgs e)
-        {
-            _labelMaxUnitLength.Enabled = (_cmbDetectUnitMode.SelectedIndex == 0);
-            _numMaxUnitLength.Enabled = (_cmbDetectUnitMode.SelectedIndex == 0);
-        }
     }
 }

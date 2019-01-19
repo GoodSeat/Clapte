@@ -81,7 +81,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     return new SplitDataCounterPanel(OwnerMainForm.ClapteCore.SplitDataCountCommand);
                 case "計算機":
                     return new CalculatorSettingPanel(OwnerMainForm.ClaptePadView);
-                case "計算":
+                case "計算の詳細":
                     return new CalculateSettingPanel(OwnerMainForm.ClapteCore);
                 case "バージョン情報":
                     return new VersionInformationPanel();

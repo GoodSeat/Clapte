@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -385,8 +385,8 @@ namespace GoodSeat.Clapte.ViewModels
             var inputVersion = double.Parse(inputElement.GetAttribute("Version", "1.0"));
             MaxInputTextLength = int.Parse(inputElement.GetAttribute("MaxInputTextLength"));
             MaxVariableTextLength = int.Parse(inputElement.GetAttribute("MaxVariableTextLength"));
-            ParseAbsPunctuation = bool.Parse(inputElement.GetAttribute("ParseAbsPunctuation"));
-            ParseFactorial = bool.Parse(inputElement.GetAttribute("ParseFactorial"));
+            ParseAbsPunctuation = bool.Parse(inputElement.GetAttribute("ParseAbsPunctuationManual", "True"));
+            ParseFactorial = bool.Parse(inputElement.GetAttribute("ParseFactorialManual", "True"));
             PermitOmitProductMark = bool.Parse(inputElement.GetAttribute("PermitOmitProductMark", "True"));
             PermitOmitPowerMark = bool.Parse(inputElement.GetAttribute("PermitOmitPowerMark", "False"));
             if (inputVersion >= 1.1)
@@ -434,8 +434,8 @@ namespace GoodSeat.Clapte.ViewModels
             inputElement.AddAttribute("Version", "1.1");
             inputElement.AddAttribute("MaxInputTextLength", MaxInputTextLength.ToString());
             inputElement.AddAttribute("MaxVariableTextLength", MaxVariableTextLength.ToString());
-            inputElement.AddAttribute("ParseAbsPunctuation", ParseAbsPunctuation.ToString());
-            inputElement.AddAttribute("ParseFactorial", ParseFactorial.ToString());
+            inputElement.AddAttribute("ParseAbsPunctuationManual", ParseAbsPunctuation.ToString());
+            inputElement.AddAttribute("ParseFactorialManual", ParseFactorial.ToString());
             inputElement.AddAttribute("PermitOmitProductMark", PermitOmitProductMark.ToString());
             inputElement.AddAttribute("PermitOmitPowerMark", PermitOmitPowerMark.ToString());
             inputElement.AddAttribute("DetectUnitMode", DetectUnitMode.ToString());
