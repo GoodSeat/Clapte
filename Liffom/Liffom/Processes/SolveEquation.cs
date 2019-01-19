@@ -7,6 +7,7 @@ using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formulas.Rules;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Reals;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Liffom.Processes
 {
@@ -107,7 +108,7 @@ namespace GoodSeat.Liffom.Processes
                 try
                 {
                     Formula ans = f.Substituted(x, checkSolve).DeformFormula(token);
-                    if (ans == 0) return checkSolve;
+                    if (ans == 0 || ans.ClearUnit() == 0) return checkSolve;
                 }
                 catch (DivideByZeroException) { }
                 catch (Exception e) { if (!(e.InnerException is DivideByZeroException)) throw e; }

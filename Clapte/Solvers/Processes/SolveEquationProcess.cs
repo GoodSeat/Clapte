@@ -63,12 +63,13 @@ namespace GoodSeat.Clapte.Solvers.Processes
             {
                 if (!(input is Equal)) return null;
 
-                var token = new DeformToken(new SimplifyToken(), new CalculateToken());
-                var target = input.DeformFormula(token);
+                var target = new Equal((input as Equal).LeftHandSide.Calculate(), (input as Equal).RightHandSide.Calculate());
 
                 var variables = target.GetExistFactors<Variable>();
-                if (variables.Count() != 1) return null;
-                var x = variables.First();
+                if (!variables.Any()) return null;
+                var x = variables.FirstOrDefault(v => v.Mark == PermanentSolveTarget);
+                if (x == null && variables.Count() != 1) return null;
+                if (x == null) x = variables.First();
 
                 for (int i = 0; i < SolveEquations.Count; i++)
                 {
