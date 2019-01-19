@@ -27,8 +27,6 @@ namespace GoodSeat.Liffom.Formulas.Rules
             }
         }
 
-        static Formula s_invalidPower = new Power(1, -1);
-
         protected internal override bool IsTargetTypeFormula(Formula target)
         {
             var fs = target as Product;
@@ -44,7 +42,19 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         protected override bool IsTargetCouple(Formula f1, Formula f2) { return IsInvalidOne(f1); }
 
-        private bool IsInvalidOne(Formula f) { return (f == s_invalidPower || f == 1); }
+        private bool IsInvalidOne(Formula f)
+        {
+            var n = f as Numeric;
+            if (n != null) return n == 1 && n.HasInfinitySignificantDigits;
+
+            var p = f as Power;
+            if (p != null && p.Exponent == -1)
+            {
+                var m = p.Base as Numeric;
+                if (m != null) return m == 1 && m.HasInfinitySignificantDigits;
+            }
+            return false;
+        }
 
         protected override Formula GetRuledFormula(Formula f1, Formula f2) { return f2; }
 

@@ -202,6 +202,14 @@ namespace GoodSeat.Liffom.Formulas
         }
 
         /// <summary>
+        /// 有効桁数が無限大であると考えられる数値か否かを取得します。
+        /// </summary>
+        public bool HasInfinitySignificantDigits
+        {
+            get { return SignificantDigits > MaxValidDigits; }
+        }
+
+        /// <summary>
         /// 有効桁数を無限相当の値に設定します。
         /// </summary>
         public void SetInfinitySignificantDigits()

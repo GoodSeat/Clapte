@@ -41,7 +41,8 @@ namespace GoodSeat.Liffom.Formulas.Rules
             bool applied = false;
             for (int i = list.Count - 1; i >= 0; i--)
             {
-                if (list[i] == 0)
+                var n = list[i] as Numeric;
+                if (n != null && n == 0 && n.HasInfinitySignificantDigits)
                 {
                     list.RemoveAt(i);
                     applied = true;
