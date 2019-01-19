@@ -20,7 +20,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// </summary>
         /// <param name="owner">処理の保持者となるソルバ。</param>
         /// <param name="maxInputTextLength">数式として認識する最大文字列長。</param>
-        /// <param name="owner">変数・単位名として認識する最大文字列長。</param>
+        /// <param name="maxVariableTextLength">変数・単位名として認識する最大文字列長。チェックしない場合は、0を指定。</param>
         public SieveTargetInputProcess(Solver owner, int maxInputTextLength, int maxVariableTextLength)
             : base(owner) 
         {
@@ -70,15 +70,18 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error CheckInputFormula(ref Formula input)
         {
-            foreach (var check in input.GetExistFactors<Variable>())
+            if (MaxVariableTextLength > 0)
             {
-                if (check.Mark.Length > MaxVariableTextLength)
-                    return new Error(Error.Level.Abort, "数式中に存在する変数名が、許容最大文字列長を超過します。");
-            }
-            foreach (var check in input.GetExistFactors<Unit>())
-            {
-                if (check.UnitName.Length > MaxVariableTextLength)
-                    return new Error(Error.Level.Abort, "数式中に存在する単位名が、許容最大文字列長を超過します。");
+                foreach (var check in input.GetExistFactors<Variable>())
+                {
+                    if (check.Mark.Length > MaxVariableTextLength)
+                        return new Error(Error.Level.Abort, "数式中に存在する変数名が、許容最大文字列長を超過します。");
+                }
+                foreach (var check in input.GetExistFactors<Unit>())
+                {
+                    if (check.UnitName.Length > MaxVariableTextLength)
+                        return new Error(Error.Level.Abort, "数式中に存在する単位名が、許容最大文字列長を超過します。");
+                }
             }
 
             return base.CheckInputFormula(ref input);
