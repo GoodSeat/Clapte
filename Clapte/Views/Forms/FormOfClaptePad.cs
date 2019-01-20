@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -931,7 +931,8 @@ namespace GoodSeat.Clapte.Views.Forms
                 ig.BackColor = ColorScheme.HighlightColor;
 
                 var pt = e.Position;
-                ig.FillRectangle(pt.X, pt.Y + textBox.View.LineHeight - 1, textBox.Width, 1);
+                ig.RemoveClipRect();
+                ig.FillRectangle(pt.X, pt.Y + textBox.View.LineHeight, textBox.Width, 1);
             }
         }
 
@@ -1237,5 +1238,6 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         #endregion
+
     }
 }
