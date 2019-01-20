@@ -168,6 +168,15 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
-
+        /// <summary>
+        /// ヘルプページを規定のブラウザで表示します。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void _btnHelp_Click(object sender, EventArgs e)
+        {
+            TreeNode selectedNode = _treeList.SelectedNode;
+            ClapteHelp.Show(this, "設定画面/" + selectedNode?.Text ?? "");
+        }
     }
 }

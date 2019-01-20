@@ -473,16 +473,6 @@ namespace GoodSeat.Clapte.Properties {
         /// <summary>
         ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
         /// </summary>
-        internal static System.Drawing.Bitmap Icon_Info {
-            get {
-                object obj = ResourceManager.GetObject("Icon_Info", resourceCulture);
-                return ((System.Drawing.Bitmap)(obj));
-            }
-        }
-        
-        /// <summary>
-        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
-        /// </summary>
         internal static System.Drawing.Bitmap Icon_MoveDown {
             get {
                 object obj = ResourceManager.GetObject("Icon_MoveDown", resourceCulture);
@@ -656,6 +646,26 @@ namespace GoodSeat.Clapte.Properties {
         internal static System.Drawing.Bitmap Icon_Sub_Unfocus {
             get {
                 object obj = ResourceManager.GetObject("Icon_Sub_Unfocus", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Update {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Update", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   型 System.Drawing.Bitmap のローカライズされたリソースを検索します。
+        /// </summary>
+        internal static System.Drawing.Bitmap Icon_Update_Unfocus {
+            get {
+                object obj = ResourceManager.GetObject("Icon_Update_Unfocus", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

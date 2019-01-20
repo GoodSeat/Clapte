@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -900,15 +900,23 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _btnSetting_Click(object sender, EventArgs e) { OwnerMainForm.OpenSetting(); }
 
+        private void _btnUpdate_Click(object sender, EventArgs e) { Target.RenewAll(_inputTextBox.Text); }
+
         private void _btnAbort_Click(object sender, EventArgs e) { Target.AbortEvaluate(); }
 
         private void _btnAllDelete_Click(object sender, EventArgs e) { _inputTextBox.Text = ""; }
 
         private void _btnSave_MouseEnter(object sender, EventArgs e) { (sender as Control).BringToFront(); }
 
-        private void _picStatus_VisibleChanged(object sender, EventArgs e) { _btnAbort.Visible = _picStatus.Visible; }
+        private void _picStatus_VisibleChanged(object sender, EventArgs e)
+        {
+            _btnAbort.Visible = _picStatus.Visible;
+            _btnUpdate.Visible = !_picStatus.Visible;
+        }
 
         private void _btnMinimize_Click(object sender, EventArgs e) { WindowState = FormWindowState.Minimized; }
+
+        private void _btnHelp_Click(object sender, EventArgs e) { ClapteHelp.Show(this, "計算機"); }
 
         private void _inputTextBox_LineDrawn(object sender, LineDrawEventArgs e)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Text;
 using System.Windows.Forms;
 
@@ -14,21 +15,24 @@ namespace GoodSeat.Clapte.Views
 
         static ClapteHelp()
         {
-            s_pathMap.Add("一般設定", "03_reference/01_settingDialog/01_general.html");
-            s_pathMap.Add("区切り数値集計", "03_reference/01_settingDialog/02_splitDataCount.html");
-            s_pathMap.Add("計算機", "03_reference/01_settingDialog/03_calculator.html");
-            s_pathMap.Add("方程式", "03_reference/01_settingDialog/04_solveEquation.html");
-            s_pathMap.Add("定数", "03_reference/01_settingDialog/05_constant.html");
-            s_pathMap.Add("関数", "03_reference/01_settingDialog/06_function.html");
-            s_pathMap.Add("単位換算表", "03_reference/01_settingDialog/07_unitTable.html");
-            s_pathMap.Add("バージョン情報", "03_reference/01_settingDialog/08_versionInfo.html");
+            s_pathMap.Add("設定画面/一般設定", "02_リファレンス/02-01_一般設定.md");
+            s_pathMap.Add("設定画面/計算の詳細", "02_リファレンス/02-02_計算の詳細.md");
+            s_pathMap.Add("設定画面/計算機", "02_リファレンス/02-03_計算機.md");
+            s_pathMap.Add("設定画面/監視対象外", "02_リファレンス/02-04_監視対象外.md");
+            s_pathMap.Add("設定画面/区切り数値集計", "02_リファレンス/02-05_区切り数値集計.md");
+            s_pathMap.Add("設定画面/定数", "02_リファレンス/02-06_定数.md");
+            s_pathMap.Add("設定画面/関数", "02_リファレンス/02-07_関数.md");
+            s_pathMap.Add("設定画面/単位換算表", "02_リファレンス/02-08_単位換算表.md");
+            s_pathMap.Add("設定画面/バージョン情報", "02_リファレンス/02-09_バージョン情報.md");
+
+            s_pathMap.Add("計算機", "02_リファレンス/03_計算機.md");
         }
         /// <summary>
         /// Clapteのヘルプファイルパスを取得します。
         /// </summary>
-        public static string URL
+        public static string BaseURL
         {
-            get { return Application.StartupPath + "\\ClapteHelp.chm"; }
+            get { return "https://bitbucket.org/GoodSeat/clapte/wiki/"; }
         }
 
         /// <summary>
@@ -37,9 +41,7 @@ namespace GoodSeat.Clapte.Views
         /// <param name="control">ヘルプの親を認識するためのコントロール</param>
         public static void Show(Control control)
         {
-            if (!CheckExistFile()) return;
-
-            Help.ShowHelp(control, URL);
+            Process.Start(BaseURL + GetTopicPath("Top"));
         }
 
         /// <summary>
@@ -49,39 +51,7 @@ namespace GoodSeat.Clapte.Views
         /// <param name="topic">トピック名</param>
         public static void Show(Control control, string topic)
         {
-            if (!CheckExistFile()) return;
-
-            Help.ShowHelp(control, URL, HelpNavigator.Topic, GetTopicPath(topic));
-        }
-
-        /// <summary>
-        /// トピック名を指定してClapteのヘルプファイルを開きます。
-        /// </summary>
-        /// <param name="control">ヘルプの親を認識するためのコントロール</param>
-        /// <param name="topic">トピック名</param>
-        /// <param name="bookmark">ブックマーク名</param>
-        public static void Show(Control control, string topic, string bookmark)
-        {
-            if (!CheckExistFile()) return;
-
-            Help.ShowHelp(control, URL, HelpNavigator.Topic, GetTopicPath(topic) + "#" + bookmark);
-        }
-
-        /// <summary>
-        /// ヘルプファイルが存在するか調べ、必要に応じてメッセージを表示します。
-        /// </summary>
-        /// <returns></returns>
-        static bool CheckExistFile()
-        {
-            if (!System.IO.File.Exists(URL))
-            {
-                MessageBox.Show("ヘルプファイル \"" + URL + "\" が見つかりません。", "エラー", MessageBoxButtons.OK, MessageBoxIcon.Information);
-                return false;
-            }
-            else
-            {
-                return true;
-            }
+            Process.Start(BaseURL + GetTopicPath(topic));
         }
 
         /// <summary>
@@ -94,7 +64,7 @@ namespace GoodSeat.Clapte.Views
             if (s_pathMap.ContainsKey(topic))
                 return s_pathMap[topic];
             else
-                return "default.html";
+                return "Home.md";
         }
     }
 }

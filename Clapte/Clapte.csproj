@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -301,6 +301,10 @@
     <Content Include="Icon_Clapte.ico" />
     <Content Include="Icon_Clapte_Notify.ico" />
     <Content Include="Icon_Clapte_Notify_Deactive.ico" />
+    <None Include="Resources\Icon_Update_Unfocus.png" />
+    <None Include="Resources\Icon_Update.png" />
+    <None Include="Resources\Icon_Help_Unfocus.png" />
+    <None Include="Resources\Icon_Help.png" />
     <None Include="Resources\Icon_PushPin_Unfocus.png" />
     <None Include="Resources\Icon_PushPin.png" />
     <None Include="Resources\Icon_Setting_Unfocus.png" />
@@ -319,8 +323,6 @@
     <None Include="Resources\Icon_Info.png" />
     <None Include="Resources\Image_Exe_Unfocus.png" />
     <None Include="Resources\Image_Exe.png" />
-    <None Include="Resources\Icon_Help_Unfocus.png" />
-    <None Include="Resources\Icon_Help.png" />
     <None Include="Resources\Icon_MoveUp_Unfocus.png" />
     <None Include="Resources\Icon_MoveUp.png" />
     <None Include="Resources\Icon_MoveDown_Unfocus.png" />
