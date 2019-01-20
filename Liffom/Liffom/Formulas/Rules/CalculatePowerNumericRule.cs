@@ -103,7 +103,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "累乗の数値計算を規定するルールです。"; }
+            get { return "数値同士の累乗を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

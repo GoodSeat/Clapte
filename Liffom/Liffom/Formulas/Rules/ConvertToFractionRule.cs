@@ -78,7 +78,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "小数を有する数値を分数に変換するルールです。"; }
+            get { return "小数を有する数値を分数に変換します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

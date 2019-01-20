@@ -65,7 +65,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "積算における無意味な*1、/1を削除するルールです。"; }
+            get { return "積算における無意味な*1、/1を削除します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

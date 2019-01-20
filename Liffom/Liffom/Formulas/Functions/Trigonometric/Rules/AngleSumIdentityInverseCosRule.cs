@@ -44,7 +44,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
         public override string Information
         {
-            get { return "加法定理によるcos関数への整理を規定するルールです。"; }
+            get { return "加法定理により、cos関数へ整理します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -47,7 +47,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
             yield return typeof(DistributivePropertyRule); // 分配則適用の前に試みる
         }
 
-        public override string Information { get { return "分母と分子の項を約分により簡単化するルールです。"; } }
+        public override string Information { get { return "分母と分子の項を約分により簡単化します。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

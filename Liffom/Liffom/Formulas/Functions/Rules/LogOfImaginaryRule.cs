@@ -72,7 +72,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         public override string Information
         {
-            get { return "負数の対数及び複素対数の評価を規定するルールです。"; }
+            get { return "負数の対数及び複素対数を評価します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

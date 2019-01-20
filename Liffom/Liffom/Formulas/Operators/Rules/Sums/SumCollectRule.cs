@@ -43,7 +43,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Sum; }
 
-        public override string Information { get { return "和算に対して、特定数式を基準として整理を実行するルールです。"; } }
+        public override string Information { get { return "和算に対して、特定数式を基準として整理を行います。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

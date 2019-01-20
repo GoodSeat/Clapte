@@ -50,7 +50,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 
         public override string Information
         {
-            get { return "虚数の整数乗の整理を規程するルールです。"; }
+            get { return "虚数の整数乗を整理します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

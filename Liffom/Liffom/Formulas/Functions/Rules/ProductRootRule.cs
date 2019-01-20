@@ -33,7 +33,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Product; }
 
-        public override string Information { get { return "ルート関数同士の積算ルールです。"; } }
+        public override string Information { get { return "ルート同士の積算をまとめます。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

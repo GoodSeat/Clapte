@@ -30,7 +30,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Power; }
 
-        public override string Information { get { return "ルート関数にかかる累乗を、累乗のルート関数へと変換するルールです。"; } }
+        public override string Information { get { return "ルートの累乗を、累乗のルートに変換します。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

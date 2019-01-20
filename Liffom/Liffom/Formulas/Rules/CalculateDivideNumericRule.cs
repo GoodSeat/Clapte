@@ -68,7 +68,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "数値に対する数値による除算結果を規定するルールです。"; }
+            get { return "数値に対する数値による除算を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

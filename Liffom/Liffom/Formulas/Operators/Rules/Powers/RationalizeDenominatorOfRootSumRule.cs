@@ -36,7 +36,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
             yield return typeof(FactorOutWithRootRule); // √の中を単純化済み
         } 
 
-        public override string Information { get { return "分母の有理化（分母の平方根を含む和を分子に移動）を行うルールです。"; } }
+        public override string Information { get { return "分母の有理化（分母の平方根を含む和を分子に移動）を行います。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

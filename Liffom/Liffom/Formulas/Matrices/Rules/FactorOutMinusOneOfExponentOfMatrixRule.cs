@@ -38,7 +38,7 @@ namespace GoodSeat.Liffom.Formulas.Matrices.Rules
 
         public override string Information
         {
-            get { return "負数を指数とする累乗において、その指数の-1を括りだすルールです。"; }
+            get { return "負数を指数とする累乗において、指数の-1を括り出します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -54,7 +54,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
             yield return ExpandNumericPowerRule.Entity;
         }
 
-        public override string Information { get { return "因数分解の処理を規定するルールです。"; } }
+        public override string Information { get { return "因数分解を行います。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

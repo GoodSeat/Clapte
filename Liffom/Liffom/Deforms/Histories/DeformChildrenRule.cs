@@ -75,7 +75,7 @@ namespace GoodSeat.Liffom.Deforms
 
         public override string Information
         {
-            get { return "子数式に対して、変形トークンに基づく変形を再帰的に適用するルールです。"; }
+            get { return "数式を構成する各部分に対して、再帰的に変形を行います。"; }
         }
 
         protected override IEnumerable<Type> OnGetPreDemandRules()

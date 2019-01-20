@@ -54,7 +54,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         public override string Information
         {
-            get { return "微分結果が0、もしくは1となる微分を既定するルールです。"; }
+            get { return "微分結果が0、もしくは1となる微分を行います。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -22,7 +22,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Root; }
 
-        public override string Information { get { return "ルート関数内部のルート関数を合成するルールです。"; } }
+        public override string Information { get { return "ルート内部のルートを合成します。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

@@ -69,7 +69,7 @@ namespace GoodSeat.Liffom.Formulas.Matrices.Rules
 
         public override string Information
         {
-            get { return "スカラーと行列の積を規定するルールです。"; }
+            get { return "スカラーと行列の積を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

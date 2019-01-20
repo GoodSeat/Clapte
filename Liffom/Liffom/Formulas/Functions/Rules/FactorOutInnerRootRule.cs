@@ -244,7 +244,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         public override string Information
         {
-            get { return "√の中身の整理を規定するルールです。"; }
+            get { return "ルートの内部を整理します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

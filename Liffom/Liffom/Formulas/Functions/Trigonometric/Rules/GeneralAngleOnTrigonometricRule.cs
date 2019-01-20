@@ -56,7 +56,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
         public override string Information
         {
-            get { return "三角関数における一般角(-π～π)の公式を規定するルールです。"; }
+            get { return "三角関数における一般角(-π～π)の公式を適用します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

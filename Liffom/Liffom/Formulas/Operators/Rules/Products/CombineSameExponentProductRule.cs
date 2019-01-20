@@ -38,7 +38,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
         }
 
 
-        public override string Information { get { return "同指数の累乗の積算を、累乗にまとめるルールです。"; } }
+        public override string Information { get { return "同指数の累乗の積算を、累乗にまとめます。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

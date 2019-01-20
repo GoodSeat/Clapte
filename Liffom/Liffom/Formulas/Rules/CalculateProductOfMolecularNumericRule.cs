@@ -35,7 +35,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "分子の数値の積算結果を規定する計算ルールです。"; }
+            get { return "分子の数値の積算を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

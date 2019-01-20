@@ -28,7 +28,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
             yield return typeof(FactorOutWithRootRule); // √の中を単純化済み
         } 
 
-        public override string Information { get { return "分母の単純有理化（分母の累乗根を分子に移動）を行うルールです。"; } }
+        public override string Information { get { return "分母の単純有理化（分母の累乗根を分子に移動）を行います。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

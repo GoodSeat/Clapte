@@ -63,7 +63,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "0の累乗、もしくは任意式の0乗を規定するルールです。"; }
+            get { return "0の累乗、もしくは任意式の0乗を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

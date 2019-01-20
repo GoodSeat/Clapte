@@ -45,7 +45,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "1の累乗、もしくは任意式の1乗を規定するルールです。"; }
+            get { return "1の累乗、もしくは任意式の1乗を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

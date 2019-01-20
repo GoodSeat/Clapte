@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 
         public override string Information
         {
-            get { return "分数を指数とする累乗を、指数の分母を基数とした√に変換するルールです。"; }
+            get { return "分数を指数とする累乗を、指数の分母を基数としたルートに変換します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -57,7 +57,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             yield return typeof(ReduceFactorOfProductRule); // 約分済み
         }
 
-        public override string Information { get { return "積算に0が含まれる場合に、不要な項を削除するルールです。"; } }
+        public override string Information { get { return "0が含まれる積算から、不要な項を削除します。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

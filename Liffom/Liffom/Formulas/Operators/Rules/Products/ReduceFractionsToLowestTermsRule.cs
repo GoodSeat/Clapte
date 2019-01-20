@@ -63,7 +63,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
 
         public override string Information
         {
-            get { return "多項式の約分ルールです。"; }
+            get { return "多項式の約分を行います。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

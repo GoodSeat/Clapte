@@ -117,7 +117,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
             public override string Information
             {
-                get { return "θ=0（直線y=0）に対しての対称性を考慮するための角度か否かを判定するルールです。"; }
+                get { return "θ=0（直線y=0）に対しての対称性を考慮するための角度か否かを判定します。"; }
             }
 
             public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
@@ -152,7 +152,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
             public override string Information
             {
-                get { return "θ=π/4（直線y=x）に対しての対称性を考慮するための角度か否かを判定するルールです。"; }
+                get { return "θ=π/4（直線y=x）に対しての対称性を考慮するための角度か否かを判定します。"; }
             }
 
             public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
@@ -187,7 +187,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
             public override string Information
             {
-                get { return "θ=π/2（直線x=0）に対しての対称性を考慮するための角度か否かを判定するルールです。"; }
+                get { return "θ=π/2（直線x=0）に対しての対称性を考慮するための角度か否かを判定します。"; }
             }
 
             public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
@@ -210,7 +210,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
         }
 
 
-        public override string Information { get { return "三角関数の対称性を規定するルールです。"; } }
+        public override string Information { get { return "三角関数の対称性を考慮した数式の変形を行います。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

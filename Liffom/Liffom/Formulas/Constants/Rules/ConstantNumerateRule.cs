@@ -41,7 +41,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 
         public override string Information
         {
-            get { return "定数を数値化するルールです。"; }
+            get { return "定数を数値化します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

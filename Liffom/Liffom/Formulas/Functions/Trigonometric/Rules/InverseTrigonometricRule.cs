@@ -25,7 +25,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
         public override string Information
         {
-            get { return "逆三角関数に関する特性を規定するルールです。"; }
+            get { return "逆三角関数の加算を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

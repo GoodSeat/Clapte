@@ -35,7 +35,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 
         public override string Information
         {
-            get { return "分母の-1を分子に移動させるルールです。"; }
+            get { return "分母の-1を分子に移動します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

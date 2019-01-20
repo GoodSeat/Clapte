@@ -61,7 +61,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "0の含まれる和算において、不要な項を削除するルールです。"; }
+            get { return "0が含まれる和算から、不要な項を削除します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

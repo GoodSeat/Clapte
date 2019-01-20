@@ -53,7 +53,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         public override string Information
         {
-            get { return "合成関数の微分を規定するルールです。"; }
+            get { return "合成関数の微分を行います。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

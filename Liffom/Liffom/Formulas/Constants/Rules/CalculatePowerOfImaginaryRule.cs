@@ -64,7 +64,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 
         public override string Information
         {
-            get { return "複素べき乗の計算を規定するルールです。"; }
+            get { return "複素べき乗を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

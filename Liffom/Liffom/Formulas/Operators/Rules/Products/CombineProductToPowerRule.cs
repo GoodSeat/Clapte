@@ -64,7 +64,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Products
             yield return new FactorOutWithRootRule(); // 5^(3/2) → 5*5^(1/2)
         }
 
-        public override string Information { get { return "同項の積算を累乗にまとめるルールです。"; } }
+        public override string Information { get { return "同項の積算を累乗にまとめます。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

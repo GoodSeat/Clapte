@@ -43,7 +43,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 
         public override string Information
         {
-            get { return "分数とそれ以外の項の通分処理を規定するルールです。"; }
+            get { return "分数項とそれ以外の項の通分を行います。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
@@ -126,7 +126,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
 
         public override string Information
         {
-            get { return "分数同士の和の通分処理を規定するルールです。"; }
+            get { return "分数項同士の和を通分します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -71,7 +71,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
             return TargetFormula.CreateOperator(list.ToArray());
         }
 
-        public override string Information { get { return "分配則を規定するルールです。"; } }
+        public override string Information { get { return "分配則を適用します。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

@@ -32,7 +32,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
             yield return typeof(MoveMinusOneToMolecularFromDenominatorRule);
         }
 
-        public override string Information { get { return "累乗対象の-1乗を、括りだすルールです。"; } }
+        public override string Information { get { return "-1乗の累乗を基数とした累乗について、指数の-1を括り出します。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

@@ -62,7 +62,7 @@ namespace GoodSeat.Liffom.Formulas.Units.Rules
 
         public override string Information
         {
-            get { return "式中に存在する同次元単位の単位系を揃えるルールです。"; }
+            get { return "式中に存在する同次元単位の単位を揃えます。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

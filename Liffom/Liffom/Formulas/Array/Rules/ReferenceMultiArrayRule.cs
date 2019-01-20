@@ -43,7 +43,7 @@ namespace GoodSeat.Liffom.Formulas.Array.Rules
 
         public override string Information
         {
-            get { return "多次元配列における特定インデックスの参照ルールです。"; }
+            get { return "多次元配列における特定インデックスの値を参照します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -62,7 +62,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Rules
 
         public override string Information
         {
-            get { return "微分法の累乗の計算を規定するルールです。"; }
+            get { return "累乗の微分を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -97,7 +97,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
         /// <summary>
         /// このルールの説明を取得します。
         /// </summary>
-        public override string Information { get { return "逆三角関数の数値化に関する公式を規定するルールです。"; } }
+        public override string Information { get { return "逆三角関数を評価します。"; } }
 
         /// <summary>
         /// 変形前数式と変形後数式から成る、このルールの変形例を順次返す反復子を取得します。ここで取得される例は、単体テストで自動検証されます。

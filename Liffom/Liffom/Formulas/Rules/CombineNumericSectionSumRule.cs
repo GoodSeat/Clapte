@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "数値係数同士の同項の和算を積算にまとめるルールです。"; }
+            get { return "数値係数同士の同項の和算を積算にまとめます。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

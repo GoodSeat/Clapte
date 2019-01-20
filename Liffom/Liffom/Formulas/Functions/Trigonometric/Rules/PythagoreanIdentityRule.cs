@@ -30,7 +30,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
         public override string Information
         {
-            get { return "ピタゴラスの定理を規定するルールです。"; }
+            get { return "ピタゴラスの定理を適用します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

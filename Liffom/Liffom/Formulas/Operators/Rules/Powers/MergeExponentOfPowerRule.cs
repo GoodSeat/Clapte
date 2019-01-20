@@ -29,7 +29,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
 
         public override string Information
         {
-            get { return "累乗の累乗を合成するルールです。"; }
+            get { return "累乗の累乗を合成します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

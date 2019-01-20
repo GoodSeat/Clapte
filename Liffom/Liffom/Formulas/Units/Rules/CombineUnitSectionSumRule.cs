@@ -51,7 +51,7 @@ namespace GoodSeat.Liffom.Formulas.Units.Rules
 
         public override string Information
         {
-            get { return "同単位同士の和算を、単位項とその他の積算でまとめるルールです。"; }
+            get { return "同単位の項同士の和算を、単位項とその他の項の積算にまとめます。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -45,7 +45,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 
         public override string Information
         {
-            get { return "虚数係数と数値係数の同項の和算を積算にまとめるルールです。"; }
+            get { return "虚数係数と数値係数の同項の和算を、積算にまとめます。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

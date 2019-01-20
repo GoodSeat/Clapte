@@ -65,7 +65,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
         public override string Information
         {
-            get { return "式中に存在する角度の単位をradに統一するルールです。"; }
+            get { return "式中に存在する角度の単位をradに統一します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -34,7 +34,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Powers
             yield return typeof(CombineSameExponentProductRule); // 3^-1 * (27^(1/4))^-1 → (3*27^(1/4)) ^ -1
         }
 
-        public override string Information { get { return "分母の単純有理化（分母の累乗根を分子に移動）を行うルールです。"; } }
+        public override string Information { get { return "分母の単純有理化（分母の累乗根を分子に移動）を行います。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

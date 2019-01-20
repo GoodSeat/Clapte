@@ -53,7 +53,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "数値の加算結果を規定する計算ルールです。"; }
+            get { return "数値同士の加算を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

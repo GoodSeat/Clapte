@@ -40,7 +40,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
         public override string Information
         {
-            get { return "加法定理によるsin関数への整理を規定するルールです。"; }
+            get { return "加法定理により、sin関数へ整理します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

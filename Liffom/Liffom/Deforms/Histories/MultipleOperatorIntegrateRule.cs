@@ -47,7 +47,7 @@ namespace GoodSeat.Liffom.Deforms
 
         public override string Information
         {
-            get { return "可変数演算の子数式に、同演算子が存在する場合に、その数式を統合するルールです。"; }
+            get { return "可変数演算を構成する各数式に存在する同演算を統合します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

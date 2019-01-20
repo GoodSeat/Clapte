@@ -120,7 +120,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "積算の数値の約分ルールです。"; }
+            get { return "積算に含まれる数値を約分します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -72,7 +72,7 @@ namespace GoodSeat.Liffom.Formulas.Functions.Trigonometric.Rules
 
         public override string Information
         {
-            get { return "加法定理による展開を規定するルールです。"; }
+            get { return "加法定理による三角関数の展開を行います。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

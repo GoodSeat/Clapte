@@ -77,7 +77,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
 
         public override string Information
         {
-            get { return "整数乗の累乗展開を規定するルールです。"; }
+            get { return "整数乗の累乗を積算に展開します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

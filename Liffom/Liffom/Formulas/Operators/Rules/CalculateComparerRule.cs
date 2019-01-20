@@ -48,7 +48,7 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules
 
         public override string Information
         {
-            get { return "比較演算子の評価結果を数値化するルールです。"; }
+            get { return "比較演算の結果を数値化します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

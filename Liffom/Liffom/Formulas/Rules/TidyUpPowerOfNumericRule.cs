@@ -46,7 +46,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             return null;
         }
 
-        public override string Information { get { return "結果が整数となる、数値の数値乗を整理するルールです。"; } }
+        public override string Information { get { return "結果が整数となる数値の累乗を計算します。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

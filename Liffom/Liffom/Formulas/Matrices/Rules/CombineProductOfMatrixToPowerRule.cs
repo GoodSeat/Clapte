@@ -58,7 +58,7 @@ namespace GoodSeat.Liffom.Formulas.Matrices.Rules
             yield return ExpandNumericPowerOfMatrixRule.Entity; // (a+b)^^2 → (a+b).(a+b)
         }
 
-        public override string Information { get { return "同項の積算を累乗にまとめるルールです。"; } }
+        public override string Information { get { return "同項の積算を累乗にまとめます。"; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {

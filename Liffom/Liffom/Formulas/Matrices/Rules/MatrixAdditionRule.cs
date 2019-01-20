@@ -80,7 +80,7 @@ namespace GoodSeat.Liffom.Formulas.Matrices.Rules
 
         public override string Information
         {
-            get { return "行列の和を規定するルールです。"; }
+            get { return "行列の和を計算します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()

@@ -66,7 +66,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 
         public override string Information
         {
-            get { return "オイラーの公式を規定するルールです。"; }
+            get { return "オイラーの公式を適用します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
@@ -122,7 +122,7 @@ namespace GoodSeat.Liffom.Formulas.Constants.Rules
 
         public override string Information
         {
-            get { return "オイラーの公式を規定するルールです。"; }
+            get { return "オイラーの公式を適用します。"; }
         }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
