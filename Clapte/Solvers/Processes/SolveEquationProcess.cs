@@ -57,6 +57,8 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error EvaluateFormula(ref Formula input) 
         {
+            object userState = new object();
+
             _calcStartTime = DateTime.Now;
             Formula.FormulaProcessing += Formula_FormulaProcessing;
             try
@@ -71,23 +73,13 @@ namespace GoodSeat.Clapte.Solvers.Processes
                 if (x == null && variables.Count() != 1) return null;
                 if (x == null) x = variables.First();
 
-                for (int i = 0; i < SolveEquations.Count; i++)
-                {
-                    SolveEquations[i].CancelAsync();
-                    while (SolveEquations[i].IsBusy()) Thread.Sleep(0);
-                }
-
                 Formula result = null;
                 for (int i = 0; i < SolveEquations.Count; i++)
-                    SolveEquations[i].DoAsync(target, x);
+                    SolveEquations[i].DoAsync(userState, target, x);
                 for (int i = 0; i < SolveEquations.Count; i++)
                 {
-                    result = SolveEquations[i].Wait();
+                    result = SolveEquations[i].Wait(userState);
                     if (result != null) break;
-                }
-                for (int i = 0; i < SolveEquations.Count; i++)
-                {
-                    if (SolveEquations[i].IsBusy()) SolveEquations[i].CancelAsync();
                 }
 
                 if (result != null)
@@ -102,6 +94,11 @@ namespace GoodSeat.Clapte.Solvers.Processes
             }
             finally
             {
+                foreach (var solver in SolveEquations)
+                {
+                    if (solver.IsBusy(userState)) solver.CancelAsync(userState);
+                }
+
                 Formula.FormulaProcessing -= Formula_FormulaProcessing;
             }
         }
