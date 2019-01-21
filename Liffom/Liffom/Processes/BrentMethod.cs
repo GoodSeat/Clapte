@@ -100,7 +100,8 @@ namespace GoodSeat.Liffom.Processes
             // それなりに区間を探す
             SearchLimit(f, x, ref upper, ref lower, userState);
 
-            Numeric solution = GetSolution(f, x, upper, lower, userState);
+            Numeric solution = null;
+            if (!IsCanceled(userState)) solution = GetSolution(f, x, upper, lower, userState);
 #if DEBUG
             DateTime end = DateTime.Now;
             Console.WriteLine("ブレント法による解の算出終了：計算時間：" + (end - start).ToString());
@@ -243,6 +244,9 @@ namespace GoodSeat.Liffom.Processes
                 Numeric calculated = (fa * fb).Numerate() as Numeric;
                 while ((calculated == null || calculated.Figure.IsInfinity || calculated.Figure.IsNaN || calculated > 0) && count++ < 20)
                 {
+                    if (IsCanceled(userState)) return;
+                    Formula.CheckCancelOperation(f);
+
                     if (i == 0)
                     {
                         lowerLimit = (lowerLimit + (upperLimit - lowerLimit) / 2.0).Numerate() as Numeric;
