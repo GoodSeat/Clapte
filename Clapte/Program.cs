@@ -74,7 +74,7 @@ namespace GoodSeat.Clapte
 				string filepath = s_mainForm.SaveCrashData();
 				MessageBox.Show("ご迷惑をおかけし、申し訳ありません。\n予期されていないエラーが発生したため、Clapteを終了します。\n\n" +
 											"※ 現時点の設定は、" + filepath + "に保存されました。同ファイルの名前を「Setting.xml」に置き換えることでクラッシュ時の設定を復元できます。\n" +
-											"※ このエラーの情報は、CrashInfo.txtに保存されます。", "予期されていないエラー",
+											"※ このエラーの情報は、error.txtに保存されます。", "予期されていないエラー",
 											MessageBoxButtons.OK, MessageBoxIcon.Error);
 			}
 			catch { }
