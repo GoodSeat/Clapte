@@ -748,7 +748,6 @@
             // 
             // _labelPrecisionDigit
             // 
-            this._labelPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._labelPrecisionDigit.AutoSize = true;
             this._labelPrecisionDigit.Enabled = false;
             this._labelPrecisionDigit.Location = new System.Drawing.Point(157, 24);
@@ -759,7 +758,6 @@
             // 
             // _numPrecisionDigit
             // 
-            this._numPrecisionDigit.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._numPrecisionDigit.BackBarColor = System.Drawing.Color.Lavender;
             this._numPrecisionDigit.ClickChange = new decimal(new int[] {
             1,
@@ -808,7 +806,6 @@
             // 
             // _radioPrecisionCustom
             // 
-            this._radioPrecisionCustom.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._radioPrecisionCustom.AutoSize = true;
             this._radioPrecisionCustom.Location = new System.Drawing.Point(92, 22);
             this._radioPrecisionCustom.Name = "_radioPrecisionCustom";
@@ -821,7 +818,6 @@
             // 
             // _radioPrecisionDouble
             // 
-            this._radioPrecisionDouble.Anchor = System.Windows.Forms.AnchorStyles.Top;
             this._radioPrecisionDouble.AutoSize = true;
             this._radioPrecisionDouble.Location = new System.Drawing.Point(17, 22);
             this._radioPrecisionDouble.Name = "_radioPrecisionDouble";
