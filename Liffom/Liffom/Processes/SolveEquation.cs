@@ -107,6 +107,8 @@ namespace GoodSeat.Liffom.Processes
 
                 try
                 {
+                    checkSolve = checkSolve.Calculate().Simplify();
+
                     Formula ans = f.Substituted(x, checkSolve).DeformFormula(token);
                     if (ans == 0 || ans.ClearUnit() == 0) return checkSolve;
                 }
