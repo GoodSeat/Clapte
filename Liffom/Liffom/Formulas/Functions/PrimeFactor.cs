@@ -151,6 +151,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
                         if (pow == 1) factorFormulas.Add(current);
                         else factorFormulas.Add(current ^ pow);
 
+                        if (factors[i] == null) break;
                         current = new Numeric(factors[i]);
                         pow = 1;
                     }
