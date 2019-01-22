@@ -47,7 +47,7 @@ namespace GoodSeat.ClapteTestProject
             tests.Add(new KeyValuePair<string, string>("104.1kN*cm / 247cm^3",          "(1041/2470) kN/(cm^2) "));
             tests.Add(new KeyValuePair<string, string>("Fc = 18",                       "Fc = 18"));
             tests.Add(new KeyValuePair<string, string>("uLS = 1.5",                     "uLS = 3/2"));
-            tests.Add(new KeyValuePair<string, string>("min(a, b) = (a < b) * a + (a >= b) * b", "min(a, b) = a*(a<b)+b*(a≧b)"));
+            tests.Add(new KeyValuePair<string, string>("min(a, b) = (a < b) * a + (a >= b) * b", "min(a, b) = a*(a < b) + b*(a≧b)"));
             tests.Add(new KeyValuePair<string, string>("min(1/15 * Fc, 0.9 + 2/75 * Fc) * uLS", "9/5"));
             Check(solver, tests);
 

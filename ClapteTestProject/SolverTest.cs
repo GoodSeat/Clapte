@@ -172,6 +172,10 @@ namespace GoodSeat.ClapteTestProject
             var divisionFormat = new DivisionFormatProperty(true);
             format.SetProperty(divisionFormat);
 
+            // +、-、=、< 等は空白で囲う
+            var operatorFormat = new OperatorFormatProperty(OperatorFormatProperty.OperatorType.Sum | OperatorFormatProperty.OperatorType.Boolean | OperatorFormatProperty.OperatorType.Compare);
+            format.SetProperty(operatorFormat);
+
 			return format;
 		}
 
