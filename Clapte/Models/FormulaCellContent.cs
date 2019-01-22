@@ -369,9 +369,10 @@ namespace GoodSeat.Clapte.Models
             }
 
             // 結果をセット
+            Result result = null;
             try
             {
-                var result = OnEvaluate(solver);
+                result = OnEvaluate(solver);
 
                 ResultText = result.ResultText;
                 ResultLevel = result.ResultLevel;
@@ -385,6 +386,40 @@ namespace GoodSeat.Clapte.Models
             finally
             {
                 DeformHistory = solver.GetProcessOf<CalculateFormulaProcess>().LastCalculateHistory;
+                if (DeformHistory != null) BuildDeformHistoryOfConvertUnit(DeformHistory, solver, result);
+            }
+        }
+
+        /// <summary>
+        /// 指定の数式変形履歴に、単位変換による数式変形履歴を追加します。
+        /// </summary>
+        /// <param name="history">履歴の追加先。</param>
+        /// <param name="solver">評価に用いたソルバ。</param>
+        /// <param name="result">計算結果。</param>
+        private void BuildDeformHistoryOfConvertUnit(Liffom.Deforms.DeformHistory history, Solver solver, Result result)
+        {
+            if (result != null && solver.GetProcessOf<ConvertToSpecifiedUnitProcess>().LastConvertHistories != null)
+            {
+                var histories = solver.GetProcessOf<ConvertToSpecifiedUnitProcess>().LastConvertHistories;
+                bool existChild = true;
+                foreach (var h in histories)
+                {
+                    if (h.First().Formula == history.Last().Formula)
+                    {
+                        existChild = false;
+                        foreach (var node in h.Skip(1)) history.Add(node);
+                    }
+                    else
+                    {
+                        history.Last().AddChildHistory(h);
+                    }
+                }
+
+                if (existChild)
+                {
+                    var dummyRule = new Liffom.Deforms.DeformChildrenRule(null, history.Last());
+                    history.Add(new Liffom.Deforms.DeformHistoryNode(result.ResultFormula, dummyRule));
+                }
             }
         }
 

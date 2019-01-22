@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Deforms.Rules;
@@ -18,7 +19,11 @@ namespace GoodSeat.Liffom.Processes
         /// 数式中の単位を指定した目標単位に一括変換する処理を初期化します。
         /// </summary>
         /// <param name="convertAddition">換算加算値も考慮して変換を行うか。</param>
-        public ConvertToTargetUnit(bool convertAddition) { AlsoConvertAddition = convertAddition; }
+        public ConvertToTargetUnit(bool convertAddition)
+        {
+            AlsoConvertAddition = convertAddition;
+            ConvertHistories = new List<DeformHistory>();
+        }
 
         /// <summary>
         /// 数式中の単位を指定した目標単位に一括変換する処理を初期化します。
@@ -29,6 +34,7 @@ namespace GoodSeat.Liffom.Processes
         {
             ApplyDeformToken = deformToken;
             AlsoConvertAddition = convertAddition;
+            ConvertHistories = new List<DeformHistory>();
         }
 
         /// <summary>
@@ -50,6 +56,11 @@ namespace GoodSeat.Liffom.Processes
         /// 処理対象とする数式数の下限値を取得します。
         /// </summary>
         public override int TargetArgumentsMinQty { get { return 2; } }
+
+        /// <summary>
+        /// 単位換算で行なった、元の数式に対する数式変形履歴マップを取得します。
+        /// </summary>
+        public List<DeformHistory> ConvertHistories { get; private set; }
 
         /// <summary>
         /// 指定された数式に対して、処理を実行します。
@@ -93,9 +104,24 @@ namespace GoodSeat.Liffom.Processes
                 Formula coef = factor * aMatched;
                 if (convert == target && conversion.ConversionAddition != null) coef = coef + conversion.ConversionAddition;
 
-                if (ApplyDeformToken != null) coef = coef.DeformFormula(ApplyDeformToken);
+                var history = new DeformHistory(convert);
+
+                Rule dummyRule = new InstantPatternRule(null, null, "目標単位に単位換算します。");
+                if (ApplyDeformToken != null)
+                {
+                    history.Add(new DeformHistoryNode(new Product(false, coef, targetUnit), dummyRule));
+
+                    DeformHistory coefHistory = null;
+                    coef = coef.DeformFormula(ApplyDeformToken, out coefHistory);
+                    history.CurrentNode.AddChildHistory(coefHistory);
+
+                    dummyRule = new DeformChildrenRule(ApplyDeformToken, history.Last());
+                }
 
                 var result = new Product(false, coef, targetUnit);
+
+                history.Add(new DeformHistoryNode(result, dummyRule));
+                ConvertHistories.Add(history);
 
                 target = target.Substitute(convert, result, false);
             }

@@ -1,4 +1,5 @@
-﻿using System.Text.RegularExpressions;
+﻿using System.Collections.Generic;
+using System.Text.RegularExpressions;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Constants;
@@ -53,6 +54,8 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error CheckInputText(ref string input, bool onlyCheckInput)
         {
+            LastConvertHistories = null;
+
             if (!onlyCheckInput) CurrentTargetUnit = null;
 
             Match match = TargetUnitRegex.Match(input);
@@ -83,6 +86,11 @@ namespace GoodSeat.Clapte.Solvers.Processes
         }
 
         /// <summary>
+        /// 単位換算で行なった、元の数式に対する数式変形履歴マップを取得します。
+        /// </summary>
+        public List<DeformHistory> LastConvertHistories { get; private set; }
+
+        /// <summary>
         /// 計算対象となった入力数式を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力数式。</param>
@@ -96,6 +104,8 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
                 var result = convert.Do(output, CurrentTargetUnit);
                 output = result;
+
+                LastConvertHistories = convert.ConvertHistories;
             }
             return base.CheckOutputFormula(ref output);
         }

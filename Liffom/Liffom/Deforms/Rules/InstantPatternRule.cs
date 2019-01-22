@@ -22,10 +22,13 @@ namespace GoodSeat.Liffom.Deforms.Rules
         /// </summary>
         /// <param name="rule">変形対象の数式を規定する数式パターン</param>
         /// <param name="result">変形後の形状を規定する数式</param>
-        public InstantPatternRule(Formula rule, Formula result)
+        /// <param name="information">ルールの説明。</param>
+        public InstantPatternRule(Formula rule, Formula result, string information = null)
         {
             RuleFormula = rule;
             ResultFormula = result;
+
+            _information = information ?? "簡易な数式パターンによる変形ルールです。";
         }
 
         /// <summary>
@@ -58,10 +61,9 @@ namespace GoodSeat.Liffom.Deforms.Rules
             return null;
         }
 
-        public override string Information
-        {
-            get { return "簡易な数式パターンによる変形ルールです。"; }
-        }
+        string _information;
+
+        public override string Information { get { return _information; } }
 
         public override IEnumerable<KeyValuePair<Formula, Formula>> GetExamples()
         {
