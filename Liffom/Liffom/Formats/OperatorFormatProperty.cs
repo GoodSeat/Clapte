@@ -85,9 +85,9 @@ namespace GoodSeat.Liffom.Formats
 
                 Regex pattern;
                 if (type == OperatorType.Sum) // +と-に対する例外処理
-                    pattern = new Regex(@"(?<forword>^.*[^ +-/*^<>=&|(](?<![0-9.]+[eE]))(?<mark>" + mark + @")(?<backword>[^ +-/*^<>=&|])");
+                    pattern = new Regex(@"(?<forword>^.*[^ +-/*^<>=&|(](?<![0-9.]+[eE]))(?<mark> ?" + mark + @")(?<backword>[^ +-/*^<>=&|])");
                 else
-                    pattern = new Regex(@"(?<forword>^.*[^ /*^<>=&|])(?<mark>" + mark + @")(?<backword>[^ /*^<>=&|])");
+                    pattern = new Regex(@"(?<forword>^.*[^ /*^<>=&|])(?<mark> ?" + mark + @")(?<backword>[^ /*^<>=&|])");
 
                 RegexTable.Add(type, pattern);
             }
