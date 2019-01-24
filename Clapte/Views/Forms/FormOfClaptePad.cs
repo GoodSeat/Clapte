@@ -242,6 +242,8 @@ namespace GoodSeat.Clapte.Views.Forms
 
             _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => Support.ShowInputSupport(true));
             _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
+            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
+            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
 
             _resultTextBox.View.ColorScheme.SelectionBack = Color.Gray;
             _resultTextBox.View.ColorScheme.LineNumberBack = Color.White;
@@ -385,21 +387,8 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             int caretIndex = _inputTextBox.CaretIndex;
 
-            int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
-
-            int beginLine = _inputTextBox.GetLineHeadIndexFromCharIndex(begin);
-            int endLine = _inputTextBox.GetLineHeadIndexFromCharIndex(end);
-
-            int sline = -1, eline = -1;
-            int line = 0;
-            while (sline == -1 || eline == -1)
-            {
-                int lineHeadIndex = _inputTextBox.GetLineHeadIndex(line);
-                if (lineHeadIndex == beginLine) sline = line;
-                if (lineHeadIndex == endLine) eline = line;
-                ++line;
-            }
+            int sline, eline;
+            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
 
             var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
             for (int l = sline; l < eline; ++l) texts[l] = convert(texts[l], false);
@@ -411,6 +400,73 @@ namespace GoodSeat.Clapte.Views.Forms
 
             caretIndex = Math.Min(caretIndex, _inputTextBox.Document.Text.Length - 1);
             _inputTextBox.SetSelection(caretIndex, caretIndex);
+        }
+
+        /// <summary>
+        /// 選択されている全ての行を、継続行を考慮して1行上に移動します。
+        /// </summary>
+        /// <param name="up">選択行を上げるならtrue、下げるならfalseを指定。</param>
+        private void MoveUpOrDownSelectedLine(bool up)
+        {
+            var lines = new List<string>(_inputTextBox.Text.Split('\n'));
+
+            int sline, eline;
+            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
+
+            Predicate<string> isContinueLine = l => l.Trim().EndsWith(" _");
+
+            while (sline > 1 && isContinueLine(lines[sline - 1])) --sline;
+            while (eline < lines.Count && isContinueLine(lines[eline])) ++eline;
+            if (up && sline <= 0) return;
+            if (!up && eline >= lines.Count - 1) return;
+
+            int moveTo;
+            if (up)
+            {
+                moveTo = sline - 1;
+                while (moveTo > 1 && isContinueLine(lines[moveTo - 1])) --moveTo;
+            }
+            else
+            {
+                moveTo = eline + 1;
+                while (moveTo < lines.Count && isContinueLine(lines[moveTo])) ++moveTo;
+            }
+
+            int countOverChar = 0;
+            if (up)
+            {
+                for (int overLine = moveTo; overLine < sline; overLine++) countOverChar += lines[overLine].Length + 1;
+            }
+            else
+            {
+                for (int overLine = moveTo; overLine > eline; overLine--) countOverChar += lines[overLine].Length + 1;
+                moveTo -= (eline - sline);
+            }
+
+            var moveLines = new List<string>();
+            for (int l = eline; l >= sline; --l) moveLines.Add(lines[l]);
+            lines.RemoveRange(sline, eline - sline + 1);
+
+            foreach (var l in moveLines) lines.Insert(moveTo, l);
+
+            int bs, es;
+            _inputTextBox.Document.GetSelection(out bs, out es);
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = string.Join("\n", lines);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
+
+            if (up)
+            {
+                bs -= countOverChar;
+                es -= countOverChar;
+            }
+            else
+            {
+                bs += countOverChar;
+                es += countOverChar;
+            }
+            _inputTextBox.Document.SetSelection(bs, es); 
         }
 
         protected override void OnCancel(EventArgs e)

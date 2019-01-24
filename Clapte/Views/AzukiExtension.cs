@@ -233,5 +233,32 @@ namespace GoodSeat.Clapte.Views
             string name = GetPreWordOf(azuki, caretRowIndex, startBracketIndex, out startIndex);
             return name;
         }
+
+        /// <summary>
+        /// 選択範囲の最初の行と最後の行インデックスを取得します。
+        /// </summary>
+        /// <param name="azuki">対象のAzukiControl。</param>
+        /// <param name="sline">選択範囲の最初を含む行の行インデックス。</param>
+        /// <param name="eline">選択範囲の最後を含む行の行インデックス。</param>
+        public static void GetSelectedLineIndex(this AzukiControl azuki, out int sline, out int eline)
+        {
+            int begin, end;
+            azuki.GetSelection(out begin, out end);
+
+            int beginLine = azuki.GetLineHeadIndexFromCharIndex(begin);
+            int endLine = azuki.GetLineHeadIndexFromCharIndex(end);
+
+            sline = -1;
+            eline = -1;
+
+            int line = 0;
+            while (sline == -1 || eline == -1)
+            {
+                int lineHeadIndex = azuki.GetLineHeadIndex(line);
+                if (lineHeadIndex == beginLine) sline = line;
+                if (lineHeadIndex == endLine) eline = line;
+                ++line;
+            }
+        }
     }
 }
