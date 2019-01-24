@@ -70,6 +70,7 @@ namespace GoodSeat.Clapte.Views.Forms
             AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
 
             InitializeTextBox();
+            InitializeGreekLettersMap();
 
             Delay = 500;
 
@@ -219,6 +220,27 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         private List<Tuple<FormulaCellContent.AdditionalInformationType, string>> AdditionalInformations { get; set; }
 
+        /// <summary>
+        /// アルファベットから対応するギリシャ文字を取得する対応マップを初期化します。
+        /// </summary>
+        Dictionary<Keys, Tuple<string, string>> MapAlphabetToGreek { get; set; }
+
+        bool _greekLettersMode;
+        bool _ignoreKeyinGreekLettersMode;
+        /// <summary>
+        /// ギリシャ文字入力モードか否かを設定若しくは取得します。
+        /// </summary>
+        bool GreekLettersMode
+        {
+            get { return _greekLettersMode; }
+            set
+            {
+                _greekLettersMode = value;
+                _inputTextBox.IsReadOnly = value;
+                _ignoreKeyinGreekLettersMode = value;
+            }
+        }
+
         #endregion
 
         #region 処理
@@ -244,6 +266,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
             _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
             _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
+            _inputTextBox.SetKeyBind(Keys.Control | Keys.G, i => EnterGreekLettersMode());
 
             _resultTextBox.View.ColorScheme.SelectionBack = Color.Gray;
             _resultTextBox.View.ColorScheme.LineNumberBack = Color.White;
@@ -257,6 +280,52 @@ namespace GoodSeat.Clapte.Views.Forms
             int parseErrorID = (int)FormulaCellContent.AdditionalInformationType.ParseError;
             Marking.Register(new MarkingInfo(parseErrorID, "構文解析エラー"));
             _inputTextBox.ColorScheme.SetMarkingDecoration(parseErrorID, new UnderlineTextDecoration(LineStyle.Waved, Color.Red));
+        }
+
+        protected override void OnCancel(EventArgs e)
+        {
+            if (FormOfMain.IsCalculatorMode)
+            {
+                OwnerMainForm.Close();
+            }
+            else
+            {
+                this.Hide();
+            }
+        }
+
+        /// <summary>
+        /// アルファベットから対応するギリシャ文字を取得する対応マップを初期化します。
+        /// </summary>
+        void InitializeGreekLettersMap()
+        {
+            MapAlphabetToGreek = new Dictionary<Keys, Tuple<string, string>>();
+            MapAlphabetToGreek.Add(Keys.A, Tuple.Create("Α", "α"));
+            MapAlphabetToGreek.Add(Keys.B, Tuple.Create("Β", "β"));
+            MapAlphabetToGreek.Add(Keys.C, Tuple.Create("Χ", "χ"));
+            MapAlphabetToGreek.Add(Keys.D, Tuple.Create("Δ", "δ"));
+            MapAlphabetToGreek.Add(Keys.E, Tuple.Create("Ε", "ε"));
+            MapAlphabetToGreek.Add(Keys.F, Tuple.Create("Φ", "φ"));
+            MapAlphabetToGreek.Add(Keys.G, Tuple.Create("Γ", "γ"));
+            MapAlphabetToGreek.Add(Keys.H, Tuple.Create("Η", "η"));
+            MapAlphabetToGreek.Add(Keys.I, Tuple.Create("Ι", "ι"));
+            MapAlphabetToGreek.Add(Keys.J, Tuple.Create("ϑ", "ϕ"));
+            MapAlphabetToGreek.Add(Keys.K, Tuple.Create("Κ", "κ"));
+            MapAlphabetToGreek.Add(Keys.L, Tuple.Create("Λ", "λ"));
+            MapAlphabetToGreek.Add(Keys.M, Tuple.Create("Μ", "μ"));
+            MapAlphabetToGreek.Add(Keys.N, Tuple.Create("Ν", "ν"));
+            MapAlphabetToGreek.Add(Keys.O, Tuple.Create("Ο", "ο"));
+            MapAlphabetToGreek.Add(Keys.P, Tuple.Create("Π", "π"));
+            MapAlphabetToGreek.Add(Keys.Q, Tuple.Create("Θ", "θ"));
+            MapAlphabetToGreek.Add(Keys.R, Tuple.Create("Ρ", "ρ"));
+            MapAlphabetToGreek.Add(Keys.S, Tuple.Create("Σ", "σ"));
+            MapAlphabetToGreek.Add(Keys.T, Tuple.Create("Τ", "τ"));
+            MapAlphabetToGreek.Add(Keys.U, Tuple.Create("Υ", "υ"));
+            MapAlphabetToGreek.Add(Keys.V, Tuple.Create("ς", "ϖ"));
+            MapAlphabetToGreek.Add(Keys.W, Tuple.Create("Ω", "ω"));
+            MapAlphabetToGreek.Add(Keys.X, Tuple.Create("Ξ", "ξ"));
+            MapAlphabetToGreek.Add(Keys.Y, Tuple.Create("Ψ", "ψ"));
+            MapAlphabetToGreek.Add(Keys.Z, Tuple.Create("Ζ", "ζ"));
         }
 
         /// <summary>
@@ -467,18 +536,6 @@ namespace GoodSeat.Clapte.Views.Forms
                 es += countOverChar;
             }
             _inputTextBox.Document.SetSelection(bs, es); 
-        }
-
-        protected override void OnCancel(EventArgs e)
-        {
-            if (FormOfMain.IsCalculatorMode)
-            {
-                OwnerMainForm.Close();
-            }
-            else
-            {
-                this.Hide();
-            }
         }
 
         /// <summary>
@@ -694,6 +751,11 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        /// <summary>
+        /// ギリシャ文字入力モードに移行します。
+        /// </summary>
+        private void EnterGreekLettersMode() { GreekLettersMode = true; }
+
         #endregion
 
         #region イベント対応
@@ -738,7 +800,7 @@ namespace GoodSeat.Clapte.Views.Forms
             Highlighter.Renew(_inputTextBox.Text);
 
             _lastCaretLineIndex = -1; // _inputTextBox_CaretMovedメソッド内で、強制的に再描画(マーク描画のため)させるため
-            _inputTextBox_CaretMoved(_inputTextBox, EventArgs.Empty);
+            _inputTextBox_CaretMoved(_inputTextBox, null);
         }
 
         /// <summary>
@@ -861,6 +923,8 @@ namespace GoodSeat.Clapte.Views.Forms
                 _lastCaretLineIndex = line;
                 if (!refreshResult) _resultTextBox.Refresh();
             }
+
+            if (GreekLettersMode && e != null) GreekLettersMode = false;
         }
 
         private void _resultTextBox_CaretMoved(object sender, EventArgs e)
@@ -989,6 +1053,21 @@ namespace GoodSeat.Clapte.Views.Forms
                 var pt = e.Position;
                 ig.RemoveClipRect();
                 ig.FillRectangle(pt.X, pt.Y + textBox.View.LineHeight, textBox.Width, 1);
+            }
+        }
+
+        private void _inputTextBox_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (GreekLettersMode && MapAlphabetToGreek.ContainsKey(e.KeyCode))
+            {
+                if (_ignoreKeyinGreekLettersMode) // 最初のKeyUpはショートカットキーのアップのため
+                {
+                    _ignoreKeyinGreekLettersMode = false;
+                    return;
+                }
+
+                var value = MapAlphabetToGreek[e.KeyCode];
+                _inputTextBox.Document.Replace(e.Shift ? value.Item1 : value.Item2);
             }
         }
 
