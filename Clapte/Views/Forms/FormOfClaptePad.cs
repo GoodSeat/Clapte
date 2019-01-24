@@ -264,6 +264,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => Support.ShowInputSupport(true));
             _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
+            _inputTextBox.SetKeyBind(Keys.Control | Keys.F, i => OpenFindPanel());
             _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
             _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
             _inputTextBox.SetKeyBind(Keys.Control | Keys.G, i => EnterGreekLettersMode());
@@ -275,11 +276,19 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
             _resultTextBox.ShowsHScrollBar = false;
 
+            _resultTextBox.SetKeyBind(Keys.Control | Keys.F, i => OpenFindPanel());
+
             ShowUnderLine = true;
 
             int parseErrorID = (int)FormulaCellContent.AdditionalInformationType.ParseError;
             Marking.Register(new MarkingInfo(parseErrorID, "構文解析エラー"));
             _inputTextBox.ColorScheme.SetMarkingDecoration(parseErrorID, new UnderlineTextDecoration(LineStyle.Waved, Color.Red));
+
+            Marking.Register(new MarkingInfo(2, "検索のマッチ"));
+            _inputTextBox.ColorScheme.SetMarkingDecoration(2, new BgColorTextDecoration(Color.Orange));
+            _resultTextBox.ColorScheme.SetMarkingDecoration(2, new BgColorTextDecoration(Color.Orange));
+
+            _panelFind.Parent = _inputTextBox;
         }
 
         protected override void OnCancel(EventArgs e)
@@ -756,9 +765,28 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         private void EnterGreekLettersMode() { GreekLettersMode = true; }
 
+        /// <summary>
+        /// 検索パネルを開きます。
+        /// </summary>
+        private void OpenFindPanel()
+        {
+            var textBox = _panelFind.Parent as Sgry.Azuki.WinForms.AzukiControl;
+            if (textBox == null) textBox = _inputTextBox;
+
+            string word = "";
+
+            int b, e;
+            textBox.Document.GetSelection(out b, out e);
+            if (e > b) word = textBox.Document.GetTextInRange(b, e);
+
+            _textBoxFind.Text = word;
+            _panelFind.Visible = true;
+            _textBoxFind.Focus();
+        }
+
         #endregion
 
-        #region イベント対応
+        #region イベント対応(ビューモデルとのやり取り)
 
         /// <summary>
         /// 評価結果の変更時に呼び出されます。
@@ -801,6 +829,8 @@ namespace GoodSeat.Clapte.Views.Forms
 
             _lastCaretLineIndex = -1; // _inputTextBox_CaretMovedメソッド内で、強制的に再描画(マーク描画のため)させるため
             _inputTextBox_CaretMoved(_inputTextBox, null);
+
+            if (_panelFind.Visible) _textBoxFind_TextChanged(sender, e);
         }
 
         /// <summary>
@@ -822,6 +852,10 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         private void Target_EvaluateFinished(object sender, EventArgs e) { _picStatus.Visible = Target.IsEvaluating; }
 
+        #endregion
+
+        #region イベント対応(ビュー)
+
         /// <summary>
         /// 入力ボックスのテキストに変更があったときに呼び出されます。
         /// </summary>
@@ -837,6 +871,8 @@ namespace GoodSeat.Clapte.Views.Forms
                 _timerDelay.Interval = Delay;
                 _timerDelay.Enabled = true;
             }
+
+            if (_panelFind.Visible) _textBoxFind_TextChanged(sender, e);
         }
 
         private void _inputTextBox_FontChanged(object sender, EventArgs e)
@@ -845,6 +881,7 @@ namespace GoodSeat.Clapte.Views.Forms
             else _inputTextBox.Font = _resultTextBox.Font;
 
             _treeViewHistory.Font = _inputTextBox.Font;
+            _panelFind.Font = new Font(_inputTextBox.Font.FontFamily, 9.0f);
         }
 
         private void _inputTextBox_VScroll(object sender, EventArgs e)
@@ -1145,6 +1182,8 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuAddUserDefineResult_Click(object sender, EventArgs e) { } // TODO
 
+        private void _menuFindAndReplace_Click(object sender, EventArgs e) { OpenFindPanel(); }
+
         private void _menuSolveSimultaneousEquation_Click(object sender, EventArgs e)
         {
             EditSelectedLines((text, isLast) => { return (isLast ? "{_ " : "{  ") + text; });
@@ -1300,6 +1339,204 @@ namespace GoodSeat.Clapte.Views.Forms
 
         #endregion
 
+        #region 検索パネル関連
+
+        private void _textBoxFind_TextChanged(object sender, EventArgs e)
+        {
+            _labelFind.Visible = string.IsNullOrEmpty(_textBoxFind.Text);
+
+            // マーカー付与
+            const int id = 2;
+            var boxs = new List<Sgry.Azuki.WinForms.AzukiControl>();
+            boxs.Add(_inputTextBox);
+            boxs.Add(_resultTextBox);
+            foreach (var textBox in boxs)
+            {
+                var document = textBox.Document;
+                document.Unmark(0, document.Length, id);
+
+                if (!string.IsNullOrWhiteSpace(_textBoxFind.Text))
+                {
+                    int pos = 0;
+                    SearchResult result;
+                    do
+                    {
+                        result = document.FindNext(_textBoxFind.Text, pos);
+                        if (result == null) break;
+
+                        document.Mark(result.Begin, result.End, id);
+                        pos = result.End;
+                    } while (true);
+                }
+                textBox.Refresh();
+            }
+        }
+
+        private void _textBoxReplace_TextChanged(object sender, EventArgs e)
+        {
+            _labelReplace.Visible = string.IsNullOrEmpty(_textBoxReplace.Text);
+        }
+
+        private void _labelFind_Click(object sender, EventArgs e) { _textBoxFind.Focus(); }
+
+        private void _labelReplace_Click(object sender, EventArgs e) { _textBoxReplace.Focus(); }
+
+        private void _btnFindNext_Click(object sender, EventArgs e)
+        {
+            _toolTipFind.RemoveAll();
+
+            var textBox = _panelFind.Parent as Sgry.Azuki.WinForms.AzukiControl;
+            if (textBox == null) textBox = _inputTextBox;
+
+            var document = textBox.Document;
+
+            int begin, end;
+            document.GetSelection(out begin, out end);
+
+            var result = document.FindNext(_textBoxFind.Text, end);
+            if (result != null)
+            {
+                document.SetSelection(result.Begin, result.End);
+                textBox.ScrollToCaret();
+            }
+            else
+            {
+                _toolTipFind.Show("見つかりませんでした", _textBoxFind, 1000);
+            }
+        }
+
+        private void _btnFindPrev_Click(object sender, EventArgs e)
+        {
+            _toolTipFind.RemoveAll();
+
+            var textBox = _panelFind.Parent as Sgry.Azuki.WinForms.AzukiControl;
+            if (textBox == null) textBox = _inputTextBox;
+
+            var document = textBox.Document;
+
+            int begin, end;
+            document.GetSelection(out begin, out end);
+
+            var result = document.FindPrev(_textBoxFind.Text, begin);
+            if (result != null)
+            {
+                document.SetSelection(result.Begin, result.End);
+                textBox.ScrollToCaret();
+            }
+            else
+            {
+                _toolTipFind.Show("見つかりませんでした", _textBoxFind, 1000);
+            }
+        }
+
+        private void _inputTextBox_Enter(object sender, EventArgs e)
+        {
+            var textBox = sender as Sgry.Azuki.WinForms.AzukiControl;
+            _panelFind.Parent = textBox;
+
+            int add = 0;
+            if (textBox == _resultTextBox) add = 16;
+            _panelFind.Left = textBox.Width - _panelFind.Width - add;
+        }
+
+        private void _btnHideFindPanel_Click(object sender, EventArgs e)
+        {
+            _panelFind.Visible = false;
+            _textBoxFind.Text = "";
+            _textBoxReplace.Text = "";
+
+            _panelFind.Parent.Focus();
+        }
+
+        private void _btnFindNext_MouseEnter(object sender, EventArgs e)
+        {
+            (sender as Control).BringToFront();
+            _toolTipFind.RemoveAll();
+        }
+
+        private void _btnReplaceAndNext_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_textBoxFind.Text)) return;
+
+            var textBox = _panelFind.Parent as Sgry.Azuki.WinForms.AzukiControl;
+            if (textBox == null) textBox = _inputTextBox;
+            if (textBox == _resultTextBox) return;
+
+            string word = "";
+
+            int b, end;
+            textBox.Document.GetSelection(out b, out end);
+            if (end > b) word = textBox.Document.GetTextInRange(b, end);
+
+            if (word == _textBoxFind.Text) textBox.Document.Replace(_textBoxReplace.Text);
+
+            _btnFindNext_Click(sender, e);
+        }
+
+        private void _btnReplaceAndPrev_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(_textBoxFind.Text)) return;
+
+            var textBox = _panelFind.Parent as Sgry.Azuki.WinForms.AzukiControl;
+            if (textBox == null) textBox = _inputTextBox;
+            if (textBox == _resultTextBox) return;
+
+            string word = "";
+
+            int b, end;
+            textBox.Document.GetSelection(out b, out end);
+            if (end > b) word = textBox.Document.GetTextInRange(b, end);
+
+            if (word == _textBoxFind.Text) textBox.Document.Replace(_textBoxReplace.Text);
+
+            _btnFindPrev_Click(sender, e);
+        }
+
+        private void _btnReplaceAll_Click(object sender, EventArgs e)
+        {
+            var textBox = _panelFind.Parent as Sgry.Azuki.WinForms.AzukiControl;
+            if (textBox == null) textBox = _inputTextBox;
+            if (textBox == _resultTextBox) return;
+
+            textBox.Document.Replace(_textBoxReplace.Text, 0, textBox.TextLength);
+        }
+
+        private void _btnToggleFindPanelPosition_Click(object sender, EventArgs e)
+        {
+            if (_panelFind.Anchor == (AnchorStyles.Top | AnchorStyles.Right))
+            {
+                _panelFind.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+                _panelFind.Top = _inputTextBox.Height - _panelFind.Height;
+            }
+            else
+            {
+                _panelFind.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                _panelFind.Top = 0;
+            }
+        }
+
+        private void _textBoxFind_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) _btnHideFindPanel_Click(sender, e);
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (e.Shift) _btnFindPrev_Click(sender, e);
+                else _btnFindNext_Click(sender, e);
+            }
+        }
+
+        private void _textBoxReplace_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Escape) _btnHideFindPanel_Click(sender, e);
+            if (e.KeyCode == Keys.Enter)
+            {
+                if (e.Shift) _btnReplaceAndPrev_Click(sender, e);
+                else _btnReplaceAndNext_Click(sender, e);
+            }
+        }
+
+        #endregion
+
         #region ISerializable メンバー
 
         /// <summary>
@@ -1373,6 +1610,5 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         #endregion
-
     }
 }

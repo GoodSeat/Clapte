@@ -64,6 +64,23 @@
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
+            this._panelFind = new System.Windows.Forms.Panel();
+            this._btnToggleFindPanelPosition = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this.pictureBox3 = new System.Windows.Forms.PictureBox();
+            this._btnReplaceAll = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnHideFindPanel = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnToggleFindUseRegex = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnToggleFindMatchCase = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._labelReplace = new System.Windows.Forms.Label();
+            this._labelFind = new System.Windows.Forms.Label();
+            this._btnReplaceAndPrev = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnReplaceAndNext = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnFindPrev = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnFindNext = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this.pictureBox2 = new System.Windows.Forms.PictureBox();
+            this.pictureBox1 = new System.Windows.Forms.PictureBox();
+            this._textBoxReplace = new System.Windows.Forms.TextBox();
+            this._textBoxFind = new System.Windows.Forms.TextBox();
             this._btnAllDelete = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._resultTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuResult = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -94,11 +111,27 @@
             this._menuCopyFormulaInHistory = new System.Windows.Forms.ToolStripMenuItem();
             this._btnHelp = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnUpdate = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._toolTipFind = new System.Windows.Forms.ToolTip(this.components);
+            this._menuFindAndReplace = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuFindAndReplaceResult = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
             this._splitContainer.SuspendLayout();
+            this._panelFind.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindPanelPosition)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnReplaceAll)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnHideFindPanel)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindUseRegex)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindMatchCase)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnReplaceAndPrev)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnReplaceAndNext)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnFindPrev)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnFindNext)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnAllDelete)).BeginInit();
             this._contextMenuResult.SuspendLayout();
             this._contextMenuHistory.SuspendLayout();
@@ -151,6 +184,7 @@
             this._inputTextBox.VScroll += new System.EventHandler(this._inputTextBox_VScroll);
             this._inputTextBox.FontChanged += new System.EventHandler(this._inputTextBox_FontChanged);
             this._inputTextBox.TextChanged += new System.EventHandler(this._inputTextBox_TextChanged);
+            this._inputTextBox.Enter += new System.EventHandler(this._inputTextBox_Enter);
             this._inputTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this._inputTextBox_KeyUp);
             this._inputTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._inputTextBox_MouseMove);
             // 
@@ -169,6 +203,7 @@
             this.toolStripSeparator3,
             this._menuJumpDefine,
             this._menuVisibleDeformHistory,
+            this._menuFindAndReplace,
             this._menuAddUserDefine,
             this.toolStripSeparator4,
             this._menuCommentOut,
@@ -181,78 +216,78 @@
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(184, 414);
+            this._contextMenuEdit.Size = new System.Drawing.Size(204, 436);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
             // 
             this._menuUndo.Name = "_menuUndo";
-            this._menuUndo.Size = new System.Drawing.Size(183, 22);
+            this._menuUndo.Size = new System.Drawing.Size(203, 22);
             this._menuUndo.Text = "元に戻す(&U)";
             this._menuUndo.Click += new System.EventHandler(this._menuUndo_Click);
             // 
             // _menuRedo
             // 
             this._menuRedo.Name = "_menuRedo";
-            this._menuRedo.Size = new System.Drawing.Size(183, 22);
+            this._menuRedo.Size = new System.Drawing.Size(203, 22);
             this._menuRedo.Text = "やり直す(&R)";
             this._menuRedo.Click += new System.EventHandler(this._menuRedo_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuCut
             // 
             this._menuCut.Name = "_menuCut";
-            this._menuCut.Size = new System.Drawing.Size(183, 22);
+            this._menuCut.Size = new System.Drawing.Size(203, 22);
             this._menuCut.Text = "切り取り(&T)";
             this._menuCut.Click += new System.EventHandler(this._menuCut_Click);
             // 
             // _menuCopy
             // 
             this._menuCopy.Name = "_menuCopy";
-            this._menuCopy.Size = new System.Drawing.Size(183, 22);
+            this._menuCopy.Size = new System.Drawing.Size(203, 22);
             this._menuCopy.Text = "コピー(&C)";
             this._menuCopy.Click += new System.EventHandler(this._menuCopy_Click);
             // 
             // _menuPaste
             // 
             this._menuPaste.Name = "_menuPaste";
-            this._menuPaste.Size = new System.Drawing.Size(183, 22);
+            this._menuPaste.Size = new System.Drawing.Size(203, 22);
             this._menuPaste.Text = "貼り付け(&P)";
             this._menuPaste.Click += new System.EventHandler(this._menuPaste_Click);
             // 
             // _menuDelete
             // 
             this._menuDelete.Name = "_menuDelete";
-            this._menuDelete.Size = new System.Drawing.Size(183, 22);
+            this._menuDelete.Size = new System.Drawing.Size(203, 22);
             this._menuDelete.Text = "削除(&D)";
             this._menuDelete.Click += new System.EventHandler(this._menuDelete_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuSelectAll
             // 
             this._menuSelectAll.Name = "_menuSelectAll";
-            this._menuSelectAll.Size = new System.Drawing.Size(183, 22);
+            this._menuSelectAll.Size = new System.Drawing.Size(203, 22);
             this._menuSelectAll.Text = "すべて選択(&A)";
             this._menuSelectAll.Click += new System.EventHandler(this._menuSelectAll_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuJumpDefine
             // 
             this._menuJumpDefine.Name = "_menuJumpDefine";
             this._menuJumpDefine.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefine.Size = new System.Drawing.Size(183, 22);
+            this._menuJumpDefine.Size = new System.Drawing.Size(203, 22);
             this._menuJumpDefine.Text = "定義を参照(&J)";
             this._menuJumpDefine.ToolTipText = "カーソル位置にある定数/関数/単位の定義位置にジャンプします。";
             this._menuJumpDefine.Click += new System.EventHandler(this._menuJumpDefine_Click);
@@ -260,14 +295,14 @@
             // _menuVisibleDeformHistory
             // 
             this._menuVisibleDeformHistory.Name = "_menuVisibleDeformHistory";
-            this._menuVisibleDeformHistory.Size = new System.Drawing.Size(183, 22);
+            this._menuVisibleDeformHistory.Size = new System.Drawing.Size(203, 22);
             this._menuVisibleDeformHistory.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistory.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
             // 
             // _menuAddUserDefine
             // 
             this._menuAddUserDefine.Name = "_menuAddUserDefine";
-            this._menuAddUserDefine.Size = new System.Drawing.Size(183, 22);
+            this._menuAddUserDefine.Size = new System.Drawing.Size(203, 22);
             this._menuAddUserDefine.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefine.Visible = false;
             this._menuAddUserDefine.Click += new System.EventHandler(this._menuAddUserDefine_Click);
@@ -275,12 +310,12 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuCommentOut
             // 
             this._menuCommentOut.Name = "_menuCommentOut";
-            this._menuCommentOut.Size = new System.Drawing.Size(183, 22);
+            this._menuCommentOut.Size = new System.Drawing.Size(203, 22);
             this._menuCommentOut.Text = "コメントアウト(&K)";
             this._menuCommentOut.ToolTipText = "選択行の先頭に\'#\'を追加し、コメントアウトします。";
             this._menuCommentOut.Click += new System.EventHandler(this._menuCommentOut_Click);
@@ -288,7 +323,7 @@
             // _menuUnCommentOut
             // 
             this._menuUnCommentOut.Name = "_menuUnCommentOut";
-            this._menuUnCommentOut.Size = new System.Drawing.Size(183, 22);
+            this._menuUnCommentOut.Size = new System.Drawing.Size(203, 22);
             this._menuUnCommentOut.Text = "コメントアウト解除(&L)";
             this._menuUnCommentOut.ToolTipText = "選択行の先頭にある\'#\'を削除し、コメントアウトを解除します。";
             this._menuUnCommentOut.Click += new System.EventHandler(this._menuUnCommentOut_Click);
@@ -296,14 +331,14 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuConvertUnit
             // 
             this._menuConvertUnit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._txtBoxTargetUnit});
             this._menuConvertUnit.Name = "_menuConvertUnit";
-            this._menuConvertUnit.Size = new System.Drawing.Size(183, 22);
+            this._menuConvertUnit.Size = new System.Drawing.Size(203, 22);
             this._menuConvertUnit.Text = "単位換算(&I)";
             this._menuConvertUnit.ToolTipText = "計算結果を単位換算します。";
             // 
@@ -311,7 +346,7 @@
             // 
             this._txtBoxTargetUnit.ForeColor = System.Drawing.SystemColors.WindowText;
             this._txtBoxTargetUnit.Name = "_txtBoxTargetUnit";
-            this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 23);
+            this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 25);
             this._txtBoxTargetUnit.ToolTipText = "換算後の目標単位を指定します";
             this._txtBoxTargetUnit.KeyUp += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyUp);
             // 
@@ -323,14 +358,14 @@
             this._menuSimplify,
             this._menuFactorize});
             this._menuDeformFormula.Name = "_menuDeformFormula";
-            this._menuDeformFormula.Size = new System.Drawing.Size(183, 22);
+            this._menuDeformFormula.Size = new System.Drawing.Size(203, 22);
             this._menuDeformFormula.Text = "数式の変形(&F)";
             this._menuDeformFormula.ToolTipText = "数式を変形し、その結果を次の行に挿入します。";
             // 
             // _menuExpand
             // 
             this._menuExpand.Name = "_menuExpand";
-            this._menuExpand.Size = new System.Drawing.Size(145, 22);
+            this._menuExpand.Size = new System.Drawing.Size(154, 22);
             this._menuExpand.Text = "展開(&E)";
             this._menuExpand.ToolTipText = "数式を展開します。\r\n(例) (x * x + 1)(x + x + 1) → 1*1 + 1*x + 1*x + 1*x*x + x*x*x + x*x*x";
             this._menuExpand.Click += new System.EventHandler(this._menuExpand_Click);
@@ -338,7 +373,7 @@
             // _menuTidyUp
             // 
             this._menuTidyUp.Name = "_menuTidyUp";
-            this._menuTidyUp.Size = new System.Drawing.Size(145, 22);
+            this._menuTidyUp.Size = new System.Drawing.Size(154, 22);
             this._menuTidyUp.Text = "整理(&C)";
             this._menuTidyUp.ToolTipText = "数式の各項を整理します。\r\n(例) (x * x + 1)(x + x + 1) → (1 + x^2)*(1 + 2*x)";
             this._menuTidyUp.Click += new System.EventHandler(this._menuTidyUp_Click);
@@ -346,7 +381,7 @@
             // _menuSimplify
             // 
             this._menuSimplify.Name = "_menuSimplify";
-            this._menuSimplify.Size = new System.Drawing.Size(145, 22);
+            this._menuSimplify.Size = new System.Drawing.Size(154, 22);
             this._menuSimplify.Text = "展開と整理(&S)";
             this._menuSimplify.ToolTipText = "数式を展開の上、整理します。\r\n(例) (x * x + 1)(x + x + 1) → 1 + x^2 + 2*x + 2*x^3";
             this._menuSimplify.Click += new System.EventHandler(this._menuSimplify_Click);
@@ -354,7 +389,7 @@
             // _menuFactorize
             // 
             this._menuFactorize.Name = "_menuFactorize";
-            this._menuFactorize.Size = new System.Drawing.Size(145, 22);
+            this._menuFactorize.Size = new System.Drawing.Size(154, 22);
             this._menuFactorize.Text = "因数分解(&F)";
             this._menuFactorize.ToolTipText = "数式を因数分解します（変数の多い式や次数の高い式では、処理に時間がかかることがあります）。\r\n(例) 2*x^3 + x^2 + 2*x + 1 → (2*x +" +
     " 1)*(1 + x^2)";
@@ -365,7 +400,7 @@
             this._menuSubstitute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.変数がありませんToolStripMenuItem});
             this._menuSubstitute.Name = "_menuSubstitute";
-            this._menuSubstitute.Size = new System.Drawing.Size(183, 22);
+            this._menuSubstitute.Size = new System.Drawing.Size(203, 22);
             this._menuSubstitute.Text = "変数の代入(&R)";
             this._menuSubstitute.ToolTipText = "指定変数に任意値を代入し、その結果を次の行に挿入します。";
             this._menuSubstitute.DropDownOpening += new System.EventHandler(this._menuSubstitute_DropDownOpening);
@@ -373,13 +408,13 @@
             // 変数がありませんToolStripMenuItem
             // 
             this.変数がありませんToolStripMenuItem.Name = "変数がありませんToolStripMenuItem";
-            this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
+            this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
             this.変数がありませんToolStripMenuItem.Text = "変数がありません";
             // 
             // _menuSolveSimultaneousEquation
             // 
             this._menuSolveSimultaneousEquation.Name = "_menuSolveSimultaneousEquation";
-            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(183, 22);
+            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(203, 22);
             this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
             this._menuSolveSimultaneousEquation.ToolTipText = "選択行を連立方程式として求解します。";
             this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
@@ -387,12 +422,12 @@
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuInsertHelp
             // 
             this._menuInsertHelp.Name = "_menuInsertHelp";
-            this._menuInsertHelp.Size = new System.Drawing.Size(183, 22);
+            this._menuInsertHelp.Size = new System.Drawing.Size(203, 22);
             this._menuInsertHelp.Text = "ヘルプの挿入(&H)";
             this._menuInsertHelp.ToolTipText = "計算機の簡易な説明文を末尾に挿入します。";
             this._menuInsertHelp.Click += new System.EventHandler(this._menuInsertHelp_Click);
@@ -405,6 +440,7 @@
             // 
             // _splitContainer.Panel1
             // 
+            this._splitContainer.Panel1.Controls.Add(this._panelFind);
             this._splitContainer.Panel1.Controls.Add(this._inputTextBox);
             this._splitContainer.Panel1.Controls.Add(this._btnAllDelete);
             // 
@@ -414,6 +450,286 @@
             this._splitContainer.Size = new System.Drawing.Size(683, 440);
             this._splitContainer.SplitterDistance = 432;
             this._splitContainer.TabIndex = 17;
+            // 
+            // _panelFind
+            // 
+            this._panelFind.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._panelFind.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(252)))), ((int)(((byte)(252)))), ((int)(((byte)(252)))));
+            this._panelFind.Controls.Add(this._btnToggleFindPanelPosition);
+            this._panelFind.Controls.Add(this.pictureBox3);
+            this._panelFind.Controls.Add(this._btnReplaceAll);
+            this._panelFind.Controls.Add(this._btnHideFindPanel);
+            this._panelFind.Controls.Add(this._btnToggleFindUseRegex);
+            this._panelFind.Controls.Add(this._btnToggleFindMatchCase);
+            this._panelFind.Controls.Add(this._labelReplace);
+            this._panelFind.Controls.Add(this._labelFind);
+            this._panelFind.Controls.Add(this._btnReplaceAndPrev);
+            this._panelFind.Controls.Add(this._btnReplaceAndNext);
+            this._panelFind.Controls.Add(this._btnFindPrev);
+            this._panelFind.Controls.Add(this._btnFindNext);
+            this._panelFind.Controls.Add(this.pictureBox2);
+            this._panelFind.Controls.Add(this.pictureBox1);
+            this._panelFind.Controls.Add(this._textBoxReplace);
+            this._panelFind.Controls.Add(this._textBoxFind);
+            this._panelFind.Location = new System.Drawing.Point(212, -1);
+            this._panelFind.Name = "_panelFind";
+            this._panelFind.Size = new System.Drawing.Size(220, 51);
+            this._panelFind.TabIndex = 23;
+            this._panelFind.Visible = false;
+            // 
+            // _btnToggleFindPanelPosition
+            // 
+            this._btnToggleFindPanelPosition.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnToggleFindPanelPosition.BackColor = System.Drawing.Color.White;
+            this._btnToggleFindPanelPosition.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnToggleFindPanelPosition.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnToggleFindPanelPosition.DownMove = 1;
+            this._btnToggleFindPanelPosition.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnToggleFindPanelPosition.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnToggleFindPanelPosition.Location = new System.Drawing.Point(197, 24);
+            this._btnToggleFindPanelPosition.Name = "_btnToggleFindPanelPosition";
+            this._btnToggleFindPanelPosition.Size = new System.Drawing.Size(22, 22);
+            this._btnToggleFindPanelPosition.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnToggleFindPanelPosition.TabIndex = 39;
+            this._btnToggleFindPanelPosition.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnToggleFindPanelPosition, "検索パネルを移動");
+            this._btnToggleFindPanelPosition.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnToggleFindPanelPosition.Click += new System.EventHandler(this._btnToggleFindPanelPosition_Click);
+            // 
+            // pictureBox3
+            // 
+            this.pictureBox3.BackColor = System.Drawing.Color.Silver;
+            this.pictureBox3.Cursor = System.Windows.Forms.Cursors.SizeWE;
+            this.pictureBox3.Location = new System.Drawing.Point(0, 1);
+            this.pictureBox3.Name = "pictureBox3";
+            this.pictureBox3.Size = new System.Drawing.Size(5, 48);
+            this.pictureBox3.TabIndex = 38;
+            this.pictureBox3.TabStop = false;
+            // 
+            // _btnReplaceAll
+            // 
+            this._btnReplaceAll.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnReplaceAll.BackColor = System.Drawing.Color.White;
+            this._btnReplaceAll.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnReplaceAll.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnReplaceAll.DownMove = 1;
+            this._btnReplaceAll.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnReplaceAll.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnReplaceAll.Location = new System.Drawing.Point(177, 24);
+            this._btnReplaceAll.Name = "_btnReplaceAll";
+            this._btnReplaceAll.Size = new System.Drawing.Size(22, 22);
+            this._btnReplaceAll.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnReplaceAll.TabIndex = 37;
+            this._btnReplaceAll.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnReplaceAll, "全て置換");
+            this._btnReplaceAll.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnReplaceAll.Click += new System.EventHandler(this._btnReplaceAll_Click);
+            this._btnReplaceAll.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // _btnHideFindPanel
+            // 
+            this._btnHideFindPanel.BackColor = System.Drawing.Color.White;
+            this._btnHideFindPanel.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnHideFindPanel.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnHideFindPanel.DownMove = 1;
+            this._btnHideFindPanel.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnHideFindPanel.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnHideFindPanel.Location = new System.Drawing.Point(197, 1);
+            this._btnHideFindPanel.Name = "_btnHideFindPanel";
+            this._btnHideFindPanel.Size = new System.Drawing.Size(22, 22);
+            this._btnHideFindPanel.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnHideFindPanel.TabIndex = 29;
+            this._btnHideFindPanel.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnHideFindPanel, "検索パネルを隠す");
+            this._btnHideFindPanel.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnHideFindPanel.Click += new System.EventHandler(this._btnHideFindPanel_Click);
+            this._btnHideFindPanel.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // _btnToggleFindUseRegex
+            // 
+            this._btnToggleFindUseRegex.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnToggleFindUseRegex.BackColor = System.Drawing.Color.White;
+            this._btnToggleFindUseRegex.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnToggleFindUseRegex.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnToggleFindUseRegex.DownMove = 1;
+            this._btnToggleFindUseRegex.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnToggleFindUseRegex.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnToggleFindUseRegex.Location = new System.Drawing.Point(179, 1);
+            this._btnToggleFindUseRegex.Name = "_btnToggleFindUseRegex";
+            this._btnToggleFindUseRegex.Size = new System.Drawing.Size(22, 22);
+            this._btnToggleFindUseRegex.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnToggleFindUseRegex.TabIndex = 36;
+            this._btnToggleFindUseRegex.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnToggleFindUseRegex, "正規表現を使用");
+            this._btnToggleFindUseRegex.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnToggleFindUseRegex.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // _btnToggleFindMatchCase
+            // 
+            this._btnToggleFindMatchCase.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnToggleFindMatchCase.BackColor = System.Drawing.Color.White;
+            this._btnToggleFindMatchCase.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnToggleFindMatchCase.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnToggleFindMatchCase.DownMove = 1;
+            this._btnToggleFindMatchCase.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnToggleFindMatchCase.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnToggleFindMatchCase.Location = new System.Drawing.Point(158, 1);
+            this._btnToggleFindMatchCase.Name = "_btnToggleFindMatchCase";
+            this._btnToggleFindMatchCase.Size = new System.Drawing.Size(22, 22);
+            this._btnToggleFindMatchCase.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnToggleFindMatchCase.TabIndex = 35;
+            this._btnToggleFindMatchCase.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnToggleFindMatchCase, "大文字/小文字の区別");
+            this._btnToggleFindMatchCase.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnToggleFindMatchCase.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // _labelReplace
+            // 
+            this._labelReplace.AutoSize = true;
+            this._labelReplace.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this._labelReplace.ForeColor = System.Drawing.Color.DarkGray;
+            this._labelReplace.Location = new System.Drawing.Point(12, 29);
+            this._labelReplace.Name = "_labelReplace";
+            this._labelReplace.Size = new System.Drawing.Size(35, 12);
+            this._labelReplace.TabIndex = 34;
+            this._labelReplace.Text = "置換...";
+            this._labelReplace.Click += new System.EventHandler(this._labelReplace_Click);
+            // 
+            // _labelFind
+            // 
+            this._labelFind.AutoSize = true;
+            this._labelFind.Cursor = System.Windows.Forms.Cursors.IBeam;
+            this._labelFind.ForeColor = System.Drawing.Color.DarkGray;
+            this._labelFind.Location = new System.Drawing.Point(11, 7);
+            this._labelFind.Name = "_labelFind";
+            this._labelFind.Size = new System.Drawing.Size(35, 12);
+            this._labelFind.TabIndex = 33;
+            this._labelFind.Text = "検索...";
+            this._labelFind.Click += new System.EventHandler(this._labelFind_Click);
+            // 
+            // _btnReplaceAndPrev
+            // 
+            this._btnReplaceAndPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnReplaceAndPrev.BackColor = System.Drawing.Color.White;
+            this._btnReplaceAndPrev.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnReplaceAndPrev.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnReplaceAndPrev.DownMove = 1;
+            this._btnReplaceAndPrev.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnReplaceAndPrev.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnReplaceAndPrev.Location = new System.Drawing.Point(137, 24);
+            this._btnReplaceAndPrev.Name = "_btnReplaceAndPrev";
+            this._btnReplaceAndPrev.Size = new System.Drawing.Size(22, 22);
+            this._btnReplaceAndPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnReplaceAndPrev.TabIndex = 32;
+            this._btnReplaceAndPrev.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnReplaceAndPrev, "置換して上を検索");
+            this._btnReplaceAndPrev.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnReplaceAndPrev.Click += new System.EventHandler(this._btnReplaceAndPrev_Click);
+            this._btnReplaceAndPrev.DoubleClick += new System.EventHandler(this._btnReplaceAndPrev_Click);
+            this._btnReplaceAndPrev.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // _btnReplaceAndNext
+            // 
+            this._btnReplaceAndNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnReplaceAndNext.BackColor = System.Drawing.Color.White;
+            this._btnReplaceAndNext.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnReplaceAndNext.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnReplaceAndNext.DownMove = 1;
+            this._btnReplaceAndNext.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnReplaceAndNext.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnReplaceAndNext.Location = new System.Drawing.Point(120, 24);
+            this._btnReplaceAndNext.Name = "_btnReplaceAndNext";
+            this._btnReplaceAndNext.Size = new System.Drawing.Size(22, 22);
+            this._btnReplaceAndNext.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnReplaceAndNext.TabIndex = 31;
+            this._btnReplaceAndNext.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnReplaceAndNext, "置換して下を検索");
+            this._btnReplaceAndNext.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnReplaceAndNext.Click += new System.EventHandler(this._btnReplaceAndNext_Click);
+            this._btnReplaceAndNext.DoubleClick += new System.EventHandler(this._btnReplaceAndNext_Click);
+            this._btnReplaceAndNext.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // _btnFindPrev
+            // 
+            this._btnFindPrev.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnFindPrev.BackColor = System.Drawing.Color.White;
+            this._btnFindPrev.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnFindPrev.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnFindPrev.DownMove = 1;
+            this._btnFindPrev.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnFindPrev.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnFindPrev.Location = new System.Drawing.Point(137, 1);
+            this._btnFindPrev.Name = "_btnFindPrev";
+            this._btnFindPrev.Size = new System.Drawing.Size(22, 22);
+            this._btnFindPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnFindPrev.TabIndex = 28;
+            this._btnFindPrev.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnFindPrev, "上を検索");
+            this._btnFindPrev.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnFindPrev.Click += new System.EventHandler(this._btnFindPrev_Click);
+            this._btnFindPrev.DoubleClick += new System.EventHandler(this._btnFindPrev_Click);
+            this._btnFindPrev.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // _btnFindNext
+            // 
+            this._btnFindNext.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnFindNext.BackColor = System.Drawing.Color.White;
+            this._btnFindNext.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnFindNext.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnFindNext.DownMove = 1;
+            this._btnFindNext.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update;
+            this._btnFindNext.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnFindNext.Location = new System.Drawing.Point(120, 1);
+            this._btnFindNext.Name = "_btnFindNext";
+            this._btnFindNext.Size = new System.Drawing.Size(22, 22);
+            this._btnFindNext.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnFindNext.TabIndex = 27;
+            this._btnFindNext.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnFindNext, "下を検索");
+            this._btnFindNext.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Update_Unfocus;
+            this._btnFindNext.Click += new System.EventHandler(this._btnFindNext_Click);
+            this._btnFindNext.DoubleClick += new System.EventHandler(this._btnFindNext_Click);
+            this._btnFindNext.MouseEnter += new System.EventHandler(this._btnFindNext_MouseEnter);
+            // 
+            // pictureBox2
+            // 
+            this.pictureBox2.BackColor = System.Drawing.Color.Gray;
+            this.pictureBox2.Location = new System.Drawing.Point(8, 44);
+            this.pictureBox2.Name = "pictureBox2";
+            this.pictureBox2.Size = new System.Drawing.Size(110, 1);
+            this.pictureBox2.TabIndex = 3;
+            this.pictureBox2.TabStop = false;
+            // 
+            // pictureBox1
+            // 
+            this.pictureBox1.BackColor = System.Drawing.Color.Gray;
+            this.pictureBox1.Location = new System.Drawing.Point(8, 22);
+            this.pictureBox1.Name = "pictureBox1";
+            this.pictureBox1.Size = new System.Drawing.Size(110, 1);
+            this.pictureBox1.TabIndex = 2;
+            this.pictureBox1.TabStop = false;
+            // 
+            // _textBoxReplace
+            // 
+            this._textBoxReplace.BackColor = System.Drawing.SystemColors.Window;
+            this._textBoxReplace.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._textBoxReplace.Location = new System.Drawing.Point(10, 29);
+            this._textBoxReplace.Name = "_textBoxReplace";
+            this._textBoxReplace.Size = new System.Drawing.Size(100, 12);
+            this._textBoxReplace.TabIndex = 1;
+            this._textBoxReplace.TextChanged += new System.EventHandler(this._textBoxReplace_TextChanged);
+            this._textBoxReplace.KeyUp += new System.Windows.Forms.KeyEventHandler(this._textBoxReplace_KeyUp);
+            // 
+            // _textBoxFind
+            // 
+            this._textBoxFind.BackColor = System.Drawing.SystemColors.Window;
+            this._textBoxFind.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._textBoxFind.Location = new System.Drawing.Point(10, 7);
+            this._textBoxFind.Name = "_textBoxFind";
+            this._textBoxFind.Size = new System.Drawing.Size(100, 12);
+            this._textBoxFind.TabIndex = 0;
+            this._textBoxFind.TextChanged += new System.EventHandler(this._textBoxFind_TextChanged);
+            this._textBoxFind.KeyUp += new System.Windows.Forms.KeyEventHandler(this._textBoxFind_KeyUp);
             // 
             // _btnAllDelete
             // 
@@ -467,6 +783,7 @@
             this._resultTextBox.CaretMoved += new System.EventHandler(this._resultTextBox_CaretMoved);
             this._resultTextBox.VScroll += new System.EventHandler(this._resultTextBox_VScroll);
             this._resultTextBox.FontChanged += new System.EventHandler(this._inputTextBox_FontChanged);
+            this._resultTextBox.Enter += new System.EventHandler(this._inputTextBox_Enter);
             this._resultTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._inputTextBox_MouseMove);
             // 
             // _contextMenuResult
@@ -478,47 +795,48 @@
             this.toolStripSeparator6,
             this._menuJumpDefineResult,
             this._menuAddUserDefineResult,
-            this._menuVisibleDeformHistoryResult});
+            this._menuVisibleDeformHistoryResult,
+            this._menuFindAndReplaceResult});
             this._contextMenuResult.Name = "_contextMenuEdit";
-            this._contextMenuResult.Size = new System.Drawing.Size(184, 126);
+            this._contextMenuResult.Size = new System.Drawing.Size(204, 170);
             this._contextMenuResult.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuCopyResult
             // 
             this._menuCopyResult.Name = "_menuCopyResult";
-            this._menuCopyResult.Size = new System.Drawing.Size(183, 22);
+            this._menuCopyResult.Size = new System.Drawing.Size(203, 22);
             this._menuCopyResult.Text = "コピー(&C)";
             this._menuCopyResult.Click += new System.EventHandler(this._menuCopyResult_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuSelectAllResult
             // 
             this._menuSelectAllResult.Name = "_menuSelectAllResult";
-            this._menuSelectAllResult.Size = new System.Drawing.Size(183, 22);
+            this._menuSelectAllResult.Size = new System.Drawing.Size(203, 22);
             this._menuSelectAllResult.Text = "すべて選択(&A)";
             this._menuSelectAllResult.Click += new System.EventHandler(this._menuSelectAllResult_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(180, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(200, 6);
             // 
             // _menuJumpDefineResult
             // 
             this._menuJumpDefineResult.Name = "_menuJumpDefineResult";
             this._menuJumpDefineResult.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefineResult.Size = new System.Drawing.Size(183, 22);
+            this._menuJumpDefineResult.Size = new System.Drawing.Size(203, 22);
             this._menuJumpDefineResult.Text = "定義を参照(&J)";
             this._menuJumpDefineResult.Click += new System.EventHandler(this._menuJumpDefineResult_Click);
             // 
             // _menuAddUserDefineResult
             // 
             this._menuAddUserDefineResult.Name = "_menuAddUserDefineResult";
-            this._menuAddUserDefineResult.Size = new System.Drawing.Size(183, 22);
+            this._menuAddUserDefineResult.Size = new System.Drawing.Size(203, 22);
             this._menuAddUserDefineResult.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefineResult.Visible = false;
             this._menuAddUserDefineResult.Click += new System.EventHandler(this._menuAddUserDefineResult_Click);
@@ -526,7 +844,7 @@
             // _menuVisibleDeformHistoryResult
             // 
             this._menuVisibleDeformHistoryResult.Name = "_menuVisibleDeformHistoryResult";
-            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(183, 22);
+            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(203, 22);
             this._menuVisibleDeformHistoryResult.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistoryResult.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
             // 
@@ -553,31 +871,31 @@
             this._menuExpandHistory,
             this._menuFoldHistory});
             this._contextMenuHistory.Name = "_contextMenuHistory";
-            this._contextMenuHistory.Size = new System.Drawing.Size(215, 76);
+            this._contextMenuHistory.Size = new System.Drawing.Size(238, 76);
             // 
             // _menuHideDeformHistory
             // 
             this._menuHideDeformHistory.Name = "_menuHideDeformHistory";
-            this._menuHideDeformHistory.Size = new System.Drawing.Size(214, 22);
+            this._menuHideDeformHistory.Size = new System.Drawing.Size(237, 22);
             this._menuHideDeformHistory.Text = "計算過程を隠す(&H)";
             this._menuHideDeformHistory.Click += new System.EventHandler(this._menuHideDeformHistory_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(211, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(234, 6);
             // 
             // _menuExpandHistory
             // 
             this._menuExpandHistory.Name = "_menuExpandHistory";
-            this._menuExpandHistory.Size = new System.Drawing.Size(214, 22);
+            this._menuExpandHistory.Size = new System.Drawing.Size(237, 22);
             this._menuExpandHistory.Text = "計算過程を全て展開(&E)";
             this._menuExpandHistory.Click += new System.EventHandler(this._menuExpandHistory_Click);
             // 
             // _menuFoldHistory
             // 
             this._menuFoldHistory.Name = "_menuFoldHistory";
-            this._menuFoldHistory.Size = new System.Drawing.Size(214, 22);
+            this._menuFoldHistory.Size = new System.Drawing.Size(237, 22);
             this._menuFoldHistory.Text = "計算過程を全て折りたたむ(&F)";
             this._menuFoldHistory.Click += new System.EventHandler(this._menuFoldHistory_Click);
             // 
@@ -731,12 +1049,12 @@
             this._contextMenuHistoryNode.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._menuCopyFormulaInHistory});
             this._contextMenuHistoryNode.Name = "_contextMenuHistoryNode";
-            this._contextMenuHistoryNode.Size = new System.Drawing.Size(148, 26);
+            this._contextMenuHistoryNode.Size = new System.Drawing.Size(167, 26);
             // 
             // _menuCopyFormulaInHistory
             // 
             this._menuCopyFormulaInHistory.Name = "_menuCopyFormulaInHistory";
-            this._menuCopyFormulaInHistory.Size = new System.Drawing.Size(147, 22);
+            this._menuCopyFormulaInHistory.Size = new System.Drawing.Size(166, 22);
             this._menuCopyFormulaInHistory.Text = "数式をコピー(&C)";
             this._menuCopyFormulaInHistory.Click += new System.EventHandler(this._menuCopyFormulaInHistory_Click);
             // 
@@ -777,6 +1095,32 @@
             this._btnUpdate.Click += new System.EventHandler(this._btnUpdate_Click);
             this._btnUpdate.MouseEnter += new System.EventHandler(this._btnSave_MouseEnter);
             // 
+            // _toolTipFind
+            // 
+            this._toolTipFind.AutoPopDelay = 3000;
+            this._toolTipFind.BackColor = System.Drawing.Color.White;
+            this._toolTipFind.ForeColor = System.Drawing.Color.Firebrick;
+            this._toolTipFind.InitialDelay = 0;
+            this._toolTipFind.ReshowDelay = 10;
+            this._toolTipFind.UseAnimation = false;
+            this._toolTipFind.UseFading = false;
+            // 
+            // _menuFindAndReplace
+            // 
+            this._menuFindAndReplace.Name = "_menuFindAndReplace";
+            this._menuFindAndReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this._menuFindAndReplace.Size = new System.Drawing.Size(203, 22);
+            this._menuFindAndReplace.Text = "検索と置換(&F)";
+            this._menuFindAndReplace.Click += new System.EventHandler(this._menuFindAndReplace_Click);
+            // 
+            // _menuFindAndReplaceResult
+            // 
+            this._menuFindAndReplaceResult.Name = "_menuFindAndReplaceResult";
+            this._menuFindAndReplaceResult.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(203, 22);
+            this._menuFindAndReplaceResult.Text = "検索と置換(&F)";
+            this._menuFindAndReplaceResult.Click += new System.EventHandler(this._menuFindAndReplace_Click);
+            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -813,6 +1157,20 @@
             this._splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).EndInit();
             this._splitContainer.ResumeLayout(false);
+            this._panelFind.ResumeLayout(false);
+            this._panelFind.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindPanelPosition)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnReplaceAll)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnHideFindPanel)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindUseRegex)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindMatchCase)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnReplaceAndPrev)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnReplaceAndNext)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnFindPrev)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._btnFindNext)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnAllDelete)).EndInit();
             this._contextMenuResult.ResumeLayout(false);
             this._contextMenuHistory.ResumeLayout(false);
@@ -898,5 +1256,25 @@
         private System.Windows.Forms.ToolStripMenuItem _menuCopyFormulaInHistory;
         private Components.ImageButton _btnHelp;
         private Components.ImageButton _btnUpdate;
+        private System.Windows.Forms.Panel _panelFind;
+        private System.Windows.Forms.TextBox _textBoxFind;
+        private System.Windows.Forms.PictureBox pictureBox2;
+        private System.Windows.Forms.PictureBox pictureBox1;
+        private System.Windows.Forms.TextBox _textBoxReplace;
+        private Components.ImageButton _btnReplaceAndPrev;
+        private Components.ImageButton _btnReplaceAndNext;
+        private Components.ImageButton _btnFindPrev;
+        private Components.ImageButton _btnFindNext;
+        private System.Windows.Forms.Label _labelReplace;
+        private System.Windows.Forms.Label _labelFind;
+        private Components.ImageButton _btnHideFindPanel;
+        private Components.ImageButton _btnToggleFindUseRegex;
+        private Components.ImageButton _btnToggleFindMatchCase;
+        private System.Windows.Forms.PictureBox pictureBox3;
+        private Components.ImageButton _btnReplaceAll;
+        private System.Windows.Forms.ToolTip _toolTipFind;
+        private Components.ImageButton _btnToggleFindPanelPosition;
+        private System.Windows.Forms.ToolStripMenuItem _menuFindAndReplace;
+        private System.Windows.Forms.ToolStripMenuItem _menuFindAndReplaceResult;
     }
 }
