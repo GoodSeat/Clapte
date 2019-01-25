@@ -30,15 +30,68 @@ namespace GoodSeat.Clapte.ViewModels
         public ClaptePadViewModel(Views.Forms.FormOfClaptePad view, AzukiControl azuki)
         {
             _inputTextBox = azuki;
+            _inputTextBox.VScroll += _inputTextBox_VScroll;
+            _inputTextBox.CaretMoved += _inputTextBox_CaretMoved;
+
             _view = view;
+
+            InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
+            InputSupport = new InputSupport(_inputTextBox, _view, InputSupportEnumerator);
+
+            ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, _view, InputSupportEnumerator);
+
+            _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => InputSupport.ShowInputSupport(true));
+            _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
+
+            AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
         }
 
         Views.Forms.FormOfClaptePad _view; // TODO!:可能であれば消したい依存
         AzukiControl _inputTextBox;
 
-        ClaptePadInputSupportEnumerator InputSupportEnumerator
+        #region プロパティ
+
+        /// <summary>
+        /// 入力補助オブジェクトを設定もしくは取得します。
+        /// </summary>
+        public InputSupport InputSupport { get; set; }
+
+        /// <summary>
+        /// 入力補助の候補列挙オブジェクトを設定もしくは取得します。
+        /// </summary>
+        public ClaptePadInputSupportEnumerator InputSupportEnumerator { get; set; }
+
+        /// <summary>.
+        /// 引数ヘルプオブジェクトを設定もしくは取得します。
+        /// </summary>.
+        public FunctionArgumentHelp ArgumentHelper { get; set; }
+
+
+        /// <summary>
+        /// 入力の際、自動で入力補助を表示するか否かを設定もしくは取得します。
+        /// </summary>
+        public bool AutoShowInputSupport
         {
-            get { return _view.InputSupportEnumerator; }
+            get { return InputSupport.AutoShow; }
+            set { InputSupport.AutoShow = value; }
+        }
+
+        /// <summary>
+        /// キャレット移動時、必要に応じて自動で関数の引数ヘルプを表示するか否かを設定もしくは取得します。
+        /// </summary>
+        public bool AutoShowArgumentHelp
+        {
+            get { return ArgumentHelper.AutoShow; }
+            set { ArgumentHelper.AutoShow = value; }
+        }
+
+        /// <summary>
+        /// 説明文も補完対象として使用するか否かを設定もしくは取得します。
+        /// </summary>
+        public bool InputSupportWithAlsoInfomation
+        {
+            get { return InputSupportEnumerator.AlsoInfomation; }
+            set { InputSupportEnumerator.AlsoInfomation = value; }
         }
 
         /// <summary>
@@ -46,6 +99,12 @@ namespace GoodSeat.Clapte.ViewModels
         /// </summary>
         public FormulaCellListViewModel Target { get { return _view.Target; } }
 
+        /// <summary>
+        /// 現在の入力ボックス各行に関連付けられた付加情報リストを設定もしくは取得します。
+        /// </summary>
+        public List<Tuple<FormulaCellContent.AdditionalInformationType, string>> AdditionalInformations { get; private set; }
+
+        #endregion
 
         /// <summary>
         /// 現在のキャレット上の行で指定されている換算目標単位を取得します。換算目標単位の指定がない場合には、nullを返します。
@@ -110,11 +169,11 @@ namespace GoodSeat.Clapte.ViewModels
             _inputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
-
         /// <summary>
         /// 現在のキャレット位置、もしくは選択範囲に基づいて、その定義元にジャンプします。
         /// </summary>
         /// <param name="azuki">対象のAzukiコントロール。</param>
+        /// <returns>ジャンプ先とする数式。対象の数式が見つからなかった場合や、既にテキストボックス内の定義にジャンプ済みの場合にはnull。</returns>
         public Formula JumpDefine(AzukiControl azuki)
         {
             string targetText = azuki.GetSelectedText();
@@ -300,7 +359,7 @@ namespace GoodSeat.Clapte.ViewModels
         /// <summary>
         /// 現在のキャレット上にある数式を取得します。
         /// </summary>
-        /// <returns></returns>
+        /// <returns>キャレット上にある数式。見つからなかった場合、null。</returns>
         public Formula FormulaOnCaret()
         {
             int begin, end;
@@ -371,6 +430,11 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
 
+        /// <summary>
+        /// 現在のマウス位置において、表示すべきヘルプメッセージを取得します。
+        /// </summary>
+        /// <param name="textBox">判定対象とするテキストボックス。</param>
+        /// <returns>表示すべきヘルプメッセージ。ない場合にはnull。</returns>
         public string HelpMessageOnMouse(AzukiControl textBox)
         {
             int lineIndex;
@@ -410,13 +474,29 @@ namespace GoodSeat.Clapte.ViewModels
             }
             if (helpText == null && markID.HasValue)
             {
-                helpText = _view.AdditionalInformations[lineIndex]?.Item2;
+                helpText = AdditionalInformations[lineIndex]?.Item2;
             }
             return helpText;
         }
 
 
+        #region イベント対応
 
+        private void _inputTextBox_VScroll(object sender, EventArgs e)
+        {
+            ArgumentHelper.Hide();
+            InputSupport.EscapeInputSupport();
+        }
+
+        private void _inputTextBox_CaretMoved(object sender, EventArgs e)
+        {
+            int line, column;
+            _inputTextBox.Document.GetCaretIndex(out line, out column);
+
+            InputSupportEnumerator.CurrentCaretLineNumber = line;
+        }
+
+        #endregion
 
     }
 }

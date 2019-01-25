@@ -60,9 +60,9 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _checkVisibleTab.Checked = Target.ShowTabChara;
             _checkVisibleEol.Checked = Target.ShowEolChara;
 
-            _checkAutoShowInputSupport.Checked = Target.AutoShowInputSupport;
-            _checkInputSupportAlsoInfomation.Checked = Target.InputSupportWithAlsoInfomation;
-            _checkAutoShowArgumentHint.Checked = Target.AutoShowArgumentHelp;
+            _checkAutoShowInputSupport.Checked = Target.EditorViewModel.AutoShowInputSupport;
+            _checkInputSupportAlsoInfomation.Checked = Target.EditorViewModel.InputSupportWithAlsoInfomation;
+            _checkAutoShowArgumentHint.Checked = Target.EditorViewModel.AutoShowArgumentHelp;
 
             _picColorConstant.BackColor = Target.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant);
             _picColorFunction.BackColor = Target.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Function);
@@ -84,9 +84,9 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.ShowTabChara = _checkVisibleTab.Checked;
             Target.ShowEolChara = _checkVisibleEol.Checked;
 
-            Target.AutoShowInputSupport = _checkAutoShowInputSupport.Checked;
-            Target.InputSupportWithAlsoInfomation = _checkInputSupportAlsoInfomation.Checked;
-            Target.AutoShowArgumentHelp = _checkAutoShowArgumentHint.Checked;
+            Target.EditorViewModel.AutoShowInputSupport = _checkAutoShowInputSupport.Checked;
+            Target.EditorViewModel.InputSupportWithAlsoInfomation = _checkInputSupportAlsoInfomation.Checked;
+            Target.EditorViewModel.AutoShowArgumentHelp = _checkAutoShowArgumentHint.Checked;
 
             Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant, _picColorConstant.BackColor);
             Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Function, _picColorFunction.BackColor);

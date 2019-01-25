@@ -10,13 +10,10 @@ using System.Windows.Forms;
 using Sgry.Azuki;
 using GoodSeat.Clapte.Models;
 using GoodSeat.Clapte.Solvers;
-using GoodSeat.Clapte.Views.InputSupports;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
-using GoodSeat.Liffom.Formulas.Units;
-using System.Text.RegularExpressions;
 using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.Clapte.Views.Forms
@@ -61,18 +58,12 @@ namespace GoodSeat.Clapte.Views.Forms
             Target.EvaluateStarted += Target_EvaluateStarted;
             Target.EvaluateFinished += Target_EvaluateFinished;
 
-            InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
-            Support = new InputSupport(_inputTextBox, this, InputSupportEnumerator);
-            Support.ModifyLocation = _splitContainerAll.Location;
-            ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, this, InputSupportEnumerator);
-            ArgumentHelper.ModifyLocation = _splitContainerAll.Location;
-
-            AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
-
             InitializeTextBox();
             InitializeGreekLettersMap();
 
             EditorViewModel = new ClaptePadViewModel(this, _inputTextBox);
+            EditorViewModel.InputSupport.ModifyLocation = _splitContainerAll.Location; // TODO!:ひどいのでどうにかする
+            EditorViewModel.ArgumentHelper.ModifyLocation = _splitContainerAll.Location; // TODO!:ひどいのでどうにかする
 
             Delay = 500;
 
@@ -153,32 +144,6 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         public int Delay { get; set; }
 
-        /// <summary>
-        /// 入力の際、自動で入力補助を表示するか否かを設定もしくは取得します。
-        /// </summary>
-        public bool AutoShowInputSupport
-        {
-            get { return Support.AutoShow; }
-            set { Support.AutoShow = value; }
-        }
-
-        /// <summary>
-        /// キャレット移動時、必要に応じて自動で関数の引数ヘルプを表示するか否かを設定もしくは取得します。
-        /// </summary>
-        public bool AutoShowArgumentHelp
-        {
-            get { return ArgumentHelper.AutoShow; }
-            set { ArgumentHelper.AutoShow = value; }
-        }
-
-        /// <summary>
-        /// 説明文も補完対象として使用するか否かを設定もしくは取得します。
-        /// </summary>
-        public bool InputSupportWithAlsoInfomation
-        {
-            get { return InputSupportEnumerator.AlsoInfomation; }
-            set { InputSupportEnumerator.AlsoInfomation = value; }
-        }
 
 
         /// <summary>
@@ -206,26 +171,6 @@ namespace GoodSeat.Clapte.Views.Forms
         /// 入力と結果のテキストボックスのスクロール同期処理の無効フラグです。
         /// </summary>
         private bool IgnoreScroll { get; set; }
-
-        /// <summary>
-        /// 入力補助オブジェクトを設定もしくは取得します。
-        /// </summary>
-        private InputSupport Support { get; set; }
-
-        /// <summary>.
-        /// 引数ヘルプオブジェクトを設定もしくは取得します。
-        /// </summary>.
-        private FunctionArgumentHelp ArgumentHelper { get; set; }
-
-        /// <summary>
-        /// 入力補助の候補列挙オブジェクトを設定もしくは取得します。
-        /// </summary>
-        public ClaptePadInputSupportEnumerator InputSupportEnumerator { get; set; }
-
-        /// <summary>
-        /// 現在の入力ボックス各行に関連付けられた付加情報リストを設定もしくは取得します。
-        /// </summary>
-        public List<Tuple<FormulaCellContent.AdditionalInformationType, string>> AdditionalInformations { get; set; }
 
         /// <summary>
         /// アルファベットから対応するギリシャ文字を取得する対応マップを初期化します。
@@ -269,8 +214,6 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.ShowsHScrollBar = false;
             _inputTextBox.MouseWheel += _inputTextBox_MouseMove;
 
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => Support.ShowInputSupport(true));
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
             _inputTextBox.SetKeyBind(Keys.Control | Keys.F, i => OpenFindPanel());
             _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => EditorViewModel.MoveUpOrDownSelectedLine(true));
             _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => EditorViewModel.MoveUpOrDownSelectedLine(false));
@@ -306,7 +249,7 @@ namespace GoodSeat.Clapte.Views.Forms
             }
             else
             {
-                this.Hide();
+                Hide();
             }
         }
 
@@ -482,7 +425,7 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 document.Unmark(0, document.Length, (int)type);
             }
-            AdditionalInformations.Clear();
+            EditorViewModel.AdditionalInformations.Clear();
 
             string resultText = "";
             for (int i = 0; i < document.LineCount; i++)
@@ -499,7 +442,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     int len = lineText.Split('#')[0].TrimEnd().Length;
                     document.Mark(head + indent, head + len, (int)addInfo.Item1);
                 }
-                AdditionalInformations.Add(addInfo);
+                EditorViewModel.AdditionalInformations.Add(addInfo);
             }
             SetVisibleOfScrollBar();
 
@@ -572,9 +515,6 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             _resultTextBox.View.ScrollPos = _inputTextBox.View.ScrollPos;
             _resultTextBox.UpdateScrollBarRange();
-
-            ArgumentHelper.Hide();
-            Support.EscapeInputSupport();
         }
 
         private void _resultTextBox_VScroll(object sender, EventArgs e)
@@ -623,7 +563,6 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             int line, column;
             _inputTextBox.Document.GetCaretIndex(out line, out column);
-            InputSupportEnumerator.CurrentCaretLineNumber = line;
 
             UpdateTreeViewOfDeformHistory();
 
@@ -1185,9 +1124,9 @@ namespace GoodSeat.Clapte.Views.Forms
             ShowLineNumber = bool.Parse(xmlElement.GetAttribute("ShowLineNumber", "False"));
             ShowUnderLine = bool.Parse(xmlElement.GetAttribute("ShowUnderLine", "True"));
             Delay = int.Parse(xmlElement.GetAttribute("Delay", "500"));
-            AutoShowInputSupport = bool.Parse(xmlElement.GetAttribute("AutoShowInputSupport", "True"));
-            AutoShowArgumentHelp = bool.Parse(xmlElement.GetAttribute("AutoShowArgumentHelp", "True"));
-            InputSupportWithAlsoInfomation = bool.Parse(xmlElement.GetAttribute("InputSupportWithAlsoInfomation", "True"));
+            EditorViewModel.AutoShowInputSupport = bool.Parse(xmlElement.GetAttribute("AutoShowInputSupport", "True"));
+            EditorViewModel.AutoShowArgumentHelp = bool.Parse(xmlElement.GetAttribute("AutoShowArgumentHelp", "True"));
+            EditorViewModel.InputSupportWithAlsoInfomation = bool.Parse(xmlElement.GetAttribute("InputSupportWithAlsoInfomation", "True"));
 
             var colorSchemeElement = xmlElement["ColorScheme"];
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant, Color.FromArgb(int.Parse(colorSchemeElement["Constant"].GetAttribute("Color"))));
@@ -1211,9 +1150,9 @@ namespace GoodSeat.Clapte.Views.Forms
             xmlElement.AddAttribute("ShowLineNumber", ShowLineNumber.ToString());
             xmlElement.AddAttribute("ShowUnderLine", ShowUnderLine.ToString());
             xmlElement.AddAttribute("Delay", Delay.ToString());
-            xmlElement.AddAttribute("AutoShowInputSupport", Support.AutoShow.ToString());
-            xmlElement.AddAttribute("AutoShowArgumentHelp", ArgumentHelper.AutoShow.ToString());
-            xmlElement.AddAttribute("InputSupportWithAlsoInfomation", InputSupportWithAlsoInfomation.ToString());
+            xmlElement.AddAttribute("AutoShowInputSupport", EditorViewModel.InputSupport.AutoShow.ToString());
+            xmlElement.AddAttribute("AutoShowArgumentHelp", EditorViewModel.ArgumentHelper.AutoShow.ToString());
+            xmlElement.AddAttribute("InputSupportWithAlsoInfomation", EditorViewModel.InputSupportWithAlsoInfomation.ToString());
 
             XmlElement colorScheme = new XmlElement("ColorScheme");
             XmlElement colorConstant = new XmlElement("Constant");
