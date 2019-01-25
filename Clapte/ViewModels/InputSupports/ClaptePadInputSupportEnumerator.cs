@@ -3,10 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GoodSeat.Clapte.Solvers;
-using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Liffom.Formulas.Units;
 
-namespace GoodSeat.Clapte.Views.InputSupports
+namespace GoodSeat.Clapte.ViewModels.InputSupports
 {
     /// <summary>
     /// ClaptePadにおける入力補助候補の列挙クラスを表します。

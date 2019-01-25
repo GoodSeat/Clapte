@@ -4,10 +4,9 @@ using System.Linq;
 using System.Text;
 using Sgry.Azuki.WinForms;
 using System.Windows.Forms;
-using System.Text.RegularExpressions;
 using System.Drawing;
 
-namespace GoodSeat.Clapte.Views.InputSupports
+namespace GoodSeat.Clapte.ViewModels.InputSupports
 {
     /// <summary>
     /// Azukiコントロールを対象とした入力補助機能を表します。

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace GoodSeat.Clapte.Views.InputSupports
+namespace GoodSeat.Clapte.ViewModels.InputSupports
 {
     /// <summary>
     /// 入力補助における文字列の入力状態を表します。

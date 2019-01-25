@@ -4,8 +4,6 @@ using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using GoodSeat.Clapte.Models;
-using GoodSeat.Liffom.Formulas;
-using GoodSeat.Clapte.Solvers;
 using System.Threading;
 
 namespace GoodSeat.Clapte.ViewModels

@@ -6,8 +6,6 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Processes;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
-using GoodSeat.Clapte.Solvers;
-using System.Threading;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Units;
 

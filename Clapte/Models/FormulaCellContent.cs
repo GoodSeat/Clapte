@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Formulas;
-using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.Solvers.Processes;
 using GoodSeat.Liffom.Formulas.Functions;

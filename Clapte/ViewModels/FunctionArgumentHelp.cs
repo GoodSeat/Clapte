@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using Sgry.Azuki.WinForms;
-using GoodSeat.Clapte.Solvers;
-using GoodSeat.Clapte.Views.InputSupports;
 using System.Windows.Forms;
 using System.Drawing;
+using GoodSeat.Clapte.Solvers;
+using GoodSeat.Clapte.ViewModels.InputSupports;
 
-namespace GoodSeat.Clapte.Views
+namespace GoodSeat.Clapte.ViewModels
 {
     /// <summary>
     /// <see cref="AzukiControl"/>を対象とした、関数の引数ヘルプ機能を表します。

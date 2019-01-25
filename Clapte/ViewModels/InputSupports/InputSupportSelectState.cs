@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
-namespace GoodSeat.Clapte.Views.InputSupports
+namespace GoodSeat.Clapte.ViewModels.InputSupports
 {
     /// <summary>
     /// 入力補助の選択候補から選択中の状態を表します。

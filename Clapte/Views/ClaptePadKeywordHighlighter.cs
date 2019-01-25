@@ -2,9 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Sgry.Azuki;
 using Sgry.Azuki.Highlighter;
 using GoodSeat.Clapte.ViewModels;
-using Sgry.Azuki;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Liffom.Formulas.Units;
 

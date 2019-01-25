@@ -7,7 +7,7 @@ using Sgry.Azuki.WinForms;
 using System.Drawing;
 using System.Windows.Forms;
 
-namespace GoodSeat.Clapte.Views
+namespace GoodSeat.Clapte.ViewModels
 {
     /// <summary>
     /// AzukiControlの拡張メソッドを提供します。

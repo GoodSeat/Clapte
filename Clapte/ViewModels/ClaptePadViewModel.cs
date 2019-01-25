@@ -1,7 +1,6 @@
 ﻿using GoodSeat.Clapte.Models;
 using GoodSeat.Clapte.Solvers;
-using GoodSeat.Clapte.Views;
-using GoodSeat.Clapte.Views.InputSupports;
+using GoodSeat.Clapte.ViewModels.InputSupports;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;

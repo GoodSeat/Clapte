@@ -113,9 +113,9 @@
     <Compile Include="ViewModels\FunctionListViewModel.cs" />
     <Compile Include="ViewModels\SolverViewModel.cs" />
     <Compile Include="ViewModels\UnitConvertTableViewModel.cs" />
-    <Compile Include="Views\AzukiExtension.cs" />
+    <Compile Include="ViewModels\AzukiExtension.cs" />
     <Compile Include="Views\ClapteHelp.cs" />
-    <Compile Include="Views\ClaptePadInputSupportEnumerator.cs" />
+    <Compile Include="ViewModels\InputSupports\ClaptePadInputSupportEnumerator.cs" />
     <Compile Include="Views\ClaptePadKeywordHighlighter.cs" />
     <Compile Include="Views\ClipBoardWatcher.cs" />
     <Compile Include="Views\Components\ChameleonPictureBox.cs">
@@ -166,7 +166,7 @@
     <Compile Include="Views\Forms\SettingPanels\ExcludeListSettingPanel.Designer.cs">
       <DependentUpon>ExcludeListSettingPanel.cs</DependentUpon>
     </Compile>
-    <Compile Include="Views\FunctionArgumentHelp.cs" />
+    <Compile Include="ViewModels\FunctionArgumentHelp.cs" />
     <Compile Include="Views\HotkeyManager.cs" />
     <Compile Include="Views\Forms\SettingPanels\CalculatorSettingPanel.cs">
       <SubType>UserControl</SubType>
@@ -226,12 +226,12 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Solvers\Result.cs" />
     <Compile Include="Solvers\Solver.cs" />
-    <Compile Include="Views\InputSupports\InputSupport.cs" />
-    <Compile Include="Views\InputSupports\InputSupportCandidate.cs" />
-    <Compile Include="Views\InputSupports\IInputSupportEnumerator.cs" />
-    <Compile Include="Views\InputSupports\InputSupportSelectState.cs" />
-    <Compile Include="Views\InputSupports\InputSupportState.cs" />
-    <Compile Include="Views\InputSupports\InputSupportTypingState.cs" />
+    <Compile Include="ViewModels\InputSupports\InputSupport.cs" />
+    <Compile Include="ViewModels\InputSupports\InputSupportCandidate.cs" />
+    <Compile Include="ViewModels\InputSupports\IInputSupportEnumerator.cs" />
+    <Compile Include="ViewModels\InputSupports\InputSupportSelectState.cs" />
+    <Compile Include="ViewModels\InputSupports\InputSupportState.cs" />
+    <Compile Include="ViewModels\InputSupports\InputSupportTypingState.cs" />
     <EmbeddedResource Include="Views\Controls\NumericSlider.resx">
       <DependentUpon>NumericSlider.cs</DependentUpon>
     </EmbeddedResource>

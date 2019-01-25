@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace GoodSeat.Clapte.Views.InputSupports
+namespace GoodSeat.Clapte.ViewModels.InputSupports
 {
     /// <summary>
     /// 入力補助候補の列挙のインターフェイスを表します。

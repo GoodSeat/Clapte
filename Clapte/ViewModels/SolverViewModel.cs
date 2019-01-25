@@ -14,7 +14,6 @@ using GoodSeat.Liffom.Formulas.Rules;
 using GoodSeat.Liffom.Parse;
 using GoodSeat.Liffom.Processes;
 using GoodSeat.Liffom.Formats.Powers;
-using GoodSeat.Liffom.Formulas.Constants.Rules;
 
 namespace GoodSeat.Clapte.ViewModels
 {
