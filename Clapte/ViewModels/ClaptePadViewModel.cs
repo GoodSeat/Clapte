@@ -36,6 +36,8 @@ namespace GoodSeat.Clapte.ViewModels
             _inputTextBox.KeyUp += _inputTextBox_KeyUp;
             _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => InputSupport.ShowInputSupport(true));
             _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
+            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
+            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
 
             Target = view.Target;
 

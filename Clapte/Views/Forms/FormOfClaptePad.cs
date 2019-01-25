@@ -191,8 +191,6 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.MouseWheel += _inputTextBox_MouseMove;
 
             _inputTextBox.SetKeyBind(Keys.Control | Keys.F, i => OpenFindPanel());
-            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => EditorViewModel.MoveUpOrDownSelectedLine(true));
-            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => EditorViewModel.MoveUpOrDownSelectedLine(false));
 
             _resultTextBox.View.ColorScheme.SelectionBack = Color.Gray;
             _resultTextBox.View.ColorScheme.LineNumberBack = Color.White;
@@ -218,14 +216,8 @@ namespace GoodSeat.Clapte.Views.Forms
 
         protected override void OnCancel(EventArgs e)
         {
-            if (FormOfMain.IsCalculatorMode)
-            {
-                OwnerMainForm.Close();
-            }
-            else
-            {
-                Hide();
-            }
+            if (FormOfMain.IsCalculatorMode) OwnerMainForm.Close();
+            else Hide();
         }
 
         /// <summary>
@@ -240,10 +232,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// 現在のテキストを、次回起動時復元用の外部ファイルに保存します。
         /// </summary>
-        void HotSave()
-        {
-            File.WriteAllText(_hotSaveFilename, _inputTextBox.Text, Encoding.UTF8);
-        }
+        void HotSave() { File.WriteAllText(_hotSaveFilename, _inputTextBox.Text, Encoding.UTF8); }
 
         /// <summary>
         /// ツールチップヘルプ表示を終了します。
