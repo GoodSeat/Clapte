@@ -185,7 +185,6 @@
             this._inputTextBox.FontChanged += new System.EventHandler(this._inputTextBox_FontChanged);
             this._inputTextBox.TextChanged += new System.EventHandler(this._inputTextBox_TextChanged);
             this._inputTextBox.Enter += new System.EventHandler(this._inputTextBox_Enter);
-            this._inputTextBox.KeyUp += new System.Windows.Forms.KeyEventHandler(this._inputTextBox_KeyUp);
             this._inputTextBox.MouseMove += new System.Windows.Forms.MouseEventHandler(this._inputTextBox_MouseMove);
             // 
             // _contextMenuEdit
