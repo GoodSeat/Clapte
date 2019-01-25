@@ -621,7 +621,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             string text = _inputTextBox.Document.GetLineContent(lineIndex);
 
-            var targetUnitRegex = new Regex(@"^(?<indent>\s*)\[(?<targetUnit>[^[\]]*)\]");
+            var targetUnitRegex = new Regex(@"^(?<indent>\s*)\[(?<targetUnit>[^[\]]*)\]\s*");
             var match = targetUnitRegex.Match(text);
             var newText = text;
             if (match.Success)
@@ -632,7 +632,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 }
                 else
                 {
-                    newText = Regex.Replace(text, targetUnitRegex.ToString(), "${indent}" + "[" + targetUnit + "]");
+                    newText = Regex.Replace(text, targetUnitRegex.ToString(), "${indent}" + "[" + targetUnit + "] ");
                 }
             }
             else
