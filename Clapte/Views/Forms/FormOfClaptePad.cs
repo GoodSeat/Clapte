@@ -344,7 +344,7 @@ namespace GoodSeat.Clapte.Views.Forms
             textBox.Document.GetSelection(out b, out e);
             if (e > b) word = textBox.Document.GetTextInRange(b, e);
 
-            _textBoxFind.Text = word;
+            if (!_panelFind.Visible || !string.IsNullOrEmpty(word)) _textBoxFind.Text = word;
             _panelFind.Visible = true;
             _textBoxFind.Focus();
         }

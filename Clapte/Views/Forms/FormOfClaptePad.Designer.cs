@@ -46,6 +46,7 @@
             this.toolStripSeparator3 = new System.Windows.Forms.ToolStripSeparator();
             this._menuJumpDefine = new System.Windows.Forms.ToolStripMenuItem();
             this._menuVisibleDeformHistory = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuFindAndReplace = new System.Windows.Forms.ToolStripMenuItem();
             this._menuAddUserDefine = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator4 = new System.Windows.Forms.ToolStripSeparator();
             this._menuCommentOut = new System.Windows.Forms.ToolStripMenuItem();
@@ -91,6 +92,7 @@
             this._menuJumpDefineResult = new System.Windows.Forms.ToolStripMenuItem();
             this._menuAddUserDefineResult = new System.Windows.Forms.ToolStripMenuItem();
             this._menuVisibleDeformHistoryResult = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuFindAndReplaceResult = new System.Windows.Forms.ToolStripMenuItem();
             this._treeViewHistory = new System.Windows.Forms.TreeView();
             this._contextMenuHistory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._menuHideDeformHistory = new System.Windows.Forms.ToolStripMenuItem();
@@ -112,8 +114,6 @@
             this._btnHelp = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnUpdate = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._toolTipFind = new System.Windows.Forms.ToolTip(this.components);
-            this._menuFindAndReplace = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuFindAndReplaceResult = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -200,9 +200,9 @@
             this.toolStripSeparator2,
             this._menuSelectAll,
             this.toolStripSeparator3,
+            this._menuFindAndReplace,
             this._menuJumpDefine,
             this._menuVisibleDeformHistory,
-            this._menuFindAndReplace,
             this._menuAddUserDefine,
             this.toolStripSeparator4,
             this._menuCommentOut,
@@ -297,6 +297,14 @@
             this._menuVisibleDeformHistory.Size = new System.Drawing.Size(203, 22);
             this._menuVisibleDeformHistory.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistory.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
+            // 
+            // _menuFindAndReplace
+            // 
+            this._menuFindAndReplace.Name = "_menuFindAndReplace";
+            this._menuFindAndReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this._menuFindAndReplace.Size = new System.Drawing.Size(203, 22);
+            this._menuFindAndReplace.Text = "検索と置換(&F)";
+            this._menuFindAndReplace.Click += new System.EventHandler(this._menuFindAndReplace_Click);
             // 
             // _menuAddUserDefine
             // 
@@ -792,10 +800,10 @@
             this.toolStripSeparator5,
             this._menuSelectAllResult,
             this.toolStripSeparator6,
+            this._menuFindAndReplaceResult,
             this._menuJumpDefineResult,
             this._menuAddUserDefineResult,
-            this._menuVisibleDeformHistoryResult,
-            this._menuFindAndReplaceResult});
+            this._menuVisibleDeformHistoryResult});
             this._contextMenuResult.Name = "_contextMenuEdit";
             this._contextMenuResult.Size = new System.Drawing.Size(204, 170);
             this._contextMenuResult.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
@@ -846,6 +854,14 @@
             this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(203, 22);
             this._menuVisibleDeformHistoryResult.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistoryResult.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
+            // 
+            // _menuFindAndReplaceResult
+            // 
+            this._menuFindAndReplaceResult.Name = "_menuFindAndReplaceResult";
+            this._menuFindAndReplaceResult.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(203, 22);
+            this._menuFindAndReplaceResult.Text = "検索と置換(&F)";
+            this._menuFindAndReplaceResult.Click += new System.EventHandler(this._menuFindAndReplace_Click);
             // 
             // _treeViewHistory
             // 
@@ -1103,22 +1119,6 @@
             this._toolTipFind.ReshowDelay = 10;
             this._toolTipFind.UseAnimation = false;
             this._toolTipFind.UseFading = false;
-            // 
-            // _menuFindAndReplace
-            // 
-            this._menuFindAndReplace.Name = "_menuFindAndReplace";
-            this._menuFindAndReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this._menuFindAndReplace.Size = new System.Drawing.Size(203, 22);
-            this._menuFindAndReplace.Text = "検索と置換(&F)";
-            this._menuFindAndReplace.Click += new System.EventHandler(this._menuFindAndReplace_Click);
-            // 
-            // _menuFindAndReplaceResult
-            // 
-            this._menuFindAndReplaceResult.Name = "_menuFindAndReplaceResult";
-            this._menuFindAndReplaceResult.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(203, 22);
-            this._menuFindAndReplaceResult.Text = "検索と置換(&F)";
-            this._menuFindAndReplaceResult.Click += new System.EventHandler(this._menuFindAndReplace_Click);
             // 
             // FormOfClaptePad
             // 
