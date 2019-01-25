@@ -60,9 +60,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             InitializeTextBox();
 
-            EditorViewModel = new ClaptePadViewModel(this, _inputTextBox);
-            EditorViewModel.InputSupport.ModifyLocation = _splitContainerAll.Location; // TODO!:ひどいのでどうにかする
-            EditorViewModel.ArgumentHelper.ModifyLocation = _splitContainerAll.Location; // TODO!:ひどいのでどうにかする
+            EditorViewModel = new ClaptePadViewModel(this, _inputTextBox, _splitContainerAll.Location);
 
             Delay = 500;
 
@@ -324,7 +322,9 @@ namespace GoodSeat.Clapte.Views.Forms
             }
             _treeViewHistory.Nodes.Clear();
 
-            foreach (var n in EditorViewModel.CreateTreeNodeOfDeformHistories(history))
+            var colorOfRule = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment);
+            var colorOfError = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Error);
+            foreach (var n in EditorViewModel.CreateTreeNodeOfDeformHistories(history, colorOfRule, colorOfError, _contextMenuHistoryNode))
             {
                 _treeViewHistory.Nodes.Add(n);
             }

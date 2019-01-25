@@ -26,7 +26,8 @@ namespace GoodSeat.Clapte.ViewModels
         /// </summary>
         /// <param name="view">ClaptePadのビュー。</param>
         /// <param name="azuki">ビューにおける入力テキストボックス。</param>
-        public ClaptePadViewModel(Views.Forms.FormOfClaptePad view, AzukiControl azuki)
+        /// <param name="inputSupportPositionOffset">入力補助の表示位置の補正量。</param>
+        public ClaptePadViewModel(Views.Forms.FormOfClaptePad view, AzukiControl azuki, Point inputSupportPositionOffset)
         {
             _inputTextBox = azuki;
             _inputTextBox.VScroll += _inputTextBox_VScroll;
@@ -36,19 +37,20 @@ namespace GoodSeat.Clapte.ViewModels
             _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => InputSupport.ShowInputSupport(true));
             _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
 
-            _view = view;
+            Target = view.Target;
 
             InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
-            InputSupport = new InputSupport(_inputTextBox, _view, InputSupportEnumerator);
+            InputSupport = new InputSupport(_inputTextBox, view, InputSupportEnumerator);
+            InputSupport.ModifyLocation = inputSupportPositionOffset;
 
-            ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, _view, InputSupportEnumerator);
+            ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, view, InputSupportEnumerator);
+            ArgumentHelper.ModifyLocation = inputSupportPositionOffset;
 
             AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
 
             InitializeGreekLettersMap();
         }
 
-        Views.Forms.FormOfClaptePad _view; // TODO!:可能であれば消したい依存
         AzukiControl _inputTextBox;
 
         #region プロパティ
@@ -99,7 +101,7 @@ namespace GoodSeat.Clapte.ViewModels
         /// <summary>
         /// 対象の数式セルリストビューモデルを取得します。
         /// </summary>
-        public FormulaCellListViewModel Target { get { return _view.Target; } }
+        public FormulaCellListViewModel Target { get; private set; }
 
         /// <summary>
         /// 現在の入力ボックス各行に関連付けられた付加情報リストを設定もしくは取得します。
@@ -439,8 +441,11 @@ namespace GoodSeat.Clapte.ViewModels
         /// 指定数式変形履歴を表すツリーノードを生成して取得します。
         /// </summary>
         /// <param name="history">対象とする数式変形履歴。</param>
+        /// <param name="colorOfRule">ルール名に付与するカラー。</param>
+        /// <param name="colorOfError">エラーの説明に付与するカラー。</param>
+        /// <param name="contextMenuOfNode">数式のノードに付与するコンテキストメニュー。</param>
         /// <returns>指定数式変形履歴を表すツリーノード。</returns>
-        public IEnumerable<TreeNode> CreateTreeNodeOfDeformHistories(DeformHistory history)
+        public IEnumerable<TreeNode> CreateTreeNodeOfDeformHistories(DeformHistory history, Color colorOfRule, Color colorOfError, ContextMenuStrip contextMenuOfNode)
         {
             var format = Target.BaseSolver.Target.OutputFormat;
 
@@ -456,7 +461,7 @@ namespace GoodSeat.Clapte.ViewModels
                 {
                     var treeNodeApplied = new TreeNode(" ↓ " + historyNode.AppliedRule.Information);
                     treeNodeApplied.Tag = historyNode.AppliedRule;
-                    treeNodeApplied.ForeColor = _view.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment);
+                    treeNodeApplied.ForeColor = colorOfRule;
                     yield return treeNodeApplied;
                 }
 
@@ -464,9 +469,9 @@ namespace GoodSeat.Clapte.ViewModels
                 if (historyNode.AppliedRule == null) treeNode.Tag = history;
                 else treeNode.Tag = historyNode;
 
-                if (historyNode.Formula is ErrorFormula) treeNode.ForeColor = _view.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Error);
+                if (historyNode.Formula is ErrorFormula) treeNode.ForeColor = colorOfError;
 
-//                treeNode.ContextMenuStrip = _contextMenuHistoryNode; // TODO:どうにかする
+                treeNode.ContextMenuStrip = contextMenuOfNode;
 
                 bool anyHasHistory = false;
                 foreach (var historyChild in historyNode.ChildrenHistories)
@@ -478,12 +483,12 @@ namespace GoodSeat.Clapte.ViewModels
 
                     var treeNodeChild = new TreeNode(text);
                     treeNodeChild.ForeColor = Color.Gray;
-                    foreach (var n in CreateTreeNodeOfDeformHistories(historyChild))
+                    foreach (var n in CreateTreeNodeOfDeformHistories(historyChild, colorOfRule, colorOfError, contextMenuOfNode))
                     {
                         treeNodeChild.Nodes.Add(n);
                     }
                     treeNodeChild.Tag = historyChild;
- //                   treeNodeChild.ContextMenuStrip = _contextMenuHistoryNode; // TODO:どうにかする
+                    treeNodeChild.ContextMenuStrip = contextMenuOfNode;
                     treeNode.Nodes.Add(treeNodeChild);
                 }
                 if (!anyHasHistory) treeNode.Nodes.Clear();
