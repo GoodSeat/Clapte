@@ -25,27 +25,27 @@ namespace GoodSeat.Clapte.ViewModels
         /// ClaptePadのエディタ機能に係るビューモデルを初期化します。
         /// </summary>
         /// <param name="view">ClaptePadのビュー。</param>
-        /// <param name="azuki">ビューにおける入力テキストボックス。</param>
+        /// <param name="inputTextBox">ビューにおける入力テキストボックス。</param>
         /// <param name="inputSupportPositionOffset">入力補助の表示位置の補正量。</param>
-        public ClaptePadViewModel(Views.Forms.FormOfClaptePad view, AzukiControl azuki, Point inputSupportPositionOffset)
+        public ClaptePadViewModel(Views.Forms.FormOfClaptePad view, AzukiControl inputTextBox, Point inputSupportPositionOffset)
         {
-            _inputTextBox = azuki;
-            _inputTextBox.VScroll += _inputTextBox_VScroll;
-            _inputTextBox.CaretMoved += _inputTextBox_CaretMoved;
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.G, i => EnterGreekLettersMode());
-            _inputTextBox.KeyUp += _inputTextBox_KeyUp;
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => InputSupport.ShowInputSupport(true));
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
-            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
-            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
+            InputTextBox = inputTextBox;
+            InputTextBox.VScroll += InputTextBox_VScroll;
+            InputTextBox.CaretMoved += InputTextBox_CaretMoved;
+            InputTextBox.SetKeyBind(Keys.Control | Keys.G, i => EnterGreekLettersMode());
+            InputTextBox.KeyUp += InputTextBox_KeyUp;
+            InputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => InputSupport.ShowInputSupport(true));
+            InputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
+            InputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
+            InputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
 
             Target = view.Target;
 
             InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
-            InputSupport = new InputSupport(_inputTextBox, view, InputSupportEnumerator);
+            InputSupport = new InputSupport(InputTextBox, view, InputSupportEnumerator);
             InputSupport.ModifyLocation = inputSupportPositionOffset;
 
-            ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, view, InputSupportEnumerator);
+            ArgumentHelper = new FunctionArgumentHelp(InputTextBox, view, InputSupportEnumerator);
             ArgumentHelper.ModifyLocation = inputSupportPositionOffset;
 
             AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
@@ -53,9 +53,13 @@ namespace GoodSeat.Clapte.ViewModels
             InitializeGreekLettersMap();
         }
 
-        AzukiControl _inputTextBox;
 
         #region プロパティ
+
+        /// <summary>
+        /// 対象とする入力テキストボックスを設定若しくは取得します。
+        /// </summary>
+        AzukiControl InputTextBox { get; set; }
 
         /// <summary>
         /// 入力補助オブジェクトを設定もしくは取得します。
@@ -127,7 +131,7 @@ namespace GoodSeat.Clapte.ViewModels
             set
             {
                 _greekLettersMode = value;
-                _inputTextBox.IsReadOnly = value;
+                InputTextBox.IsReadOnly = value;
                 _ignoreKeyinGreekLettersMode = value;
             }
         }
@@ -180,11 +184,11 @@ namespace GoodSeat.Clapte.ViewModels
         public string DetectTargetUnitOnCaretLine()
         {
             int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
+            InputTextBox.GetSelection(out begin, out end);
 
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            int lineIndex = InputTextBox.Document.GetLineIndexFromCharIndex(begin);
 
-            string text = _inputTextBox.Document.GetLineContent(lineIndex);
+            string text = InputTextBox.Document.GetLineContent(lineIndex);
 
             var targetUnitRegex = new Regex(@"^\s*\[(?<targetUnit>[^[\]]+)\]");
 
@@ -199,11 +203,11 @@ namespace GoodSeat.Clapte.ViewModels
         public void SetTargetUnitOnCaretLine(string targetUnit)
         {
             int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
+            InputTextBox.GetSelection(out begin, out end);
 
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            int lineIndex = InputTextBox.Document.GetLineIndexFromCharIndex(begin);
 
-            string text = _inputTextBox.Document.GetLineContent(lineIndex);
+            string text = InputTextBox.Document.GetLineContent(lineIndex);
 
             var targetUnitRegex = new Regex(@"^(?<indent>\s*)\[(?<targetUnit>[^[\]]*)\]\s*");
             var match = targetUnitRegex.Match(text);
@@ -225,15 +229,15 @@ namespace GoodSeat.Clapte.ViewModels
             }
             if (newText == text) return;
 
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            var texts = new List<string>(InputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
             texts[lineIndex] = newText;
 
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
+            int visible1stLine = InputTextBox.FirstVisibleLine;
+            InputTextBox.Text = string.Join("\r\n", texts);
+            InputTextBox.FirstVisibleLine = visible1stLine;
 
-            int caretIndex = _inputTextBox.Document.GetCharIndexFromLineColumnIndex(lineIndex, 0);
-            _inputTextBox.SetSelection(caretIndex, caretIndex);
+            int caretIndex = InputTextBox.Document.GetCharIndexFromLineColumnIndex(lineIndex, 0);
+            InputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
         /// <summary>
@@ -304,21 +308,21 @@ namespace GoodSeat.Clapte.ViewModels
         /// <param name="convert">元の文字列と、その行が選択行のうちの最終行か否かを受け取り、文字列を変換する処理。</param>
         public void EditSelectedLines(Func<string, bool, string> convert)
         {
-            int caretIndex = _inputTextBox.CaretIndex;
+            int caretIndex = InputTextBox.CaretIndex;
 
             int sline, eline;
-            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
+            InputTextBox.GetSelectedLineIndex(out sline, out eline);
 
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            var texts = new List<string>(InputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
             for (int l = sline; l < eline; ++l) texts[l] = convert(texts[l], false);
             texts[eline] = convert(texts[eline], true);
 
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
+            int visible1stLine = InputTextBox.FirstVisibleLine;
+            InputTextBox.Text = string.Join("\r\n", texts);
+            InputTextBox.FirstVisibleLine = visible1stLine;
 
-            caretIndex = Math.Min(caretIndex, _inputTextBox.Document.Text.Length - 1);
-            _inputTextBox.SetSelection(caretIndex, caretIndex);
+            caretIndex = Math.Min(caretIndex, InputTextBox.Document.Text.Length - 1);
+            InputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
         /// <summary>
@@ -327,16 +331,16 @@ namespace GoodSeat.Clapte.ViewModels
         /// <param name="convert">元の文字列を受け取り、文字列を変換する処理。</param>
         public void EditAllLines(Func<string, string> convert)
         {
-            int caretIndex = _inputTextBox.CaretIndex;
+            int caretIndex = InputTextBox.CaretIndex;
 
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")).Select(convert));
+            var texts = new List<string>(InputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")).Select(convert));
 
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
+            int visible1stLine = InputTextBox.FirstVisibleLine;
+            InputTextBox.Text = string.Join("\r\n", texts);
+            InputTextBox.FirstVisibleLine = visible1stLine;
 
-            caretIndex = Math.Min(caretIndex, _inputTextBox.Document.Text.Length - 1);
-            _inputTextBox.SetSelection(caretIndex, caretIndex);
+            caretIndex = Math.Min(caretIndex, InputTextBox.Document.Text.Length - 1);
+            InputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
         /// <summary>
@@ -345,10 +349,10 @@ namespace GoodSeat.Clapte.ViewModels
         /// <param name="up">選択行を上げるならtrue、下げるならfalseを指定。</param>
         public void MoveUpOrDownSelectedLine(bool up)
         {
-            var lines = new List<string>(_inputTextBox.Text.Split('\n'));
+            var lines = new List<string>(InputTextBox.Text.Split('\n'));
 
             int sline, eline;
-            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
+            InputTextBox.GetSelectedLineIndex(out sline, out eline);
 
             Predicate<string> isContinueLine = l => l.Trim().EndsWith(" _");
 
@@ -387,11 +391,11 @@ namespace GoodSeat.Clapte.ViewModels
             foreach (var l in moveLines) lines.Insert(moveTo, l);
 
             int bs, es;
-            _inputTextBox.Document.GetSelection(out bs, out es);
+            InputTextBox.Document.GetSelection(out bs, out es);
 
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\n", lines);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
+            int visible1stLine = InputTextBox.FirstVisibleLine;
+            InputTextBox.Text = string.Join("\n", lines);
+            InputTextBox.FirstVisibleLine = visible1stLine;
 
             if (up)
             {
@@ -403,7 +407,7 @@ namespace GoodSeat.Clapte.ViewModels
                 bs += countOverChar;
                 es += countOverChar;
             }
-            _inputTextBox.Document.SetSelection(bs, es); 
+            InputTextBox.Document.SetSelection(bs, es); 
         }
 
         /// <summary>
@@ -412,10 +416,10 @@ namespace GoodSeat.Clapte.ViewModels
         /// <param name="deform">適用する数式の変形処理。</param>
         public void DeformFormula(Func<Formula, Formula> deform)
         {
-            int caretIndex = _inputTextBox.CaretIndex;
+            int caretIndex = InputTextBox.CaretIndex;
             int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            InputTextBox.GetSelection(out begin, out end);
+            int lineIndex = InputTextBox.Document.GetLineIndexFromCharIndex(begin);
 
             string result = "# 数式処理に失敗しました。";
             try
@@ -431,14 +435,14 @@ namespace GoodSeat.Clapte.ViewModels
                 result += e.Message;
             }
 
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
+            var texts = new List<string>(InputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
             texts.Insert(lineIndex + 1, result);
 
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
+            int visible1stLine = InputTextBox.FirstVisibleLine;
+            InputTextBox.Text = string.Join("\r\n", texts);
+            InputTextBox.FirstVisibleLine = visible1stLine;
 
-            _inputTextBox.SetSelection(caretIndex, caretIndex);
+            InputTextBox.SetSelection(caretIndex, caretIndex);
         }
 
         /// <summary>
@@ -448,9 +452,9 @@ namespace GoodSeat.Clapte.ViewModels
         public Formula FormulaOnCaret()
         {
             int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
+            InputTextBox.GetSelection(out begin, out end);
 
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            int lineIndex = InputTextBox.Document.GetLineIndexFromCharIndex(begin);
             var line = Target.ElementAt(lineIndex);
 
             // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
@@ -570,22 +574,22 @@ namespace GoodSeat.Clapte.ViewModels
 
         #region イベント対応
 
-        private void _inputTextBox_VScroll(object sender, EventArgs e)
+        private void InputTextBox_VScroll(object sender, EventArgs e)
         {
             ArgumentHelper.Hide();
             InputSupport.EscapeInputSupport();
         }
 
-        private void _inputTextBox_CaretMoved(object sender, EventArgs e)
+        private void InputTextBox_CaretMoved(object sender, EventArgs e)
         {
             int line, column;
-            _inputTextBox.Document.GetCaretIndex(out line, out column);
+            InputTextBox.Document.GetCaretIndex(out line, out column);
             InputSupportEnumerator.CurrentCaretLineNumber = line;
 
             if (GreekLettersMode) GreekLettersMode = false;
         }
 
-        private void _inputTextBox_KeyUp(object sender, KeyEventArgs e)
+        private void InputTextBox_KeyUp(object sender, KeyEventArgs e)
         {
             if (GreekLettersMode && MapAlphabetToGreek.ContainsKey(e.KeyCode))
             {
@@ -596,7 +600,7 @@ namespace GoodSeat.Clapte.ViewModels
                 }
 
                 var value = MapAlphabetToGreek[e.KeyCode];
-                _inputTextBox.Document.Replace(e.Shift ? value.Item1 : value.Item2);
+                InputTextBox.Document.Replace(e.Shift ? value.Item1 : value.Item2);
             }
         }
 

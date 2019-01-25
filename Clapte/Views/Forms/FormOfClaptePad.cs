@@ -9,7 +9,6 @@ using System.Text;
 using System.Windows.Forms;
 using Sgry.Azuki;
 using GoodSeat.Clapte.Models;
-using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Sio.Xml;
