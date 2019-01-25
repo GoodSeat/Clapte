@@ -10,13 +10,10 @@ using System.Windows.Forms;
 using Sgry.Azuki;
 using GoodSeat.Clapte.Models;
 using GoodSeat.Clapte.Solvers;
-using GoodSeat.Clapte.Views.InputSupports;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
-using GoodSeat.Liffom.Formulas.Units;
-using System.Text.RegularExpressions;
 using GoodSeat.Liffom.Deforms;
 
 namespace GoodSeat.Clapte.Views.Forms
@@ -61,16 +58,9 @@ namespace GoodSeat.Clapte.Views.Forms
             Target.EvaluateStarted += Target_EvaluateStarted;
             Target.EvaluateFinished += Target_EvaluateFinished;
 
-            InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
-            Support = new InputSupport(_inputTextBox, this, InputSupportEnumerator);
-            Support.ModifyLocation = _splitContainerAll.Location;
-            ArgumentHelper = new FunctionArgumentHelp(_inputTextBox, this, InputSupportEnumerator);
-            ArgumentHelper.ModifyLocation = _splitContainerAll.Location;
-
-            AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
-
             InitializeTextBox();
-            InitializeGreekLettersMap();
+
+            EditorViewModel = new ClaptePadViewModel(this, _inputTextBox, _splitContainerAll.Location);
 
             Delay = 500;
 
@@ -151,32 +141,6 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         public int Delay { get; set; }
 
-        /// <summary>
-        /// 入力の際、自動で入力補助を表示するか否かを設定もしくは取得します。
-        /// </summary>
-        public bool AutoShowInputSupport
-        {
-            get { return Support.AutoShow; }
-            set { Support.AutoShow = value; }
-        }
-
-        /// <summary>
-        /// キャレット移動時、必要に応じて自動で関数の引数ヘルプを表示するか否かを設定もしくは取得します。
-        /// </summary>
-        public bool AutoShowArgumentHelp
-        {
-            get { return ArgumentHelper.AutoShow; }
-            set { ArgumentHelper.AutoShow = value; }
-        }
-
-        /// <summary>
-        /// 説明文も補完対象として使用するか否かを設定もしくは取得します。
-        /// </summary>
-        public bool InputSupportWithAlsoInfomation
-        {
-            get { return InputSupportEnumerator.AlsoInfomation; }
-            set { InputSupportEnumerator.AlsoInfomation = value; }
-        }
 
 
         /// <summary>
@@ -190,6 +154,11 @@ namespace GoodSeat.Clapte.Views.Forms
         public FormulaCellListViewModel Target { get; private set; }
 
         /// <summary>
+        /// 入力テキストの編集ビューモデルを取得します。
+        /// </summary>
+        public ClaptePadViewModel EditorViewModel { get; private set; }
+
+        /// <summary>
         /// シンタックスハイライトオブジェクトを設定もしくは取得します。
         /// </summary>
         public ClaptePadKeywordHighlighter Highlighter { get; set; }
@@ -199,47 +168,6 @@ namespace GoodSeat.Clapte.Views.Forms
         /// 入力と結果のテキストボックスのスクロール同期処理の無効フラグです。
         /// </summary>
         private bool IgnoreScroll { get; set; }
-
-        /// <summary>
-        /// 入力補助オブジェクトを設定もしくは取得します。
-        /// </summary>
-        private InputSupport Support { get; set; }
-
-        /// <summary>.
-        /// 引数ヘルプオブジェクトを設定もしくは取得します。
-        /// </summary>.
-        private FunctionArgumentHelp ArgumentHelper { get; set; }
-
-        /// <summary>
-        /// 入力補助の候補列挙オブジェクトを設定もしくは取得します。
-        /// </summary>
-        private ClaptePadInputSupportEnumerator InputSupportEnumerator { get; set; }
-
-        /// <summary>
-        /// 現在の入力ボックス各行に関連付けられた付加情報リストを設定もしくは取得します。
-        /// </summary>
-        private List<Tuple<FormulaCellContent.AdditionalInformationType, string>> AdditionalInformations { get; set; }
-
-        /// <summary>
-        /// アルファベットから対応するギリシャ文字を取得する対応マップを初期化します。
-        /// </summary>
-        Dictionary<Keys, Tuple<string, string>> MapAlphabetToGreek { get; set; }
-
-        bool _greekLettersMode;
-        bool _ignoreKeyinGreekLettersMode;
-        /// <summary>
-        /// ギリシャ文字入力モードか否かを設定若しくは取得します。
-        /// </summary>
-        bool GreekLettersMode
-        {
-            get { return _greekLettersMode; }
-            set
-            {
-                _greekLettersMode = value;
-                _inputTextBox.IsReadOnly = value;
-                _ignoreKeyinGreekLettersMode = value;
-            }
-        }
 
         #endregion
 
@@ -262,12 +190,9 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.ShowsHScrollBar = false;
             _inputTextBox.MouseWheel += _inputTextBox_MouseMove;
 
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.Enter, i => Support.ShowInputSupport(true));
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.H, i => ArgumentHelper.ShowArgumentHelp());
             _inputTextBox.SetKeyBind(Keys.Control | Keys.F, i => OpenFindPanel());
-            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
-            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
-            _inputTextBox.SetKeyBind(Keys.Control | Keys.G, i => EnterGreekLettersMode());
+            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => EditorViewModel.MoveUpOrDownSelectedLine(true));
+            _inputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => EditorViewModel.MoveUpOrDownSelectedLine(false));
 
             _resultTextBox.View.ColorScheme.SelectionBack = Color.Gray;
             _resultTextBox.View.ColorScheme.LineNumberBack = Color.White;
@@ -299,42 +224,8 @@ namespace GoodSeat.Clapte.Views.Forms
             }
             else
             {
-                this.Hide();
+                Hide();
             }
-        }
-
-        /// <summary>
-        /// アルファベットから対応するギリシャ文字を取得する対応マップを初期化します。
-        /// </summary>
-        void InitializeGreekLettersMap()
-        {
-            MapAlphabetToGreek = new Dictionary<Keys, Tuple<string, string>>();
-            MapAlphabetToGreek.Add(Keys.A, Tuple.Create("Α", "α"));
-            MapAlphabetToGreek.Add(Keys.B, Tuple.Create("Β", "β"));
-            MapAlphabetToGreek.Add(Keys.C, Tuple.Create("Χ", "χ"));
-            MapAlphabetToGreek.Add(Keys.D, Tuple.Create("Δ", "δ"));
-            MapAlphabetToGreek.Add(Keys.E, Tuple.Create("Ε", "ε"));
-            MapAlphabetToGreek.Add(Keys.F, Tuple.Create("Φ", "φ"));
-            MapAlphabetToGreek.Add(Keys.G, Tuple.Create("Γ", "γ"));
-            MapAlphabetToGreek.Add(Keys.H, Tuple.Create("Η", "η"));
-            MapAlphabetToGreek.Add(Keys.I, Tuple.Create("Ι", "ι"));
-            MapAlphabetToGreek.Add(Keys.J, Tuple.Create("ϑ", "ϕ"));
-            MapAlphabetToGreek.Add(Keys.K, Tuple.Create("Κ", "κ"));
-            MapAlphabetToGreek.Add(Keys.L, Tuple.Create("Λ", "λ"));
-            MapAlphabetToGreek.Add(Keys.M, Tuple.Create("Μ", "μ"));
-            MapAlphabetToGreek.Add(Keys.N, Tuple.Create("Ν", "ν"));
-            MapAlphabetToGreek.Add(Keys.O, Tuple.Create("Ο", "ο"));
-            MapAlphabetToGreek.Add(Keys.P, Tuple.Create("Π", "π"));
-            MapAlphabetToGreek.Add(Keys.Q, Tuple.Create("Θ", "θ"));
-            MapAlphabetToGreek.Add(Keys.R, Tuple.Create("Ρ", "ρ"));
-            MapAlphabetToGreek.Add(Keys.S, Tuple.Create("Σ", "σ"));
-            MapAlphabetToGreek.Add(Keys.T, Tuple.Create("Τ", "τ"));
-            MapAlphabetToGreek.Add(Keys.U, Tuple.Create("Υ", "υ"));
-            MapAlphabetToGreek.Add(Keys.V, Tuple.Create("ς", "ϖ"));
-            MapAlphabetToGreek.Add(Keys.W, Tuple.Create("Ω", "ω"));
-            MapAlphabetToGreek.Add(Keys.X, Tuple.Create("Ξ", "ξ"));
-            MapAlphabetToGreek.Add(Keys.Y, Tuple.Create("Ψ", "ψ"));
-            MapAlphabetToGreek.Add(Keys.Z, Tuple.Create("Ζ", "ζ"));
         }
 
         /// <summary>
@@ -381,58 +272,8 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <param name="azuki">対象のAzukiコントロール。</param>
         private void JumpDefine(Sgry.Azuki.WinForms.AzukiControl azuki)
         {
-            string targetText = azuki.GetSelectedText();
-            string postText;
-            int lineIndex;
-            string txt = azuki.GetCaretWord(out lineIndex, out postText);
-            if (string.IsNullOrEmpty(targetText)) targetText = txt;
-            if (targetText == null) return;
-
-            var helpTarget = InputSupportEnumerator.GetInputSupportCandidateFromText(targetText, lineIndex, postText);
-            if (helpTarget == null)
-            {
-                var target = Target.BaseSolver.Target.Parser.Parse(targetText);
-                if (target is Variable) target = new Unit(targetText);
-
-                var unit = target as Unit;
-                if (unit != null && unit.UnitType != null) OwnerMainForm.OpenDefine(target);
-
-                return;
-            }
-
-            int jump = -1;
-            if (helpTarget.Tag is FunctionDefine)
-            {
-                var def = helpTarget.Tag as FunctionDefine;
-
-                int line = 0;
-                foreach (var cell in Target)
-                {
-                    if (cell.Target.Content.GetAllDefinedFunctionNames().Select(u => u.Item1).Contains(def.Name)) jump = line;
-                    if (line++ >= lineIndex) break;
-                }
-                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
-            }
-            else if (helpTarget.Tag is ConstantDefine)
-            {
-                var def = helpTarget.Tag as ConstantDefine;
-
-                int line = 0;
-                foreach (var cell in Target)
-                {
-                    if (cell.Target.Content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
-                    if (line++ >= lineIndex) break;
-                }
-                if (jump == -1) OwnerMainForm.OpenDefine(def.Target);
-            }
-            else if (helpTarget.Tag is UnitConvertRecord)
-            {
-                OwnerMainForm.OpenDefine((helpTarget.Tag as UnitConvertRecord).ConvertUnit);
-            }
-            if (jump < 0) return;
-
-            azuki.Document.SetCaretIndex(jump, 0);
-            azuki.ScrollToCaret();
+            var targetFormula = EditorViewModel.JumpDefine(azuki);
+            if (targetFormula != null) OwnerMainForm.OpenDefine(targetFormula);
         }
 
         /// <summary>
@@ -458,237 +299,21 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         /// <summary>
-        /// 選択されているすべての行についてテキストの変換を行います。
-        /// </summary>
-        /// <param name="convert">元の文字列と、その行が選択行のうちの最終行か否かを受け取り、文字列を変換する処理。</param>
-        private void EditSelectedLines(Func<string, bool, string> convert)
-        {
-            int caretIndex = _inputTextBox.CaretIndex;
-
-            int sline, eline;
-            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
-
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
-            for (int l = sline; l < eline; ++l) texts[l] = convert(texts[l], false);
-            texts[eline] = convert(texts[eline], true);
-
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
-
-            caretIndex = Math.Min(caretIndex, _inputTextBox.Document.Text.Length - 1);
-            _inputTextBox.SetSelection(caretIndex, caretIndex);
-        }
-
-        /// <summary>
-        /// 選択されている全ての行を、継続行を考慮して1行上に移動します。
-        /// </summary>
-        /// <param name="up">選択行を上げるならtrue、下げるならfalseを指定。</param>
-        private void MoveUpOrDownSelectedLine(bool up)
-        {
-            var lines = new List<string>(_inputTextBox.Text.Split('\n'));
-
-            int sline, eline;
-            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
-
-            Predicate<string> isContinueLine = l => l.Trim().EndsWith(" _");
-
-            while (sline > 1 && isContinueLine(lines[sline - 1])) --sline;
-            while (eline < lines.Count && isContinueLine(lines[eline])) ++eline;
-            if (up && sline <= 0) return;
-            if (!up && eline >= lines.Count - 1) return;
-
-            int moveTo;
-            if (up)
-            {
-                moveTo = sline - 1;
-                while (moveTo > 1 && isContinueLine(lines[moveTo - 1])) --moveTo;
-            }
-            else
-            {
-                moveTo = eline + 1;
-                while (moveTo < lines.Count && isContinueLine(lines[moveTo])) ++moveTo;
-            }
-
-            int countOverChar = 0;
-            if (up)
-            {
-                for (int overLine = moveTo; overLine < sline; overLine++) countOverChar += lines[overLine].Length + 1;
-            }
-            else
-            {
-                for (int overLine = moveTo; overLine > eline; overLine--) countOverChar += lines[overLine].Length + 1;
-                moveTo -= (eline - sline);
-            }
-
-            var moveLines = new List<string>();
-            for (int l = eline; l >= sline; --l) moveLines.Add(lines[l]);
-            lines.RemoveRange(sline, eline - sline + 1);
-
-            foreach (var l in moveLines) lines.Insert(moveTo, l);
-
-            int bs, es;
-            _inputTextBox.Document.GetSelection(out bs, out es);
-
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\n", lines);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
-
-            if (up)
-            {
-                bs -= countOverChar;
-                es -= countOverChar;
-            }
-            else
-            {
-                bs += countOverChar;
-                es += countOverChar;
-            }
-            _inputTextBox.Document.SetSelection(bs, es); 
-        }
-
-        /// <summary>
-        /// 数式の変形関数を受け取り、変形結果をキャレットの次の行に挿入します。
-        /// </summary>
-        /// <param name="deform">適用する数式の変形処理。</param>
-        private void DeformFormula(Func<Formula, Formula> deform)
-        {
-            int caretIndex = _inputTextBox.CaretIndex;
-            int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
-
-            string result = "# 数式処理に失敗しました。";
-            try
-            {
-                // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
-                var f1 = FormulaOnCaret();
-                var f2 = deform(f1);
-                f2.Format = Target.BaseSolver.Target.OutputFormat;
-                result = f2.ToString();
-            }
-            catch (Exception e)
-            {
-                result += e.Message;
-            }
-
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
-            texts.Insert(lineIndex + 1, result);
-
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
-
-            _inputTextBox.SetSelection(caretIndex, caretIndex);
-        }
-
-        /// <summary>
-        /// 現在のキャレット上にある数式を取得します。
-        /// </summary>
-        /// <returns></returns>
-        Formula FormulaOnCaret()
-        {
-            int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
-
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
-            var line = Target.ElementAt(lineIndex);
-
-            // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
-            return Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
-        }
-
-        /// <summary>
-        /// 現在のキャレット上の行で指定されている換算目標単位を取得します。換算目標単位の指定がない場合には、nullを返します。
-        /// </summary>
-        /// <returns></returns>
-        string DetectTargetUnitOnCaretLine()
-        {
-            int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
-
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
-
-            string text = _inputTextBox.Document.GetLineContent(lineIndex);
-
-            var targetUnitRegex = new Regex(@"^\s*\[(?<targetUnit>[^[\]]+)\]");
-
-            var match = targetUnitRegex.Match(text);
-            return match.Success ? match.Groups["targetUnit"].Value : null;
-        }
-
-        /// <summary>
-        /// 現在のキャレット上の換算目標単位を指定します。nullや空文字が指定された場合、目標単位を削除します。
-        /// </summary>
-        /// <param name="targetUnit"></param>
-        void SetTargetUnitOnCaretLine(string targetUnit)
-        {
-            int begin, end;
-            _inputTextBox.GetSelection(out begin, out end);
-
-            int lineIndex = _inputTextBox.Document.GetLineIndexFromCharIndex(begin);
-
-            string text = _inputTextBox.Document.GetLineContent(lineIndex);
-
-            var targetUnitRegex = new Regex(@"^(?<indent>\s*)\[(?<targetUnit>[^[\]]*)\]\s*");
-            var match = targetUnitRegex.Match(text);
-            var newText = text;
-            if (match.Success)
-            {
-                if (string.IsNullOrWhiteSpace(targetUnit))
-                {
-                    newText = Regex.Replace(text, targetUnitRegex.ToString(), "${indent}");
-                }
-                else
-                {
-                    newText = Regex.Replace(text, targetUnitRegex.ToString(), "${indent}" + "[" + targetUnit + "] ");
-                }
-            }
-            else
-            {
-                if (!string.IsNullOrWhiteSpace(targetUnit)) newText = "[" + targetUnit + "] " + text;
-            }
-            if (newText == text) return;
-
-            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
-            texts[lineIndex] = newText;
-
-            int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = string.Join("\r\n", texts);
-            _inputTextBox.FirstVisibleLine = visible1stLine;
-
-            int caretIndex = _inputTextBox.Document.GetCharIndexFromLineColumnIndex(lineIndex, 0);
-            _inputTextBox.SetSelection(caretIndex, caretIndex);
-        }
-
-        /// <summary>
         /// 現在のキャレット位置に基づいて、変形履歴ビューを更新します。
         /// </summary>
         void UpdateTreeViewOfDeformHistory()
         {
-            if (!_menuVisibleDeformHistory.Checked)
-            {
-                _treeViewHistory.Nodes.Clear();
-                return;
-            }
+            if (!_menuVisibleDeformHistory.Checked) { _treeViewHistory.Nodes.Clear(); return; }
 
             int line, column;
             var textBox = _resultTextBox.Focused ? _resultTextBox : _inputTextBox;
             textBox.Document.GetCaretIndex(out line, out column);
 
-            if (Target.Count() <= line)
-            {
-                _treeViewHistory.Nodes.Clear();
-                return;
-            }
+            if (Target.Count() <= line) { _treeViewHistory.Nodes.Clear(); return; }
 
             var cell = Target.ElementAt(line);
             var history = cell.Target.Content.DeformHistory;
-            if (history == null)
-            {
-                _treeViewHistory.Nodes.Clear();
-                return;
-            }
+            if (history == null) { _treeViewHistory.Nodes.Clear(); return; }
 
             if (_treeViewHistory.Nodes.Count != 0)
             {
@@ -697,73 +322,13 @@ namespace GoodSeat.Clapte.Views.Forms
             }
             _treeViewHistory.Nodes.Clear();
 
-            foreach (var n in CreateTreeNodeOfDeformHistories(history))
+            var colorOfRule = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment);
+            var colorOfError = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Error);
+            foreach (var n in EditorViewModel.CreateTreeNodeOfDeformHistories(history, colorOfRule, colorOfError, _contextMenuHistoryNode))
             {
                 _treeViewHistory.Nodes.Add(n);
             }
         }
-
-        /// <summary>
-        /// 指定数式変形履歴を表すツリーノードを生成して取得します。
-        /// </summary>
-        /// <param name="history">対象とする数式変形履歴。</param>
-        /// <returns>指定数式変形履歴を表すツリーノード。</returns>
-        IEnumerable<TreeNode> CreateTreeNodeOfDeformHistories(DeformHistory history)
-        {
-            var format = Target.BaseSolver.Target.OutputFormat;
-
-            Func<Formula, string> toString = f =>
-            {
-                f.Format = format;
-                return f.ToString();
-            };
-
-            foreach (var historyNode in history)
-            {
-                if (historyNode.AppliedRule != null)
-                {
-                    var treeNodeApplied = new TreeNode(" ↓ " + historyNode.AppliedRule.Information);
-                    treeNodeApplied.Tag = historyNode.AppliedRule;
-                    treeNodeApplied.ForeColor = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment);
-                    yield return treeNodeApplied;
-                }
-
-                var treeNode = new TreeNode(toString(historyNode.Formula));
-                if (historyNode.AppliedRule == null) treeNode.Tag = history;
-                else treeNode.Tag = historyNode;
-
-                if (historyNode.Formula is ErrorFormula) treeNode.ForeColor = GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Error);
-
-                treeNode.ContextMenuStrip = _contextMenuHistoryNode;
-
-                bool anyHasHistory = false;
-                foreach (var historyChild in historyNode.ChildrenHistories)
-                {
-                    if (historyChild.Count() < 2) continue;
-                    anyHasHistory = true;
-
-                    var text = "└ " + toString(historyChild.First().Formula) + " → " + toString(historyChild.Last().Formula);
-
-                    var treeNodeChild = new TreeNode(text);
-                    treeNodeChild.ForeColor = Color.Gray;
-                    foreach (var n in CreateTreeNodeOfDeformHistories(historyChild))
-                    {
-                        treeNodeChild.Nodes.Add(n);
-                    }
-                    treeNodeChild.Tag = historyChild;
-                    treeNodeChild.ContextMenuStrip = _contextMenuHistoryNode;
-                    treeNode.Nodes.Add(treeNodeChild);
-                }
-                if (!anyHasHistory) treeNode.Nodes.Clear();
-
-                yield return treeNode;
-            }
-        }
-
-        /// <summary>
-        /// ギリシャ文字入力モードに移行します。
-        /// </summary>
-        private void EnterGreekLettersMode() { GreekLettersMode = true; }
 
         /// <summary>
         /// 検索パネルを開きます。
@@ -798,7 +363,7 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 document.Unmark(0, document.Length, (int)type);
             }
-            AdditionalInformations.Clear();
+            EditorViewModel.AdditionalInformations.Clear();
 
             string resultText = "";
             for (int i = 0; i < document.LineCount; i++)
@@ -815,7 +380,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     int len = lineText.Split('#')[0].TrimEnd().Length;
                     document.Mark(head + indent, head + len, (int)addInfo.Item1);
                 }
-                AdditionalInformations.Add(addInfo);
+                EditorViewModel.AdditionalInformations.Add(addInfo);
             }
             SetVisibleOfScrollBar();
 
@@ -888,9 +453,6 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             _resultTextBox.View.ScrollPos = _inputTextBox.View.ScrollPos;
             _resultTextBox.UpdateScrollBarRange();
-
-            ArgumentHelper.Hide();
-            Support.EscapeInputSupport();
         }
 
         private void _resultTextBox_VScroll(object sender, EventArgs e)
@@ -939,7 +501,6 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             int line, column;
             _inputTextBox.Document.GetCaretIndex(out line, out column);
-            InputSupportEnumerator.CurrentCaretLineNumber = line;
 
             UpdateTreeViewOfDeformHistory();
 
@@ -960,8 +521,6 @@ namespace GoodSeat.Clapte.Views.Forms
                 _lastCaretLineIndex = line;
                 if (!refreshResult) _resultTextBox.Refresh();
             }
-
-            if (GreekLettersMode && e != null) GreekLettersMode = false;
         }
 
         private void _resultTextBox_CaretMoved(object sender, EventArgs e)
@@ -984,52 +543,12 @@ namespace GoodSeat.Clapte.Views.Forms
             var textBox = sender as Sgry.Azuki.WinForms.AzukiControl;
             if (textBox == null) return;
 
-            int lineIndex;
-            string postText;
-            string targetText = textBox.GetMouseHoverWord(out lineIndex, out postText);
-            char? targetChar = textBox.GetMouseHoverChar();
-            int? markID = textBox.GetMouseHoverMarkID();
-
-            string helpText = null;
-
-            int mouseIndex = textBox.GetMouseHoverIndex().GetValueOrDefault(-1);
-            var selectedText = textBox.GetSelectedText();
-            int begin, end;
-            textBox.GetSelection(out begin, out end);
-            bool isOnSelected = mouseIndex > begin && mouseIndex < end;
-            if (isOnSelected && selectedText.Length > 1)
-            {
-                selectedText = Regex.Replace(selectedText, "#[^\n]*", "");
-                selectedText = Regex.Replace(selectedText, " _ *\r?\n", "");
-                int n = lineIndex;
-                var line = Target.ElementAt(n);
-                while (line.Target.Content.IsContinuation) line = Target.ElementAt(++n);
-
-                var preCells = line.Target.Content.PreDemandEvaluateFormulaCells.Where(c => !c.Content.IsContinuation).ToArray();
-                var cell = new FormulaCell(selectedText, Target.BaseSolver.Target, preCells);
-                var content = cell.Content;
-                if (!(content is FormulaCellContentComment) && content.GetAllDefinedVariableNames().Count() == 0 && content.GetAllDefinedFunctionNames().Count() == 0 && cell.CanEvaluate)
-                {
-                    if (!cell.Evaluated) cell.Evaluate(Target.BaseSolver.Target);
-                    if (content.ResultLevel.GetValueOrDefault(Result.Level.Error) == Result.Level.Success) helpText = content.FormulaText + " = " + content.ResultText;
-                }
-            }
-            if (helpText == null && targetChar.HasValue && targetText != null && targetText.Contains(targetChar.Value))
-            {
-                var helpTarget = InputSupportEnumerator.GetInputSupportCandidateFromText(targetText, lineIndex, postText);
-                helpText = helpTarget?.Information;
-            }
-            if (helpText == null && markID.HasValue)
-            {
-                helpText = AdditionalInformations[lineIndex]?.Item2;
-            }
-
+            string helpText = EditorViewModel.HelpMessageOnMouse(textBox);
             if (string.IsNullOrEmpty(helpText))
             {
                 HideTooltipHelp();
                 return;
             }
-
             if (_toolTipHelp.Tag is string && (string)_toolTipHelp.Tag == helpText) return;
 
             Point position = textBox.PointToClient(Cursor.Position);
@@ -1093,21 +612,6 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
-        private void _inputTextBox_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (GreekLettersMode && MapAlphabetToGreek.ContainsKey(e.KeyCode))
-            {
-                if (_ignoreKeyinGreekLettersMode) // 最初のKeyUpはショートカットキーのアップのため
-                {
-                    _ignoreKeyinGreekLettersMode = false;
-                    return;
-                }
-
-                var value = MapAlphabetToGreek[e.KeyCode];
-                _inputTextBox.Document.Replace(e.Shift ? value.Item1 : value.Item2);
-            }
-        }
-
         #region コンテキストメニュー
 
         private void _contextMenuEdit_Opening(object sender, CancelEventArgs e)
@@ -1135,7 +639,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             try
             {
-                var f = FormulaOnCaret();
+                var f = EditorViewModel.FormulaOnCaret();
                 _menuExpand.Enabled = true;
                 _menuTidyUp.Enabled = true;
                 _menuSimplify.Enabled = true;
@@ -1143,7 +647,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuSubstitute.Enabled = true;
                 _menuConvertUnit.Enabled = true;
 
-                _txtBoxTargetUnit.Text = DetectTargetUnitOnCaretLine();
+                _txtBoxTargetUnit.Text = EditorViewModel.DetectTargetUnitOnCaretLine();
             }
             catch
             {
@@ -1186,17 +690,17 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuSolveSimultaneousEquation_Click(object sender, EventArgs e)
         {
-            EditSelectedLines((text, isLast) => { return (isLast ? "{_ " : "{  ") + text; });
+            EditorViewModel.EditSelectedLines((text, isLast) => { return (isLast ? "{_ " : "{  ") + text; });
         }
 
         private void _menuCommentOut_Click(object sender, EventArgs e)
         {
-            EditSelectedLines((text, isLast) => { return "# " + text; });
+            EditorViewModel.EditSelectedLines((text, isLast) => { return "# " + text; });
         }
 
         private void _menuUnCommentOut_Click(object sender, EventArgs e)
         {
-            EditSelectedLines((text, isLast) => {
+            EditorViewModel.EditSelectedLines((text, isLast) => {
                 var textResult = text.TrimStart().TrimStart('#');
                 if (textResult.StartsWith(" ")) return textResult.Substring(1);
                 return textResult;
@@ -1216,36 +720,22 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.FirstVisibleLine = visible1stLine;
         }
 
-        private void _menuExpand_Click(object sender, EventArgs e)
-        {
-            DeformFormula(f => f.Expand());
-        }
+        private void _menuExpand_Click(object sender, EventArgs e) { EditorViewModel.DeformFormula(f => f.Expand()); }
 
-        private void _menuTidyUp_Click(object sender, EventArgs e)
-        {
-            DeformFormula(f => f.Combine());
-        }
+        private void _menuTidyUp_Click(object sender, EventArgs e) { EditorViewModel.DeformFormula(f => f.Combine()); }
 
-        private void _menuSimplify_Click(object sender, EventArgs e)
-        {
-            DeformFormula(f => f.Simplify());
-        }
+        private void _menuSimplify_Click(object sender, EventArgs e) { EditorViewModel.DeformFormula(f => f.Simplify()); }
 
         private void _menuFactorize_Click(object sender, EventArgs e)
         {
-            DeformFormula(f => {
-                Liffom.Processes.Factorize proc = new Liffom.Processes.Factorize();
-                if (f is Liffom.Formulas.Operators.Comparers.Comparer)
-                {
-                    var fc = f as Liffom.Formulas.Operators.Comparers.Comparer;
-                    fc.LeftHandSide = proc.Do(fc.LeftHandSide);
-                    fc.RightHandSide = proc.Do(fc.RightHandSide);
-                    return fc;
-                }
-                else
-                {
-                    return proc.Do(f.Simplify());
-                }
+            EditorViewModel.DeformFormula(f => {
+                var proc = new Liffom.Processes.Factorize();
+                if (!(f is Liffom.Formulas.Operators.Comparers.Comparer)) return proc.Do(f.Simplify());
+
+                var fc = f as Liffom.Formulas.Operators.Comparers.Comparer;
+                fc.LeftHandSide  = proc.Do(fc.LeftHandSide.Simplify());
+                fc.RightHandSide = proc.Do(fc.RightHandSide.Simplify());
+                return fc;
                 });
         }
 
@@ -1254,7 +744,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuSubstitute.DropDown.Items.Clear();
 
             Formula f = null;
-            try { f = FormulaOnCaret(); }
+            try { f = EditorViewModel.FormulaOnCaret(); }
             catch { }
 
             if (f != null)
@@ -1270,7 +760,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     {
                         if (e2.KeyCode != Keys.Enter) return;
                         if (string.IsNullOrWhiteSpace(valueBox.Text)) return;
-                        DeformFormula(f2 => f2.Substituted(v, Target.BaseSolver.Target.Parse(valueBox.Text)));
+                        EditorViewModel.DeformFormula(f2 => f2.Substituted(v, Target.BaseSolver.Target.Parse(valueBox.Text)));
 
                         _contextMenuEdit.Hide();
                     };
@@ -1289,7 +779,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             if (e.KeyCode == Keys.Enter)
             {
-                SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
+                EditorViewModel.SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
                 _contextMenuEdit.Hide();
             }
         }
@@ -1555,9 +1045,9 @@ namespace GoodSeat.Clapte.Views.Forms
             ShowLineNumber = bool.Parse(xmlElement.GetAttribute("ShowLineNumber", "False"));
             ShowUnderLine = bool.Parse(xmlElement.GetAttribute("ShowUnderLine", "True"));
             Delay = int.Parse(xmlElement.GetAttribute("Delay", "500"));
-            AutoShowInputSupport = bool.Parse(xmlElement.GetAttribute("AutoShowInputSupport", "True"));
-            AutoShowArgumentHelp = bool.Parse(xmlElement.GetAttribute("AutoShowArgumentHelp", "True"));
-            InputSupportWithAlsoInfomation = bool.Parse(xmlElement.GetAttribute("InputSupportWithAlsoInfomation", "True"));
+            EditorViewModel.AutoShowInputSupport = bool.Parse(xmlElement.GetAttribute("AutoShowInputSupport", "True"));
+            EditorViewModel.AutoShowArgumentHelp = bool.Parse(xmlElement.GetAttribute("AutoShowArgumentHelp", "True"));
+            EditorViewModel.InputSupportWithAlsoInfomation = bool.Parse(xmlElement.GetAttribute("InputSupportWithAlsoInfomation", "True"));
 
             var colorSchemeElement = xmlElement["ColorScheme"];
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant, Color.FromArgb(int.Parse(colorSchemeElement["Constant"].GetAttribute("Color"))));
@@ -1581,9 +1071,9 @@ namespace GoodSeat.Clapte.Views.Forms
             xmlElement.AddAttribute("ShowLineNumber", ShowLineNumber.ToString());
             xmlElement.AddAttribute("ShowUnderLine", ShowUnderLine.ToString());
             xmlElement.AddAttribute("Delay", Delay.ToString());
-            xmlElement.AddAttribute("AutoShowInputSupport", Support.AutoShow.ToString());
-            xmlElement.AddAttribute("AutoShowArgumentHelp", ArgumentHelper.AutoShow.ToString());
-            xmlElement.AddAttribute("InputSupportWithAlsoInfomation", InputSupportWithAlsoInfomation.ToString());
+            xmlElement.AddAttribute("AutoShowInputSupport", EditorViewModel.InputSupport.AutoShow.ToString());
+            xmlElement.AddAttribute("AutoShowArgumentHelp", EditorViewModel.ArgumentHelper.AutoShow.ToString());
+            xmlElement.AddAttribute("InputSupportWithAlsoInfomation", EditorViewModel.InputSupportWithAlsoInfomation.ToString());
 
             XmlElement colorScheme = new XmlElement("ColorScheme");
             XmlElement colorConstant = new XmlElement("Constant");
