@@ -322,6 +322,24 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         /// <summary>
+        /// 選択されているすべての行についてテキストの変換を行います。
+        /// </summary>
+        /// <param name="convert">元の文字列を受け取り、文字列を変換する処理。</param>
+        public void EditAllLines(Func<string, string> convert)
+        {
+            int caretIndex = _inputTextBox.CaretIndex;
+
+            var texts = new List<string>(_inputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")).Select(convert));
+
+            int visible1stLine = _inputTextBox.FirstVisibleLine;
+            _inputTextBox.Text = string.Join("\r\n", texts);
+            _inputTextBox.FirstVisibleLine = visible1stLine;
+
+            caretIndex = Math.Min(caretIndex, _inputTextBox.Document.Text.Length - 1);
+            _inputTextBox.SetSelection(caretIndex, caretIndex);
+        }
+
+        /// <summary>
         /// 選択されている全ての行を、継続行を考慮して1行上に移動します。
         /// </summary>
         /// <param name="up">選択行を上げるならtrue、下げるならfalseを指定。</param>

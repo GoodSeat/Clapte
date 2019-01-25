@@ -977,7 +977,7 @@ namespace GoodSeat.Clapte.Views.Forms
             if (textBox == null) textBox = _inputTextBox;
             if (textBox == _resultTextBox) return;
 
-            textBox.Document.Replace(_textBoxReplace.Text, 0, textBox.TextLength);
+            EditorViewModel.EditAllLines(l => l.Replace(_textBoxFind.Text, _textBoxReplace.Text));
         }
 
         private void _btnToggleFindPanelPosition_Click(object sender, EventArgs e)
