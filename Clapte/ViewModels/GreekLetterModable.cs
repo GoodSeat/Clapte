@@ -9,8 +9,13 @@ namespace GoodSeat.Clapte.ViewModels
     /// <summary>
     /// テキストを入力するコントロールに対して、ギリシャ文字の入力モード機能を付与します。
     /// </summary>
-    public class GreekLetterModable
+    public class GreekLetterModable : IDisposable
     {
+        static GreekLetterModable()
+        {
+            InitializeGreekLettersMap();
+        }
+
         /// <summary>
         /// テキストを入力するコントロールに対して、ギリシャ文字の入力モード機能を付与します。
         /// </summary>
@@ -25,8 +30,9 @@ namespace GoodSeat.Clapte.ViewModels
             InsertText = insertText;
 
             target.KeyUp += KeyUp;
+            target.KeyDown += KeyDown;
 
-            InitializeGreekLettersMap();
+            Target = target;
         }
 
         /// <summary>
@@ -45,9 +51,15 @@ namespace GoodSeat.Clapte.ViewModels
                 target.SelectionStart = selectionStart + 1;
             };
             target.KeyUp += KeyUp;
+            target.KeyDown += KeyDown;
 
-            InitializeGreekLettersMap();
+            Target = target;
         }
+
+        /// <summary>
+        /// 対象のコントロールを設定もしくは取得します。
+        /// </summary>
+        Control Target { get; set; }
 
         /// <summary>
         /// 対象のコントロールを読み取り専用か否かを取得する関数を設定もしくは取得します。
@@ -67,7 +79,7 @@ namespace GoodSeat.Clapte.ViewModels
         /// <summary>
         /// アルファベットから対応するギリシャ文字を取得する対応マップを初期化します。
         /// </summary>
-        Dictionary<Keys, Tuple<string, string>> MapAlphabetToGreek { get; set; }
+        static Dictionary<Keys, Tuple<string, string>> MapAlphabetToGreek { get; set; }
 
         bool _greekLettersMode;
         bool _ignoreKeyinGreekLettersMode;
@@ -90,7 +102,7 @@ namespace GoodSeat.Clapte.ViewModels
         /// <summary>
         /// アルファベットから対応するギリシャ文字を取得する対応マップを初期化します。
         /// </summary>
-        private void InitializeGreekLettersMap()
+        static private void InitializeGreekLettersMap()
         {
             MapAlphabetToGreek = new Dictionary<Keys, Tuple<string, string>>();
             MapAlphabetToGreek.Add(Keys.A, Tuple.Create("Α", "α"));
@@ -137,15 +149,28 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         /// <summary>
+        /// キーが押された時の動作を実行します。
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.G && e.Control)
+            {
+                EnterGreekLettersMode();
+            }
+        }
+
+        /// <summary>
         /// キーが離された時の動作を実行します。
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void KeyUp(object sender, KeyEventArgs e)
         {
-            if (e.KeyCode == Keys.G && e.Control)
+            if (e.KeyCode == Keys.G && _ignoreKeyinGreekLettersMode)
             {
-                EnterGreekLettersMode();
+                _ignoreKeyinGreekLettersMode = false;
                 return;
             }
             else if (e.KeyCode == Keys.Control || e.KeyCode == Keys.ControlKey)
@@ -154,8 +179,10 @@ namespace GoodSeat.Clapte.ViewModels
             }
             else if (GreekLettersMode && MapAlphabetToGreek.ContainsKey(e.KeyCode))
             {
+
                 var value = MapAlphabetToGreek[e.KeyCode];
                 InsertText(e.Shift ? value.Item1 : value.Item2);
+                GreekLettersMode = false;
             }
             else
             {
@@ -163,5 +190,10 @@ namespace GoodSeat.Clapte.ViewModels
             }
         }
 
+        public void Dispose()
+        {
+            Target.KeyUp -= KeyUp;
+            Target.KeyDown -= KeyDown;
+        }
     }
 }
