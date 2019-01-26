@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            this._btnDelete = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnAdd = new Clapte.Views.Components.ImageButton(this.components);
+            this._btnDelete = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnAdd = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._labelError = new System.Windows.Forms.Label();
             this._dataGridFunction = new System.Windows.Forms.DataGridView();
             this._columnName = new System.Windows.Forms.DataGridViewTextBoxColumn();
@@ -93,9 +93,9 @@
             // 
             this._dataGridFunction.AllowUserToAddRows = false;
             this._dataGridFunction.AllowUserToResizeRows = false;
-            this._dataGridFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._dataGridFunction.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._dataGridFunction.BackgroundColor = System.Drawing.Color.White;
             this._dataGridFunction.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._dataGridFunction.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -110,6 +110,7 @@
             this._dataGridFunction.RowTemplate.Height = 21;
             this._dataGridFunction.Size = new System.Drawing.Size(381, 255);
             this._dataGridFunction.TabIndex = 6;
+            this._dataGridFunction.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this._dataGridFunction_EditingControlShowing);
             this._dataGridFunction.SortCompare += new System.Windows.Forms.DataGridViewSortCompareEventHandler(this._dataGridFunction_SortCompare);
             this._dataGridFunction.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this._dataGridFunction_UserDeletingRow);
             // 

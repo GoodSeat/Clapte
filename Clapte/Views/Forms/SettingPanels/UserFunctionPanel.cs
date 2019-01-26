@@ -10,7 +10,6 @@ using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Clapte.Solvers;
-using GoodSeat.Sio;
 using GoodSeat.Sio.Utilities;
 
 namespace GoodSeat.Clapte.Views.Forms.SettingPanels
@@ -43,10 +42,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.DefineAdded += new EventHandler<ListChangeEventArgs<FunctionDefine>>(Target_DefineAdded);
             Target.DefineRemoved += new EventHandler<ListChangeEventArgs<FunctionDefine>>(Target_DefineRemoved);
             Target.DefineChanged += new EventHandler<ListChangeEventArgs<FunctionDefine>>(Target_DefineChanged);
-
-            // データグリッドビュー上の数式インテリセンス構成
-//            _formulaIntelisence = new DataGridIntellisenceSupport(_dataGridFunction);
-//            _formulaIntelisence.CellEndEdit += new DataGridViewCellEventHandler(_dataGrid_CellEndEdit);
         }
 
         /// <summary>
@@ -356,20 +351,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         {
             if (e.ColumnIndex == 1) // 定義編集時
             {
-                //TargetWatcher.Solver.RenewIntellisence(_formulaIntelisence.Intelisence, Core.Solver.IntellisenceType.All);
-
-                //// 引数をインテリセンスに登録
-                //UserFunction userFunction = _dataGridFunction.Rows[e.RowIndex].Tag as UserFunction;
-                //foreach (Variable v in userFunction.UseVariable)
-                //{
-                //    _formulaIntelisence.Intelisence.VariableList.Remove(v.Mark);
-
-                //    if (userFunction.ArgumentInformation.ContainsKey(v))
-                //        v.Information = userFunction.ArgumentInformation[v];
-                //    _formulaIntelisence.Intelisence.VariableList.Add(v.Mark, v);
-                //}
-
-                //_formulaIntelisence.StartInputFormula(e);
             }
         }
 
@@ -439,7 +420,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.DefineAdded -= new EventHandler<ListChangeEventArgs<FunctionDefine>>(Target_DefineAdded);
             Target.DefineRemoved -= new EventHandler<ListChangeEventArgs<FunctionDefine>>(Target_DefineRemoved);
             Target.DefineChanged -= new EventHandler<ListChangeEventArgs<FunctionDefine>>(Target_DefineChanged);
-//            _formulaIntelisence.Dispose();
         }
 
         // ソート時比較関数
@@ -469,5 +449,16 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             return base.OpenDefine(target);
         }
 
+        // 編集テキストボックス表示時
+        private void _dataGridFunction_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            var textBox = e.Control as DataGridViewTextBoxEditingControl;
+            if (textBox == null) return;
+
+            if (_greekLetterModable != null) _greekLetterModable.Dispose();
+            _greekLetterModable = new GreekLetterModable(textBox);
+        }
+
+        GreekLetterModable _greekLetterModable;
     }
 }

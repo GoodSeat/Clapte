@@ -35,15 +35,15 @@
             this._columnComment = new System.Windows.Forms.DataGridViewTextBoxColumn();
             this._cmbUnitType = new System.Windows.Forms.ComboBox();
             this._groupUnitType = new System.Windows.Forms.GroupBox();
-            this._btnMoveDown = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnMoveUp = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnDeleteRecord = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnAddRecord = new Clapte.Views.Components.ImageButton(this.components);
+            this._btnMoveDown = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnMoveUp = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnDeleteRecord = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnAddRecord = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._txtUnitTypeComment = new System.Windows.Forms.TextBox();
             this._panelTableProperty = new System.Windows.Forms.Panel();
             this._labelErrorTable = new System.Windows.Forms.Label();
-            this._btnOK = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnCancel = new Clapte.Views.Components.ImageButton(this.components);
+            this._btnOK = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnCancel = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._txtBoxUnitTableComment = new System.Windows.Forms.TextBox();
             this.label2 = new System.Windows.Forms.Label();
             this._txtBoxUnitTableName = new System.Windows.Forms.TextBox();
@@ -52,17 +52,17 @@
             this._cmbWithPrefix = new System.Windows.Forms.ComboBox();
             this._radioWithoutPrefix = new System.Windows.Forms.RadioButton();
             this._radioWithPrefix = new System.Windows.Forms.RadioButton();
-            this._btnOKRecord = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnCancelRecord = new Clapte.Views.Components.ImageButton(this.components);
+            this._btnOKRecord = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnCancelRecord = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._toolTip = new System.Windows.Forms.ToolTip(this.components);
-            this._btnChangeTable = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnDeleteTable = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnAddTable = new Clapte.Views.Components.ImageButton(this.components);
+            this._btnChangeTable = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnDeleteTable = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnAddTable = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._panelSelectAddChangeTarget = new System.Windows.Forms.Panel();
             this._radioChangeColumn = new System.Windows.Forms.RadioButton();
             this._radioChangeRow = new System.Windows.Forms.RadioButton();
-            this._btnOKChangeAdd = new Clapte.Views.Components.ImageButton(this.components);
-            this._btnCancelChangeAdd = new Clapte.Views.Components.ImageButton(this.components);
+            this._btnOKChangeAdd = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._btnCancelChangeAdd = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             ((System.ComponentModel.ISupportInitialize)(this._dataGridUnitTable)).BeginInit();
             this._groupUnitType.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._btnMoveDown)).BeginInit();
@@ -99,9 +99,9 @@
             // 
             this._dataGridUnitTable.AllowUserToAddRows = false;
             this._dataGridUnitTable.AllowUserToResizeRows = false;
-            this._dataGridUnitTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._dataGridUnitTable.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._dataGridUnitTable.BackgroundColor = System.Drawing.Color.White;
             this._dataGridUnitTable.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._dataGridUnitTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
@@ -115,6 +115,7 @@
             this._dataGridUnitTable.RowTemplate.Height = 21;
             this._dataGridUnitTable.Size = new System.Drawing.Size(381, 292);
             this._dataGridUnitTable.TabIndex = 11;
+            this._dataGridUnitTable.EditingControlShowing += new System.Windows.Forms.DataGridViewEditingControlShowingEventHandler(this._dataGridUnitTable_EditingControlShowing);
             this._dataGridUnitTable.UserDeletingRow += new System.Windows.Forms.DataGridViewRowCancelEventHandler(this._dataGridUnitTable_UserDeletingRow);
             // 
             // _columnUnit
@@ -146,9 +147,9 @@
             // 
             // _groupUnitType
             // 
-            this._groupUnitType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._groupUnitType.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._groupUnitType.Controls.Add(this._btnMoveDown);
             this._groupUnitType.Controls.Add(this._btnMoveUp);
             this._groupUnitType.Controls.Add(this._btnDeleteRecord);
@@ -242,8 +243,8 @@
             // 
             // _panelTableProperty
             // 
-            this._panelTableProperty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._panelTableProperty.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._panelTableProperty.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._panelTableProperty.Controls.Add(this._labelErrorTable);
             this._panelTableProperty.Controls.Add(this._btnOK);
@@ -307,8 +308,8 @@
             // 
             // _txtBoxUnitTableComment
             // 
-            this._txtBoxUnitTableComment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._txtBoxUnitTableComment.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._txtBoxUnitTableComment.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._txtBoxUnitTableComment.Location = new System.Drawing.Point(14, 72);
             this._txtBoxUnitTableComment.Name = "_txtBoxUnitTableComment";
@@ -328,8 +329,8 @@
             // 
             // _txtBoxUnitTableName
             // 
-            this._txtBoxUnitTableName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._txtBoxUnitTableName.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._txtBoxUnitTableName.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._txtBoxUnitTableName.Location = new System.Drawing.Point(14, 27);
             this._txtBoxUnitTableName.Name = "_txtBoxUnitTableName";
@@ -349,8 +350,8 @@
             // 
             // _panelNewRecord
             // 
-            this._panelNewRecord.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._panelNewRecord.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._panelNewRecord.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._panelNewRecord.Controls.Add(this._cmbWithPrefix);
             this._panelNewRecord.Controls.Add(this._radioWithoutPrefix);
@@ -366,8 +367,8 @@
             // 
             // _cmbWithPrefix
             // 
-            this._cmbWithPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._cmbWithPrefix.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._cmbWithPrefix.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this._cmbWithPrefix.FlatStyle = System.Windows.Forms.FlatStyle.Popup;
             this._cmbWithPrefix.FormattingEnabled = true;
@@ -491,8 +492,8 @@
             // 
             // _panelSelectAddChangeTarget
             // 
-            this._panelSelectAddChangeTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this._panelSelectAddChangeTarget.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this._panelSelectAddChangeTarget.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this._panelSelectAddChangeTarget.Controls.Add(this._radioChangeColumn);
             this._panelSelectAddChangeTarget.Controls.Add(this._radioChangeRow);

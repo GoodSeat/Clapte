@@ -11,6 +11,7 @@ using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Liffom.Formats;
 using GoodSeat.Liffom.Formats.Numerics;
 using GoodSeat.Liffom.Formats.Powers;
+using GoodSeat.Clapte.ViewModels;
 
 namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 {
@@ -20,7 +21,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
     public partial class UnitConvertTablePanel : SettingPanel
     {
         UnitConvertTable _currentTable;
-//        DataGridIntellisenceSupport _formulaIntelisence;
 
         /// <summary>
         /// 単位変換表の設定パネルを初期化します。
@@ -37,9 +37,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             if (_cmbUnitType.Items.Count != 0) _cmbUnitType.SelectedIndex = 0;
             else _groupUnitType.Enabled = false;
-
-//            _formulaIntelisence = new DataGridIntellisenceSupport(_dataGridUnitTable);
-//            _formulaIntelisence.CellEndEdit += new DataGridViewCellEventHandler(_dataGrid_CellEndEdit);
         }
 
         /// <summary>
@@ -220,16 +217,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         /// </summary>
         protected override void OnCellBeginEdit(DataGridViewCellCancelEventArgs e)
         {
-            //if (e.ColumnIndex > 1) // 変換率編集時、変換加算値編集時
-            //{
-            //    TargetWatcher.Solver.RenewIntellisence(_formulaIntelisence.Intelisence, Core.Solver.IntellisenceType.Function | Core.Solver.IntellisenceType.Variable);
-            //    _formulaIntelisence.StartInputFormula(e);
-            //}
-            //else if (e.ColumnIndex == 0) // 単位名編集開始時
-            //{
-            //    TargetWatcher.Solver.RenewIntellisence(_formulaIntelisence.Intelisence, Core.Solver.IntellisenceType.Unit);
-            //    _formulaIntelisence.StartInputFormula(e);
-            //}
         }
 
         /// <summary>
@@ -765,8 +752,16 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             return base.OpenDefine(target);
         }
 
+        // 編集テキストボックス表示時
+        private void _dataGridUnitTable_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            var textBox = e.Control as DataGridViewTextBoxEditingControl;
+            if (textBox == null) return;
 
+            if (_greekLetterModable != null) _greekLetterModable.Dispose();
+            _greekLetterModable = new GreekLetterModable(textBox);
+        }
 
-
+        GreekLetterModable _greekLetterModable;
     }
 }

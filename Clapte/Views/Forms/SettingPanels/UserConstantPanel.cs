@@ -6,10 +6,8 @@ using System.Data;
 using System.Text;
 using System.Windows.Forms;
 using GoodSeat.Liffom.Formulas;
-using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Liffom.Formulas.Constants;
 using GoodSeat.Liffom.Formulas.Units;
-using GoodSeat.Sio;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Sio.Utilities;
@@ -21,8 +19,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
     /// </summary>
     public partial class UserConstantPanel : SettingPanel
     {
-//        DataGridIntellisenceSupport _formulaIntelisence;
-
         /// <summary>
         /// ユーザー定義変数の設定パネルを初期化します。
         /// </summary>
@@ -46,10 +42,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.DefineAdded += new EventHandler<ListChangeEventArgs<ConstantDefine>>(Target_DefineAdded);
             Target.DefineRemoved += new EventHandler<ListChangeEventArgs<ConstantDefine>>(Target_DefineRemoved);
             Target.DefineChanged += new EventHandler<ListChangeEventArgs<ConstantDefine>>(Target_DefineChanged);
-
-            // データグリッドビュー上の数式インテリセンス構成
-//            _formulaIntelisence = new DataGridIntellisenceSupport(_dataGridVariable);
-//            _formulaIntelisence.CellEndEdit += new DataGridViewCellEventHandler(_dataGrid_CellEndEdit);
         }
 
         /// <summary>
@@ -165,11 +157,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         // 編集開始時
         protected override void OnCellBeginEdit(DataGridViewCellCancelEventArgs e)
         {
-            if (e.ColumnIndex == 1)
-            {
-                //TargetWatcher.Solver.RenewIntellisence(_formulaIntelisence.Intelisence, Core.Solver.IntellisenceType.All);
-                //_formulaIntelisence.StartInputFormula(e);
-            }
         }
 
         // 編集終了時
@@ -298,7 +285,6 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.DefineAdded -= new EventHandler<ListChangeEventArgs<ConstantDefine>>(Target_DefineAdded);
             Target.DefineRemoved -= new EventHandler<ListChangeEventArgs<ConstantDefine>>(Target_DefineRemoved);
             Target.DefineChanged -= new EventHandler<ListChangeEventArgs<ConstantDefine>>(Target_DefineChanged);
-//            _formulaIntelisence.Dispose();
         }
 
         // ソート時比較関数
@@ -328,5 +314,16 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             return base.OpenDefine(target);
         }
 
+        // 編集テキストボックス表示時
+        private void _dataGridVariable_EditingControlShowing(object sender, DataGridViewEditingControlShowingEventArgs e)
+        {
+            var textBox = e.Control as DataGridViewTextBoxEditingControl;
+            if (textBox == null) return;
+
+            if (_greekLetterModable != null) _greekLetterModable.Dispose();
+            _greekLetterModable = new GreekLetterModable(textBox);
+        }
+
+        GreekLetterModable _greekLetterModable;
     }
 }
