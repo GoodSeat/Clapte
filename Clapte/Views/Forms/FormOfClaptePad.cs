@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -14,6 +14,7 @@ using GoodSeat.Sio.Xml.Serialization;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Deforms;
+using System.Text.RegularExpressions;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -819,6 +820,40 @@ namespace GoodSeat.Clapte.Views.Forms
 
         #region 検索パネル関連
 
+        private SearchResult Find(Document document, bool next, int pos)
+        {
+            SearchResult result;
+            if (_findRegex)
+            {
+                RegexOptions option = _findMatchCase ? RegexOptions.None : RegexOptions.IgnoreCase;
+                if (!next) option = option | RegexOptions.RightToLeft;
+                Regex regex = new Regex(_textBoxFind.Text, option);
+                result = next ? document.FindNext(regex, pos) : document.FindPrev(regex, pos);
+            }
+            else
+            {
+                result = next ? document.FindNext(_textBoxFind.Text, pos, _findMatchCase) : document.FindPrev(_textBoxFind.Text, pos, _findMatchCase);
+            }
+            if (result != null && result.Begin == result.End) return null;
+            return result;
+        }
+
+        private bool IsMatchWithFindBoxText(string text)
+        {
+            if (string.IsNullOrEmpty(text)) return false;
+            if (_findRegex)
+            {
+                RegexOptions option = _findMatchCase ? RegexOptions.None : RegexOptions.IgnoreCase;
+                Regex regex = new Regex(_textBoxFind.Text, option);
+                return string.IsNullOrEmpty(regex.Replace(text, ""));
+            }
+            else
+            {
+                if (_findMatchCase) return text == _textBoxFind.Text;
+                return text.ToLower() == _textBoxFind.Text.ToLower();
+            }
+        }
+
         private void _textBoxFind_TextChanged(object sender, EventArgs e)
         {
             _labelFind.Visible = string.IsNullOrEmpty(_textBoxFind.Text);
@@ -836,14 +871,20 @@ namespace GoodSeat.Clapte.Views.Forms
                 if (!string.IsNullOrWhiteSpace(_textBoxFind.Text))
                 {
                     int pos = 0;
-                    SearchResult result;
                     do
                     {
-                        result = document.FindNext(_textBoxFind.Text, pos);
-                        if (result == null) break;
+                        try
+                        {
+                            var result = Find(document, true, pos);
+                            if (result == null) break;
 
-                        document.Mark(result.Begin, result.End, id);
-                        pos = result.End;
+                            document.Mark(result.Begin, result.End, id);
+                            pos = result.End;
+                        }
+                        catch
+                        {
+                            break;
+                        }
                     } while (true);
                 }
                 textBox.Refresh();
@@ -871,16 +912,20 @@ namespace GoodSeat.Clapte.Views.Forms
             int begin, end;
             document.GetSelection(out begin, out end);
 
-            var result = document.FindNext(_textBoxFind.Text, end);
-            if (result != null)
+            try
             {
-                document.SetSelection(result.Begin, result.End);
-                textBox.ScrollToCaret();
+                var result = Find(document, true, end);
+                if (result != null)
+                {
+                    document.SetSelection(result.Begin, result.End);
+                    textBox.ScrollToCaret();
+                }
+                else
+                {
+                    _toolTipFind.Show("見つかりませんでした", _textBoxFind, 1000);
+                }
             }
-            else
-            {
-                _toolTipFind.Show("見つかりませんでした", _textBoxFind, 1000);
-            }
+            catch (Exception exc) { _toolTipFind.Show(exc.Message, _textBoxFind, 1000); }
         }
 
         private void _btnFindPrev_Click(object sender, EventArgs e)
@@ -895,16 +940,20 @@ namespace GoodSeat.Clapte.Views.Forms
             int begin, end;
             document.GetSelection(out begin, out end);
 
-            var result = document.FindPrev(_textBoxFind.Text, begin);
-            if (result != null)
+            try
             {
-                document.SetSelection(result.Begin, result.End);
-                textBox.ScrollToCaret();
+                var result = Find(document, false, begin);
+                if (result != null)
+                {
+                    document.SetSelection(result.Begin, result.End);
+                    textBox.ScrollToCaret();
+                }
+                else
+                {
+                    _toolTipFind.Show("見つかりませんでした", _textBoxFind, 1000);
+                }
             }
-            else
-            {
-                _toolTipFind.Show("見つかりませんでした", _textBoxFind, 1000);
-            }
+            catch (Exception exc) { _toolTipFind.Show(exc.Message, _textBoxFind, 1000); }
         }
 
         private void _inputTextBox_Enter(object sender, EventArgs e)
@@ -928,7 +977,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _btnFindNext_MouseEnter(object sender, EventArgs e)
         {
-            (sender as Control).BringToFront();
+            if (sender != _btnToggleFindUseRegex) (sender as Control).BringToFront();
             _toolTipFind.RemoveAll();
         }
 
@@ -946,7 +995,7 @@ namespace GoodSeat.Clapte.Views.Forms
             textBox.Document.GetSelection(out b, out end);
             if (end > b) word = textBox.Document.GetTextInRange(b, end);
 
-            if (word == _textBoxFind.Text) textBox.Document.Replace(_textBoxReplace.Text);
+            if (IsMatchWithFindBoxText(word)) textBox.Document.Replace(_textBoxReplace.Text);
 
             _btnFindNext_Click(sender, e);
         }
@@ -965,7 +1014,7 @@ namespace GoodSeat.Clapte.Views.Forms
             textBox.Document.GetSelection(out b, out end);
             if (end > b) word = textBox.Document.GetTextInRange(b, end);
 
-            if (word == _textBoxFind.Text) textBox.Document.Replace(_textBoxReplace.Text);
+            if (IsMatchWithFindBoxText(word)) textBox.Document.Replace(_textBoxReplace.Text);
 
             _btnFindPrev_Click(sender, e);
         }
@@ -975,8 +1024,17 @@ namespace GoodSeat.Clapte.Views.Forms
             var textBox = _panelFind.Parent as Sgry.Azuki.WinForms.AzukiControl;
             if (textBox == null) textBox = _inputTextBox;
             if (textBox == _resultTextBox) return;
+            if (string.IsNullOrEmpty(_textBoxFind.Text)) return;
 
-            EditorViewModel.EditAllLines(l => l.Replace(_textBoxFind.Text, _textBoxReplace.Text));
+            try
+            {
+                var text = _findRegex ? _textBoxFind.Text : Regex.Escape(_textBoxFind.Text);
+                RegexOptions option = _findMatchCase ? RegexOptions.None : RegexOptions.IgnoreCase;
+                Regex regex = new Regex(text, option);
+
+                EditorViewModel.EditAllLines(l => regex.Replace(l, _textBoxReplace.Text));
+            }
+            catch (Exception exc) { _toolTipFind.Show(exc.Message, _textBoxFind, 1000); }
         }
 
         private void _btnToggleFindPanelPosition_Click(object sender, EventArgs e)
@@ -1013,6 +1071,23 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        bool _findMatchCase;
+        private void _btnToggleFindMatchCase_Click(object sender, EventArgs e)
+        {
+            _findMatchCase = !_findMatchCase;
+            _btnToggleFindMatchCase.UnFocusImage = _findMatchCase ? Properties.Resources.Icon_MatchCase : Properties.Resources.Icon_MatchCase_Unfocus;
+
+            _textBoxFind_TextChanged(sender, e);
+        }
+
+        bool _findRegex;
+        private void _btnToggleFindUseRegex_Click(object sender, EventArgs e)
+        {
+            _findRegex = !_findRegex;
+            _btnToggleFindUseRegex.UnFocusImage = _findRegex ? Properties.Resources.Icon_UseRegex : Properties.Resources.Icon_UseRegex_Unfocus;
+
+            _textBoxFind_TextChanged(sender, e);
+        }
         #endregion
 
         #region ISerializable メンバー
@@ -1088,5 +1163,6 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         #endregion
+
     }
 }

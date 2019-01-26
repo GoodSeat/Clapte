@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -302,6 +302,24 @@
     <Content Include="Icon_Clapte.ico" />
     <Content Include="Icon_Clapte_Notify.ico" />
     <Content Include="Icon_Clapte_Notify_Deactive.ico" />
+    <None Include="Resources\Icon_MoveFindPanel_Unfocus.png" />
+    <None Include="Resources\Icon_MoveFindPanel.png" />
+    <None Include="Resources\Icon_Abort_Unfocus.png" />
+    <None Include="Resources\Icon_Abort.png" />
+    <None Include="Resources\Icon_UseRegex_Unfocus.png" />
+    <None Include="Resources\Icon_UseRegex.png" />
+    <None Include="Resources\Icon_ReplaceAndPrev_Unfocus.png" />
+    <None Include="Resources\Icon_ReplaceAndPrev.png" />
+    <None Include="Resources\Icon_ReplaceAndNext_Unfocus.png" />
+    <None Include="Resources\Icon_ReplaceAndNext.png" />
+    <None Include="Resources\Icon_ReplaceAll_Unfocus.png" />
+    <None Include="Resources\Icon_ReplaceAll.png" />
+    <None Include="Resources\Icon_MatchCase_Unfocus.png" />
+    <None Include="Resources\Icon_MatchCase.png" />
+    <None Include="Resources\Icon_FindPrev_Unfocus.png" />
+    <None Include="Resources\Icon_FindPrev.png" />
+    <None Include="Resources\Icon_FindNext_Unfocus.png" />
+    <None Include="Resources\Icon_FindNext.png" />
     <None Include="Resources\Icon_Update_Unfocus.png" />
     <None Include="Resources\Icon_Update.png" />
     <None Include="Resources\Icon_Help_Unfocus.png" />

@@ -322,4 +322,58 @@
   <data name="Icon_Update_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
     <value>..\Resources\Icon_Update_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
   </data>
+  <data name="Icon_Abort" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Abort.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_Abort_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_Abort_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_FindNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_FindNext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_FindNext_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_FindNext_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_FindPrev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_FindPrev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_FindPrev_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_FindPrev_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_MatchCase" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_MatchCase.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_MatchCase_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_MatchCase_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_MoveFindPanel" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_MoveFindPanel.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_MoveFindPanel_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_MoveFindPanel_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_ReplaceAll" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_ReplaceAll.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_ReplaceAll_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_ReplaceAll_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_ReplaceAndNext" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_ReplaceAndNext.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_ReplaceAndNext_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_ReplaceAndNext_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_ReplaceAndPrev" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_ReplaceAndPrev.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_ReplaceAndPrev_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_ReplaceAndPrev_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_UseRegex" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_UseRegex.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
+  <data name="Icon_UseRegex_Unfocus" type="System.Resources.ResXFileRef, System.Windows.Forms">
+    <value>..\Resources\Icon_UseRegex_Unfocus.png;System.Drawing.Bitmap, System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a</value>
+  </data>
 </root>
