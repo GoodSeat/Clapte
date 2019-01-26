@@ -1,4 +1,4 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -613,7 +613,13 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuPaste.Enabled = _inputTextBox.CanPaste;
             _menuDelete.Enabled = _inputTextBox.CanCut;
 
-            _menuSolveSimultaneousEquation.Enabled = _inputTextBox.GetSelectedText().Contains("\n");
+            var selected = _inputTextBox.GetSelectedText();
+
+            _menuSolveSimultaneousEquation.Enabled = selected.Contains("\n");
+            Formula dummy;
+            _menuDefineAsConstantOfFunction.Enabled = !string.IsNullOrEmpty(selected) && Target.BaseSolver.Target.TryParse(selected, out dummy);
+            _txtBoxDefineConstantOfFunctionName.Enabled = _menuDefineAsConstantOfFunction.Enabled;
+            _txtBoxDefineConstantOfFunctionName.Text = "";
 
             if (_splitContainerAll.Panel2.Height < 5)
             {
@@ -769,6 +775,33 @@ namespace GoodSeat.Clapte.Views.Forms
             if (e.KeyCode == Keys.Enter)
             {
                 EditorViewModel.SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
+                _contextMenuEdit.Hide();
+            }
+        }
+
+        private void _txtBoxDefineConstantOfFunctionName_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                var name = _txtBoxDefineConstantOfFunctionName.Text.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    var def = _inputTextBox.GetSelectedText().Trim();
+                    string errMsg = EditorViewModel.InsertDefineWithName(name);
+                    if (errMsg != null)
+                    {
+                        _contextMenuEdit.Hide();
+                        _toolTipHelp.Show(errMsg, _inputTextBox, 3000);
+                        return;
+                    }
+
+                    _panelFind.Visible = true;
+                    _textBoxFind.Text = def;
+                    _textBoxReplace.Text = name;
+                    if (_findMatchCase) _btnToggleFindMatchCase_Click(sender, e);
+                    if (_findRegex) _btnToggleFindUseRegex_Click(sender, e);
+                    _textBoxReplace.Focus();
+                }
                 _contextMenuEdit.Hide();
             }
         }

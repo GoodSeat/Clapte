@@ -343,6 +343,66 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         /// <summary>
+        /// 現在の選択範囲を、指定名の定数/関数で置き換えて、定数/関数の宣言を前の行に挿入します。
+        /// </summary>
+        /// <param name="name">定数/関数名。</param>
+        /// <returns>処理に失敗した場合におけるエラー情報。処理に成功した場合、null。</returns>
+        public string InsertDefineWithName(string name)
+        {
+            var solver = Target.BaseSolver.Target;
+
+            Formula f;
+            Predicate<Formula> isOk = f_ => !(f_ is Liffom.Formulas.Operators.Sum)
+                                         && !(f_ is Liffom.Formulas.Operators.Power)
+                                         && !(f_ is Numeric);
+            if (!solver.TryParse(name, out f) || !isOk(f)) return "\"" + name + "\"は定数/関数名として使用できません。";
+
+            string def = InputTextBox.GetSelectedText().Trim();
+            if (!solver.TryParse(def, out f)) return "\"" + def + "\"は数式として認識できません。";
+
+            InputTextBox.Document.Replace(name);
+
+            string defLine = name + " = " + def;
+
+            { // 優先解決行の考慮
+                int sline, eline;
+                InputTextBox.GetSelectedLineIndex(out sline, out eline);
+
+                var l = InputTextBox.Document.GetLineContent(sline);
+                var regex = new Regex("^\\s*(\\|\\s*)+");
+                var match = regex.Match(l);
+                if (match.Success) defLine = match.Value + defLine;
+            }
+
+            InsertLine(defLine);
+            return null;
+        }
+
+        /// <summary>
+        /// 継続行を考慮して、選択行の一行上に指定行を追加します。
+        /// </summary>
+        /// <param name="text"></param>
+        public void InsertLine(string text)
+        {
+            var lines = new List<string>(InputTextBox.Text.Split('\n'));
+
+            int sline, eline;
+            InputTextBox.GetSelectedLineIndex(out sline, out eline);
+
+            Predicate<string> isContinueLine = l => l.Trim().EndsWith(" _");
+
+            while (sline > 1 && isContinueLine(lines[sline - 1])) --sline;
+            while (eline < lines.Count && isContinueLine(lines[eline])) ++eline;
+
+            lines.Insert(sline, text);
+
+            int begin, end;
+            InputTextBox.Document.GetSelection(out begin, out end);
+            InputTextBox.Text = string.Join("\n", lines);
+            InputTextBox.Document.SetSelection(begin + text.Length + 1, end + text.Length + 1);
+        }
+
+        /// <summary>
         /// 選択されている全ての行を、継続行を考慮して1行上に移動します。
         /// </summary>
         /// <param name="up">選択行を上げるならtrue、下げるならfalseを指定。</param>
