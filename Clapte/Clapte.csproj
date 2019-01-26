@@ -111,6 +111,7 @@
     <Compile Include="ViewModels\FormulaCellListViewModel.cs" />
     <Compile Include="ViewModels\FormulaCellViewModel.cs" />
     <Compile Include="ViewModels\FunctionListViewModel.cs" />
+    <Compile Include="ViewModels\GreekLetterModable.cs" />
     <Compile Include="ViewModels\SolverViewModel.cs" />
     <Compile Include="ViewModels\UnitConvertTableViewModel.cs" />
     <Compile Include="ViewModels\AzukiExtension.cs" />

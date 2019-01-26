@@ -212,7 +212,13 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.ColorScheme.SetMarkingDecoration(2, new BgColorTextDecoration(Color.Orange));
 
             _panelFind.Parent = _inputTextBox;
+
+            _greekLetterModableForFindBox = new GreekLetterModable(_textBoxFind);
+            _greekLetterModableForReplaceBox = new GreekLetterModable(_textBoxReplace);
         }
+
+        GreekLetterModable _greekLetterModableForFindBox;
+        GreekLetterModable _greekLetterModableForReplaceBox;
 
         protected override void OnCancel(EventArgs e)
         {
