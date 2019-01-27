@@ -47,10 +47,10 @@
     <Compile Include="Deforms\Deform.cs" />
     <Compile Include="Deforms\DeformToken.cs" />
     <Compile Include="Deforms\ExpandToken.cs" />
-    <Compile Include="Deforms\Histories\DeformChildrenRule.cs" />
+    <Compile Include="Deforms\Rules\DeformChildrenRule.cs" />
     <Compile Include="Deforms\Histories\DeformHistory.cs" />
     <Compile Include="Deforms\Histories\DeformHistoryNode.cs" />
-    <Compile Include="Deforms\Histories\MultipleOperatorIntegrateRule.cs" />
+    <Compile Include="Deforms\Rules\MultipleOperatorIntegrateRule.cs" />
     <Compile Include="Deforms\IUndeformable.cs" />
     <Compile Include="Deforms\NumerateToken.cs" />
     <Compile Include="Deforms\Rules\CombinationPatternRule.cs" />
