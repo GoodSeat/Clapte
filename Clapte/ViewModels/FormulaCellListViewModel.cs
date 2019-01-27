@@ -169,17 +169,13 @@ namespace GoodSeat.Clapte.ViewModels
             {
                 if (!evaluateWorker.IsBusy) continue;
 
-                if (!evaluateWorker.CancellationPending)
-                {
-                    _abortFlag++;
-                    evaluateWorker.CancelAsync();
-                }
+                _abortFlag++;
+                if (!evaluateWorker.CancellationPending) evaluateWorker.CancelAsync();
             }
 
             foreach (var targetViewModel in FormulaCellList)
             {
                 var target = targetViewModel.Target;
-
                 if (target.Content.ResultText == null) target.Content.ResultText = "";
             }
             if (ResultChanged != null) ResultChanged(this, EventArgs.Empty);
