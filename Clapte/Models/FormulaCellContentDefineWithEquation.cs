@@ -108,7 +108,9 @@ namespace GoodSeat.Clapte.Models
         /// <returns>評価結果を表す文字列。</returns>
         protected override Result OnEvaluate(Solver solver)
         {
-            var result = solver.Solve(FormulaText);
+            Formula f;
+            var result = solver.Solve(FormulaText, out f);
+            TargetFormula = f;
 
             if (result.ResultLevel == Result.Level.Success)
             {

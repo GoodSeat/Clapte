@@ -178,7 +178,9 @@ namespace GoodSeat.Clapte.Models
                 replaceUnitProc.IgnoreVariableNames.Add(variableName);
             }
 
-            var result = solver.Solve(FormulaText);
+            Formula parsed;
+            var result = solver.Solve(FormulaText, out parsed);
+            TargetFormula = parsed;
 
             replaceUnitProc.IgnoreVariableNames.Clear();
 
