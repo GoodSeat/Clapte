@@ -8,6 +8,7 @@ using GoodSeat.Liffom.Parse;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Clapte.Models.Formulas;
 
 namespace GoodSeat.Clapte.Solvers.Processes
 {
@@ -99,7 +100,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
                     var define = UserConstantCache[v];
                     if (define == null) continue;
-                    input = input.Substituted(v, define);
+                    input = input.Substituted(v, new VariableWithDefine(v.Mark, define));
                 }
                 foreach (UserFunction v in input.GetExistFactors<UserFunction>())
                 {
@@ -108,7 +109,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
 
                     var define = UserFunctionCache[v];
                     if (define == null) continue;
-                    input = input.Substituted(v, define);
+                    v.UseFormula = define;
                 }
             }
             catch (ClapteProcessException exc)
