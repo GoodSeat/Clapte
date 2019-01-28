@@ -54,7 +54,7 @@ namespace GoodSeat.Clapte.ViewModels
         bool _recreateFlag = false;
         string _targetText;
         SolverViewModel _baseSolver;
-        int _abortFlag = 0;
+        bool _abortFlag = false;
 
         #region イベント
 
@@ -169,7 +169,7 @@ namespace GoodSeat.Clapte.ViewModels
             {
                 if (!evaluateWorker.IsBusy) continue;
 
-                _abortFlag++;
+                _abortFlag = true;
                 if (!evaluateWorker.CancellationPending) evaluateWorker.CancelAsync();
             }
 
@@ -279,7 +279,11 @@ namespace GoodSeat.Clapte.ViewModels
                     if (RecreateFlag) break;
                     while (evaluateWorker.IsBusy)
                     {
-                        if (!evaluateWorker.CancellationPending) evaluateWorker.CancelAsync();
+                        if (!evaluateWorker.CancellationPending)
+                        {
+                            evaluateWorker.CancelAsync();
+                            _abortFlag = true;
+                        }
                         Application.DoEvents();
                         Thread.Sleep(0);
                     }
@@ -296,7 +300,6 @@ namespace GoodSeat.Clapte.ViewModels
         /// </summary>
         private void CreateFormulaCellListCreated(object sender, RunWorkerCompletedEventArgs e)
         {
-            _abortFlag = 0;
             if (e.Cancelled) return;
             if (ResultChanged != null) ResultChanged(this, e);
 
@@ -538,10 +541,11 @@ namespace GoodSeat.Clapte.ViewModels
         /// </summary>
         void Formula_FormulaProcessing(Formula sender, EventArgs e, ref bool Cancel)
         {
-            if (_abortFlag > 0)
+            if (_abortFlag)
             {
-                Cancel = true;
-                _abortFlag--;
+                Cancel = FormulaCellEvaluateWorkers.Any(w => w.IsBusy && w.CancellationPending);
+
+                if (FormulaCellEvaluateWorkers.All(w => !w.IsBusy || !w.CancellationPending)) _abortFlag = false;
             }
         }
         
