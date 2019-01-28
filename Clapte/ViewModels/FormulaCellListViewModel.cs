@@ -279,11 +279,7 @@ namespace GoodSeat.Clapte.ViewModels
                     if (RecreateFlag) break;
                     while (evaluateWorker.IsBusy)
                     {
-                        if (!evaluateWorker.CancellationPending)
-                        {
-                            evaluateWorker.CancelAsync();
-                            _abortFlag = true;
-                        }
+                        if (!evaluateWorker.CancellationPending) evaluateWorker.CancelAsync();
                         Application.DoEvents();
                         Thread.Sleep(0);
                     }
