@@ -120,6 +120,18 @@ namespace GoodSeat.Clapte.ViewModels
 
         #endregion
 
+
+        /// <summary>
+        /// スクロール位置に変更がないように、入力ボックスのテキストを指定文字列に変更します。
+        /// </summary>
+        /// <param name="text">変更後のテキスト。</param>
+        public void SetTextWithoutChangeScroll(string text)
+        {
+            int visible1stLine = InputTextBox.FirstVisibleLine;
+            InputTextBox.Text = text;
+            InputTextBox.FirstVisibleLine = visible1stLine;
+        }
+
         /// <summary>
         /// 現在のキャレット上の行で指定されている換算目標単位を取得します。換算目標単位の指定がない場合には、nullを返します。
         /// </summary>
@@ -175,9 +187,7 @@ namespace GoodSeat.Clapte.ViewModels
             var texts = new List<string>(InputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
             texts[lineIndex] = newText;
 
-            int visible1stLine = InputTextBox.FirstVisibleLine;
-            InputTextBox.Text = string.Join("\r\n", texts);
-            InputTextBox.FirstVisibleLine = visible1stLine;
+            SetTextWithoutChangeScroll(string.Join("\r\n", texts));
 
             int caretIndex = InputTextBox.Document.GetCharIndexFromLineColumnIndex(lineIndex, 0);
             InputTextBox.SetSelection(caretIndex, caretIndex);
@@ -240,8 +250,13 @@ namespace GoodSeat.Clapte.ViewModels
             }
             if (jump < 0) return null;
 
-            azuki.Document.SetCaretIndex(jump, 0);
+            var doc = azuki.Document;
+            doc.SetCaretIndex(jump, 0);
             azuki.ScrollToCaret();
+
+            var pos = doc.FindNext(targetText, doc.GetLineHeadIndex(jump), doc.GetLineHeadIndex(jump) + doc.GetLineLength(jump, false));
+            if (pos != null) doc.SetSelection(pos.Begin, pos.End);
+
             return null;
         }
 
@@ -260,9 +275,7 @@ namespace GoodSeat.Clapte.ViewModels
             for (int l = sline; l < eline; ++l) texts[l] = convert(texts[l], false);
             texts[eline] = convert(texts[eline], true);
 
-            int visible1stLine = InputTextBox.FirstVisibleLine;
-            InputTextBox.Text = string.Join("\r\n", texts);
-            InputTextBox.FirstVisibleLine = visible1stLine;
+            SetTextWithoutChangeScroll(string.Join("\r\n", texts));
 
             caretIndex = Math.Min(caretIndex, InputTextBox.Document.Text.Length - 1);
             InputTextBox.SetSelection(caretIndex, caretIndex);
@@ -278,9 +291,7 @@ namespace GoodSeat.Clapte.ViewModels
 
             var texts = new List<string>(InputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")).Select(convert));
 
-            int visible1stLine = InputTextBox.FirstVisibleLine;
-            InputTextBox.Text = string.Join("\r\n", texts);
-            InputTextBox.FirstVisibleLine = visible1stLine;
+            SetTextWithoutChangeScroll(string.Join("\r\n", texts));
 
             caretIndex = Math.Min(caretIndex, InputTextBox.Document.Text.Length - 1);
             InputTextBox.SetSelection(caretIndex, caretIndex);
@@ -323,10 +334,11 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         /// <summary>
-        /// 継続行を考慮して、選択行の一行上に指定行を追加します。
+        /// 継続行を考慮して、選択行の一行上あるいは下に指定行を追加します。
         /// </summary>
-        /// <param name="text"></param>
-        public void InsertLine(string text)
+        /// <param name="text">追加する文字列。</param>
+        /// <param name="insertUp">一行上に挿入する場合はtrue、下に挿入する場合はfalse。</param>
+        public void InsertLine(string text, bool insertUp = true)
         {
             var lines = new List<string>(InputTextBox.Text.Split('\n'));
 
@@ -338,12 +350,13 @@ namespace GoodSeat.Clapte.ViewModels
             while (sline > 1 && isContinueLine(lines[sline - 1])) --sline;
             while (eline < lines.Count && isContinueLine(lines[eline])) ++eline;
 
-            lines.Insert(sline, text);
+            lines.Insert(insertUp ? sline : eline + 1, text);
 
             int begin, end;
             InputTextBox.Document.GetSelection(out begin, out end);
-            InputTextBox.Text = string.Join("\n", lines);
-            InputTextBox.Document.SetSelection(begin + text.Length + 1, end + text.Length + 1);
+            SetTextWithoutChangeScroll(string.Join("\n", lines));
+            int addSelectionPosition = insertUp ? text.Length + 1 : 0;
+            InputTextBox.Document.SetSelection(begin + addSelectionPosition, end + addSelectionPosition);
         }
 
         /// <summary>
@@ -395,10 +408,7 @@ namespace GoodSeat.Clapte.ViewModels
 
             int bs, es;
             InputTextBox.Document.GetSelection(out bs, out es);
-
-            int visible1stLine = InputTextBox.FirstVisibleLine;
-            InputTextBox.Text = string.Join("\n", lines);
-            InputTextBox.FirstVisibleLine = visible1stLine;
+            SetTextWithoutChangeScroll(string.Join("\n", lines));
 
             if (up)
             {
@@ -433,17 +443,9 @@ namespace GoodSeat.Clapte.ViewModels
                 f2.Format = Target.BaseSolver.Target.OutputFormat;
                 result = f2.ToString();
             }
-            catch (Exception e)
-            {
-                result += e.Message;
-            }
+            catch (Exception e) { result += e.Message; }
 
-            var texts = new List<string>(InputTextBox.Text.Split('\n').Select(s => s.Replace("\r", "")));
-            texts.Insert(lineIndex + 1, result);
-
-            int visible1stLine = InputTextBox.FirstVisibleLine;
-            InputTextBox.Text = string.Join("\r\n", texts);
-            InputTextBox.FirstVisibleLine = visible1stLine;
+            InsertLine(result, false);
 
             InputTextBox.SetSelection(caretIndex, caretIndex);
         }
