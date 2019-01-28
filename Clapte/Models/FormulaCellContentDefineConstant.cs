@@ -96,7 +96,9 @@ namespace GoodSeat.Clapte.Models
             if (Constant.GetEnableConstants().FirstOrDefault(cst => cst.GetAllDistinguishedNames().Contains(DefineTarget.Mark)) != null)
                 throw new ClapteProcessException(string.Format("変数名 {0} はシステムで定義されているため、再定義できません。", DefineTarget.Mark));
 
-            var result = solver.Solve(FormulaText);
+            Formula f;
+            var result = solver.Solve(FormulaText, out f);
+            TargetFormula = f;
 
             if (result.ResultLevel == Result.Level.Success)
             {

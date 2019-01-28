@@ -146,7 +146,7 @@ namespace GoodSeat.Clapte.Models
         /// <summary>
         /// 評価対象とする数式を取得します。
         /// </summary>
-        public Formula TargetFormula { get; private set; }
+        public Formula TargetFormula { get; protected set; }
 
         /// <summary>
         /// 具体に評価対象とする数式を取得します。
@@ -431,7 +431,10 @@ namespace GoodSeat.Clapte.Models
         {
             try
             {
-                return solver.Solve(FormulaText);
+                Formula f;
+                var result = solver.Solve(FormulaText, out f);
+                TargetFormula = f;
+                return result;
             }
             catch (Exception e)
             {

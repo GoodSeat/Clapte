@@ -6,6 +6,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Clapte.Models.Formulas;
 
 namespace GoodSeat.Clapte.Solvers.Processes
 {
@@ -93,12 +94,27 @@ namespace GoodSeat.Clapte.Solvers.Processes
             foreach (var variable in input.GetExistFactors<Variable>())
             {
                 if (variable.Mark == SolveEquationProcess.PermanentSolveTarget) continue; // ただし、?は常に除外
+                if (variable is VariableWithDefine) continue;
                 if (IgnoreVariableNames.Contains(variable.Mark)) continue;
 
                 var unit = new Unit(variable.Mark);
                 if (ReplaceMode == Mode.OnlyRegisterd && unit.BelongTable == null) continue;
 
                 input = input.Substituted(variable, unit, false);
+            }
+            foreach (var variableWithDefine in input.GetExistFactors<VariableWithDefine>())
+            {
+                var def = variableWithDefine.Define;
+                foreach (var variable in def.GetExistFactors<Variable>())
+                {
+                    if (IgnoreVariableNames.Contains(variable.Mark)) continue;
+
+                    var unit = new Unit(variable.Mark);
+                    if (ReplaceMode == Mode.OnlyRegisterd && unit.BelongTable == null) continue;
+
+                    def = def.Substituted(variable, unit, false);
+                }
+                variableWithDefine.Define = def;
             }
             return null;
         }

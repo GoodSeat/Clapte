@@ -111,7 +111,7 @@ namespace GoodSeat.Clapte.Solvers
             }
             return null;
         }
-             
+
 
         /// <summary>
         /// 文字列を指定して、処理を実行します。
@@ -120,10 +120,24 @@ namespace GoodSeat.Clapte.Solvers
         /// <returns>処理結果。</returns>
         public Result Solve(string input)
         {
+            Formula f;
+            return Solve(input, out f);
+        }
+
+        /// <summary>
+        /// 文字列を指定して、処理を実行します。
+        /// </summary>
+        /// <param name="input">処理対象の文字列。</param>
+        /// <param name="preEvaluateFormul">評価直前の数式。</param>
+        /// <returns>処理結果。</returns>
+        public Result Solve(string input, out Formula preEvaluateFormula)
+        {
             string output = input;
             Formula formula = null;
             List<Error> errors = new List<Error>();
             Result result = null;
+
+            preEvaluateFormula = null;
 
             lock (_lockObject)
             {
@@ -133,9 +147,12 @@ namespace GoodSeat.Clapte.Solvers
                     if (result != null) return result;
 
                     formula = Parser.Parse(input);
+                    preEvaluateFormula = formula;
 
                     result = DoProcess(Step.CheckInputFormula, ref input, ref formula, errors);
                     if (result != null) return result;
+
+                    preEvaluateFormula = formula;
 
                     result = DoProcess(Step.EvaluateFormula, ref input, ref formula, errors);
                     if (result != null) return result;
