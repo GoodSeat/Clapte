@@ -852,6 +852,16 @@ namespace GoodSeat.Clapte.Views.Forms
                 Clipboard.SetText((tag as DeformHistoryNode).FormulaText);
             }
         }
+        private void _contextMenuHistoryNode_Opening(object sender, CancelEventArgs e)
+        {
+            var node = _treeViewHistory.SelectedNode;
+            bool enable = (node != null && node.Nodes.Count > 0);
+
+            _menuFoldHistoryThisFormula.Enabled = enable;
+            _menuExpandHistoryThisFormula.Enabled = enable;
+        }
+        private void _menuExpandHistoryThisFormula_Click(object sender, EventArgs e) { _treeViewHistory.SelectedNode?.ExpandAll(); } 
+        private void _menuFoldHistoryThisFormula_Click(object sender, EventArgs e) { _treeViewHistory.SelectedNode?.Collapse(false); }
 
         #endregion
 
