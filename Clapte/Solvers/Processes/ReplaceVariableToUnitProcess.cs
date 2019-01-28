@@ -6,6 +6,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas.Functions;
 using GoodSeat.Clapte.Models.Formulas;
 
 namespace GoodSeat.Clapte.Solvers.Processes
@@ -90,31 +91,43 @@ namespace GoodSeat.Clapte.Solvers.Processes
                 }
             }
 
+            Func<Formula, Variable, Formula> replaceVariableWithUnit = (f, v) =>
+            {
+                if (IgnoreVariableNames.Contains(v.Mark)) return f;
+
+                var unit = new Unit(v.Mark);
+                if (ReplaceMode == Mode.OnlyRegisterd && unit.BelongTable == null) return f;
+                return f.Substituted(v, unit, false);
+            };
+
             // 変数を単位に変換
             foreach (var variable in input.GetExistFactors<Variable>())
             {
                 if (variable.Mark == SolveEquationProcess.PermanentSolveTarget) continue; // ただし、?は常に除外
                 if (variable is VariableWithDefine) continue;
-                if (IgnoreVariableNames.Contains(variable.Mark)) continue;
 
-                var unit = new Unit(variable.Mark);
-                if (ReplaceMode == Mode.OnlyRegisterd && unit.BelongTable == null) continue;
-
-                input = input.Substituted(variable, unit, false);
+                input = replaceVariableWithUnit(input, variable);
             }
+            // ユーザー定義変数の定義についても同様の変換
             foreach (var variableWithDefine in input.GetExistFactors<VariableWithDefine>())
             {
                 var def = variableWithDefine.Define;
                 foreach (var variable in def.GetExistFactors<Variable>())
                 {
-                    if (IgnoreVariableNames.Contains(variable.Mark)) continue;
-
-                    var unit = new Unit(variable.Mark);
-                    if (ReplaceMode == Mode.OnlyRegisterd && unit.BelongTable == null) continue;
-
-                    def = def.Substituted(variable, unit, false);
+                    def = replaceVariableWithUnit(def, variable);
                 }
                 variableWithDefine.Define = def;
+            }
+            // ユーザー定義関数の定義についても同様の変換
+            foreach (var function in input.GetExistFactors<UserFunction>())
+            {
+                var def = function.UseFormula;
+                foreach (var variable in def.GetExistFactors<Variable>())
+                {
+                    if (function.UseVariable.Contains(variable)) continue;
+                    def = replaceVariableWithUnit(def, variable);
+                }
+                function.UseFormula = def;
             }
             return null;
         }
