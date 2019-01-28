@@ -127,6 +127,7 @@ namespace GoodSeat.Liffom.Deforms.Rules
                 string preText = target.GetUniqueText();
                 Type preType = target.GetType();
 #endif
+                Formula.CheckCancelOperation(target); // ユーザーからの操作中止に対応
                 Formula result = OnTryMatchRule(target);
 #if DEBUG
                 if (result != null && preText == result.GetUniqueText() && preType == result.GetType())
