@@ -11,9 +11,9 @@ namespace GoodSeat.Clapte.Solvers.Processes
     /// <summary>
     /// 数値の3桁区切りを検知し、出力書式に反映する処理を表します。
     /// </summary>
-    public class DetectSplitCommmaProcess : Process
+    public class DetectSplitCommaProcess : Process
     {
-        static DetectSplitCommmaProcess()
+        static DetectSplitCommaProcess()
         {
             SplitNumericRegex = new Regex(@"[1-9][0-9]{0,2}(\,[0-9]{3})+(\D|$)", RegexOptions.IgnoreCase);
         }
@@ -26,7 +26,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <summary>
         /// 数値の3桁区切りを検知し、出力書式に反映する処理を初期化します。
         /// </summary>
-        public DetectSplitCommmaProcess(Solver owner) : base(owner) { }
+        public DetectSplitCommaProcess(Solver owner) : base(owner) { }
 
         /// <summary>
         /// 現在処理中の数式の入力文字列で、3桁区切りのカンマが使用されていたか否かを設定もしくは取得します。

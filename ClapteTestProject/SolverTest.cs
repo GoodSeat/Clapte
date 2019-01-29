@@ -91,7 +91,7 @@ namespace GoodSeat.ClapteTestProject
 			result.Add(new ReplaceAlternateStringProcess(solver));
 
 			// 数値の3桁区切りカンマの認識と出力書式への反映
-			result.Add(new DetectSplitCommmaProcess(solver));
+			result.Add(new DetectSplitCommaProcess(solver));
 			
 			// ユーザー定義定数・関数の置き換え
 			result.Add(new EvaluateUserDefineProcess(solver));

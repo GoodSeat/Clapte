@@ -86,7 +86,7 @@
     <Compile Include="Solvers\Processes\ConvertToSpecifiedUnitProcess.cs" />
     <Compile Include="Solvers\Processes\CalculateFormulaProcess.cs" />
     <Compile Include="Solvers\Processes\ClapteProcessException.cs" />
-    <Compile Include="Solvers\Processes\DetectSplitCommmaProcess.cs" />
+    <Compile Include="Solvers\Processes\DetectSplitCommaProcess.cs" />
     <Compile Include="Solvers\Processes\EvaluateUserDefineProcess.cs" />
     <Compile Include="Solvers\Processes\OutputTextByteFormatProcess.cs" />
     <Compile Include="Solvers\Processes\ProcessSet.cs" />

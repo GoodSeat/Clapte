@@ -72,7 +72,7 @@ namespace GoodSeat.ClapteTestProject
 		[TestMethod()]
 		public void CheckInputTextTest()
 		{
-			DetectSplitCommmaProcess target = new DetectSplitCommmaProcess(null);
+			DetectSplitCommaProcess target = new DetectSplitCommaProcess(null);
 			{
 				string input = "1,352,012.2525 + 1,235.5";
 				string inputExpected = "1352012.2525 + 1235.5";
@@ -105,7 +105,7 @@ namespace GoodSeat.ClapteTestProject
 		[TestMethod()]
 		public void CheckOutputFormulaTest()
 		{
-			DetectSplitCommmaProcess target = new DetectSplitCommmaProcess(null);
+			DetectSplitCommaProcess target = new DetectSplitCommaProcess(null);
 			{
 				string input = "1,352,012.2525 + 1,235.5";
 				target.CheckInputText(ref input, false);
