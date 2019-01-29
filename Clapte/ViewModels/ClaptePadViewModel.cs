@@ -122,6 +122,16 @@ namespace GoodSeat.Clapte.ViewModels
 
 
         /// <summary>
+        /// 指定の文字列が継続行を表すか否かを判定します。
+        /// </summary>
+        /// <param name="line">判定対象とする行。</param>
+        /// <returns>継続行か否か。</returns>
+        public bool IsContinueLine(string line)
+        {
+            return line.Split('#')[0].Trim().EndsWith(" _");
+        }
+
+        /// <summary>
         /// スクロール位置に変更がないように、入力ボックスのテキストを指定文字列に変更します。
         /// </summary>
         /// <param name="text">変更後のテキスト。</param>
@@ -345,10 +355,8 @@ namespace GoodSeat.Clapte.ViewModels
             int sline, eline;
             InputTextBox.GetSelectedLineIndex(out sline, out eline);
 
-            Predicate<string> isContinueLine = l => l.Trim().EndsWith(" _");
-
-            while (sline > 1 && isContinueLine(lines[sline - 1])) --sline;
-            while (eline < lines.Count && isContinueLine(lines[eline])) ++eline;
+            while (sline > 1 && IsContinueLine(lines[sline - 1])) --sline;
+            while (eline < lines.Count && IsContinueLine(lines[eline])) ++eline;
 
             lines.Insert(insertUp ? sline : eline + 1, text);
 
@@ -370,10 +378,8 @@ namespace GoodSeat.Clapte.ViewModels
             int sline, eline;
             InputTextBox.GetSelectedLineIndex(out sline, out eline);
 
-            Predicate<string> isContinueLine = l => l.Trim().EndsWith(" _");
-
-            while (sline > 1 && isContinueLine(lines[sline - 1])) --sline;
-            while (eline < lines.Count && isContinueLine(lines[eline])) ++eline;
+            while (sline > 1 && IsContinueLine(lines[sline - 1])) --sline;
+            while (eline < lines.Count && IsContinueLine(lines[eline])) ++eline;
             if (up && sline <= 0) return;
             if (!up && eline >= lines.Count - 1) return;
 
@@ -381,12 +387,12 @@ namespace GoodSeat.Clapte.ViewModels
             if (up)
             {
                 moveTo = sline - 1;
-                while (moveTo > 1 && isContinueLine(lines[moveTo - 1])) --moveTo;
+                while (moveTo > 1 && IsContinueLine(lines[moveTo - 1])) --moveTo;
             }
             else
             {
                 moveTo = eline + 1;
-                while (moveTo < lines.Count && isContinueLine(lines[moveTo])) ++moveTo;
+                while (moveTo < lines.Count && IsContinueLine(lines[moveTo])) ++moveTo;
             }
 
             int countOverChar = 0;
