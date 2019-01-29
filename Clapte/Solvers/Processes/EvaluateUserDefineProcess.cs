@@ -203,15 +203,16 @@ namespace GoodSeat.Clapte.Solvers.Processes
                     return null;
                 }
 
-                Formula define = Owner.Parse(target.Define);
-                for (int i = 0; i < v.UseVariable.Count; i++) // 実引数で仮引数を置き換える
+                if (target.Define != null)
                 {
-                    if (v[i] == null)
-                        throw new ClapteProcessException(string.Format("ユーザー定義関数「{0}」に指定された引数の数が、不足もしくは過多です。", v.NameForView));
-                    define = define.Substituted(v.UseVariable[i], v[i]);
+                    Formula define = Owner.Parse(target.Define);
+                    define = SubsutitueUserDefines(define, callStack, v.UseVariable); // 定義内の別のユーザー定義定数・関数を置き換える
+                    UserFunctionCache.Add(v, define);
                 }
-                define = SubsutitueUserDefines(define, callStack); // 定義内の別のユーザー定義定数・関数を置き換える
-                UserFunctionCache.Add(v, define);
+                else
+                {
+                    UserFunctionCache.Add(v, null);
+                }
                 return null;
             }
             catch (FormulaParseException exc)
@@ -229,11 +230,13 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// </summary>
         /// <param name="define">対象の数式。</param>
         /// <param name="callStack">定義の探索元の数式スタック。</param>
+        /// <param name="ignoreVariables">対象外とする変数リスト。</param>
         /// <returns>置換された数式。</returns>
-        private Formula SubsutitueUserDefines(Formula define, Stack<Formula> callStack)
+        private Formula SubsutitueUserDefines(Formula define, Stack<Formula> callStack, List<Variable> ignoreVariables = null)
         {
             foreach (var inner in define.GetExistFactors<Variable>())
             {
+                if (ignoreVariables != null && ignoreVariables.Contains(inner)) continue;
                 EvaluateConstant(inner, callStack);
                 if (UserConstantCache[inner] != null) define = define.Substituted(inner, UserConstantCache[inner]);
             }

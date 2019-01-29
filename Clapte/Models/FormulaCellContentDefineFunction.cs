@@ -73,11 +73,13 @@ namespace GoodSeat.Clapte.Models
 
             var useVariables = DefineFunctionCommand.GetUseVariableList(match, solver.Parser);
             if (useVariables == null) return null;
+            if (useVariables.Contains(new Variable(SolveEquationProcess.PermanentSolveTarget))) return null;
             target.UseVariable = useVariables;
 
             string defText = match.Groups["define"].Value.Trim(); 
             Formula define;
             if (!solver.TryParse(defText, out define)) return null;
+            if (define.GetExistFactors<Variable>().Contains(new Variable(SolveEquationProcess.PermanentSolveTarget))) return null;
 
             return new FormulaCellContentDefineFunction(defText, define, target, define, previous);
         }
