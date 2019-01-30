@@ -23,10 +23,10 @@ namespace GoodSeat.Clapte.ViewModels
         /// <summary>
         /// ClaptePadのエディタ機能に係るビューモデルを初期化します。
         /// </summary>
-        /// <param name="view">ClaptePadのビュー。</param>
+        /// <param name="target">編集対象の数式セルリストビューモデル。</param>
         /// <param name="inputTextBox">ビューにおける入力テキストボックス。</param>
         /// <param name="inputSupportPositionOffset">入力補助の表示位置の補正量。</param>
-        public ClaptePadViewModel(Views.Forms.FormOfClaptePad view, AzukiControl inputTextBox, Point inputSupportPositionOffset)
+        public ClaptePadViewModel(FormulaCellListViewModel target, AzukiControl inputTextBox, Point inputSupportPositionOffset)
         {
             InputTextBox = inputTextBox;
             InputTextBox.VScroll += InputTextBox_VScroll;
@@ -36,14 +36,11 @@ namespace GoodSeat.Clapte.ViewModels
             InputTextBox.SetKeyBind(Keys.Alt | Keys.Up, i => MoveUpOrDownSelectedLine(true));
             InputTextBox.SetKeyBind(Keys.Alt | Keys.Down, i => MoveUpOrDownSelectedLine(false));
 
-            Target = view.Target;
+            Target = target;
 
             InputSupportEnumerator = new ClaptePadInputSupportEnumerator(Target);
-            InputSupport = new InputSupport(InputTextBox, view, InputSupportEnumerator);
-            InputSupport.ModifyLocation = inputSupportPositionOffset;
-
-            ArgumentHelper = new FunctionArgumentHelp(InputTextBox, view, InputSupportEnumerator);
-            ArgumentHelper.ModifyLocation = inputSupportPositionOffset;
+            InputSupport = new InputSupport(InputTextBox, InputSupportEnumerator);
+            ArgumentHelper = new FunctionArgumentHelp(InputTextBox, InputSupportEnumerator);
 
             AdditionalInformations = new List<Tuple<FormulaCellContent.AdditionalInformationType, string>>();
 

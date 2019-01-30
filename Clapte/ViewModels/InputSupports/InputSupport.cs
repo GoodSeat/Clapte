@@ -17,12 +17,10 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
         /// Azukiコントロールを対象とした入力補助機能を初期化します。
         /// </summary>
         /// <param name="azuki">補助機能を提供する対象となるAzukiコントロール。</param>
-        /// <param name="owner">補助候補のリストボックスを表示する先のコントロール。</param>
         /// <param name="enumerator">入力補助の候補列挙オブジェクト。</param>
-        public InputSupport(AzukiControl azuki, Control owner, IInputSupportEnumerator enumerator)
+        public InputSupport(AzukiControl azuki, IInputSupportEnumerator enumerator)
         {
             Azuki = azuki;
-            Owner = owner;
             CandidateEnumerator = enumerator;
 
             InitializeComponents();
@@ -41,11 +39,6 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
         /// 対象となるAzukiコントロールを設定もしくは取得します。
         /// </summary>
         AzukiControl Azuki { get; set; }
-
-        /// <summary>
-        /// 入力補助リストの表示先コントロールを設定もしくは取得します。
-        /// </summary>
-        Control Owner { get; set; }
 
         /// <summary>
         /// 入力補助の候補列挙オブジェクトを設定もしくは取得します。
@@ -81,11 +74,6 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
         /// 入力補助候補の説明を表示するツールチップを設定もしくは取得します。
         /// </summary>
         ToolTip ToolTipHelp { get; set; }
-
-        /// <summary>
-        /// AzukiのOwnerに対する相対位置を設定します。
-        /// </summary>
-        public Point ModifyLocation { private get; set; }
 
         /// <summary>
         /// 入力補助の候補をリスト表示するリストボックスを取得します。
@@ -204,7 +192,7 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
             CandidateListBox.Visible = false;
             CandidateListBox.Font = Azuki.Font;
             CandidateListBox.SelectedIndexChanged += new EventHandler(CandidateListBox_SelectedIndexChanged);
-            Owner.Controls.Add(CandidateListBox);
+            CandidateListBox.Parent = Azuki;
 
             ToolTipHelp = new ToolTip();
 
@@ -224,11 +212,11 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
         {
             Point position = Azuki.GetPositionFromIndex(startIndex);
 
-            CandidateListBox.Left = position.X + Azuki.Left + ModifyLocation.X;
-            CandidateListBox.Top = position.Y + Azuki.Top + ModifyLocation.Y + Azuki.View.LineHeight + Azuki.View.LinePadding;
+            CandidateListBox.Left = position.X + Azuki.Left;
+            CandidateListBox.Top = position.Y + Azuki.Top + Azuki.View.LineHeight + Azuki.View.LinePadding;
             CandidateListBox.Size = CandidateListBox.PreferredSize;
 
-            if (CandidateListBox.Bottom > Owner.Height) CandidateListBox.Height += (Owner.Height - CandidateListBox.Bottom - 2);
+            if (CandidateListBox.Bottom > Azuki.Bottom) CandidateListBox.Height += (Azuki.Bottom - CandidateListBox.Bottom - 2);
             CandidateListBox.BringToFront();
 
             CandidateListBox.Visible = true;

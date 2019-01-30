@@ -60,7 +60,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             InitializeTextBox();
 
-            EditorViewModel = new ClaptePadViewModel(this, _inputTextBox, _splitContainerAll.Location);
+            EditorViewModel = new ClaptePadViewModel(Target, _inputTextBox, _splitContainerAll.Location);
 
             Delay = 500;
 

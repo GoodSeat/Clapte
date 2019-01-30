@@ -19,12 +19,10 @@ namespace GoodSeat.Clapte.ViewModels
         /// <see cref="AzukiControl"/>を対象とした、関数の引数ヘルプ機能を初期化します。
         /// </summary>
         /// <param name="azuki">補助機能を提供する対象となる<see cref="AzukiControl"/>。</param>
-        /// <param name="owner">補助候補のリストボックスを表示する先のコントロール。</param>
         /// <param name="enumerator">入力補助の候補列挙オブジェクト。</param>
-        public FunctionArgumentHelp(AzukiControl azuki, Control owner, IInputSupportEnumerator enumerator)
+        public FunctionArgumentHelp(AzukiControl azuki, IInputSupportEnumerator enumerator)
         {
             Azuki = azuki;
-            Owner = owner;
             InputSupportEnumerator = enumerator;
 
             HelpBox = new RichTextBox();
@@ -35,7 +33,7 @@ namespace GoodSeat.Clapte.ViewModels
             HelpBox.Visible = false;
             HelpBox.Enter += (sender, e) => HelpBox.Visible = false;
             HelpBox.ScrollBars = RichTextBoxScrollBars.None;
-            owner.Controls.Add(HelpBox);
+            HelpBox.Parent = azuki;
 
             azuki.FontChanged += new EventHandler(azuki_FontChanged);
             azuki.CaretMoved += new EventHandler(azuki_CaretMoved);
@@ -48,16 +46,6 @@ namespace GoodSeat.Clapte.ViewModels
         /// 対象となる<see cref="AzukiControl"/>を設定もしくは取得します。
         /// </summary>
         AzukiControl Azuki { get; set; }
-
-        /// <summary>
-        /// 入力補助リストの表示先コントロールを設定もしくは取得します。
-        /// </summary>
-        Control Owner { get; set; }
-
-        /// <summary>
-        /// <see cref="Azuki"/>の<see cref="Owner"/>に対する相対位置を設定します。
-        /// </summary>
-        public Point ModifyLocation { private get; set; }
 
         /// <summary>
         /// 関数の引数ヘルプを表示するリッチテキストボックスを設定もしくは取得します。
@@ -169,7 +157,7 @@ namespace GoodSeat.Clapte.ViewModels
         {
             Point p = Azuki.GetPositionFromIndex(index);
             HelpBox.Size = new Size((int)(HelpBox.PreferredSize.Width * 1.2), (int)(HelpBox.PreferredSize.Height * 1.2));
-            HelpBox.Location = new Point(p.X + ModifyLocation.X, p.Y + ModifyLocation.Y - HelpBox.Height);
+            HelpBox.Location = new Point(p.X, p.Y - HelpBox.Height);
         }
 
         /// <summary>
