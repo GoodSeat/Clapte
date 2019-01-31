@@ -1,4 +1,9 @@
-﻿using GoodSeat.Clapte.ViewModels.ClapteCommands;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/clapte/license 
+// -----------------------------------------------------------------------------
+using GoodSeat.Clapte.ViewModels.ClapteCommands;
 using GoodSeat.Liffom.Formulas.Functions;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;

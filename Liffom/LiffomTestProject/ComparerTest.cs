@@ -1,4 +1,9 @@
-﻿using GoodSeat.Liffom.Formulas.Operators.Comparers;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/liffom/license 
+// -----------------------------------------------------------------------------
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using GoodSeat.Liffom.Formulas;

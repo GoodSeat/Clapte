@@ -1,4 +1,9 @@
-﻿using GoodSeat.Clapte.Solvers.Processes;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/clapte/license 
+// -----------------------------------------------------------------------------
+using GoodSeat.Clapte.Solvers.Processes;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using GoodSeat.Clapte.Solvers;

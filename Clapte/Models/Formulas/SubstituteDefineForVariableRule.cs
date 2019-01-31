@@ -1,4 +1,9 @@
-﻿using GoodSeat.Liffom.Deforms.Rules;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/clapte/license 
+// -----------------------------------------------------------------------------
+using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas;
 using System;
 using System.Collections.Generic;

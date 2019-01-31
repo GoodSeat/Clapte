@@ -1,4 +1,9 @@
-﻿using GoodSeat.Liffom.Formulas;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/liffom/license 
+// -----------------------------------------------------------------------------
+using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using System;
