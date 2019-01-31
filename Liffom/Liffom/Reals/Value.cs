@@ -738,7 +738,7 @@ namespace GoodSeat.Liffom.Reals
                 result = result + delta;
                 n++;
             }
-            while (delta != 0d && expDelta <= validDigits + 1);
+            while (delta != 0d && expDelta <= validDigits + 2);
 
             if (result.Exponent + d1.AdditinalDigit < nExpInitial) result = result.Round(d1.MaxValidDigits - nExpInitial + d1.AdditinalDigit);
             return result;

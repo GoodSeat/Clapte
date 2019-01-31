@@ -18,7 +18,7 @@ namespace GoodSeat.Liffom.Formulas.Constants
         static List<Constant> s_constantList;
 
         /// <summary>
-        /// 利用可能なすべての定数のを返す反復を取得します。
+        /// 利用可能なすべての定数を返す反復を取得します。
         /// </summary>
         /// <returns>システム内で利用可能な定数を返す反復子。</returns>
         /// <remarks>Liffom.dll内、及び同ディレクトリ内のクラスライブラリ中に存在する定数を探索します。</remarks>
