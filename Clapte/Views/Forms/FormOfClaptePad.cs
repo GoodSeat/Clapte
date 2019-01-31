@@ -569,7 +569,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.Text = File.ReadAllText(_openFileDialog.FileName);
         }
 
-        private void _btnSetting_Click(object sender, EventArgs e) { OwnerMainForm.OpenSetting(); }
+        private void _btnSetting_Click(object sender, EventArgs e) { OwnerMainForm.OpenSetting("計算の詳細"); }
 
         private void _btnUpdate_Click(object sender, EventArgs e) { Target.RenewAll(_inputTextBox.Text); }
 

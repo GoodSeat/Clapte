@@ -333,11 +333,12 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// 設定画面を開きます。
         /// </summary>
-        public void OpenSetting()
+        /// <param name="title">最初に表示する設定項目。</param>
+        public void OpenSetting(string title = "")
         {
             if (_formOfSetting == null || _formOfSetting.IsDisposed)
             {
-                _formOfSetting = new FormOfSetting(this);
+                _formOfSetting = new FormOfSetting(this, title);
                 _formOfSetting.Show();
             }
             _formOfSetting.Focus();

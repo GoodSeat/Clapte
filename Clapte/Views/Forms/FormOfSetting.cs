@@ -30,14 +30,36 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// Clapteの設定画面を初期化します。
         /// </summary>
-        /// <param name="clapteWatcher"></param>
-        public FormOfSetting(FormOfMain owner)
+        /// <param name="main">親となるメインフォーム。</param>
+        /// <param name="title">最初に表示する設定項目。</param>
+        public FormOfSetting(FormOfMain owner, string title = "")
         {
             InitializeComponent();
             OwnerMainForm = owner;
 
             _treeList.ExpandAll();
-            _treeList.SelectedNode = _treeList.Nodes[0];
+
+            var node = findNodeByTitle(title, _treeList.Nodes);
+            _treeList.SelectedNode = node ?? _treeList.Nodes[0];
+        }
+
+        /// <summary>
+        /// 指定の名称を有するツリーノードを、ツリーノードコレクションからその子孫を含めて探して取得します。
+        /// </summary>
+        /// <param name="title">探索対象とする名称。</param>
+        /// <param name="nodes">探索先とするツリーノードコレクション。</param>
+        /// <returns></returns>
+        TreeNode findNodeByTitle(string title, TreeNodeCollection nodes)
+        {
+            foreach (var n in nodes)
+            {
+                var node = n as TreeNode;
+                if (node.Text == title) return node;
+
+                var nodeChild = findNodeByTitle(title, node.Nodes);
+                if (nodeChild != null) return nodeChild;
+            }
+            return null;
         }
 
         /// <summary>
@@ -57,7 +79,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             BackUpXml = OwnerMainForm.CreateSerializeXmlElement();
         }
-        
+
         /// <summary>
         /// ノードタイトルから対応する設定パネルを生成して返します。
         /// </summary>
