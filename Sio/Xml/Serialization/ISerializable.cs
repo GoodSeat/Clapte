@@ -1,4 +1,9 @@
-﻿using System;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/clapte/license 
+// -----------------------------------------------------------------------------
+using System;
 using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Sio.Xml;

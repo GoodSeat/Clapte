@@ -1,4 +1,9 @@
-﻿using GoodSeat.Liffom.Formulas.Array;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/liffom/license 
+// -----------------------------------------------------------------------------
+using GoodSeat.Liffom.Formulas.Array;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 

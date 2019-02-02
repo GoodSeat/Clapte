@@ -1,4 +1,9 @@
-﻿using GoodSeat.Clapte.Models;
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2019 GoodSeat
+//  Distributed under the MIT License
+//  See https://sites.google.com/site/eatbaconandham/clapte/license 
+// -----------------------------------------------------------------------------
+using GoodSeat.Clapte.Models;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.ViewModels.InputSupports;
 using GoodSeat.Liffom.Deforms;
