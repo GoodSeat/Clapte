@@ -11,6 +11,7 @@ using System.Data;
 using System.Drawing;
 using System.Text;
 using System.Windows.Forms;
+using System.Linq;
 using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom;
 using GoodSeat.Liffom.Formulas;
@@ -457,6 +458,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 tableViewModel.OnDeserialize(unitTableElement);
                 UnitConvertTable.AddTable(tableViewModel.Target);
             }
+            AutoAddRadDefine();
 
             // ClapteCoreViewModelオブジェクトの復元
             if (clapteSettingElement.GetElement("ClapteCore") != null)
@@ -467,6 +469,23 @@ namespace GoodSeat.Clapte.Views.Forms
                 IsCalculatorMode = bool.Parse(clapteSettingElement.GetElement("CalculatorMode").Value);
             else
                 IsCalculatorMode = false;
+        }
+
+        /// <summary>
+        /// 平面角の単位テーブルに、radの定義として1が登録されていない場合に、その定義を自動で追加します。
+        /// </summary>
+        public void AutoAddRadDefine()
+        {
+            Predicate<string> isAngleComment = s => s.ToLower().Contains("angle") || s.Contains("平面角") || s.Contains("角度");
+            var rad = new Unit("rad");
+            var angleTable = UnitConvertTable.ValidTables
+                .Select(p => p.Value)
+                .FirstOrDefault(t => t.BaseUnit.ConvertUnit == rad && (isAngleComment(t.UnitType) || isAngleComment(t.TypeComment)));
+
+            if (angleTable == null) return;
+
+            bool alreadyDefinedRadIs1 = angleTable.GetAllRecords(false).Any(r => r.ConvertUnit == 1);
+            if (!alreadyDefinedRadIs1) angleTable.AddRecord(new UnitConvertRecord(1, 1, "ラジアンの定義"));
         }
 
         #endregion
