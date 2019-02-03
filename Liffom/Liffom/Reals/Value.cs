@@ -742,6 +742,8 @@ namespace GoodSeat.Liffom.Reals
 
                 result = result + delta;
                 n++;
+
+                Formula.CheckCancelOperation(null);
             }
             while (delta != 0d && expDelta <= validDigits + 2);
 
