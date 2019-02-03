@@ -19,6 +19,8 @@ using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Clapte.Views.Forms.SettingPanels;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Clapte.Models.Windows;
+using System.Runtime.InteropServices;
+using System.Diagnostics;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -34,6 +36,12 @@ namespace GoodSeat.Clapte.Views.Forms
         static bool s_calculatorMode;
         FormOfSetting _formOfSetting;
         FormOfClaptePad _formOfClaptePad;
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern IntPtr GetOpenClipboardWindow();
+
+        [DllImport("user32.dll", SetLastError = true)]
+        private static extern uint GetWindowThreadProcessId(IntPtr hWnd, out uint lpdwProcessId);
 
         /// <summary>
         /// Clapte多重起動を表すメッセージ
@@ -217,7 +225,17 @@ namespace GoodSeat.Clapte.Views.Forms
                 catch (Exception exc)
                 {
 #if DEBUG
-                    TaskTrayIcon.ShowBalloonTip(ClapteCore.LimitTime * 1000, "予期しない例外", exc.Message, ToolTipIcon.Error);
+                    IntPtr hWnd = GetOpenClipboardWindow();
+                    if (IntPtr.Zero != hWnd)
+                    {
+                        uint pid = 0;
+                        uint tid = GetWindowThreadProcessId(hWnd, out pid);
+                        TaskTrayIcon.ShowBalloonTip(ClapteCore.LimitTime * 1000, "予期しない例外", Process.GetProcessById((int)pid).Modules[0].FileName + "がクリップボードを使用中です。", ToolTipIcon.Error);
+                    }
+                    else
+                    {
+                        TaskTrayIcon.ShowBalloonTip(ClapteCore.LimitTime * 1000, "予期しない例外", exc.Message, ToolTipIcon.Error);
+                    }
 #endif
                 }
                 finally
