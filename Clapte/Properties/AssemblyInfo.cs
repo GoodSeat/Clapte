@@ -6,11 +6,11 @@ using System.Runtime.InteropServices;
 // アセンブリに関連付けられている情報を変更するには、
 // これらの属性値を変更してください。
 [assembly: AssemblyTitle("Clapte")]
-[assembly: AssemblyDescription("クリップボードの数式を解析して計算する数式電卓です。")]
+[assembly: AssemblyDescription("数式電卓")]
 [assembly: AssemblyConfiguration("")]
 [assembly: AssemblyCompany("GoodSeat || BadSeat")]
 [assembly: AssemblyProduct("Clapte")]
-[assembly: AssemblyCopyright("Copyright (C) 2016 Iiseki All Rights Reserved.")]
+[assembly: AssemblyCopyright("Copyright (C) 2019 Iiseki All Rights Reserved.")]
 [assembly: AssemblyTrademark("")]
 [assembly: AssemblyCulture("")]
 
@@ -32,5 +32,5 @@ using System.Runtime.InteropServices;
 // すべての値を指定するか、下のように '*' を使ってビルドおよびリビジョン番号を 
 // 既定値にすることができます:
 // [assembly: AssemblyVersion("1.0.*")]
-[assembly: AssemblyVersion("2.0.1.0")]
-[assembly: AssemblyFileVersion("2.0.1.0")]
+[assembly: AssemblyVersion("2.1.0.0")]
+[assembly: AssemblyFileVersion("2.1.0.0")]
