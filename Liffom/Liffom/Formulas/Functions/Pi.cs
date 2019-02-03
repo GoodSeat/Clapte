@@ -15,24 +15,24 @@ using GoodSeat.Liffom.Formulas.Operators.Comparers;
 namespace GoodSeat.Liffom.Formulas.Functions
 {
     /// <summary>
-    /// Pi関数（総積 Π）を表します。
+    /// Pi関数（総乗 Π）を表します。
     /// </summary>
     [Serializable()]
     public class Pi : Function
     {
         /// <summary>
-        /// 総積関数を初期化します。
+        /// 総乗関数を初期化します。
         /// </summary>
         public Pi() : base() { }
 
         /// <summary>
-        /// 総積関数を初期化します。
+        /// 総乗関数を初期化します。
         /// </summary>
         /// <param name="formula">総和対象の数式</param>
         public Pi(Formula formula) : base(formula) { }
 
         /// <summary>
-        /// 総積関数を初期化します。
+        /// 総乗関数を初期化します。
         /// </summary>
         /// <param name="n">変化対象の変数</param>
         /// <param name="start">変数の開始値</param>
@@ -124,7 +124,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
         public override string GetInformation(out List<string> args)
         {
             args = new List<string>(); args.Add("数式"); args.Add("変数 = 初期値"); args.Add("終了値"); args.Add("変数 ≠ 除外値列挙（任意）");
-            return "総積を返します。";
+            return "総乗を返します。";
         }
     }
 }
