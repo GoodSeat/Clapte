@@ -76,14 +76,14 @@ namespace GoodSeat.Liffom.Formulas.Functions
                 case TriRad.Rad60:
                 case TriRad.Rad300: return Formula.Parse("1/2");
                 case TriRad.Rad45:
-                case TriRad.Rad135: return Formula.Parse("1/2^(1/2)");
+                case TriRad.Rad315: return Formula.Parse("1/2^(1/2)");
                 case TriRad.Rad30:
                 case TriRad.Rad330: return Formula.Parse("3^(1/2)/2");
 
                 case TriRad.Rad120:
                 case TriRad.Rad240: return Formula.Parse("-1/2");
-                case TriRad.Rad225:
-                case TriRad.Rad315: return Formula.Parse("-1/2^(1/2)");
+                case TriRad.Rad135:
+                case TriRad.Rad225: return Formula.Parse("-1/2^(1/2)");
                 case TriRad.Rad150:
                 case TriRad.Rad210: return Formula.Parse("-(3^(1/2))/2");
 

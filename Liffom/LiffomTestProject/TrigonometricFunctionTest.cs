@@ -104,5 +104,39 @@ namespace GoodSeat.LiffomTestProject
             DeformTokenTest.DeformTest(token, Formula.Parse("tan(pi/2)"), double.PositiveInfinity);
             DeformTokenTest.DeformTest(token, Formula.Parse("tan(-pi/2)"), double.NegativeInfinity);
         }
+
+        /// <summary>
+        ///CalculateFunction のテスト
+        ///</summary>
+        [TestCategory("三角関数"), TestCategory("変形"), TestMethod()]
+        public void CalculateTrigonometricFunctionTest()
+        {
+            const double eps = 1.0E-7;
+            foreach (var triRad in TrigonometricFunction.GetTriRadTypes())
+            {
+                foreach (var theta in TrigonometricFunction.GetTriRadsOf(triRad))
+                {
+                    double rth = (double)theta.Numerate();
+
+                    var sin = new Sin(theta);
+                    var cos = new Cos(theta);
+                    var tan = new Tan(theta);
+
+                    Assert.AreEqual(Math.Sin(rth), (double)sin.Calculate().Numerate(), eps);
+                    Assert.AreEqual(Math.Cos(rth), (double)cos.Calculate().Numerate(), eps);
+
+                    var tanValue = (double)tan.Calculate().Numerate();
+                    var expected = Math.Tan(rth);
+                    if (double.IsInfinity(tanValue))
+                    {
+                        Assert.IsTrue(Math.Abs(expected) > 1.0E+10);
+                    }
+                    else
+                    {
+                        Assert.AreEqual(expected, tanValue, eps);
+                    }
+                }
+            }
+        }
     }
 }
