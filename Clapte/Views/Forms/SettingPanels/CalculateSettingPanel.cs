@@ -113,8 +113,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _numErrorToleranceNewton.Value = (decimal)new DecimalValue(TargetNewtonMethod.ErrorTolerance).Exponent;
             _numTryMaxCountNewton.Value = (decimal)TargetNewtonMethod.MaxTryCount;
 
-            _numUpperLimitBrent.Value = (decimal)TargetBrentMethod.UpperLimit;
-            _numLowerLimitBrent.Value = (decimal)TargetBrentMethod.LowerLimit;
+            _numUpperLimitBrent.Value = (decimal)(double)TargetBrentMethod.UpperLimit;
+            _numLowerLimitBrent.Value = (decimal)(double)TargetBrentMethod.LowerLimit;
             _numErrorToleranceBrent.Value = (decimal)new DecimalValue(TargetBrentMethod.ErrorTolerance).Exponent;
             _numTryMaxCountBrent.Value = (decimal)TargetBrentMethod.MaxTryCount;
 

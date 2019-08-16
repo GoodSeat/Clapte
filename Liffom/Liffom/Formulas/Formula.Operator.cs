@@ -378,10 +378,10 @@ namespace GoodSeat.Liffom.Formulas
         /// <see cref="Formula"/>型 → <see cref="int"/>型の明示的変換を行います。
         /// </summary>
         /// <param name="f">変換対象の数式。</param>
-        public static explicit operator int(Formula f)
+        public static explicit operator double(Formula f)
         {
-            if (!(f is Numeric)) throw new InvalidCastException("Numric型以外の数式をint型に変換することはできません。");
-            return (int)(f as Numeric).Figure.Value.ToDouble();
+            if (!(f is Numeric)) throw new InvalidCastException("Numric型以外の数式をdouble型に変換することはできません。");
+            return (f as Numeric).Figure.Value.ToDouble();
         }
 
     }
