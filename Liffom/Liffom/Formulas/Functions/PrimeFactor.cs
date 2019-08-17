@@ -99,6 +99,8 @@ namespace GoodSeat.Liffom.Formulas.Functions
             }
             for (Value div = d.CreateFrom(6); div < testMax; div += 6) // 5以上の素数は 6n-1 または 6n+1 と表せる
             {
+                CheckCancelOperation(n);
+
                 Value test = d.CreateFrom(0);
                 for (int i = -1; i <= 1; i += 2)
                 {

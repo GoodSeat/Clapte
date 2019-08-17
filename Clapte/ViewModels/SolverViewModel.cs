@@ -19,6 +19,7 @@ using GoodSeat.Liffom.Formulas.Rules;
 using GoodSeat.Liffom.Parse;
 using GoodSeat.Liffom.Processes;
 using GoodSeat.Liffom.Formats.Powers;
+using GoodSeat.Liffom.Formulas.Functions.Rules;
 
 namespace GoodSeat.Clapte.ViewModels
 {
@@ -308,6 +309,7 @@ namespace GoodSeat.Clapte.ViewModels
 
                 // その後、小数まで計算しきる。
                 var token2 = new DeformToken(new SimplifyToken(), new NumerateToken(), new CalculateToken());
+                token2.NoTryRules.Add(FactorOutInnerRootRule.Entity);
                 tokenList.Add(token2);
             }
             list.Add(new CalculateFormulaProcess(solver, MaxTime, tokenList.ToArray()));
