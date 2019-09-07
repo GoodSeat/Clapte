@@ -4,6 +4,7 @@
 //  See https://sites.google.com/site/eatbaconandham/liffom/license 
 // -----------------------------------------------------------------------------
 using System;
+using System.Linq;
 using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Formulas.Operators;
@@ -111,10 +112,24 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         public override Formula CalculateFunction()
         {
-            Formula ret = _useFormula.Copy();
+            var ret = _useFormula.Copy();
+
+            var vlist = _variableList.ToList();
+            for (int i = 0; i < vlist.Count; i++)
+            {
+                var v = vlist[i];
+                while (Argument.Any(f => f.GetExistFactors<Variable>().Contains(v)))
+                {
+                    var v_ = new Variable(v.Mark + "_");
+
+                    vlist[i] = v_;
+                    ret = ret.Substituted(v, v_);
+                    v = v_;
+                }
+            }
 
             for (int i = 0; i < Argument.Count; i++)
-                ret = ret.Substitute(_variableList[i], Argument[i]);
+                ret = ret.Substitute(vlist[i], Argument[i]);
 
             return ret.Calculate();
         }
