@@ -33,6 +33,7 @@ namespace GoodSeat.Liffom.Parse
         public override bool ModifyTokenRelation(Token targetToken)
         {
             if (!(targetToken is OperatorToken) || !targetToken.TargetText.StartsWith("!")) return false;
+            if ((targetToken as OperatorToken).BelongOperatorParser != this) return false;
 
             var previousToken = targetToken.PreviousToken as FormulaToken;
             if (previousToken == null) return false;
