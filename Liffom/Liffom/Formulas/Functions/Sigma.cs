@@ -5,9 +5,6 @@
 // -----------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Text;
-using System.Drawing.Drawing2D;
-using System.Drawing;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
@@ -123,7 +120,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         public override string GetInformation(out List<string> args)
         {
-            args = new List<string>(); args.Add("数式"); args.Add("変数 = 初期値"); args.Add("終了値"); args.Add("変数 = 除外値列挙（任意）");
+            args = new List<string>(); args.Add("数式"); args.Add("変数 = 初期値"); args.Add("終了値"); args.Add("変数 != (除外値列挙)（任意）");
             return "総和を返します。";
         }
 
