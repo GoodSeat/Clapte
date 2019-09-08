@@ -105,6 +105,7 @@
     <Compile Include="Formulas\Functions\Mod.cs" />
     <Compile Include="Formulas\Functions\Pi.cs" />
     <Compile Include="Formulas\Functions\PrimeFactor.cs" />
+    <Compile Include="Formulas\Functions\Ref.cs" />
     <Compile Include="Formulas\Functions\Root.cs" />
     <Compile Include="Formulas\Functions\Round.cs" />
     <Compile Include="Formulas\Functions\Rules\AtomicDifferentiateRule.cs" />
@@ -255,6 +256,8 @@
     <Compile Include="Parse\ProductOperatorLexer.cs" />
     <Compile Include="Parse\ProductOperatorParser.cs" />
     <Compile Include="Parse\PunctuationToken.cs" />
+    <Compile Include="Parse\ReferenceOperatorLexer.cs" />
+    <Compile Include="Parse\ReferenceOperatorParser.cs" />
     <Compile Include="Parse\SeriesOperatorParser.cs" />
     <Compile Include="Parse\SpaceLexer.cs" />
     <Compile Include="Parse\SpaceToken.cs" />

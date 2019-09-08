@@ -354,6 +354,7 @@ namespace GoodSeat.Clapte.ViewModels
             parser.AddOperatorParsers(new PowerOperatorParser()); // 累乗
             parser.AddOperatorParsers(new PowerOfMatrixOperatorParser()); // 行列の累乗
             parser.AddOperatorParsers(new PlusMinusOperatorParser()); // 正負記号
+            parser.AddOperatorParsers(new ReferenceOperatorParser()); // 参照記号
             if (permitOmitProductMark) parser.AddOperatorParsers(new AbbreviatedProductOperatorParser()); // 積算記号の省略を許可(通常の積算より優先度を上げる)
             parser.AddOperatorParsers(new ProductOfMatrixOperatorParser()); // 行列の乗算
             parser.AddOperatorParsers(productOperatorParser); // 乗算・除算

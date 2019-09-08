@@ -52,6 +52,7 @@ namespace GoodSeat.Liffom.Formulas
             DefaultFormulaParser.AddOperatorParsers(new PowerOperatorParser()); // 累乗
             DefaultFormulaParser.AddOperatorParsers(new PowerOfMatrixOperatorParser()); // 行列の累乗
             DefaultFormulaParser.AddOperatorParsers(new PlusMinusOperatorParser()); // 正負記号
+            DefaultFormulaParser.AddOperatorParsers(new ReferenceOperatorParser()); // 参照記号
             DefaultFormulaParser.AddOperatorParsers(new AbbreviatedProductOperatorParser()); // 積算記号の省略を許可(通常の積算より優先度を上げる)
             DefaultFormulaParser.AddOperatorParsers(new ProductOfMatrixOperatorParser()); // 行列の乗算
             DefaultFormulaParser.AddOperatorParsers(new ProductOperatorParser()); // 乗算・除算
