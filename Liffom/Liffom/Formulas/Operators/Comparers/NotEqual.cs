@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 using GoodSeat.Liffom.Deforms;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 {
@@ -41,12 +42,16 @@ namespace GoodSeat.Liffom.Formulas.Operators.Comparers
 
         public override Judge GetJudge(DeformToken token)
         {
-            Formula left = LeftHandSide.DeformFormula(token);
-            Formula right = RightHandSide.DeformFormula(token);
-            
-            if (left != right) return Judge.True;
-            else if (left is Numeric && right is Numeric) return Judge.False;
-            else return Judge.None;
+            Formula f = (LeftHandSide - RightHandSide).DeformFormula(token);
+            f = f.ClearUnit();
+
+            if (f is Numeric)
+            {
+                if ((f as Numeric).Figure == 0) return Judge.False;
+                else return Judge.True;
+            }
+            else
+                return Judge.None;
         }
     }
 }
