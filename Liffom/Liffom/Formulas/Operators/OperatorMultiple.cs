@@ -235,7 +235,9 @@ namespace GoodSeat.Liffom.Formulas.Operators
         {
             foreach (var rule in base.GetRelatedRulesOf(deformToken, sender, history)) yield return rule;
 
-            if (object.ReferenceEquals(sender, this)) yield return MultipleOperatorIntegrateRule.Entity;
+            // 結合則
+            if (object.ReferenceEquals(sender, this) && Satisfy(OperatorLaw.Associative))
+                yield return MultipleOperatorIntegrateRule.Entity;
 
             // 分配則
             if (object.ReferenceEquals(sender, this) && deformToken.Has<ExpandToken>() && Satisfy(OperatorLaw.Distributive))
