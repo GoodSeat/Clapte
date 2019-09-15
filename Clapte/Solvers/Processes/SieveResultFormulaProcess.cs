@@ -12,6 +12,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formulas.Constants;
+using GoodSeat.Liffom.Formulas.Matrices;
 
 namespace GoodSeat.Clapte.Solvers.Processes
 {
@@ -76,7 +77,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
             }
             if (PermitOnlySingleFactor)
             {
-                // 許可されるのは、Product、Numeric、Equal(最上位のみ)、Argument(Equalのrhsのみ)、Variable(Equalのlhsのみ)
+                // 許可されるのは、Product、Numeric、Matrix、Equal(最上位のみ)、Argument(Equalのrhsのみ)、Variable(Equalのlhsのみ)
                 if (!IsValidAsResult(output, true, false))
                     return new Error(Error.Level.Abort, "計算結果が単項式となりませんでした。");
             }
@@ -109,20 +110,14 @@ namespace GoodSeat.Clapte.Solvers.Processes
         {
             if (f is Numeric) return true;
             if (f is Constant) return true;
-            if (f is Product) return true;
+            if (f is Product) return f.All(c => IsValidAsResult(c, false, false));
+            if (f is Matrix) return f.All(c => c is Null || IsValidAsResult(c, false, false));
+            if (f is Argument && permitArgument) return f.All(c => IsValidAsResult(c, false, false));
             if (f is Equal && permitEqual)
             {
                 var equal = f as Equal;
                 if (!(equal.LeftHandSide is Variable)) return false;
                 return IsValidAsResult(equal.RightHandSide, false, true);
-            }
-            if (f is Argument && permitArgument)
-            {
-                foreach (var child in f)
-                {
-                    if (!IsValidAsResult(child, false, false)) return false;
-                }
-                return true;
             }
             return false;
         }
