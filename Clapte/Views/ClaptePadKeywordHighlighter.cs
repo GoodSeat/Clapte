@@ -86,6 +86,12 @@ namespace GoodSeat.Clapte.Views
             functionNames.Sort();
             AddKeywordSet(functionNames.ToArray(), GetCharClassOf(SyntaxTarget.Function));
 
+            List<string> operatorNames = new List<string>(){
+                "+", "-", "*", "/", "＋", "ー", "×", "÷", "=", "!=", "<", ">", "<=", "≦", ">=", "≧", "!", ",", "@", 
+            };
+            operatorNames.Sort();
+            AddKeywordSet(operatorNames.ToArray(), GetCharClassOf(SyntaxTarget.Operator));
+
             List<string> unitNames = new List<string>();
             foreach (var table in UnitConvertTable.ValidTables)
             {
