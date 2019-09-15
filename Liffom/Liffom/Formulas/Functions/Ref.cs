@@ -48,14 +48,21 @@ namespace GoodSeat.Liffom.Formulas.Functions
                 if (c == null || !c.IsInteger) return this;
 
                 var m = target as Matrices.Matrix;
-                return m[(int)r, (int)c];
+
+                var res = m[(int)r, (int)c];
+                if (res == null) throw new IndexOutOfRangeException();
+
+                return res;
             }
             else
             {
                 var n = index as Numeric;
                 if (n == null || !n.IsInteger) return this;
 
-                return target[(int)n];
+                var res = target[(int)n];
+                if (res == null) throw new IndexOutOfRangeException();
+
+                return res;
             }
         }
 
