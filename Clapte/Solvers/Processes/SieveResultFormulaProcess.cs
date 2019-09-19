@@ -13,6 +13,7 @@ using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formulas.Constants;
 using GoodSeat.Liffom.Formulas.Matrices;
+using GoodSeat.Liffom.Formulas.Units;
 
 namespace GoodSeat.Clapte.Solvers.Processes
 {
@@ -108,8 +109,11 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <returns>単項式の解として適合するか否か。</returns>
         private bool IsValidAsResult(Formula f, bool permitEqual, bool permitArgument)
         {
+            if (f.IsUnit()) return true;
             if (f is Numeric) return true;
             if (f is Constant) return true;
+            if (f is Unit) return true;
+            if (f is Variable) return true;
             if (f is Product) return f.All(c => IsValidAsResult(c, false, false));
             if (f is Matrix) return f.All(c => c is Null || IsValidAsResult(c, false, false));
             if (f is Argument && permitArgument) return f.All(c => IsValidAsResult(c, false, false));
