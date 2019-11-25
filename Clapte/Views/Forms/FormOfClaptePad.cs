@@ -368,9 +368,12 @@ namespace GoodSeat.Clapte.Views.Forms
             pt.Offset(_splitContainerAll.Location);
             pt.Y += _inputTextBox.View.LineHeight;
             menu.Show(pt);
-            textBox.Focus();
 
-            _toolTipExpand.Show(textBox.ToolTipText, menu, new Point(textBox.Width - 5, -textBox.Height / 2));
+            if (textBox != null)
+            {
+                textBox.Focus();
+                _toolTipExpand.Show(textBox.ToolTipText, menu, new Point(textBox.Width - 5, -textBox.Height / 2));
+            }
         }
 
         #endregion
@@ -636,6 +639,8 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        #endregion
+
         #region コンテキストメニュー
 
         private void _contextMenuEdit_Opening(object sender, CancelEventArgs e)
@@ -779,9 +784,9 @@ namespace GoodSeat.Clapte.Views.Forms
                 });
         }
 
-        private void _menuSubstitute_DropDownOpening(object sender, EventArgs e)
+        private void _menuSubstitute_Click(object sender, EventArgs e)
         {
-            _menuSubstitute.DropDown.Items.Clear();
+            _expandMenuSubstitute.Items.Clear();
 
             Formula f = null;
             try { f = EditorViewModel.FormulaOnCaret(); }
@@ -794,27 +799,67 @@ namespace GoodSeat.Clapte.Views.Forms
                     var menu = new ToolStripMenuItem(v.ToString() + " =");
                     var valueBox = new ToolStripTextBox();
                     menu.DropDown.Items.Add(valueBox);
-                    _menuSubstitute.DropDown.Items.Add(menu);
+                    _expandMenuSubstitute.Items.Add(menu);
 
-                    valueBox.KeyUp += (s, e2) =>
+                    valueBox.KeyDown += (s, e2) =>
                     {
                         if (e2.KeyCode != Keys.Enter) return;
                         if (string.IsNullOrWhiteSpace(valueBox.Text)) return;
                         EditorViewModel.DeformFormula(f2 => f2.Substituted(v, Target.BaseSolver.Target.Parse(valueBox.Text)));
-
-                        _contextMenuEdit.Hide();
+                        _expandMenuSubstitute.Hide();
                     };
                 }
             }
 
-            if (_menuSubstitute.DropDown.Items.Count == 0)
+            bool existVariable = (_expandMenuSubstitute.Items.Count != 0);
+            if (!existVariable)
             {
                 var menuDummy = new ToolStripMenuItem("変数がありません");
                 menuDummy.Enabled = false;
-                _menuSubstitute.DropDown.Items.Add(menuDummy);
+                _expandMenuSubstitute.Items.Add(menuDummy);
+            }
+            else
+            {
+                _expandMenuSubstitute.Items[0].Select();
+            }
+
+            startExpandMenu(null, _expandMenuSubstitute, true);
+
+            if (existVariable && _expandMenuSubstitute.Items.Count == 1)
+            {
+                (_expandMenuSubstitute.Items[0] as ToolStripMenuItem).DropDown.Show(_expandMenuSubstitute, new Point());
+                var txtBox = (_expandMenuSubstitute.Items[0] as ToolStripMenuItem).DropDownItems[0] as ToolStripTextBox;
+                txtBox.Focus();
             }
         }
 
+        private void _menuVisibleDeformHistory_Click(object sender, EventArgs e)
+        {
+            _menuVisibleDeformHistory.Checked = !_menuVisibleDeformHistory.Checked;
+            _splitContainerAll.Panel2Collapsed = !_menuVisibleDeformHistory.Checked;
+
+            if (!_splitContainerAll.Panel2Collapsed)
+            {
+                var height = _splitContainerAll.Height;
+                if (_splitContainerAll.Panel2.Height < height / 4) _splitContainerAll.SplitterDistance = height * 3 / 4;
+
+                var textBox = _resultTextBox.Focused ? _resultTextBox : _inputTextBox;
+                if (textBox.Focused) textBox.ScrollToCaret();
+            }
+
+            _menuVisibleDeformHistoryResult.Checked = _menuVisibleDeformHistory.Checked;
+
+            if (_menuVisibleDeformHistoryResult.Checked)
+            {
+                UpdateTreeViewOfDeformHistory();
+            }
+        }
+
+        #endregion
+
+        #region 拡張メニュー関連
+
+        // 単位換算
         private void _menuConvertUnit_Click(object sender, EventArgs e)
         {
             try
@@ -908,6 +953,7 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        // 定義の抽出
         private void _menuDefineAsConstantOfFunction_Click(object sender, EventArgs e)
         {
             var selected = _inputTextBox.GetSelectedText();
@@ -947,27 +993,9 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
-        private void _menuVisibleDeformHistory_Click(object sender, EventArgs e)
-        {
-            _menuVisibleDeformHistory.Checked = !_menuVisibleDeformHistory.Checked;
-            _splitContainerAll.Panel2Collapsed = !_menuVisibleDeformHistory.Checked;
+        #endregion
 
-            if (!_splitContainerAll.Panel2Collapsed)
-            {
-                var height = _splitContainerAll.Height;
-                if (_splitContainerAll.Panel2.Height < height / 4) _splitContainerAll.SplitterDistance = height * 3 / 4;
-
-                var textBox = _resultTextBox.Focused ? _resultTextBox : _inputTextBox;
-                if (textBox.Focused) textBox.ScrollToCaret();
-            }
-
-            _menuVisibleDeformHistoryResult.Checked = _menuVisibleDeformHistory.Checked;
-
-            if (_menuVisibleDeformHistoryResult.Checked)
-            {
-                UpdateTreeViewOfDeformHistory();
-            }
-        }
+        #region 計算過程パネル関連
 
         private void _menuHideDeformHistory_Click(object sender, EventArgs e) { _splitContainerAll.Panel2Collapsed = true; }
 
@@ -997,8 +1025,6 @@ namespace GoodSeat.Clapte.Views.Forms
         }
         private void _menuExpandHistoryThisFormula_Click(object sender, EventArgs e) { _treeViewHistory.SelectedNode?.ExpandAll(); } 
         private void _menuFoldHistoryThisFormula_Click(object sender, EventArgs e) { _treeViewHistory.SelectedNode?.Collapse(false); }
-
-        #endregion
 
         #endregion
 
