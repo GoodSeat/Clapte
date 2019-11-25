@@ -158,8 +158,9 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
                     {
                         if (prefix.Mark != "" && !bAllPrefix) continue;
 
-                        var test = prefix.Mark + unitName;
-                        if (!test.StartsWith(startsWith)) continue;
+                        bool hit = (prefix.Mark + unitName).StartsWith(startsWith)
+                                || (AlsoInfomation && prefix.Mark == "" && def.UnitComment.Contains(startsWith));
+                        if (!hit) continue;
 
                         var helpText = ReplacePrefixNameFrom(def.UnitComment, prefix);
                         var ratio = "";
