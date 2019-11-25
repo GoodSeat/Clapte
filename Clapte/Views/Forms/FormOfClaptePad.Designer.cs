@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Sgry.Azuki.FontInfo fontInfo3 = new Sgry.Azuki.FontInfo();
             Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
+            Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfClaptePad));
             this._inputTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuEdit = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -124,6 +124,7 @@
             this._toolTipFind = new System.Windows.Forms.ToolTip(this.components);
             this._expandMenuConvertUnit = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._txtBoxTargetUnit = new System.Windows.Forms.ToolStripTextBox();
+            this._toolTipExpand = new System.Windows.Forms.ToolTip(this.components);
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -174,10 +175,10 @@
             this._inputTextBox.DrawsTab = false;
             this._inputTextBox.FirstVisibleLine = 0;
             this._inputTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo3.Name = "HGｺﾞｼｯｸM";
-            fontInfo3.Size = 9;
-            fontInfo3.Style = System.Drawing.FontStyle.Regular;
-            this._inputTextBox.FontInfo = fontInfo3;
+            fontInfo1.Name = "HGｺﾞｼｯｸM";
+            fontInfo1.Size = 9;
+            fontInfo1.Style = System.Drawing.FontStyle.Regular;
+            this._inputTextBox.FontInfo = fontInfo1;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
             this._inputTextBox.HighlightsCurrentLine = false;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
@@ -443,7 +444,6 @@
             // 
             // _txtBoxDefineConstantOfFunctionName
             // 
-            this._txtBoxDefineConstantOfFunctionName.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxDefineConstantOfFunctionName.Name = "_txtBoxDefineConstantOfFunctionName";
             this._txtBoxDefineConstantOfFunctionName.Size = new System.Drawing.Size(100, 23);
             this._txtBoxDefineConstantOfFunctionName.ToolTipText = "定義を抽出する定数/関数の名前を指定します。";
@@ -795,10 +795,10 @@
             this._resultTextBox.DrawsTab = false;
             this._resultTextBox.FirstVisibleLine = 0;
             this._resultTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo1.Name = "HGｺﾞｼｯｸM";
-            fontInfo1.Size = 9;
-            fontInfo1.Style = System.Drawing.FontStyle.Regular;
-            this._resultTextBox.FontInfo = fontInfo1;
+            fontInfo2.Name = "HGｺﾞｼｯｸM";
+            fontInfo2.Size = 9;
+            fontInfo2.Style = System.Drawing.FontStyle.Regular;
+            this._resultTextBox.FontInfo = fontInfo2;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
             this._resultTextBox.HighlightsCurrentLine = false;
             this._resultTextBox.IsReadOnly = true;
@@ -1208,16 +1208,20 @@
             this._expandMenuConvertUnit.Name = "_expandMenuConvertUnit";
             this._expandMenuConvertUnit.ShowImageMargin = false;
             this._expandMenuConvertUnit.Size = new System.Drawing.Size(156, 51);
+            this._expandMenuConvertUnit.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._expandMenuConvertUnit_Closing);
             // 
             // _txtBoxTargetUnit
             // 
-            this._txtBoxTargetUnit.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxTargetUnit.ForeColor = System.Drawing.SystemColors.WindowText;
             this._txtBoxTargetUnit.Name = "_txtBoxTargetUnit";
             this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 23);
             this._txtBoxTargetUnit.ToolTipText = "換算の目標単位を指定します";
             this._txtBoxTargetUnit.KeyDown += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyDown);
             this._txtBoxTargetUnit.KeyUp += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyUp);
+            // 
+            // _toolTipExpand
+            // 
+            this._toolTipExpand.IsBalloon = true;
             // 
             // FormOfClaptePad
             // 
@@ -1386,5 +1390,6 @@
         private System.Windows.Forms.ToolStripMenuItem _menuFoldHistoryNode;
         private System.Windows.Forms.ContextMenuStrip _expandMenuConvertUnit;
         private System.Windows.Forms.ToolStripTextBox _txtBoxTargetUnit;
+        private System.Windows.Forms.ToolTip _toolTipExpand;
     }
 }

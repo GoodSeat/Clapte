@@ -798,7 +798,11 @@ namespace GoodSeat.Clapte.Views.Forms
             pt.Y += _inputTextBox.View.LineHeight;
             _expandMenuConvertUnit.Show(pt);
             _txtBoxTargetUnit.Focus();
+
+            _toolTipExpand.Show(_txtBoxTargetUnit.ToolTipText, _expandMenuConvertUnit, new Point(_txtBoxTargetUnit.Width - 20, -_txtBoxTargetUnit.Height * 3 / 2));
         }
+
+        private void _expandMenuConvertUnit_Closing(object sender, ToolStripDropDownClosingEventArgs e) { _toolTipExpand.Hide(_expandMenuConvertUnit); }
 
         private void _txtBoxTargetUnit_KeyDown(object sender, KeyEventArgs e)
         {
@@ -1306,6 +1310,5 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         #endregion
-
     }
 }
