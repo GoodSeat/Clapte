@@ -349,6 +349,30 @@ namespace GoodSeat.Clapte.Views.Forms
             _textBoxFind.Focus();
         }
 
+        /// <summary>
+        /// 拡張メニューを開始します。
+        /// </summary>
+        /// <param name="textBox">対象とする拡張メニューの入力ボックス。</param>
+        /// <param name="menu">対象とする拡張メニューのコンテキストメニュー。</param>
+        /// <param name="onHeadOfLine">表示位置を行の先頭とするか否か。</param>
+        private void startExpandMenu(ToolStripTextBox textBox, ContextMenuStrip menu, bool onHeadOfLine)
+        {
+            EditorViewModel.InputSupport.EscapeInputSupport();
+
+            int s, e;
+            _inputTextBox.GetSelection(out s, out e);
+            var ptOrg = onHeadOfLine ? _inputTextBox.GetPositionFromIndex(_inputTextBox.GetLineHeadIndexFromCharIndex(_inputTextBox.CaretIndex))
+                                     : _inputTextBox.GetPositionFromIndex(s);
+
+            var pt = PointToScreen(ptOrg);
+            pt.Offset(_splitContainerAll.Location);
+            pt.Y += _inputTextBox.View.LineHeight;
+            menu.Show(pt);
+            textBox.Focus();
+
+            _toolTipExpand.Show(textBox.ToolTipText, menu, new Point(textBox.Width - 20, -textBox.Height * 3 / 2));
+        }
+
         #endregion
 
         #region イベント対応(ビューモデルとのやり取り)
@@ -629,8 +653,6 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuSolveSimultaneousEquation.Enabled = selected.Contains("\n");
             Formula dummy;
             _menuDefineAsConstantOfFunction.Enabled = !string.IsNullOrEmpty(selected) && Target.BaseSolver.Target.TryParse(selected, out dummy);
-            _txtBoxDefineConstantOfFunctionName.Enabled = _menuDefineAsConstantOfFunction.Enabled;
-            _txtBoxDefineConstantOfFunctionName.Text = "";
 
             if (_splitContainerAll.Panel2.Height < 5)
             {
@@ -802,16 +824,7 @@ namespace GoodSeat.Clapte.Views.Forms
             }
             catch { return; }
 
-            EditorViewModel.InputSupport.EscapeInputSupport();
-
-            var ptOrg = _inputTextBox.GetPositionFromIndex(_inputTextBox.GetLineHeadIndexFromCharIndex(_inputTextBox.CaretIndex));
-            var pt = PointToScreen(ptOrg);
-            pt.Offset(_splitContainerAll.Location);
-            pt.Y += _inputTextBox.View.LineHeight;
-            _expandMenuConvertUnit.Show(pt);
-            _txtBoxTargetUnit.Focus();
-
-            _toolTipExpand.Show(_txtBoxTargetUnit.ToolTipText, _expandMenuConvertUnit, new Point(_txtBoxTargetUnit.Width - 20, -_txtBoxTargetUnit.Height * 3 / 2));
+            startExpandMenu(_txtBoxTargetUnit, _expandMenuConvertUnit, true);
         }
 
         private void _expandMenuConvertUnit_Closing(object sender, ToolStripDropDownClosingEventArgs e) { _toolTipExpand.Hide(_expandMenuConvertUnit); }
@@ -895,7 +908,19 @@ namespace GoodSeat.Clapte.Views.Forms
             _txtBoxTargetUnit.Tag = txt;
         }
 
-        private void _txtBoxDefineConstantOfFunctionName_KeyUp(object sender, KeyEventArgs e)
+        private void _menuDefineAsConstantOfFunction_Click(object sender, EventArgs e)
+        {
+            var selected = _inputTextBox.GetSelectedText();
+            Formula dummy;
+            if (string.IsNullOrEmpty(selected) || !Target.BaseSolver.Target.TryParse(selected, out dummy)) return;
+
+            _txtBoxDefineConstantOfFunctionName.Text = "";
+            startExpandMenu(_txtBoxDefineConstantOfFunctionName, _expandMenuExtractDefine, false);
+        }
+
+        private void _expandMenuExtractDefine_Closing(object sender, ToolStripDropDownClosingEventArgs e) { _toolTipExpand.Hide(_expandMenuExtractDefine); }
+
+        private void _txtBoxDefineConstantOfFunctionName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
             {
@@ -906,7 +931,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     string errMsg = EditorViewModel.InsertDefineWithName(name);
                     if (errMsg != null)
                     {
-                        _contextMenuEdit.Hide();
+                        _expandMenuExtractDefine.Hide();
                         _toolTipHelp.Show(errMsg, _inputTextBox, 3000);
                         return;
                     }
@@ -918,7 +943,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     if (_findRegex) _btnToggleFindUseRegex_Click(sender, e);
                     _textBoxReplace.Focus();
                 }
-                _contextMenuEdit.Hide();
+                _expandMenuExtractDefine.Hide();
             }
         }
 
