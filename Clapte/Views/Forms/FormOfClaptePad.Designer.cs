@@ -53,6 +53,7 @@
             this._menuUnCommentOut = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this._menuConvertUnit = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuDefineAsConstantOfFunction = new System.Windows.Forms.ToolStripMenuItem();
             this._menuDeformFormula = new System.Windows.Forms.ToolStripMenuItem();
             this._menuExpand = new System.Windows.Forms.ToolStripMenuItem();
             this._menuTidyUp = new System.Windows.Forms.ToolStripMenuItem();
@@ -61,7 +62,6 @@
             this._menuSubstitute = new System.Windows.Forms.ToolStripMenuItem();
             this.変数がありませんToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuDefineAsConstantOfFunction = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
@@ -367,6 +367,15 @@
             this._menuConvertUnit.ToolTipText = "計算結果を単位換算します。";
             this._menuConvertUnit.Click += new System.EventHandler(this._menuConvertUnit_Click);
             // 
+            // _menuDefineAsConstantOfFunction
+            // 
+            this._menuDefineAsConstantOfFunction.Name = "_menuDefineAsConstantOfFunction";
+            this._menuDefineAsConstantOfFunction.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
+            this._menuDefineAsConstantOfFunction.Size = new System.Drawing.Size(287, 22);
+            this._menuDefineAsConstantOfFunction.Text = "選択部分を定数/関数として抽出(&S)";
+            this._menuDefineAsConstantOfFunction.ToolTipText = "選択部分を定数/関数で置き換え、その定義を前の行に挿入します。";
+            this._menuDefineAsConstantOfFunction.Click += new System.EventHandler(this._menuDefineAsConstantOfFunction_Click);
+            // 
             // _menuDeformFormula
             // 
             this._menuDeformFormula.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
@@ -382,7 +391,7 @@
             // _menuExpand
             // 
             this._menuExpand.Name = "_menuExpand";
-            this._menuExpand.Size = new System.Drawing.Size(180, 22);
+            this._menuExpand.Size = new System.Drawing.Size(145, 22);
             this._menuExpand.Text = "展開(&E)";
             this._menuExpand.ToolTipText = "数式を展開します。\r\n(例) (x * x + 1)(x + x + 1) → 1*1 + 1*x + 1*x + 1*x*x + x*x*x + x*x*x";
             this._menuExpand.Click += new System.EventHandler(this._menuExpand_Click);
@@ -390,7 +399,7 @@
             // _menuTidyUp
             // 
             this._menuTidyUp.Name = "_menuTidyUp";
-            this._menuTidyUp.Size = new System.Drawing.Size(180, 22);
+            this._menuTidyUp.Size = new System.Drawing.Size(145, 22);
             this._menuTidyUp.Text = "整理(&C)";
             this._menuTidyUp.ToolTipText = "数式の各項を整理します。\r\n(例) (x * x + 1)(x + x + 1) → (1 + x^2)*(1 + 2*x)";
             this._menuTidyUp.Click += new System.EventHandler(this._menuTidyUp_Click);
@@ -398,7 +407,7 @@
             // _menuSimplify
             // 
             this._menuSimplify.Name = "_menuSimplify";
-            this._menuSimplify.Size = new System.Drawing.Size(180, 22);
+            this._menuSimplify.Size = new System.Drawing.Size(145, 22);
             this._menuSimplify.Text = "展開と整理(&S)";
             this._menuSimplify.ToolTipText = "数式を展開の上、整理します。\r\n(例) (x * x + 1)(x + x + 1) → 1 + x^2 + 2*x + 2*x^3";
             this._menuSimplify.Click += new System.EventHandler(this._menuSimplify_Click);
@@ -406,7 +415,7 @@
             // _menuFactorize
             // 
             this._menuFactorize.Name = "_menuFactorize";
-            this._menuFactorize.Size = new System.Drawing.Size(180, 22);
+            this._menuFactorize.Size = new System.Drawing.Size(145, 22);
             this._menuFactorize.Text = "因数分解(&F)";
             this._menuFactorize.ToolTipText = "数式を因数分解します（変数の多い式や次数の高い式では、処理に時間がかかることがあります）。\r\n(例) 2*x^3 + x^2 + 2*x + 1 → (2*x +" +
     " 1)*(1 + x^2)";
@@ -425,7 +434,7 @@
             // 変数がありませんToolStripMenuItem
             // 
             this.変数がありませんToolStripMenuItem.Name = "変数がありませんToolStripMenuItem";
-            this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(155, 22);
             this.変数がありませんToolStripMenuItem.Text = "変数がありません";
             // 
             // _menuSolveSimultaneousEquation
@@ -435,15 +444,6 @@
             this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
             this._menuSolveSimultaneousEquation.ToolTipText = "選択行を連立方程式として求解します。";
             this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
-            // 
-            // _menuDefineAsConstantOfFunction
-            // 
-            this._menuDefineAsConstantOfFunction.Name = "_menuDefineAsConstantOfFunction";
-            this._menuDefineAsConstantOfFunction.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.E)));
-            this._menuDefineAsConstantOfFunction.Size = new System.Drawing.Size(287, 22);
-            this._menuDefineAsConstantOfFunction.Text = "選択部分を定数/関数として抽出(&S)";
-            this._menuDefineAsConstantOfFunction.ToolTipText = "選択部分を定数/関数で置き換え、その定義を前の行に挿入します。";
-            this._menuDefineAsConstantOfFunction.Click += new System.EventHandler(this._menuDefineAsConstantOfFunction_Click);
             // 
             // toolStripSeparator8
             // 
@@ -1208,7 +1208,6 @@
             // 
             // _txtBoxTargetUnit
             // 
-            this._txtBoxTargetUnit.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxTargetUnit.ForeColor = System.Drawing.SystemColors.WindowText;
             this._txtBoxTargetUnit.Name = "_txtBoxTargetUnit";
             this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 23);
@@ -1216,22 +1215,17 @@
             this._txtBoxTargetUnit.KeyDown += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyDown);
             this._txtBoxTargetUnit.KeyUp += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyUp);
             // 
-            // _toolTipExpand
-            // 
-            this._toolTipExpand.IsBalloon = true;
-            // 
             // _expandMenuExtractDefine
             // 
             this._expandMenuExtractDefine.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._txtBoxDefineConstantOfFunctionName});
             this._expandMenuExtractDefine.Name = "_expandMenuExtractDefine";
             this._expandMenuExtractDefine.ShowImageMargin = false;
-            this._expandMenuExtractDefine.Size = new System.Drawing.Size(156, 51);
+            this._expandMenuExtractDefine.Size = new System.Drawing.Size(136, 29);
             this._expandMenuExtractDefine.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._expandMenuExtractDefine_Closing);
             // 
             // _txtBoxDefineConstantOfFunctionName
             // 
-            this._txtBoxDefineConstantOfFunctionName.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxDefineConstantOfFunctionName.Name = "_txtBoxDefineConstantOfFunctionName";
             this._txtBoxDefineConstantOfFunctionName.Size = new System.Drawing.Size(100, 23);
             this._txtBoxDefineConstantOfFunctionName.ToolTipText = "定義を抽出する定数/関数の名前を指定します。";

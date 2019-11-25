@@ -370,7 +370,7 @@ namespace GoodSeat.Clapte.Views.Forms
             menu.Show(pt);
             textBox.Focus();
 
-            _toolTipExpand.Show(textBox.ToolTipText, menu, new Point(textBox.Width - 20, -textBox.Height * 3 / 2));
+            _toolTipExpand.Show(textBox.ToolTipText, menu, new Point(textBox.Width - 5, -textBox.Height / 2));
         }
 
         #endregion
@@ -880,6 +880,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             var txt = _txtBoxTargetUnit.Text;
             if (txt == _txtBoxTargetUnit.Tag as string) return;
+            _txtBoxTargetUnit.Tag = txt;
 
             var ownerMenu = _txtBoxTargetUnit.Owner;
             while (ownerMenu.Items.Count > 1) ownerMenu.Items.RemoveAt(1);
@@ -905,7 +906,6 @@ namespace GoodSeat.Clapte.Views.Forms
                     ownerMenu.Items.Add(menu);
                 }
             }
-            _txtBoxTargetUnit.Tag = txt;
         }
 
         private void _menuDefineAsConstantOfFunction_Click(object sender, EventArgs e)
