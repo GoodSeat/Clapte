@@ -228,7 +228,8 @@
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(249, 458);
+            this._contextMenuEdit.Size = new System.Drawing.Size(249, 480);
+            this._contextMenuEdit.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._contextMenuEdit_Closing);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
@@ -444,6 +445,7 @@
             // 
             // _txtBoxDefineConstantOfFunctionName
             // 
+            this._txtBoxDefineConstantOfFunctionName.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxDefineConstantOfFunctionName.Name = "_txtBoxDefineConstantOfFunctionName";
             this._txtBoxDefineConstantOfFunctionName.Size = new System.Drawing.Size(100, 23);
             this._txtBoxDefineConstantOfFunctionName.ToolTipText = "定義を抽出する定数/関数の名前を指定します。";
@@ -1207,11 +1209,12 @@
             this._txtBoxTargetUnit});
             this._expandMenuConvertUnit.Name = "_expandMenuConvertUnit";
             this._expandMenuConvertUnit.ShowImageMargin = false;
-            this._expandMenuConvertUnit.Size = new System.Drawing.Size(156, 51);
+            this._expandMenuConvertUnit.Size = new System.Drawing.Size(136, 29);
             this._expandMenuConvertUnit.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._expandMenuConvertUnit_Closing);
             // 
             // _txtBoxTargetUnit
             // 
+            this._txtBoxTargetUnit.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxTargetUnit.ForeColor = System.Drawing.SystemColors.WindowText;
             this._txtBoxTargetUnit.Name = "_txtBoxTargetUnit";
             this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 23);

@@ -666,6 +666,18 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        private void _contextMenuEdit_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            // ここで有効にしておかないと、最後にコンテキストメニューを開いたときに無効だったメニューが、ショートカットキーから呼び出せなくなるため
+            foreach (var item in _contextMenuEdit.Items)
+            {
+                var menu = item as ToolStripMenuItem;
+                if (menu == null) continue;
+
+                menu.Enabled = true;
+            }
+        }
+
         private void _menuUndo_Click(object sender, EventArgs e) { if (_inputTextBox.CanUndo) _inputTextBox.Undo(); }
 
         private void _menuRedo_Click(object sender, EventArgs e) { if (_inputTextBox.CanRedo) _inputTextBox.Redo(); }
@@ -1310,5 +1322,6 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         #endregion
+
     }
 }
