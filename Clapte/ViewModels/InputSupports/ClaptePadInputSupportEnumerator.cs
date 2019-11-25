@@ -157,9 +157,13 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
                     foreach (var prefix in Prefix.GetAllPrefix(true))
                     {
                         if (prefix.Mark != "" && !bAllPrefix) continue;
+                        if (prefix.Mark.Length >= startsWith.Length && prefix.Mark.StartsWith(startsWith)) continue;
+
+                        bool considerInformation = (prefix.Mark == "" || (startsWith.StartsWith(prefix.Name) && startsWith != prefix.Name));
+                        string testForInformation = considerInformation ? startsWith.Substring(prefix.Name.Length) : startsWith;
 
                         bool hit = (prefix.Mark + unitName).StartsWith(startsWith)
-                                || (AlsoInfomation && prefix.Mark == "" && def.UnitComment.Contains(startsWith));
+                                || (AlsoInfomation && considerInformation && def.UnitComment.Contains(testForInformation));
                         if (!hit) continue;
 
                         var helpText = ReplacePrefixNameFrom(def.UnitComment, prefix);
