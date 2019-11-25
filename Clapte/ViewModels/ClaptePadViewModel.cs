@@ -77,9 +77,9 @@ namespace GoodSeat.Clapte.ViewModels
         /// </summary>
         public ClaptePadInputSupportEnumerator InputSupportEnumerator { get; set; }
 
-        /// <summary>.
+        /// <summary>
         /// 引数ヘルプオブジェクトを設定もしくは取得します。
-        /// </summary>.
+        /// </summary>
         public FunctionArgumentHelp ArgumentHelper { get; set; }
 
 

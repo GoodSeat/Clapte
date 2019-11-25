@@ -788,6 +788,42 @@ namespace GoodSeat.Clapte.Views.Forms
                 EditorViewModel.SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
                 _contextMenuEdit.Hide();
             }
+            else if (e.KeyCode == Keys.Down)
+            {
+                if (_menuConvertUnit.DropDownItems.Count > 1)
+                {
+                    int selected = 0;
+                    for (int n = 1; n < _menuConvertUnit.DropDownItems.Count - 1; ++n)
+                    {
+                        var item = _menuConvertUnit.DropDownItems[n] as ToolStripMenuItem;
+                        if (item.Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+
+                    _menuConvertUnit.DropDownItems[selected + 1].Select();
+                }
+            }
+            else if (e.KeyCode != Keys.Down && e.KeyCode != Keys.Left)
+            {
+                var txt = _txtBoxTargetUnit.Text;
+                if (txt == _txtBoxTargetUnit.Tag as string) return;
+
+                while (_menuConvertUnit.DropDownItems.Count > 1) _menuConvertUnit.DropDownItems.RemoveAt(1);
+
+                if (string.IsNullOrEmpty(txt)) return;
+
+                foreach (var item in EditorViewModel.InputSupportEnumerator.GetAllCandidates(txt, ViewModels.InputSupports.ClaptePadInputSupportEnumerator.CandidateType.UnitAllPrefix))
+                {
+                    var menu = new ToolStripMenuItem(item.ReplaceText + " : " + item.Information);
+                    menu.Tag = item;
+
+                    _menuConvertUnit.DropDownItems.Add(menu);
+                }
+                _txtBoxTargetUnit.Tag = txt;
+            }
         }
 
         private void _txtBoxDefineConstantOfFunctionName_KeyUp(object sender, KeyEventArgs e)
