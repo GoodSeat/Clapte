@@ -461,7 +461,7 @@ namespace GoodSeat.Clapte.ViewModels
         /// <summary>
         /// 現在のキャレット上にある数式を取得します。
         /// </summary>
-        /// <returns>キャレット上にある数式。見つからなかった場合、null。</returns>
+        /// <returns>キャレット上にある数式。見つからなかった場合、例外が送出される。</returns>
         public Formula FormulaOnCaret()
         {
             int begin, end;

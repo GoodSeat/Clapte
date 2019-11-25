@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            Sgry.Azuki.FontInfo fontInfo3 = new Sgry.Azuki.FontInfo();
             Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
-            Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfClaptePad));
             this._inputTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuEdit = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -53,7 +53,6 @@
             this._menuUnCommentOut = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this._menuConvertUnit = new System.Windows.Forms.ToolStripMenuItem();
-            this._txtBoxTargetUnit = new System.Windows.Forms.ToolStripTextBox();
             this._menuDeformFormula = new System.Windows.Forms.ToolStripMenuItem();
             this._menuExpand = new System.Windows.Forms.ToolStripMenuItem();
             this._menuTidyUp = new System.Windows.Forms.ToolStripMenuItem();
@@ -123,6 +122,8 @@
             this._btnHelp = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnUpdate = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._toolTipFind = new System.Windows.Forms.ToolTip(this.components);
+            this._expandMenuConvertUnit = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._txtBoxTargetUnit = new System.Windows.Forms.ToolStripTextBox();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -157,6 +158,7 @@
             this._contextMenuHistoryNode.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._btnHelp)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnUpdate)).BeginInit();
+            this._expandMenuConvertUnit.SuspendLayout();
             this.SuspendLayout();
             // 
             // _inputTextBox
@@ -172,10 +174,10 @@
             this._inputTextBox.DrawsTab = false;
             this._inputTextBox.FirstVisibleLine = 0;
             this._inputTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo1.Name = "HGｺﾞｼｯｸM";
-            fontInfo1.Size = 9;
-            fontInfo1.Style = System.Drawing.FontStyle.Regular;
-            this._inputTextBox.FontInfo = fontInfo1;
+            fontInfo3.Name = "HGｺﾞｼｯｸM";
+            fontInfo3.Size = 9;
+            fontInfo3.Style = System.Drawing.FontStyle.Regular;
+            this._inputTextBox.FontInfo = fontInfo3;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
             this._inputTextBox.HighlightsCurrentLine = false;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
@@ -225,78 +227,78 @@
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(268, 458);
+            this._contextMenuEdit.Size = new System.Drawing.Size(249, 458);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuUndo
             // 
             this._menuUndo.Name = "_menuUndo";
-            this._menuUndo.Size = new System.Drawing.Size(267, 22);
+            this._menuUndo.Size = new System.Drawing.Size(248, 22);
             this._menuUndo.Text = "元に戻す(&U)";
             this._menuUndo.Click += new System.EventHandler(this._menuUndo_Click);
             // 
             // _menuRedo
             // 
             this._menuRedo.Name = "_menuRedo";
-            this._menuRedo.Size = new System.Drawing.Size(267, 22);
+            this._menuRedo.Size = new System.Drawing.Size(248, 22);
             this._menuRedo.Text = "やり直す(&R)";
             this._menuRedo.Click += new System.EventHandler(this._menuRedo_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(245, 6);
             // 
             // _menuCut
             // 
             this._menuCut.Name = "_menuCut";
-            this._menuCut.Size = new System.Drawing.Size(267, 22);
+            this._menuCut.Size = new System.Drawing.Size(248, 22);
             this._menuCut.Text = "切り取り(&T)";
             this._menuCut.Click += new System.EventHandler(this._menuCut_Click);
             // 
             // _menuCopy
             // 
             this._menuCopy.Name = "_menuCopy";
-            this._menuCopy.Size = new System.Drawing.Size(267, 22);
+            this._menuCopy.Size = new System.Drawing.Size(248, 22);
             this._menuCopy.Text = "コピー(&C)";
             this._menuCopy.Click += new System.EventHandler(this._menuCopy_Click);
             // 
             // _menuPaste
             // 
             this._menuPaste.Name = "_menuPaste";
-            this._menuPaste.Size = new System.Drawing.Size(267, 22);
+            this._menuPaste.Size = new System.Drawing.Size(248, 22);
             this._menuPaste.Text = "貼り付け(&P)";
             this._menuPaste.Click += new System.EventHandler(this._menuPaste_Click);
             // 
             // _menuDelete
             // 
             this._menuDelete.Name = "_menuDelete";
-            this._menuDelete.Size = new System.Drawing.Size(267, 22);
+            this._menuDelete.Size = new System.Drawing.Size(248, 22);
             this._menuDelete.Text = "削除(&D)";
             this._menuDelete.Click += new System.EventHandler(this._menuDelete_Click);
             // 
             // toolStripSeparator2
             // 
             this.toolStripSeparator2.Name = "toolStripSeparator2";
-            this.toolStripSeparator2.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator2.Size = new System.Drawing.Size(245, 6);
             // 
             // _menuSelectAll
             // 
             this._menuSelectAll.Name = "_menuSelectAll";
-            this._menuSelectAll.Size = new System.Drawing.Size(267, 22);
+            this._menuSelectAll.Size = new System.Drawing.Size(248, 22);
             this._menuSelectAll.Text = "すべて選択(&A)";
             this._menuSelectAll.Click += new System.EventHandler(this._menuSelectAll_Click);
             // 
             // toolStripSeparator3
             // 
             this.toolStripSeparator3.Name = "toolStripSeparator3";
-            this.toolStripSeparator3.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator3.Size = new System.Drawing.Size(245, 6);
             // 
             // _menuFindAndReplace
             // 
             this._menuFindAndReplace.Name = "_menuFindAndReplace";
             this._menuFindAndReplace.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this._menuFindAndReplace.Size = new System.Drawing.Size(267, 22);
+            this._menuFindAndReplace.Size = new System.Drawing.Size(248, 22);
             this._menuFindAndReplace.Text = "検索と置換(&F)";
             this._menuFindAndReplace.ToolTipText = "検索/置換パネルを表示します。";
             this._menuFindAndReplace.Click += new System.EventHandler(this._menuFindAndReplace_Click);
@@ -305,7 +307,7 @@
             // 
             this._menuJumpDefine.Name = "_menuJumpDefine";
             this._menuJumpDefine.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefine.Size = new System.Drawing.Size(267, 22);
+            this._menuJumpDefine.Size = new System.Drawing.Size(248, 22);
             this._menuJumpDefine.Text = "定義を参照(&J)";
             this._menuJumpDefine.ToolTipText = "カーソル位置にある定数/関数/単位の定義位置にジャンプします。";
             this._menuJumpDefine.Click += new System.EventHandler(this._menuJumpDefine_Click);
@@ -313,7 +315,7 @@
             // _menuVisibleDeformHistory
             // 
             this._menuVisibleDeformHistory.Name = "_menuVisibleDeformHistory";
-            this._menuVisibleDeformHistory.Size = new System.Drawing.Size(267, 22);
+            this._menuVisibleDeformHistory.Size = new System.Drawing.Size(248, 22);
             this._menuVisibleDeformHistory.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistory.ToolTipText = "計算過程の表示/非表示を切り替えます。";
             this._menuVisibleDeformHistory.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
@@ -321,7 +323,7 @@
             // _menuAddUserDefine
             // 
             this._menuAddUserDefine.Name = "_menuAddUserDefine";
-            this._menuAddUserDefine.Size = new System.Drawing.Size(267, 22);
+            this._menuAddUserDefine.Size = new System.Drawing.Size(248, 22);
             this._menuAddUserDefine.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefine.Visible = false;
             this._menuAddUserDefine.Click += new System.EventHandler(this._menuAddUserDefine_Click);
@@ -329,12 +331,12 @@
             // toolStripSeparator4
             // 
             this.toolStripSeparator4.Name = "toolStripSeparator4";
-            this.toolStripSeparator4.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator4.Size = new System.Drawing.Size(245, 6);
             // 
             // _menuCommentOut
             // 
             this._menuCommentOut.Name = "_menuCommentOut";
-            this._menuCommentOut.Size = new System.Drawing.Size(267, 22);
+            this._menuCommentOut.Size = new System.Drawing.Size(248, 22);
             this._menuCommentOut.Text = "コメントアウト(&K)";
             this._menuCommentOut.ToolTipText = "選択行の先頭に\'#\'を追加し、コメントアウトします。";
             this._menuCommentOut.Click += new System.EventHandler(this._menuCommentOut_Click);
@@ -342,7 +344,7 @@
             // _menuUnCommentOut
             // 
             this._menuUnCommentOut.Name = "_menuUnCommentOut";
-            this._menuUnCommentOut.Size = new System.Drawing.Size(267, 22);
+            this._menuUnCommentOut.Size = new System.Drawing.Size(248, 22);
             this._menuUnCommentOut.Text = "コメントアウト解除(&L)";
             this._menuUnCommentOut.ToolTipText = "選択行の先頭にある\'#\'を削除し、コメントアウトを解除します。";
             this._menuUnCommentOut.Click += new System.EventHandler(this._menuUnCommentOut_Click);
@@ -350,24 +352,16 @@
             // toolStripSeparator7
             // 
             this.toolStripSeparator7.Name = "toolStripSeparator7";
-            this.toolStripSeparator7.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator7.Size = new System.Drawing.Size(245, 6);
             // 
             // _menuConvertUnit
             // 
-            this._menuConvertUnit.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._txtBoxTargetUnit});
             this._menuConvertUnit.Name = "_menuConvertUnit";
-            this._menuConvertUnit.Size = new System.Drawing.Size(267, 22);
+            this._menuConvertUnit.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.U)));
+            this._menuConvertUnit.Size = new System.Drawing.Size(248, 22);
             this._menuConvertUnit.Text = "単位換算(&I)";
             this._menuConvertUnit.ToolTipText = "計算結果を単位換算します。";
-            // 
-            // _txtBoxTargetUnit
-            // 
-            this._txtBoxTargetUnit.ForeColor = System.Drawing.SystemColors.WindowText;
-            this._txtBoxTargetUnit.Name = "_txtBoxTargetUnit";
-            this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 25);
-            this._txtBoxTargetUnit.ToolTipText = "換算の目標単位を指定します";
-            this._txtBoxTargetUnit.KeyUp += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyUp);
+            this._menuConvertUnit.Click += new System.EventHandler(this._menuConvertUnit_Click);
             // 
             // _menuDeformFormula
             // 
@@ -377,14 +371,14 @@
             this._menuSimplify,
             this._menuFactorize});
             this._menuDeformFormula.Name = "_menuDeformFormula";
-            this._menuDeformFormula.Size = new System.Drawing.Size(267, 22);
+            this._menuDeformFormula.Size = new System.Drawing.Size(248, 22);
             this._menuDeformFormula.Text = "数式の変形(&F)";
             this._menuDeformFormula.ToolTipText = "数式を変形し、その結果を次の行に挿入します。";
             // 
             // _menuExpand
             // 
             this._menuExpand.Name = "_menuExpand";
-            this._menuExpand.Size = new System.Drawing.Size(154, 22);
+            this._menuExpand.Size = new System.Drawing.Size(180, 22);
             this._menuExpand.Text = "展開(&E)";
             this._menuExpand.ToolTipText = "数式を展開します。\r\n(例) (x * x + 1)(x + x + 1) → 1*1 + 1*x + 1*x + 1*x*x + x*x*x + x*x*x";
             this._menuExpand.Click += new System.EventHandler(this._menuExpand_Click);
@@ -392,7 +386,7 @@
             // _menuTidyUp
             // 
             this._menuTidyUp.Name = "_menuTidyUp";
-            this._menuTidyUp.Size = new System.Drawing.Size(154, 22);
+            this._menuTidyUp.Size = new System.Drawing.Size(180, 22);
             this._menuTidyUp.Text = "整理(&C)";
             this._menuTidyUp.ToolTipText = "数式の各項を整理します。\r\n(例) (x * x + 1)(x + x + 1) → (1 + x^2)*(1 + 2*x)";
             this._menuTidyUp.Click += new System.EventHandler(this._menuTidyUp_Click);
@@ -400,7 +394,7 @@
             // _menuSimplify
             // 
             this._menuSimplify.Name = "_menuSimplify";
-            this._menuSimplify.Size = new System.Drawing.Size(154, 22);
+            this._menuSimplify.Size = new System.Drawing.Size(180, 22);
             this._menuSimplify.Text = "展開と整理(&S)";
             this._menuSimplify.ToolTipText = "数式を展開の上、整理します。\r\n(例) (x * x + 1)(x + x + 1) → 1 + x^2 + 2*x + 2*x^3";
             this._menuSimplify.Click += new System.EventHandler(this._menuSimplify_Click);
@@ -408,7 +402,7 @@
             // _menuFactorize
             // 
             this._menuFactorize.Name = "_menuFactorize";
-            this._menuFactorize.Size = new System.Drawing.Size(154, 22);
+            this._menuFactorize.Size = new System.Drawing.Size(180, 22);
             this._menuFactorize.Text = "因数分解(&F)";
             this._menuFactorize.ToolTipText = "数式を因数分解します（変数の多い式や次数の高い式では、処理に時間がかかることがあります）。\r\n(例) 2*x^3 + x^2 + 2*x + 1 → (2*x +" +
     " 1)*(1 + x^2)";
@@ -419,7 +413,7 @@
             this._menuSubstitute.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.変数がありませんToolStripMenuItem});
             this._menuSubstitute.Name = "_menuSubstitute";
-            this._menuSubstitute.Size = new System.Drawing.Size(267, 22);
+            this._menuSubstitute.Size = new System.Drawing.Size(248, 22);
             this._menuSubstitute.Text = "変数の代入(&R)";
             this._menuSubstitute.ToolTipText = "指定変数に任意値を代入し、その結果を次の行に挿入します。";
             this._menuSubstitute.DropDownOpening += new System.EventHandler(this._menuSubstitute_DropDownOpening);
@@ -427,13 +421,13 @@
             // 変数がありませんToolStripMenuItem
             // 
             this.変数がありませんToolStripMenuItem.Name = "変数がありませんToolStripMenuItem";
-            this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(172, 22);
+            this.変数がありませんToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.変数がありませんToolStripMenuItem.Text = "変数がありません";
             // 
             // _menuSolveSimultaneousEquation
             // 
             this._menuSolveSimultaneousEquation.Name = "_menuSolveSimultaneousEquation";
-            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(267, 22);
+            this._menuSolveSimultaneousEquation.Size = new System.Drawing.Size(248, 22);
             this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
             this._menuSolveSimultaneousEquation.ToolTipText = "選択行を連立方程式として求解します。";
             this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
@@ -443,26 +437,27 @@
             this._menuDefineAsConstantOfFunction.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this._txtBoxDefineConstantOfFunctionName});
             this._menuDefineAsConstantOfFunction.Name = "_menuDefineAsConstantOfFunction";
-            this._menuDefineAsConstantOfFunction.Size = new System.Drawing.Size(267, 22);
+            this._menuDefineAsConstantOfFunction.Size = new System.Drawing.Size(248, 22);
             this._menuDefineAsConstantOfFunction.Text = "選択部分を定数/関数として抽出(&S)";
             this._menuDefineAsConstantOfFunction.ToolTipText = "選択部分を定数/関数で置き換え、その定義を前の行に挿入します。";
             // 
             // _txtBoxDefineConstantOfFunctionName
             // 
+            this._txtBoxDefineConstantOfFunctionName.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxDefineConstantOfFunctionName.Name = "_txtBoxDefineConstantOfFunctionName";
-            this._txtBoxDefineConstantOfFunctionName.Size = new System.Drawing.Size(100, 25);
+            this._txtBoxDefineConstantOfFunctionName.Size = new System.Drawing.Size(100, 23);
             this._txtBoxDefineConstantOfFunctionName.ToolTipText = "定義を抽出する定数/関数の名前を指定します。";
             this._txtBoxDefineConstantOfFunctionName.KeyUp += new System.Windows.Forms.KeyEventHandler(this._txtBoxDefineConstantOfFunctionName_KeyUp);
             // 
             // toolStripSeparator8
             // 
             this.toolStripSeparator8.Name = "toolStripSeparator8";
-            this.toolStripSeparator8.Size = new System.Drawing.Size(264, 6);
+            this.toolStripSeparator8.Size = new System.Drawing.Size(245, 6);
             // 
             // _menuInsertHelp
             // 
             this._menuInsertHelp.Name = "_menuInsertHelp";
-            this._menuInsertHelp.Size = new System.Drawing.Size(267, 22);
+            this._menuInsertHelp.Size = new System.Drawing.Size(248, 22);
             this._menuInsertHelp.Text = "ヘルプの挿入(&H)";
             this._menuInsertHelp.ToolTipText = "計算機の簡易な説明文を末尾に挿入します。";
             this._menuInsertHelp.Click += new System.EventHandler(this._menuInsertHelp_Click);
@@ -800,10 +795,10 @@
             this._resultTextBox.DrawsTab = false;
             this._resultTextBox.FirstVisibleLine = 0;
             this._resultTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo2.Name = "HGｺﾞｼｯｸM";
-            fontInfo2.Size = 9;
-            fontInfo2.Style = System.Drawing.FontStyle.Regular;
-            this._resultTextBox.FontInfo = fontInfo2;
+            fontInfo1.Name = "HGｺﾞｼｯｸM";
+            fontInfo1.Size = 9;
+            fontInfo1.Style = System.Drawing.FontStyle.Regular;
+            this._resultTextBox.FontInfo = fontInfo1;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
             this._resultTextBox.HighlightsCurrentLine = false;
             this._resultTextBox.IsReadOnly = true;
@@ -835,38 +830,38 @@
             this._menuAddUserDefineResult,
             this._menuVisibleDeformHistoryResult});
             this._contextMenuResult.Name = "_contextMenuEdit";
-            this._contextMenuResult.Size = new System.Drawing.Size(204, 148);
+            this._contextMenuResult.Size = new System.Drawing.Size(185, 148);
             this._contextMenuResult.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuCopyResult
             // 
             this._menuCopyResult.Name = "_menuCopyResult";
-            this._menuCopyResult.Size = new System.Drawing.Size(203, 22);
+            this._menuCopyResult.Size = new System.Drawing.Size(184, 22);
             this._menuCopyResult.Text = "コピー(&C)";
             this._menuCopyResult.Click += new System.EventHandler(this._menuCopyResult_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(200, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(181, 6);
             // 
             // _menuSelectAllResult
             // 
             this._menuSelectAllResult.Name = "_menuSelectAllResult";
-            this._menuSelectAllResult.Size = new System.Drawing.Size(203, 22);
+            this._menuSelectAllResult.Size = new System.Drawing.Size(184, 22);
             this._menuSelectAllResult.Text = "すべて選択(&A)";
             this._menuSelectAllResult.Click += new System.EventHandler(this._menuSelectAllResult_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(200, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(181, 6);
             // 
             // _menuFindAndReplaceResult
             // 
             this._menuFindAndReplaceResult.Name = "_menuFindAndReplaceResult";
             this._menuFindAndReplaceResult.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(203, 22);
+            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(184, 22);
             this._menuFindAndReplaceResult.Text = "検索と置換(&F)";
             this._menuFindAndReplaceResult.ToolTipText = "検索/置換パネルを表示します。";
             this._menuFindAndReplaceResult.Click += new System.EventHandler(this._menuFindAndReplace_Click);
@@ -875,7 +870,7 @@
             // 
             this._menuJumpDefineResult.Name = "_menuJumpDefineResult";
             this._menuJumpDefineResult.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefineResult.Size = new System.Drawing.Size(203, 22);
+            this._menuJumpDefineResult.Size = new System.Drawing.Size(184, 22);
             this._menuJumpDefineResult.Text = "定義を参照(&J)";
             this._menuJumpDefineResult.ToolTipText = "カーソル位置にある定数/関数/単位の定義位置にジャンプします。";
             this._menuJumpDefineResult.Click += new System.EventHandler(this._menuJumpDefineResult_Click);
@@ -883,7 +878,7 @@
             // _menuAddUserDefineResult
             // 
             this._menuAddUserDefineResult.Name = "_menuAddUserDefineResult";
-            this._menuAddUserDefineResult.Size = new System.Drawing.Size(203, 22);
+            this._menuAddUserDefineResult.Size = new System.Drawing.Size(184, 22);
             this._menuAddUserDefineResult.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefineResult.Visible = false;
             this._menuAddUserDefineResult.Click += new System.EventHandler(this._menuAddUserDefineResult_Click);
@@ -891,7 +886,7 @@
             // _menuVisibleDeformHistoryResult
             // 
             this._menuVisibleDeformHistoryResult.Name = "_menuVisibleDeformHistoryResult";
-            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(203, 22);
+            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(184, 22);
             this._menuVisibleDeformHistoryResult.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistoryResult.ToolTipText = "計算過程の表示/非表示を切り替えます。";
             this._menuVisibleDeformHistoryResult.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
@@ -919,31 +914,31 @@
             this._menuExpandHistory,
             this._menuFoldHistory});
             this._contextMenuHistory.Name = "_contextMenuHistory";
-            this._contextMenuHistory.Size = new System.Drawing.Size(238, 76);
+            this._contextMenuHistory.Size = new System.Drawing.Size(215, 76);
             // 
             // _menuHideDeformHistory
             // 
             this._menuHideDeformHistory.Name = "_menuHideDeformHistory";
-            this._menuHideDeformHistory.Size = new System.Drawing.Size(237, 22);
+            this._menuHideDeformHistory.Size = new System.Drawing.Size(214, 22);
             this._menuHideDeformHistory.Text = "計算過程の表示を閉じる(&H)";
             this._menuHideDeformHistory.Click += new System.EventHandler(this._menuHideDeformHistory_Click);
             // 
             // toolStripSeparator9
             // 
             this.toolStripSeparator9.Name = "toolStripSeparator9";
-            this.toolStripSeparator9.Size = new System.Drawing.Size(234, 6);
+            this.toolStripSeparator9.Size = new System.Drawing.Size(211, 6);
             // 
             // _menuExpandHistory
             // 
             this._menuExpandHistory.Name = "_menuExpandHistory";
-            this._menuExpandHistory.Size = new System.Drawing.Size(237, 22);
+            this._menuExpandHistory.Size = new System.Drawing.Size(214, 22);
             this._menuExpandHistory.Text = "計算過程を全て展開(&E)";
             this._menuExpandHistory.Click += new System.EventHandler(this._menuExpandHistory_Click);
             // 
             // _menuFoldHistory
             // 
             this._menuFoldHistory.Name = "_menuFoldHistory";
-            this._menuFoldHistory.Size = new System.Drawing.Size(237, 22);
+            this._menuFoldHistory.Size = new System.Drawing.Size(214, 22);
             this._menuFoldHistory.Text = "計算過程を全て折りたたむ(&F)";
             this._menuFoldHistory.Click += new System.EventHandler(this._menuFoldHistory_Click);
             // 
@@ -1104,58 +1099,58 @@
             this._menuExpandHistoryNode,
             this._menuFoldHistoryNode});
             this._contextMenuHistoryNode.Name = "_contextMenuHistoryNode";
-            this._contextMenuHistoryNode.Size = new System.Drawing.Size(299, 170);
+            this._contextMenuHistoryNode.Size = new System.Drawing.Size(267, 148);
             this._contextMenuHistoryNode.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuHistoryNode_Opening);
             // 
             // _menuCopyFormulaInHistory
             // 
             this._menuCopyFormulaInHistory.Name = "_menuCopyFormulaInHistory";
-            this._menuCopyFormulaInHistory.Size = new System.Drawing.Size(298, 22);
+            this._menuCopyFormulaInHistory.Size = new System.Drawing.Size(266, 22);
             this._menuCopyFormulaInHistory.Text = "数式をコピー(&C)";
             this._menuCopyFormulaInHistory.Click += new System.EventHandler(this._menuCopyFormulaInHistory_Click);
             // 
             // toolStripSeparator10
             // 
             this.toolStripSeparator10.Name = "toolStripSeparator10";
-            this.toolStripSeparator10.Size = new System.Drawing.Size(295, 6);
+            this.toolStripSeparator10.Size = new System.Drawing.Size(263, 6);
             // 
             // _menuHideDeformHistoryNode
             // 
             this._menuHideDeformHistoryNode.Name = "_menuHideDeformHistoryNode";
-            this._menuHideDeformHistoryNode.Size = new System.Drawing.Size(298, 22);
+            this._menuHideDeformHistoryNode.Size = new System.Drawing.Size(266, 22);
             this._menuHideDeformHistoryNode.Text = "計算過程の表示を閉じる(&H)";
             this._menuHideDeformHistoryNode.Click += new System.EventHandler(this._menuHideDeformHistory_Click);
             // 
             // toolStripSeparator11
             // 
             this.toolStripSeparator11.Name = "toolStripSeparator11";
-            this.toolStripSeparator11.Size = new System.Drawing.Size(295, 6);
+            this.toolStripSeparator11.Size = new System.Drawing.Size(263, 6);
             // 
             // _menuExpandHistoryThisFormula
             // 
             this._menuExpandHistoryThisFormula.Name = "_menuExpandHistoryThisFormula";
-            this._menuExpandHistoryThisFormula.Size = new System.Drawing.Size(298, 22);
+            this._menuExpandHistoryThisFormula.Size = new System.Drawing.Size(266, 22);
             this._menuExpandHistoryThisFormula.Text = "この数式の計算過程を全て展開(&D)";
             this._menuExpandHistoryThisFormula.Click += new System.EventHandler(this._menuExpandHistoryThisFormula_Click);
             // 
             // _menuFoldHistoryThisFormula
             // 
             this._menuFoldHistoryThisFormula.Name = "_menuFoldHistoryThisFormula";
-            this._menuFoldHistoryThisFormula.Size = new System.Drawing.Size(298, 22);
+            this._menuFoldHistoryThisFormula.Size = new System.Drawing.Size(266, 22);
             this._menuFoldHistoryThisFormula.Text = "この数式の計算過程を全て折りたたむ(&S)";
             this._menuFoldHistoryThisFormula.Click += new System.EventHandler(this._menuFoldHistoryThisFormula_Click);
             // 
             // _menuExpandHistoryNode
             // 
             this._menuExpandHistoryNode.Name = "_menuExpandHistoryNode";
-            this._menuExpandHistoryNode.Size = new System.Drawing.Size(298, 22);
+            this._menuExpandHistoryNode.Size = new System.Drawing.Size(266, 22);
             this._menuExpandHistoryNode.Text = "計算過程を全て展開(&E)";
             this._menuExpandHistoryNode.Click += new System.EventHandler(this._menuExpandHistory_Click);
             // 
             // _menuFoldHistoryNode
             // 
             this._menuFoldHistoryNode.Name = "_menuFoldHistoryNode";
-            this._menuFoldHistoryNode.Size = new System.Drawing.Size(298, 22);
+            this._menuFoldHistoryNode.Size = new System.Drawing.Size(266, 22);
             this._menuFoldHistoryNode.Text = "計算過程を全て折りたたむ(&F)";
             this._menuFoldHistoryNode.Click += new System.EventHandler(this._menuFoldHistory_Click);
             // 
@@ -1205,6 +1200,24 @@
             this._toolTipFind.ReshowDelay = 10;
             this._toolTipFind.UseAnimation = false;
             this._toolTipFind.UseFading = false;
+            // 
+            // _expandMenuConvertUnit
+            // 
+            this._expandMenuConvertUnit.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._txtBoxTargetUnit});
+            this._expandMenuConvertUnit.Name = "_expandMenuConvertUnit";
+            this._expandMenuConvertUnit.ShowImageMargin = false;
+            this._expandMenuConvertUnit.Size = new System.Drawing.Size(156, 51);
+            // 
+            // _txtBoxTargetUnit
+            // 
+            this._txtBoxTargetUnit.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
+            this._txtBoxTargetUnit.ForeColor = System.Drawing.SystemColors.WindowText;
+            this._txtBoxTargetUnit.Name = "_txtBoxTargetUnit";
+            this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 23);
+            this._txtBoxTargetUnit.ToolTipText = "換算の目標単位を指定します";
+            this._txtBoxTargetUnit.KeyDown += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyDown);
+            this._txtBoxTargetUnit.KeyUp += new System.Windows.Forms.KeyEventHandler(this._txtBoxTargetUnit_KeyUp);
             // 
             // FormOfClaptePad
             // 
@@ -1272,6 +1285,8 @@
             this._contextMenuHistoryNode.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._btnHelp)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnUpdate)).EndInit();
+            this._expandMenuConvertUnit.ResumeLayout(false);
+            this._expandMenuConvertUnit.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1327,7 +1342,6 @@
         private System.Windows.Forms.ToolStripMenuItem _menuSimplify;
         private System.Windows.Forms.ToolStripMenuItem _menuFactorize;
         private System.Windows.Forms.ToolStripMenuItem _menuConvertUnit;
-        private System.Windows.Forms.ToolStripTextBox _txtBoxTargetUnit;
         private System.Windows.Forms.TreeView _treeViewHistory;
         private System.Windows.Forms.SplitContainer _splitContainerAll;
         private System.Windows.Forms.ToolStripMenuItem _menuVisibleDeformHistory;
@@ -1370,5 +1384,7 @@
         private System.Windows.Forms.ToolStripMenuItem _menuFoldHistoryThisFormula;
         private System.Windows.Forms.ToolStripMenuItem _menuExpandHistoryNode;
         private System.Windows.Forms.ToolStripMenuItem _menuFoldHistoryNode;
+        private System.Windows.Forms.ContextMenuStrip _expandMenuConvertUnit;
+        private System.Windows.Forms.ToolStripTextBox _txtBoxTargetUnit;
     }
 }

@@ -781,49 +781,102 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
-        private void _txtBoxTargetUnit_KeyUp(object sender, KeyEventArgs e)
+        private void _menuConvertUnit_Click(object sender, EventArgs e)
         {
+            try
+            {
+                EditorViewModel.FormulaOnCaret();
+                _txtBoxTargetUnit.Text = EditorViewModel.DetectTargetUnitOnCaretLine();
+            }
+            catch { return; }
+
+            EditorViewModel.InputSupport.EscapeInputSupport();
+
+            var ptOrg = _inputTextBox.GetPositionFromIndex(_inputTextBox.GetLineHeadIndexFromCharIndex(_inputTextBox.CaretIndex));
+            var pt = PointToScreen(ptOrg);
+            pt.Offset(_splitContainerAll.Location);
+            pt.Y += _inputTextBox.View.LineHeight;
+            _expandMenuConvertUnit.Show(pt);
+            _txtBoxTargetUnit.Focus();
+        }
+
+        private void _txtBoxTargetUnit_KeyDown(object sender, KeyEventArgs e)
+        {
+            var ownerMenu = _txtBoxTargetUnit.Owner;
+
             if (e.KeyCode == Keys.Enter)
             {
                 EditorViewModel.SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
-                _contextMenuEdit.Hide();
+                _expandMenuConvertUnit.Hide();
             }
             else if (e.KeyCode == Keys.Down)
             {
-                if (_menuConvertUnit.DropDownItems.Count > 1)
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
                 {
                     int selected = 0;
-                    for (int n = 1; n < _menuConvertUnit.DropDownItems.Count - 1; ++n)
+                    for (int n = 1; n < ownerMenu.Items.Count - 1; ++n)
                     {
-                        var item = _menuConvertUnit.DropDownItems[n] as ToolStripMenuItem;
+                        var item = ownerMenu.Items[n] as ToolStripMenuItem;
                         if (item.Selected)
                         {
                             selected = n;
                             break;
                         }
                     }
-
-                    _menuConvertUnit.DropDownItems[selected + 1].Select();
+                    ownerMenu.Items[selected + 1].Select();
                 }
             }
-            else if (e.KeyCode != Keys.Down && e.KeyCode != Keys.Left)
+            else if (e.KeyCode == Keys.Up)
             {
-                var txt = _txtBoxTargetUnit.Text;
-                if (txt == _txtBoxTargetUnit.Tag as string) return;
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
+                {
+                    int selected = ownerMenu.Items.Count;
+                    for (int n = 2; n < ownerMenu.Items.Count; ++n)
+                    {
+                        var item = ownerMenu.Items[n] as ToolStripMenuItem;
+                        if (item.Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+                    ownerMenu.Items[selected - 1].Select();
+                }
+            }
+        }
 
-                while (_menuConvertUnit.DropDownItems.Count > 1) _menuConvertUnit.DropDownItems.RemoveAt(1);
+        private void _txtBoxTargetUnit_KeyUp(object sender, KeyEventArgs e)
+        {
+            var txt = _txtBoxTargetUnit.Text;
+            if (txt == _txtBoxTargetUnit.Tag as string) return;
 
-                if (string.IsNullOrEmpty(txt)) return;
+            var ownerMenu = _txtBoxTargetUnit.Owner;
+            while (ownerMenu.Items.Count > 1) ownerMenu.Items.RemoveAt(1);
+            if (string.IsNullOrEmpty(txt)) return;
 
-                foreach (var item in EditorViewModel.InputSupportEnumerator.GetAllCandidates(txt, ViewModels.InputSupports.ClaptePadInputSupportEnumerator.CandidateType.UnitAllPrefix))
+            var candidates = EditorViewModel.InputSupportEnumerator.GetAllCandidates(txt, ViewModels.InputSupports.ClaptePadInputSupportEnumerator.CandidateType.UnitAllPrefix);
+            if (candidates.Count() > 30)
+            {
+                var menu = new ToolStripMenuItem("候補が多すぎます");
+                menu.Enabled = false;
+                ownerMenu.Items.Add(menu);
+            }
+            else
+            {
+                foreach (var item in candidates)
                 {
                     var menu = new ToolStripMenuItem(item.ReplaceText + " : " + item.Information);
-                    menu.Tag = item;
-
-                    _menuConvertUnit.DropDownItems.Add(menu);
+                    menu.Click += (sender_, e_) =>
+                    {
+                        EditorViewModel.SetTargetUnitOnCaretLine(item.ReplaceText);
+                        _expandMenuConvertUnit.Hide();
+                    };
+                    ownerMenu.Items.Add(menu);
                 }
-                _txtBoxTargetUnit.Tag = txt;
             }
+            _txtBoxTargetUnit.Tag = txt;
         }
 
         private void _txtBoxDefineConstantOfFunctionName_KeyUp(object sender, KeyEventArgs e)
