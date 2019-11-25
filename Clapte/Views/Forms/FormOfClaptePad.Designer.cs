@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            Sgry.Azuki.FontInfo fontInfo3 = new Sgry.Azuki.FontInfo();
             Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
-            Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfClaptePad));
             this._inputTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuEdit = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -177,10 +177,10 @@
             this._inputTextBox.DrawsTab = false;
             this._inputTextBox.FirstVisibleLine = 0;
             this._inputTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo1.Name = "HGｺﾞｼｯｸM";
-            fontInfo1.Size = 9;
-            fontInfo1.Style = System.Drawing.FontStyle.Regular;
-            this._inputTextBox.FontInfo = fontInfo1;
+            fontInfo3.Name = "HGｺﾞｼｯｸM";
+            fontInfo3.Size = 9;
+            fontInfo3.Style = System.Drawing.FontStyle.Regular;
+            this._inputTextBox.FontInfo = fontInfo3;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
             this._inputTextBox.HighlightsCurrentLine = false;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
@@ -791,10 +791,10 @@
             this._resultTextBox.DrawsTab = false;
             this._resultTextBox.FirstVisibleLine = 0;
             this._resultTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo2.Name = "HGｺﾞｼｯｸM";
-            fontInfo2.Size = 9;
-            fontInfo2.Style = System.Drawing.FontStyle.Regular;
-            this._resultTextBox.FontInfo = fontInfo2;
+            fontInfo1.Name = "HGｺﾞｼｯｸM";
+            fontInfo1.Size = 9;
+            fontInfo1.Style = System.Drawing.FontStyle.Regular;
+            this._resultTextBox.FontInfo = fontInfo1;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
             this._resultTextBox.HighlightsCurrentLine = false;
             this._resultTextBox.IsReadOnly = true;
@@ -1221,14 +1221,15 @@
             this._txtBoxDefineConstantOfFunctionName});
             this._expandMenuExtractDefine.Name = "_expandMenuExtractDefine";
             this._expandMenuExtractDefine.ShowImageMargin = false;
-            this._expandMenuExtractDefine.Size = new System.Drawing.Size(136, 29);
+            this._expandMenuExtractDefine.Size = new System.Drawing.Size(156, 51);
             this._expandMenuExtractDefine.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._expandMenuExtractDefine_Closing);
             // 
             // _txtBoxDefineConstantOfFunctionName
             // 
+            this._txtBoxDefineConstantOfFunctionName.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxDefineConstantOfFunctionName.Name = "_txtBoxDefineConstantOfFunctionName";
             this._txtBoxDefineConstantOfFunctionName.Size = new System.Drawing.Size(100, 23);
-            this._txtBoxDefineConstantOfFunctionName.ToolTipText = "定義を抽出する定数/関数の名前を指定します。";
+            this._txtBoxDefineConstantOfFunctionName.ToolTipText = "抽出した定義に付与する定数名/関数名を指定します";
             this._txtBoxDefineConstantOfFunctionName.KeyDown += new System.Windows.Forms.KeyEventHandler(this._txtBoxDefineConstantOfFunctionName_KeyDown);
             // 
             // FormOfClaptePad
