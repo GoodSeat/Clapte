@@ -160,13 +160,12 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
                         if (prefix.Mark.Length >= startsWith.Length && prefix.Mark.StartsWith(startsWith)) continue;
 
                         bool considerInformation = (prefix.Mark == "" || (startsWith.StartsWith(prefix.Name) && startsWith != prefix.Name));
-                        string testForInformation = considerInformation ? startsWith.Substring(prefix.Name.Length) : startsWith;
 
                         bool hit = (prefix.Mark + unitName).StartsWith(startsWith)
-                                || (AlsoInfomation && considerInformation && def.UnitComment.Contains(testForInformation));
+                                || (AlsoInfomation && considerInformation && (prefix.Name + def.UnitComment).StartsWith(startsWith));
                         if (!hit) continue;
 
-                        var helpText = ReplacePrefixNameFrom(def.UnitComment, prefix);
+                        var helpText = ReplacePrefixNameFrom(def.UnitComment, u.Prefix, prefix);
                         var ratio = "";
                         if (basePrefix.Name != prefix.Name) ratio = "×" + prefix.Base.ToString() + "E" + (prefix.Power - basePrefix.Power).ToString();
 
@@ -181,21 +180,14 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
             }
         }
 
-        private string ReplacePrefixNameFrom(string text, Prefix postPrefix)
+        private string ReplacePrefixNameFrom(string text, Prefix orgPrefix, Prefix postPrefix)
         {
-            bool replaced = false;
-            foreach (var prefix in Prefix.GetAllPrefix(false))
-            {
-                if (!text.Contains(prefix.Name)) continue;
-                if (prefix == postPrefix) return text;
-                if (string.IsNullOrEmpty(prefix.Name)) continue;
-
-                text = text.Replace(prefix.Name, postPrefix.Name);
-                replaced = true;
-                break;
-            }
-            if (!replaced) text = postPrefix.Name + text;
-            return text;
+            if (orgPrefix == postPrefix)
+                return text;
+            else if (string.IsNullOrEmpty(orgPrefix.Name) || !text.Contains(orgPrefix.Name))
+                return postPrefix.Name + text;
+            else
+                return text.Replace(orgPrefix.Name, postPrefix.Name);
         }
 
         #region IInputSupportEnumerator メンバー
