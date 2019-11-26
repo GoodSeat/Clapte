@@ -516,21 +516,6 @@ namespace GoodSeat.Liffom.Formulas
         /// <returns>判定結果。</returns>
         public bool Contains(IsTargetFormula isTarget) { return GetExistFactors(isTarget).Any(f => true); }
 
-        /// <summary>
-        /// リスト内の重複する要素を削除します。
-        /// </summary>
-        /// <param name="target">対象リスト。</param>
-        private void SieveDouble<T>(List<T> target) where T : Formula
-        {
-            for (int i = 0; i < target.Count; i++)
-                for (int k = i + 1; k < target.Count; k++)
-                    if (target[i] == target[k])
-                    {
-                        target.RemoveAt(k);
-                        k--;
-                    }
-        }
-
 
         /// <summary>
         /// 指定したルールパターンに一致するか否かを取得します。

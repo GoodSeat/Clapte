@@ -35,6 +35,19 @@ namespace GoodSeat.Liffom.Processes
         public bool AdmitImaginary { get; set; }
 
         /// <summary>
+        /// 係数の分母に対象変数が存在する場合に、全体に当該式を乗じて求解を続行するか否かを設定もしくは取得します。
+        /// </summary>
+        /// <example>
+        /// trueとした場合、以下のような変形が自動で行われます。
+        ///    1/(x + 1) x^2 + 2x + 1 = 0
+        /// → x^2 + 2x(x + 1) + (x + 1) = 0
+        /// → x^2 + 2x^2 + 2x + x + 1 = 0
+        /// → 3x^2 + 3x + 1 = 0
+        /// (この場合、x != -1を条件に含めるべきですが、考慮されません。)
+        /// </example>
+        public bool AutoDeleteDenominator { get; set; }
+
+        /// <summary>
         /// 現在の対象変数の最大指数を設定もしくは取得します。
         /// </summary>
         private int MaxExponent { get; set; }
@@ -61,8 +74,21 @@ namespace GoodSeat.Liffom.Processes
         {
             if (!target.Contains(about)) throw new FormulaProcessException("対象の等式の中に、変数 " + about.ToString() + " が存在しません。");
 
-            target = GetCollected(target, about); // aboutについて整理
-            SetCoefficientMap(target, about);
+            bool retry = false;
+            do
+            {
+                retry = false;
+
+                target = GetCollected(target, about); // aboutについて整理
+                var needMult = SetCoefficientMap(target, about);
+                if (needMult != null)
+                {
+                    target.LeftHandSide = target.LeftHandSide * needMult;
+                    retry = true;
+                }
+
+            } while (retry);
+
             SetExponentInformation();
 
             var solutions = new List<Formula>(); // 解リスト
@@ -174,9 +200,11 @@ namespace GoodSeat.Liffom.Processes
         /// <paramref name="target"/>に関して係数の対応マップを作成して<see cref="CoefficientMap"/>にセットします。
         /// </summary>
         /// <param name="target">係数の対応マップの作成対象の等式</param>
-        private void SetCoefficientMap(Equal target, Variable about)
+        /// <returns>対象変数がいずれかの項の分母に存在する場合、それを消すために必要な乗数。ない場合、null。</returns>
+        private Formula SetCoefficientMap(Equal target, Variable about)
         {
             CoefficientMap = new Dictionary<int, Formula>();
+            List<Formula> needMult = new List<Formula>();
 
             // ルールを作成
             RulePatternVariable a = new RulePatternVariable("a");
@@ -186,6 +214,11 @@ namespace GoodSeat.Liffom.Processes
             b.CheckTarget = f => Numeric.IsNumericOnly(f) ;
             Formula rule = a * (about ^ b);
             Formula rule2 = a * ((about ^ b) ^ -1);
+
+            RulePatternVariable c = new RulePatternVariable("c");
+            c.AdmitPowerOne = true;
+            c.CheckTarget = f => f.Contains(about);
+            Formula rule3 = a * (c ^ -1);
 
             List<Formula> noCoefficients = new List<Formula>();
             Formula surplus = null; // ax^2.7 + x^1.7 = 0 → ax^2 + x^1 = 0 として解くために、このケースではsurplus=0.7として記録しておく
@@ -207,11 +240,17 @@ namespace GoodSeat.Liffom.Processes
                         }
                         Numeric coef = (n - surplus).Numerate() as Numeric;
                         if (!coef.IsInteger) throw new FormulaProcessException("対象の数式の解は、解の公式で求めることはできません。");
-                        CoefficientMap.Add((int)coef, a.MatchedFormula);
+
+                        var coefValue = a.MatchedFormula;
+                        CoefficientMap.Add((int)coef, coefValue);
+
+                        if (coefValue.PatternMatch(rule3) && needMult.All(x => x != c.MatchedFormula)) needMult.Add(c.MatchedFormula);
                     }
                     else
                     {
                         noCoefficients.Add(f);
+
+                        if (f.PatternMatch(rule3) && needMult.All(x => x != c.MatchedFormula)) needMult.Add(c.MatchedFormula);
                     }
                 }
             }
@@ -219,8 +258,11 @@ namespace GoodSeat.Liffom.Processes
             {
                 if (!target.LeftHandSide.PatternMatch(rule) && !target.LeftHandSide.PatternMatch(rule2)) throw new FormulaProcessException("対象の数式の解は、解の公式で求めることはできません。");
 
-                if (a.MatchedFormula == 0) throw new FormulaProcessException("解は不定です。");
-                noCoefficients.Add(a.MatchedFormula);
+                var coefValue = a.MatchedFormula;
+                if (coefValue == 0) throw new FormulaProcessException("解は不定です。");
+                noCoefficients.Add(coefValue);
+
+                if (coefValue.PatternMatch(rule3) && needMult.All(x => x != c.MatchedFormula)) needMult.Add(c.MatchedFormula);
             }
 
             if (noCoefficients.Count != 0) // aboutのかからない0次項を作成
@@ -230,6 +272,9 @@ namespace GoodSeat.Liffom.Processes
                 if (noCoefficients.Count == 1) CoefficientMap.Add(0, noCoefficients[0]);
                 else CoefficientMap.Add(0, new Sum(noCoefficients.ToArray()));
             }
+
+            if (!AutoDeleteDenominator) return null;
+            else return needMult.FirstOrDefault();
         }
 
         /// <summary>

@@ -383,7 +383,7 @@ namespace GoodSeat.Clapte.ViewModels
 
             try
             {
-                var solve = new Liffom.Processes.SolveAlgebraicEquation();
+                var solve = new Liffom.Processes.SolveAlgebraicEquation() { AutoDeleteDenominator = true };
                 var res = solve.Solve(f, x);
 
                 res.RightHandSide.Format = Target.BaseSolver.Target.OutputFormat;
