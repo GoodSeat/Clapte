@@ -679,6 +679,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuFactorize.Enabled = true;
                 _menuSubstitute.Enabled = true;
                 _menuConvertUnit.Enabled = true;
+                _menuDeformAboutSelected.Enabled = f is Liffom.Formulas.Operators.Comparers.Equal;
 
                 _txtBoxTargetUnit.Text = EditorViewModel.DetectTargetUnitOnCaretLine();
             }
@@ -690,6 +691,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuFactorize.Enabled = false;
                 _menuSubstitute.Enabled = false;
                 _menuConvertUnit.Enabled = false;
+                _menuDeformAboutSelected.Enabled = false;
             }
         }
 
@@ -853,6 +855,11 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 UpdateTreeViewOfDeformHistory();
             }
+        }
+
+        private void _menuDeformAboutSelected_Click(object sender, EventArgs e)
+        {
+            EditorViewModel.DeformAboutSelected();
         }
 
         #endregion

@@ -8,6 +8,7 @@ using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.ViewModels.InputSupports;
 using GoodSeat.Liffom.Deforms;
 using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Liffom.Formulas.Units;
 using Sgry.Azuki.WinForms;
 using System;
@@ -346,6 +347,56 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         /// <summary>
+        /// 現在の選択範囲に関する式に変形した結果を次の行に挿入します。
+        /// </summary>
+        /// <returns>処理に失敗した場合におけるエラー情報。処理に成功した場合、null。</returns>
+        public string DeformAboutSelected()
+        {
+            var solver = Target.BaseSolver.Target;
+
+            Formula xdef;
+            string def = InputTextBox.GetSelectedText().Trim();
+            if (!solver.TryParse(def, out xdef)) return "\"" + def + "\"は数式として認識できません。";
+
+            var forg = FormulaOnCaret();
+            var fdef = forg as Equal;
+            if (fdef == null)
+            {
+                var content = FormulaCellOnCaret().Content;
+                if (content.GetAllDefinedVariableNames().Count() == 1)
+                    fdef = new Equal(new Variable(content.GetAllDefinedVariableNames().First()), forg);
+                else
+                    return "対象の数式が等式ではありません。";
+            }
+
+            int n = 0;
+            var x = new Variable("x" + n.ToString());
+            while (fdef.GetExistFactors(c => c.ToString() == x.ToString()).Any())
+            {
+                ++n;
+                x = new Variable("x" + n.ToString());
+            }
+
+            var f = fdef.Substituted(xdef, x) as Equal;
+
+            if (f.GetExistFactors<Variable>().All(v => v != x)) return "指定部分は数式として抽出できません。";
+
+            try
+            {
+                var solve = new Liffom.Processes.SolveAlgebraicEquation();
+                var res = solve.Solve(f, x);
+
+                res.RightHandSide.Format = Target.BaseSolver.Target.OutputFormat;
+                InsertLine(def + " = " + res.RightHandSide.ToString(), false);
+                return null;
+            }
+            catch (Exception e) {
+                InsertLine("# " + e.Message, false);
+                return e.Message;
+            }
+        }
+
+        /// <summary>
         /// 継続行を考慮して、選択行の一行上あるいは下に指定行を追加します。
         /// </summary>
         /// <param name="text">追加する文字列。</param>
@@ -472,6 +523,20 @@ namespace GoodSeat.Clapte.ViewModels
 
             // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
             return Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
+        }
+
+        /// <summary>
+        /// 現在のキャレット上にある数式セルを取得します。
+        /// </summary>
+        /// <returns>キャレット上にある数式セル。</returns>
+        public FormulaCell FormulaCellOnCaret()
+        {
+            int begin, end;
+            InputTextBox.GetSelection(out begin, out end);
+
+            int lineIndex = InputTextBox.Document.GetLineIndexFromCharIndex(begin);
+            var line = Target.ElementAt(lineIndex);
+            return line.Target;
         }
 
         /// <summary>

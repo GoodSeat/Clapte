@@ -126,6 +126,7 @@
             this._expandMenuExtractDefine = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._txtBoxDefineConstantOfFunctionName = new System.Windows.Forms.ToolStripTextBox();
             this._expandMenuSubstitute = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._menuDeformAboutSelected = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -224,13 +225,14 @@
             this.toolStripSeparator7,
             this._menuConvertUnit,
             this._menuDefineAsConstantOfFunction,
+            this._menuDeformAboutSelected,
             this._menuSubstitute,
             this._menuSolveSimultaneousEquation,
             this._menuDeformFormula,
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(288, 458);
+            this._contextMenuEdit.Size = new System.Drawing.Size(288, 502);
             this._contextMenuEdit.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._contextMenuEdit_Closing);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
@@ -1215,6 +1217,7 @@
             // 
             // _txtBoxTargetUnit
             // 
+            this._txtBoxTargetUnit.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxTargetUnit.ForeColor = System.Drawing.SystemColors.WindowText;
             this._txtBoxTargetUnit.Name = "_txtBoxTargetUnit";
             this._txtBoxTargetUnit.Size = new System.Drawing.Size(100, 23);
@@ -1233,6 +1236,7 @@
             // 
             // _txtBoxDefineConstantOfFunctionName
             // 
+            this._txtBoxDefineConstantOfFunctionName.Font = new System.Drawing.Font("Yu Gothic UI", 9F);
             this._txtBoxDefineConstantOfFunctionName.Name = "_txtBoxDefineConstantOfFunctionName";
             this._txtBoxDefineConstantOfFunctionName.Size = new System.Drawing.Size(100, 23);
             this._txtBoxDefineConstantOfFunctionName.ToolTipText = "抽出した定義に付与する定数名/関数名を指定します";
@@ -1243,6 +1247,14 @@
             this._expandMenuSubstitute.Name = "_expandMenuSubstitute";
             this._expandMenuSubstitute.ShowImageMargin = false;
             this._expandMenuSubstitute.Size = new System.Drawing.Size(36, 4);
+            // 
+            // _menuDeformAboutSelected
+            // 
+            this._menuDeformAboutSelected.Name = "_menuDeformAboutSelected";
+            this._menuDeformAboutSelected.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this._menuDeformAboutSelected.Size = new System.Drawing.Size(287, 22);
+            this._menuDeformAboutSelected.Text = "選択部分に関する式に変形(&O)";
+            this._menuDeformAboutSelected.Click += new System.EventHandler(this._menuDeformAboutSelected_Click);
             // 
             // FormOfClaptePad
             // 
@@ -1415,5 +1427,6 @@
         private System.Windows.Forms.ContextMenuStrip _expandMenuExtractDefine;
         private System.Windows.Forms.ToolStripTextBox _txtBoxDefineConstantOfFunctionName;
         private System.Windows.Forms.ContextMenuStrip _expandMenuSubstitute;
+        private System.Windows.Forms.ToolStripMenuItem _menuDeformAboutSelected;
     }
 }
