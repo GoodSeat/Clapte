@@ -347,6 +347,25 @@ namespace GoodSeat.Clapte.ViewModels
         }
 
         /// <summary>
+        /// 指定名称の変数について数式を整理した結果を次の行に挿入します。
+        /// </summary>
+        /// <param name="variable">整理対象とする変数名。</param>
+        /// <returns>処理に失敗した場合におけるエラー情報。処理に成功した場合、null。</returns>
+        public string CollectAbout(string variable)
+        {
+            var about = new Variable(variable);
+            var forg = FormulaOnCaret();
+
+            if (!forg.Contains(about)) return "数式中に" + variable + "は存在しません。";
+
+            var f = forg.DeformFormula(new CollectToken(about));
+
+            f.Format = Target.BaseSolver.Target.OutputFormat;
+            InsertLine(f.ToString(), false);
+            return null;
+        }
+
+        /// <summary>
         /// 現在の選択範囲に関する式に変形した結果を次の行に挿入します。
         /// </summary>
         /// <returns>処理に失敗した場合におけるエラー情報。処理に成功した場合、null。</returns>
@@ -386,14 +405,11 @@ namespace GoodSeat.Clapte.ViewModels
                 var solve = new Liffom.Processes.SolveAlgebraicEquation() { AutoDeleteDenominator = true };
                 var res = solve.Solve(f, x);
 
-                res.RightHandSide.Format = Target.BaseSolver.Target.OutputFormat;
+                res.RightHandSide.Format = solver.OutputFormat;
                 InsertLine(def + " = " + res.RightHandSide.ToString(), false);
                 return null;
             }
-            catch (Exception e) {
-                InsertLine("# " + e.Message, false);
-                return e.Message;
-            }
+            catch { return "指定部分を抽出できませんでした。"; }
         }
 
         /// <summary>

@@ -373,6 +373,15 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 textBox.Focus();
                 _toolTipExpand.Show(textBox.ToolTipText, menu, new Point(textBox.Width - 5, -textBox.Height / 2));
+
+                ToolStripDropDownClosingEventHandler handler = null;
+                handler = (sender, eventArg) =>
+                {
+                     _toolTipExpand.Hide(menu);
+                    menu.Closing -= handler;
+                };
+
+                menu.Closing += handler;
             }
         }
 
@@ -677,11 +686,16 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuTidyUp.Enabled = true;
                 _menuSimplify.Enabled = true;
                 _menuFactorize.Enabled = true;
+                _menuCollectAbout.Enabled = true;
                 _menuSubstitute.Enabled = true;
                 _menuConvertUnit.Enabled = true;
-                _menuDeformAboutSelected.Enabled = f is Liffom.Formulas.Operators.Comparers.Equal;
 
-                _txtBoxTargetUnit.Text = EditorViewModel.DetectTargetUnitOnCaretLine();
+                var cell = EditorViewModel.FormulaCellOnCaret();
+                bool isEqual = f is Liffom.Formulas.Operators.Comparers.Equal || cell.Content.GetAllDefinedVariableNames().Count() == 1;
+                _menuDeformEqual.Enabled = isEqual;
+                _menuDeformAboutSelected.Enabled = isEqual && !string.IsNullOrEmpty(selected);
+                _menuMoveAllLHS.Enabled = isEqual;
+                _menuMoveAllRHS.Enabled = isEqual;
             }
             catch
             {
@@ -689,9 +703,14 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuTidyUp.Enabled = false;
                 _menuSimplify.Enabled = false;
                 _menuFactorize.Enabled = false;
+                _menuCollectAbout.Enabled = false;
                 _menuSubstitute.Enabled = false;
                 _menuConvertUnit.Enabled = false;
+
+                _menuDeformEqual.Enabled = false;
                 _menuDeformAboutSelected.Enabled = false;
+                _menuMoveAllLHS.Enabled = false;
+                _menuMoveAllRHS.Enabled = false;
             }
         }
 
@@ -704,6 +723,14 @@ namespace GoodSeat.Clapte.Views.Forms
                 if (menu == null) continue;
 
                 menu.Enabled = true;
+
+                foreach (var child in menu.DropDownItems)
+                {
+                    var menuChild = child as ToolStripMenuItem;
+                    if (menuChild == null) continue;
+
+                    menuChild.Enabled = true;
+                }
             }
         }
 
@@ -859,7 +886,11 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuDeformAboutSelected_Click(object sender, EventArgs e)
         {
-            EditorViewModel.DeformAboutSelected();
+            var selected = _inputTextBox.GetSelectedText();
+            if (string.IsNullOrEmpty(selected)) return;
+
+            var msg = EditorViewModel.DeformAboutSelected();
+            if (msg != null) EditorViewModel.InsertLine(msg, false);
         }
 
         #endregion
@@ -879,8 +910,6 @@ namespace GoodSeat.Clapte.Views.Forms
             startExpandMenu(_txtBoxTargetUnit, _expandMenuConvertUnit, true);
         }
 
-        private void _expandMenuConvertUnit_Closing(object sender, ToolStripDropDownClosingEventArgs e) { _toolTipExpand.Hide(_expandMenuConvertUnit); }
-
         private void _txtBoxTargetUnit_KeyDown(object sender, KeyEventArgs e)
         {
             var ownerMenu = _txtBoxTargetUnit.Owner;
@@ -898,8 +927,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     int selected = 0;
                     for (int n = 1; n < ownerMenu.Items.Count - 1; ++n)
                     {
-                        var item = ownerMenu.Items[n] as ToolStripMenuItem;
-                        if (item.Selected)
+                        if (ownerMenu.Items[n].Selected)
                         {
                             selected = n;
                             break;
@@ -916,8 +944,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     int selected = ownerMenu.Items.Count;
                     for (int n = 2; n < ownerMenu.Items.Count; ++n)
                     {
-                        var item = ownerMenu.Items[n] as ToolStripMenuItem;
-                        if (item.Selected)
+                        if (ownerMenu.Items[n].Selected)
                         {
                             selected = n;
                             break;
@@ -928,7 +955,7 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
-        private void _txtBoxTargetUnit_KeyUp(object sender, KeyEventArgs e)
+        private void _txtBoxTargetUnit_TextChanged(object sender, EventArgs e)
         {
             var txt = _txtBoxTargetUnit.Text;
             if (txt == _txtBoxTargetUnit.Tag as string) return;
@@ -971,8 +998,6 @@ namespace GoodSeat.Clapte.Views.Forms
             startExpandMenu(_txtBoxDefineConstantOfFunctionName, _expandMenuExtractDefine, false);
         }
 
-        private void _expandMenuExtractDefine_Closing(object sender, ToolStripDropDownClosingEventArgs e) { _toolTipExpand.Hide(_expandMenuExtractDefine); }
-
         private void _txtBoxDefineConstantOfFunctionName_KeyDown(object sender, KeyEventArgs e)
         {
             if (e.KeyCode == Keys.Enter)
@@ -997,6 +1022,140 @@ namespace GoodSeat.Clapte.Views.Forms
                     _textBoxReplace.Focus();
                 }
                 _expandMenuExtractDefine.Hide();
+            }
+        }
+
+        // 変数について整理
+        private void _menuCollectAbout_Click(object sender, EventArgs e)
+        {
+            Formula f = null;
+            try { f = EditorViewModel.FormulaOnCaret(); }
+            catch { return; }
+
+            _txtBoxCollectAbout.Text = "";
+            while (_expandMenuCollectAbout.Items.Count > 1) _expandMenuCollectAbout.Items.RemoveAt(1);
+
+            foreach (var v in f.GetExistFactors<Variable>())
+            {
+                var menu = new ToolStripMenuItem(v.ToString());
+                menu.Click += (s, e_) =>
+                {
+                    EditorViewModel.CollectAbout(v.ToString());
+                    _expandMenuCollectAbout.Hide();
+                };
+                _expandMenuCollectAbout.Items.Add(menu);
+            }
+
+            bool existVariable = (_expandMenuCollectAbout.Items.Count > 1);
+            if (!existVariable)
+            {
+                var menuDummy = new ToolStripMenuItem("変数がありません");
+                menuDummy.Enabled = false;
+                _expandMenuCollectAbout.Items.Add(menuDummy);
+            }
+            else
+            {
+                _expandMenuCollectAbout.Items[1].Select();
+            }
+
+            if (existVariable && _expandMenuCollectAbout.Items.Count == 2)
+            {
+                EditorViewModel.CollectAbout(_expandMenuCollectAbout.Items[1].Text);
+            }
+            else
+            {
+                startExpandMenu(_txtBoxCollectAbout, _expandMenuCollectAbout, true);
+            }
+        }
+
+        private void _txtBoxCollectAbout_TextChanged(object sender, EventArgs e)
+        {
+            Formula f = null;
+            try { f = EditorViewModel.FormulaOnCaret(); }
+            catch { return; }
+
+            while (_expandMenuCollectAbout.Items.Count > 1) _expandMenuCollectAbout.Items.RemoveAt(1);
+
+            foreach (var v in f.GetExistFactors<Variable>())
+            {
+                if (!v.ToString().Contains(_txtBoxCollectAbout.Text)) continue;
+
+                var menu = new ToolStripMenuItem(v.ToString());
+                menu.Click += (s, e_) =>
+                {
+                    EditorViewModel.CollectAbout(v.ToString());
+                    _expandMenuCollectAbout.Hide();
+                };
+                _expandMenuCollectAbout.Items.Add(menu);
+            }
+
+            bool existVariable = (_expandMenuCollectAbout.Items.Count > 1);
+            if (!existVariable)
+            {
+                var menuDummy = new ToolStripMenuItem("該当する変数がありません");
+                menuDummy.Enabled = false;
+                _expandMenuCollectAbout.Items.Add(menuDummy);
+            }
+            else
+            {
+                _expandMenuCollectAbout.Items[1].Select();
+            }
+        }
+
+        private void _txtBoxCollectAbout_KeyDown(object sender, KeyEventArgs e)
+        {
+            var ownerMenu = _txtBoxCollectAbout.Owner;
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                _expandMenuCollectAbout.Hide();
+                if (_expandMenuCollectAbout.Items.Count < 2) return;
+                if (!_expandMenuCollectAbout.Items[1].Enabled) return;
+
+                int nTarget = 1;
+                for (int n = 1; n < _expandMenuCollectAbout.Items.Count; ++n)
+                {
+                    if (_expandMenuCollectAbout.Items[n].Selected)
+                    {
+                        nTarget = n;
+                        break;
+                    }
+                }
+                EditorViewModel.CollectAbout(_expandMenuCollectAbout.Items[nTarget].Text);
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
+                {
+                    int selected = 0;
+                    for (int n = 1; n < ownerMenu.Items.Count - 1; ++n)
+                    {
+                        if (ownerMenu.Items[n].Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+                    ownerMenu.Items[selected + 1].Select();
+                }
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
+                {
+                    int selected = ownerMenu.Items.Count;
+                    for (int n = 2; n < ownerMenu.Items.Count; ++n)
+                    {
+                        if (ownerMenu.Items[n].Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+                    ownerMenu.Items[selected - 1].Select();
+                }
             }
         }
 
