@@ -8,7 +8,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formats.Numerics;
 
-namespace LiffomTestProject
+namespace GoodSeat.LiffomTestProject
 {
     [TestClass]
     public class SignificantFiguresTest
