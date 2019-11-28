@@ -44,7 +44,10 @@ namespace GoodSeat.Liffom.Formulas.Operators.Rules.Sums
             (c as RulePatternVariable).AdmitPowerOne = true;
         }
 
-        protected override Formula GetRuledFormula() { return (a + b).Combine() * (About ^ c); }
+        protected override Formula GetRuledFormula()
+        {
+            return c == 1 ? (a + b).Combine() * About : (a + b).Combine() * (About ^ c);
+        }
 
         protected internal override bool IsTargetTypeFormula(Formula target) { return target is Sum; }
 
