@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Sgry.Azuki.FontInfo fontInfo3 = new Sgry.Azuki.FontInfo();
             Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
+            Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfClaptePad));
             this._inputTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuEdit = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -62,10 +62,6 @@
             this._menuSimplify = new System.Windows.Forms.ToolStripMenuItem();
             this._menuFactorize = new System.Windows.Forms.ToolStripMenuItem();
             this._menuCollectAbout = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuDeformEqual = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuMoveAllLHS = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuMoveAllRHS = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuDeformAboutSelected = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
             this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
@@ -133,6 +129,7 @@
             this._expandMenuSubstitute = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._expandMenuCollectAbout = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._txtBoxCollectAbout = new System.Windows.Forms.ToolStripTextBox();
+            this._menuDeformAboutSelected = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -185,10 +182,10 @@
             this._inputTextBox.DrawsTab = false;
             this._inputTextBox.FirstVisibleLine = 0;
             this._inputTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo3.Name = "HGｺﾞｼｯｸM";
-            fontInfo3.Size = 9;
-            fontInfo3.Style = System.Drawing.FontStyle.Regular;
-            this._inputTextBox.FontInfo = fontInfo3;
+            fontInfo1.Name = "HGｺﾞｼｯｸM";
+            fontInfo1.Size = 9;
+            fontInfo1.Style = System.Drawing.FontStyle.Regular;
+            this._inputTextBox.FontInfo = fontInfo1;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
             this._inputTextBox.HighlightsCurrentLine = false;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
@@ -231,15 +228,15 @@
             this._menuUnCommentOut,
             this.toolStripSeparator7,
             this._menuConvertUnit,
-            this._menuDefineAsConstantOfFunction,
             this._menuSubstitute,
+            this._menuDefineAsConstantOfFunction,
+            this._menuDeformAboutSelected,
             this._menuSolveSimultaneousEquation,
             this._menuDeformFormula,
-            this._menuDeformEqual,
             this.toolStripSeparator8,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(288, 480);
+            this._contextMenuEdit.Size = new System.Drawing.Size(288, 502);
             this._contextMenuEdit.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._contextMenuEdit_Closing);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
@@ -470,42 +467,6 @@
             this._menuCollectAbout.Text = "指定変数について整理(&T)";
             this._menuCollectAbout.ToolTipText = "数式を変数について整理します。";
             this._menuCollectAbout.Click += new System.EventHandler(this._menuCollectAbout_Click);
-            // 
-            // _menuDeformEqual
-            // 
-            this._menuDeformEqual.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this._menuMoveAllLHS,
-            this._menuMoveAllRHS,
-            this._menuDeformAboutSelected});
-            this._menuDeformEqual.Name = "_menuDeformEqual";
-            this._menuDeformEqual.Size = new System.Drawing.Size(287, 22);
-            this._menuDeformEqual.Text = "等式の変形(&E)";
-            this._menuDeformEqual.ToolTipText = "等式を変形し、その結果を次の行に挿入します。";
-            // 
-            // _menuMoveAllLHS
-            // 
-            this._menuMoveAllLHS.Name = "_menuMoveAllLHS";
-            this._menuMoveAllLHS.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Left)));
-            this._menuMoveAllLHS.Size = new System.Drawing.Size(263, 22);
-            this._menuMoveAllLHS.Text = "全て左辺に移項(&L)";
-            this._menuMoveAllLHS.ToolTipText = "全て左辺に移項し、右辺を0とします。";
-            // 
-            // _menuMoveAllRHS
-            // 
-            this._menuMoveAllRHS.Name = "_menuMoveAllRHS";
-            this._menuMoveAllRHS.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.Right)));
-            this._menuMoveAllRHS.Size = new System.Drawing.Size(263, 22);
-            this._menuMoveAllRHS.Text = "全て右辺に移項(&L)";
-            this._menuMoveAllRHS.ToolTipText = "全て右辺に移項し、左辺を0にします。";
-            // 
-            // _menuDeformAboutSelected
-            // 
-            this._menuDeformAboutSelected.Name = "_menuDeformAboutSelected";
-            this._menuDeformAboutSelected.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this._menuDeformAboutSelected.Size = new System.Drawing.Size(263, 22);
-            this._menuDeformAboutSelected.Text = "選択部分に関する式に変形(&O)";
-            this._menuDeformAboutSelected.ToolTipText = "選択部分に関する式に変形します。";
-            this._menuDeformAboutSelected.Click += new System.EventHandler(this._menuDeformAboutSelected_Click);
             // 
             // toolStripSeparator8
             // 
@@ -853,10 +814,10 @@
             this._resultTextBox.DrawsTab = false;
             this._resultTextBox.FirstVisibleLine = 0;
             this._resultTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo1.Name = "HGｺﾞｼｯｸM";
-            fontInfo1.Size = 9;
-            fontInfo1.Style = System.Drawing.FontStyle.Regular;
-            this._resultTextBox.FontInfo = fontInfo1;
+            fontInfo2.Name = "HGｺﾞｼｯｸM";
+            fontInfo2.Size = 9;
+            fontInfo2.Style = System.Drawing.FontStyle.Regular;
+            this._resultTextBox.FontInfo = fontInfo2;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
             this._resultTextBox.HighlightsCurrentLine = false;
             this._resultTextBox.IsReadOnly = true;
@@ -1305,7 +1266,7 @@
             this._txtBoxCollectAbout});
             this._expandMenuCollectAbout.Name = "_expandMenuConvertUnit";
             this._expandMenuCollectAbout.ShowImageMargin = false;
-            this._expandMenuCollectAbout.Size = new System.Drawing.Size(156, 51);
+            this._expandMenuCollectAbout.Size = new System.Drawing.Size(136, 29);
             // 
             // _txtBoxCollectAbout
             // 
@@ -1316,6 +1277,15 @@
             this._txtBoxCollectAbout.ToolTipText = "対象とする変数を選択します";
             this._txtBoxCollectAbout.KeyDown += new System.Windows.Forms.KeyEventHandler(this._txtBoxCollectAbout_KeyDown);
             this._txtBoxCollectAbout.TextChanged += new System.EventHandler(this._txtBoxCollectAbout_TextChanged);
+            // 
+            // _menuDeformAboutSelected
+            // 
+            this._menuDeformAboutSelected.Name = "_menuDeformAboutSelected";
+            this._menuDeformAboutSelected.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this._menuDeformAboutSelected.Size = new System.Drawing.Size(287, 22);
+            this._menuDeformAboutSelected.Text = "選択部分に関する式に変形(&O)";
+            this._menuDeformAboutSelected.ToolTipText = "選択部分に関する式に変形します。";
+            this._menuDeformAboutSelected.Click += new System.EventHandler(this._menuDeformAboutSelected_Click);
             // 
             // FormOfClaptePad
             // 
@@ -1491,11 +1461,8 @@
         private System.Windows.Forms.ToolStripTextBox _txtBoxDefineConstantOfFunctionName;
         private System.Windows.Forms.ContextMenuStrip _expandMenuSubstitute;
         private System.Windows.Forms.ToolStripMenuItem _menuCollectAbout;
-        private System.Windows.Forms.ToolStripMenuItem _menuDeformEqual;
-        private System.Windows.Forms.ToolStripMenuItem _menuMoveAllLHS;
-        private System.Windows.Forms.ToolStripMenuItem _menuMoveAllRHS;
-        private System.Windows.Forms.ToolStripMenuItem _menuDeformAboutSelected;
         private System.Windows.Forms.ContextMenuStrip _expandMenuCollectAbout;
         private System.Windows.Forms.ToolStripTextBox _txtBoxCollectAbout;
+        private System.Windows.Forms.ToolStripMenuItem _menuDeformAboutSelected;
     }
 }

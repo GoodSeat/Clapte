@@ -692,10 +692,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
                 var cell = EditorViewModel.FormulaCellOnCaret();
                 bool isEqual = f is Liffom.Formulas.Operators.Comparers.Equal || cell.Content.GetAllDefinedVariableNames().Count() == 1;
-                _menuDeformEqual.Enabled = isEqual;
                 _menuDeformAboutSelected.Enabled = isEqual && !string.IsNullOrEmpty(selected);
-                _menuMoveAllLHS.Enabled = isEqual;
-                _menuMoveAllRHS.Enabled = isEqual;
             }
             catch
             {
@@ -707,10 +704,7 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuSubstitute.Enabled = false;
                 _menuConvertUnit.Enabled = false;
 
-                _menuDeformEqual.Enabled = false;
                 _menuDeformAboutSelected.Enabled = false;
-                _menuMoveAllLHS.Enabled = false;
-                _menuMoveAllRHS.Enabled = false;
             }
         }
 
