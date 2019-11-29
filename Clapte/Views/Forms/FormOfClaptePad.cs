@@ -902,6 +902,7 @@ namespace GoodSeat.Clapte.Views.Forms
             catch { return; }
 
             startExpandMenu(_txtBoxTargetUnit, _expandMenuConvertUnit, true);
+            if (_expandMenuConvertUnit.Items.Count > 1) _expandMenuConvertUnit.Items[1].Select();
         }
 
         private void _txtBoxTargetUnit_KeyDown(object sender, KeyEventArgs e)
@@ -978,6 +979,8 @@ namespace GoodSeat.Clapte.Views.Forms
                     };
                     ownerMenu.Items.Add(menu);
                 }
+
+                if (_expandMenuConvertUnit.Items.Count > 1) _expandMenuConvertUnit.Items[1].Select();
             }
         }
 
