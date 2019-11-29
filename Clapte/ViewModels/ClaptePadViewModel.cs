@@ -358,7 +358,18 @@ namespace GoodSeat.Clapte.ViewModels
 
             if (!forg.Contains(about)) return "数式中に" + variable + "は存在しません。";
 
-            var f = forg.DeformFormula(new CollectToken(about));
+            var token = new CollectToken(about);
+            var f = forg;
+            if (f is Comparer)
+            {
+                var fc = (f as Comparer);
+                fc.LeftHandSide  = fc.LeftHandSide.DeformFormula(token);
+                fc.RightHandSide = fc.RightHandSide.DeformFormula(token);
+            }
+            else
+            {
+                f = forg.DeformFormula(token);
+            }
 
             f.Format = Target.BaseSolver.Target.OutputFormat;
             InsertLine(f.ToString(), false);

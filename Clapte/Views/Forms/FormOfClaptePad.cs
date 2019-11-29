@@ -1050,10 +1050,6 @@ namespace GoodSeat.Clapte.Views.Forms
                 menuDummy.Enabled = false;
                 _expandMenuCollectAbout.Items.Add(menuDummy);
             }
-            else
-            {
-                _expandMenuCollectAbout.Items[1].Select();
-            }
 
             if (existVariable && _expandMenuCollectAbout.Items.Count == 2)
             {
@@ -1062,6 +1058,7 @@ namespace GoodSeat.Clapte.Views.Forms
             else
             {
                 startExpandMenu(_txtBoxCollectAbout, _expandMenuCollectAbout, true);
+                if (existVariable) _expandMenuCollectAbout.Items[1].Select();
             }
         }
 
