@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-//  Copyright (C) 2016-2019 GoodSeat
+//  Copyright (C) 2016-2020 GoodSeat
 //  Distributed under the MIT License
 //  See https://sites.google.com/site/eatbaconandham/clapte/license 
 // -----------------------------------------------------------------------------
@@ -7,7 +7,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-using GoodSeat.Clapte.Solvers;
 using GoodSeat.Liffom;
 using GoodSeat.Liffom.Parse;
 using GoodSeat.Liffom.Formulas;
@@ -194,29 +193,22 @@ namespace GoodSeat.Clapte.Solvers.Processes
             callStack.Push(v);
             try
             {
-                FunctionDefine target = null;
-                foreach (var def in GetAllValidFunctionDefines())
-                {
-                    if (def.Name != v.DistinguishedName) continue;
-                    target = def;
-                    break;
-                }
+                var target = GetAllValidFunctionDefines().FirstOrDefault(def => def.Name == v.DistinguishedName);
 
-                if (target == null) // ユーザー定義関数に定義がない
+                if (target == null || target.Define == null) // ユーザー定義関数に定義がない、定義が未定義
                 {
                     UserFunctionCache.Add(v, null);
-                    return null;
-                }
-
-                if (target.Define != null)
-                {
-                    Formula define = Owner.Parse(target.Define);
-                    define = SubsutitueUserDefines(define, callStack, v.UseVariable); // 定義内の別のユーザー定義定数・関数を置き換える
-                    UserFunctionCache.Add(v, define);
                 }
                 else
                 {
-                    UserFunctionCache.Add(v, null);
+                    Formula define = Owner.Parse(target.Define);
+                    if (target.Target is UserFunction)
+                    {
+                        var uf = target.Target as UserFunction;
+                        define = define.Substituted(uf.UseVariable.Zip(v.Argument, (lhs, rhs) => new Equal(lhs, rhs)).ToArray());
+                    }
+                    define = SubsutitueUserDefines(define, callStack, v.UseVariable); // 定義内の別のユーザー定義定数・関数を置き換える
+                    UserFunctionCache.Add(v, define);
                 }
                 return null;
             }
