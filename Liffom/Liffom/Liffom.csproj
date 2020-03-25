@@ -123,6 +123,7 @@
     <Compile Include="Formulas\Functions\Rules\RationalizeDenominatorRootRule.cs" />
     <Compile Include="Formulas\Functions\Sigma.cs" />
     <Compile Include="Formulas\Functions\Sign.cs" />
+    <Compile Include="Formulas\Functions\Size.cs" />
     <Compile Include="Formulas\Functions\Sqrt.cs" />
     <Compile Include="Formulas\Functions\Trigonometric\ArcCos.cs" />
     <Compile Include="Formulas\Functions\Trigonometric\ArcSin.cs" />
