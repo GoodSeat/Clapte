@@ -349,6 +349,42 @@ namespace GoodSeat.Clapte.Views.Forms
             _textBoxFind.Focus();
         }
 
+        /// <summary>
+        /// 拡張メニューを開始します。
+        /// </summary>
+        /// <param name="textBox">対象とする拡張メニューの入力ボックス。</param>
+        /// <param name="menu">対象とする拡張メニューのコンテキストメニュー。</param>
+        /// <param name="onHeadOfLine">表示位置を行の先頭とするか否か。</param>
+        private void startExpandMenu(ToolStripTextBox textBox, ContextMenuStrip menu, bool onHeadOfLine)
+        {
+            EditorViewModel.InputSupport.EscapeInputSupport();
+
+            int s, e;
+            _inputTextBox.GetSelection(out s, out e);
+            var ptOrg = onHeadOfLine ? _inputTextBox.GetPositionFromIndex(_inputTextBox.GetLineHeadIndexFromCharIndex(_inputTextBox.CaretIndex))
+                                     : _inputTextBox.GetPositionFromIndex(s);
+
+            var pt = PointToScreen(ptOrg);
+            pt.Offset(_splitContainerAll.Location);
+            pt.Y += _inputTextBox.View.LineHeight;
+            menu.Show(pt);
+
+            if (textBox != null)
+            {
+                textBox.Focus();
+                _toolTipExpand.Show(textBox.ToolTipText, menu, new Point(textBox.Width - 5, -textBox.Height / 2));
+
+                ToolStripDropDownClosingEventHandler handler = null;
+                handler = (sender, eventArg) =>
+                {
+                     _toolTipExpand.Hide(menu);
+                    menu.Closing -= handler;
+                };
+
+                menu.Closing += handler;
+            }
+        }
+
         #endregion
 
         #region イベント対応(ビューモデルとのやり取り)
@@ -612,6 +648,8 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        #endregion
+
         #region コンテキストメニュー
 
         private void _contextMenuEdit_Opening(object sender, CancelEventArgs e)
@@ -629,8 +667,6 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuSolveSimultaneousEquation.Enabled = selected.Contains("\n");
             Formula dummy;
             _menuDefineAsConstantOfFunction.Enabled = !string.IsNullOrEmpty(selected) && Target.BaseSolver.Target.TryParse(selected, out dummy);
-            _txtBoxDefineConstantOfFunctionName.Enabled = _menuDefineAsConstantOfFunction.Enabled;
-            _txtBoxDefineConstantOfFunctionName.Text = "";
 
             if (_splitContainerAll.Panel2.Height < 5)
             {
@@ -650,10 +686,13 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuTidyUp.Enabled = true;
                 _menuSimplify.Enabled = true;
                 _menuFactorize.Enabled = true;
+                _menuCollectAbout.Enabled = true;
                 _menuSubstitute.Enabled = true;
                 _menuConvertUnit.Enabled = true;
 
-                _txtBoxTargetUnit.Text = EditorViewModel.DetectTargetUnitOnCaretLine();
+                var cell = EditorViewModel.FormulaCellOnCaret();
+                bool isEqual = f is Liffom.Formulas.Operators.Comparers.Equal || cell.Content.GetAllDefinedVariableNames().Count() == 1;
+                _menuDeformAboutSelected.Enabled = isEqual && !string.IsNullOrEmpty(selected);
             }
             catch
             {
@@ -661,8 +700,31 @@ namespace GoodSeat.Clapte.Views.Forms
                 _menuTidyUp.Enabled = false;
                 _menuSimplify.Enabled = false;
                 _menuFactorize.Enabled = false;
+                _menuCollectAbout.Enabled = false;
                 _menuSubstitute.Enabled = false;
                 _menuConvertUnit.Enabled = false;
+
+                _menuDeformAboutSelected.Enabled = false;
+            }
+        }
+
+        private void _contextMenuEdit_Closing(object sender, ToolStripDropDownClosingEventArgs e)
+        {
+            // ここで有効にしておかないと、最後にコンテキストメニューを開いたときに無効だったメニューが、ショートカットキーから呼び出せなくなるため
+            foreach (var item in _contextMenuEdit.Items)
+            {
+                var menu = item as ToolStripMenuItem;
+                if (menu == null) continue;
+
+                menu.Enabled = true;
+
+                foreach (var child in menu.DropDownItems)
+                {
+                    var menuChild = child as ToolStripMenuItem;
+                    if (menuChild == null) continue;
+
+                    menuChild.Enabled = true;
+                }
             }
         }
 
@@ -745,9 +807,9 @@ namespace GoodSeat.Clapte.Views.Forms
                 });
         }
 
-        private void _menuSubstitute_DropDownOpening(object sender, EventArgs e)
+        private void _menuSubstitute_Click(object sender, EventArgs e)
         {
-            _menuSubstitute.DropDown.Items.Clear();
+            _expandMenuSubstitute.Items.Clear();
 
             Formula f = null;
             try { f = EditorViewModel.FormulaOnCaret(); }
@@ -760,60 +822,37 @@ namespace GoodSeat.Clapte.Views.Forms
                     var menu = new ToolStripMenuItem(v.ToString() + " =");
                     var valueBox = new ToolStripTextBox();
                     menu.DropDown.Items.Add(valueBox);
-                    _menuSubstitute.DropDown.Items.Add(menu);
+                    _expandMenuSubstitute.Items.Add(menu);
 
-                    valueBox.KeyUp += (s, e2) =>
+                    valueBox.KeyDown += (s, e2) =>
                     {
                         if (e2.KeyCode != Keys.Enter) return;
                         if (string.IsNullOrWhiteSpace(valueBox.Text)) return;
                         EditorViewModel.DeformFormula(f2 => f2.Substituted(v, Target.BaseSolver.Target.Parse(valueBox.Text)));
-
-                        _contextMenuEdit.Hide();
+                        _expandMenuSubstitute.Hide();
                     };
                 }
             }
 
-            if (_menuSubstitute.DropDown.Items.Count == 0)
+            bool existVariable = (_expandMenuSubstitute.Items.Count != 0);
+            if (!existVariable)
             {
                 var menuDummy = new ToolStripMenuItem("変数がありません");
                 menuDummy.Enabled = false;
-                _menuSubstitute.DropDown.Items.Add(menuDummy);
+                _expandMenuSubstitute.Items.Add(menuDummy);
             }
-        }
-
-        private void _txtBoxTargetUnit_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
+            else
             {
-                EditorViewModel.SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
-                _contextMenuEdit.Hide();
+                _expandMenuSubstitute.Items[0].Select();
             }
-        }
 
-        private void _txtBoxDefineConstantOfFunctionName_KeyUp(object sender, KeyEventArgs e)
-        {
-            if (e.KeyCode == Keys.Enter)
+            startExpandMenu(null, _expandMenuSubstitute, true);
+
+            if (existVariable && _expandMenuSubstitute.Items.Count == 1)
             {
-                var name = _txtBoxDefineConstantOfFunctionName.Text.Trim();
-                if (!string.IsNullOrEmpty(name))
-                {
-                    var def = _inputTextBox.GetSelectedText().Trim();
-                    string errMsg = EditorViewModel.InsertDefineWithName(name);
-                    if (errMsg != null)
-                    {
-                        _contextMenuEdit.Hide();
-                        _toolTipHelp.Show(errMsg, _inputTextBox, 3000);
-                        return;
-                    }
-
-                    _panelFind.Visible = true;
-                    _textBoxFind.Text = def;
-                    _textBoxReplace.Text = name;
-                    if (_findMatchCase) _btnToggleFindMatchCase_Click(sender, e);
-                    if (_findRegex) _btnToggleFindUseRegex_Click(sender, e);
-                    _textBoxReplace.Focus();
-                }
-                _contextMenuEdit.Hide();
+                (_expandMenuSubstitute.Items[0] as ToolStripMenuItem).DropDown.Show(_expandMenuSubstitute, new Point());
+                var txtBox = (_expandMenuSubstitute.Items[0] as ToolStripMenuItem).DropDownItems[0] as ToolStripTextBox;
+                txtBox.Focus();
             }
         }
 
@@ -838,6 +877,285 @@ namespace GoodSeat.Clapte.Views.Forms
                 UpdateTreeViewOfDeformHistory();
             }
         }
+
+        private void _menuDeformAboutSelected_Click(object sender, EventArgs e)
+        {
+            var selected = _inputTextBox.GetSelectedText();
+            if (string.IsNullOrEmpty(selected)) return;
+
+            var msg = EditorViewModel.DeformAboutSelected();
+            if (msg != null) EditorViewModel.InsertLine(msg, false);
+        }
+
+        #endregion
+
+        #region 拡張メニュー関連
+
+        // 単位換算
+        private void _menuConvertUnit_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                EditorViewModel.FormulaOnCaret();
+                _txtBoxTargetUnit.Text = EditorViewModel.DetectTargetUnitOnCaretLine();
+            }
+            catch { return; }
+
+            startExpandMenu(_txtBoxTargetUnit, _expandMenuConvertUnit, true);
+            if (_expandMenuConvertUnit.Items.Count > 1) _expandMenuConvertUnit.Items[1].Select();
+        }
+
+        private void _txtBoxTargetUnit_KeyDown(object sender, KeyEventArgs e)
+        {
+            var ownerMenu = _txtBoxTargetUnit.Owner;
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                EditorViewModel.SetTargetUnitOnCaretLine(_txtBoxTargetUnit.Text);
+                _expandMenuConvertUnit.Hide();
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
+                {
+                    int selected = 0;
+                    for (int n = 1; n < ownerMenu.Items.Count - 1; ++n)
+                    {
+                        if (ownerMenu.Items[n].Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+                    ownerMenu.Items[selected + 1].Select();
+                }
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
+                {
+                    int selected = ownerMenu.Items.Count;
+                    for (int n = 2; n < ownerMenu.Items.Count; ++n)
+                    {
+                        if (ownerMenu.Items[n].Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+                    ownerMenu.Items[selected - 1].Select();
+                }
+            }
+        }
+
+        private void _txtBoxTargetUnit_TextChanged(object sender, EventArgs e)
+        {
+            var txt = _txtBoxTargetUnit.Text;
+            if (txt == _txtBoxTargetUnit.Tag as string) return;
+            _txtBoxTargetUnit.Tag = txt;
+
+            var ownerMenu = _txtBoxTargetUnit.Owner;
+            while (ownerMenu.Items.Count > 1) ownerMenu.Items.RemoveAt(1);
+            if (string.IsNullOrEmpty(txt)) return;
+
+            var candidates = EditorViewModel.InputSupportEnumerator.GetAllCandidates(txt, ViewModels.InputSupports.ClaptePadInputSupportEnumerator.CandidateType.UnitAllPrefix);
+            if (candidates.Count() > 30)
+            {
+                var menu = new ToolStripMenuItem("候補が多すぎます");
+                menu.Enabled = false;
+                ownerMenu.Items.Add(menu);
+            }
+            else
+            {
+                foreach (var item in candidates)
+                {
+                    var menu = new ToolStripMenuItem(item.ReplaceText + " : " + item.Information);
+                    menu.Click += (sender_, e_) =>
+                    {
+                        EditorViewModel.SetTargetUnitOnCaretLine(item.ReplaceText);
+                        _expandMenuConvertUnit.Hide();
+                    };
+                    ownerMenu.Items.Add(menu);
+                }
+
+                if (_expandMenuConvertUnit.Items.Count > 1) _expandMenuConvertUnit.Items[1].Select();
+            }
+        }
+
+        // 定義の抽出
+        private void _menuDefineAsConstantOfFunction_Click(object sender, EventArgs e)
+        {
+            var selected = _inputTextBox.GetSelectedText();
+            Formula dummy;
+            if (string.IsNullOrEmpty(selected) || !Target.BaseSolver.Target.TryParse(selected, out dummy)) return;
+
+            _txtBoxDefineConstantOfFunctionName.Text = "";
+            startExpandMenu(_txtBoxDefineConstantOfFunctionName, _expandMenuExtractDefine, false);
+        }
+
+        private void _txtBoxDefineConstantOfFunctionName_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+            {
+                var name = _txtBoxDefineConstantOfFunctionName.Text.Trim();
+                if (!string.IsNullOrEmpty(name))
+                {
+                    var def = _inputTextBox.GetSelectedText().Trim();
+                    string errMsg = EditorViewModel.InsertDefineWithName(name);
+                    if (errMsg != null)
+                    {
+                        _expandMenuExtractDefine.Hide();
+                        _toolTipHelp.Show(errMsg, _inputTextBox, 3000);
+                        return;
+                    }
+
+                    _panelFind.Visible = true;
+                    _textBoxFind.Text = def;
+                    _textBoxReplace.Text = name;
+                    if (_findMatchCase) _btnToggleFindMatchCase_Click(sender, e);
+                    if (_findRegex) _btnToggleFindUseRegex_Click(sender, e);
+                    _textBoxReplace.Focus();
+                }
+                _expandMenuExtractDefine.Hide();
+            }
+        }
+
+        // 変数について整理
+        private void _menuCollectAbout_Click(object sender, EventArgs e)
+        {
+            Formula f = null;
+            try { f = EditorViewModel.FormulaOnCaret(); }
+            catch { return; }
+
+            _txtBoxCollectAbout.Text = "";
+            while (_expandMenuCollectAbout.Items.Count > 1) _expandMenuCollectAbout.Items.RemoveAt(1);
+
+            foreach (var v in f.GetExistFactors<Variable>())
+            {
+                var menu = new ToolStripMenuItem(v.ToString());
+                menu.Click += (s, e_) =>
+                {
+                    EditorViewModel.CollectAbout(v.ToString());
+                    _expandMenuCollectAbout.Hide();
+                };
+                _expandMenuCollectAbout.Items.Add(menu);
+            }
+
+            bool existVariable = (_expandMenuCollectAbout.Items.Count > 1);
+            if (!existVariable)
+            {
+                var menuDummy = new ToolStripMenuItem("変数がありません");
+                menuDummy.Enabled = false;
+                _expandMenuCollectAbout.Items.Add(menuDummy);
+            }
+
+            if (existVariable && _expandMenuCollectAbout.Items.Count == 2)
+            {
+                EditorViewModel.CollectAbout(_expandMenuCollectAbout.Items[1].Text);
+            }
+            else
+            {
+                startExpandMenu(_txtBoxCollectAbout, _expandMenuCollectAbout, true);
+                if (existVariable) _expandMenuCollectAbout.Items[1].Select();
+            }
+        }
+
+        private void _txtBoxCollectAbout_TextChanged(object sender, EventArgs e)
+        {
+            Formula f = null;
+            try { f = EditorViewModel.FormulaOnCaret(); }
+            catch { return; }
+
+            while (_expandMenuCollectAbout.Items.Count > 1) _expandMenuCollectAbout.Items.RemoveAt(1);
+
+            foreach (var v in f.GetExistFactors<Variable>())
+            {
+                if (!v.ToString().Contains(_txtBoxCollectAbout.Text)) continue;
+
+                var menu = new ToolStripMenuItem(v.ToString());
+                menu.Click += (s, e_) =>
+                {
+                    EditorViewModel.CollectAbout(v.ToString());
+                    _expandMenuCollectAbout.Hide();
+                };
+                _expandMenuCollectAbout.Items.Add(menu);
+            }
+
+            bool existVariable = (_expandMenuCollectAbout.Items.Count > 1);
+            if (!existVariable)
+            {
+                var menuDummy = new ToolStripMenuItem("該当する変数がありません");
+                menuDummy.Enabled = false;
+                _expandMenuCollectAbout.Items.Add(menuDummy);
+            }
+            else
+            {
+                _expandMenuCollectAbout.Items[1].Select();
+            }
+        }
+
+        private void _txtBoxCollectAbout_KeyDown(object sender, KeyEventArgs e)
+        {
+            var ownerMenu = _txtBoxCollectAbout.Owner;
+
+            if (e.KeyCode == Keys.Enter)
+            {
+                _expandMenuCollectAbout.Hide();
+                if (_expandMenuCollectAbout.Items.Count < 2) return;
+                if (!_expandMenuCollectAbout.Items[1].Enabled) return;
+
+                int nTarget = 1;
+                for (int n = 1; n < _expandMenuCollectAbout.Items.Count; ++n)
+                {
+                    if (_expandMenuCollectAbout.Items[n].Selected)
+                    {
+                        nTarget = n;
+                        break;
+                    }
+                }
+                EditorViewModel.CollectAbout(_expandMenuCollectAbout.Items[nTarget].Text);
+            }
+            else if (e.KeyCode == Keys.Down)
+            {
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
+                {
+                    int selected = 0;
+                    for (int n = 1; n < ownerMenu.Items.Count - 1; ++n)
+                    {
+                        if (ownerMenu.Items[n].Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+                    ownerMenu.Items[selected + 1].Select();
+                }
+            }
+            else if (e.KeyCode == Keys.Up)
+            {
+                e.Handled = true;
+                if (ownerMenu.Items.Count > 1)
+                {
+                    int selected = ownerMenu.Items.Count;
+                    for (int n = 2; n < ownerMenu.Items.Count; ++n)
+                    {
+                        if (ownerMenu.Items[n].Selected)
+                        {
+                            selected = n;
+                            break;
+                        }
+                    }
+                    ownerMenu.Items[selected - 1].Select();
+                }
+            }
+        }
+
+        #endregion
+
+        #region 計算過程パネル関連
 
         private void _menuHideDeformHistory_Click(object sender, EventArgs e) { _splitContainerAll.Panel2Collapsed = true; }
 
@@ -867,8 +1185,6 @@ namespace GoodSeat.Clapte.Views.Forms
         }
         private void _menuExpandHistoryThisFormula_Click(object sender, EventArgs e) { _treeViewHistory.SelectedNode?.ExpandAll(); } 
         private void _menuFoldHistoryThisFormula_Click(object sender, EventArgs e) { _treeViewHistory.SelectedNode?.Collapse(false); }
-
-        #endregion
 
         #endregion
 

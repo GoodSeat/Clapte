@@ -84,14 +84,15 @@ namespace GoodSeat.Liffom.Deforms
         /// <param name="f">ソート対象の数式</param>
         public override void Sort(Formula f) 
         {
-            if (f is OperatorMultiple)
-            {
-                SortTarget = f;
-                (f as OperatorMultiple).Sort(Comparison);
-            }
-            else if (f is Operator)
+            if (f is Operator)
             {
                 foreach (var consist in f) Sort(consist);
+
+                if (f is OperatorMultiple)
+                {
+                    SortTarget = f;
+                    (f as OperatorMultiple).Sort(Comparison);
+                }
             }
             else
             {
