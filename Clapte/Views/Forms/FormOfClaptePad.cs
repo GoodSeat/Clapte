@@ -28,8 +28,21 @@ namespace GoodSeat.Clapte.Views.Forms
     /// </summary>
     public partial class FormOfClaptePad : ClapteFormBase, ISerializable
     {
-        private const string _hotSaveFilename = "ClaptePadHotText.txth";
-        private const string _claptePadHelpFilename = "ClaptePadHelp.txt";
+        /// <summary>
+        /// ホットセーブ用のテキストファイルの保存先ファイルパスを取得します。
+        /// </summary>
+        public string HotSaveFilepath
+        {
+            get { return FormOfMain.AppDirectory + "\\ClaptePadHotText.txth"; }
+        }
+
+        /// <summary>
+        /// ホットセーブ用のテキストファイルの保存先ファイルパスを取得します。
+        /// </summary>
+        public string ClaptePadHelpFilepath
+        {
+            get { return FormOfMain.AppDirectory + "\\ClaptePadHelp.txt"; }
+        }
 
         /// <summary>
         /// ClaptePadフォームを初期化します。(デザイナ用)
@@ -236,14 +249,14 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         void HotLoad()
         {
-            if (File.Exists(_hotSaveFilename)) _inputTextBox.Text = File.ReadAllText(_hotSaveFilename);
-            else                               _menuInsertHelp_Click(this, EventArgs.Empty);
+            if (File.Exists(HotSaveFilepath)) _inputTextBox.Text = File.ReadAllText(HotSaveFilepath);
+            else                              _menuInsertHelp_Click(this, EventArgs.Empty);
         }
 
         /// <summary>
         /// 現在のテキストを、次回起動時復元用の外部ファイルに保存します。
         /// </summary>
-        void HotSave() { File.WriteAllText(_hotSaveFilename, _inputTextBox.Text, Encoding.UTF8); }
+        void HotSave() { File.WriteAllText(HotSaveFilepath, _inputTextBox.Text, Encoding.UTF8); }
 
         /// <summary>
         /// ツールチップヘルプ表示を終了します。
@@ -777,14 +790,14 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuInsertHelp_Click(object sender, EventArgs e)
         {
-            if (!File.Exists(_claptePadHelpFilename))
+            if (!File.Exists(ClaptePadHelpFilepath))
             {
-                if (sender == _menuInsertHelp) MessageBox.Show(_claptePadHelpFilename + "がありません。", "ヘルプ参照エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
+                if (sender == _menuInsertHelp) MessageBox.Show(ClaptePadHelpFilepath + "がありません。", "ヘルプ参照エラー", MessageBoxButtons.OK, MessageBoxIcon.Exclamation);
                 return;
             }
 
             int visible1stLine = _inputTextBox.FirstVisibleLine;
-            _inputTextBox.Text = _inputTextBox.Text + "\r\n" + File.ReadAllText(_claptePadHelpFilename);
+            _inputTextBox.Text = _inputTextBox.Text + "\r\n" + File.ReadAllText(ClaptePadHelpFilepath);
             _inputTextBox.FirstVisibleLine = visible1stLine;
         }
 

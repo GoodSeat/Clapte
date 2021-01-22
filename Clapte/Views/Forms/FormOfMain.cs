@@ -1,5 +1,5 @@
 ﻿// -----------------------------------------------------------------------------
-//  Copyright (C) 2016-2019 GoodSeat
+//  Copyright (C) 2016-2021 GoodSeat
 //  Distributed under the MIT License
 //  See https://sites.google.com/site/eatbaconandham/clapte/license 
 // -----------------------------------------------------------------------------
@@ -128,6 +128,31 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         public FunctionListViewModel UserFunctions { get; private set; }
 
+
+        /// <summary>
+        /// アプリケーションのディレクトリを取得します。
+        /// </summary>
+        public static string AppDirectory
+        {
+            get { return Path.GetDirectoryName(Application.ExecutablePath); }
+        }
+
+        /// <summary>
+        /// 設定ファイルのファイルパスを取得します。
+        /// </summary>
+        public string SettingFilePath
+        {
+            get { return AppDirectory + "\\Setting.xml"; }
+        }
+
+        /// <summary>
+        /// 設定ファイルのファイルパスを取得します。
+        /// </summary>
+        public string UpdateFilePath
+        {
+            get { return AppDirectory + "\\Updates.xml"; }
+        }
+
         #endregion
 
         #region 初期化と終了処理
@@ -136,7 +161,8 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             InitializeModelView();
 
-            if (!LoadSetting("Setting.xml")) LoadSetting("Updates.xml");
+
+            if (!LoadSetting(SettingFilePath)) LoadSetting(UpdateFilePath);
 
             this.WindowState = FormWindowState.Minimized;
 
@@ -155,7 +181,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void FormOfMain_FormClosing(object sender, FormClosingEventArgs e)
         {
-            SaveSetting("Setting.xml");
+            SaveSetting(SettingFilePath);
 
             ClaptePadView.Close();
             TaskTrayIcon.Visible = false;
@@ -386,7 +412,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             DateTime now = DateTime.Now;
             string date = string.Format("{0}.{1}.{2}_{3}.{4}.{5}", now.Year, now.Month, now.Day, now.Hour, now.Minute, now.Second);
-            string filename = "SettingCrashOn" + date + ".xml";
+            string filename = AppDirectory + "\\SettingCrashOn" + date + ".xml";
             SaveSetting(filename);
             return filename;
         }
