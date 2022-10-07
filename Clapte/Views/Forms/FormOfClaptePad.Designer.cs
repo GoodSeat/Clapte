@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
-            Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
             Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
+            Sgry.Azuki.FontInfo fontInfo3 = new Sgry.Azuki.FontInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfClaptePad));
             this._inputTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuEdit = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -53,8 +53,9 @@
             this._menuUnCommentOut = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator7 = new System.Windows.Forms.ToolStripSeparator();
             this._menuConvertUnit = new System.Windows.Forms.ToolStripMenuItem();
-            this._menuDefineAsConstantOfFunction = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSubstitute = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuDefineAsConstantOfFunction = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuDeformAboutSelected = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
             this._menuDeformFormula = new System.Windows.Forms.ToolStripMenuItem();
             this._menuExpand = new System.Windows.Forms.ToolStripMenuItem();
@@ -63,8 +64,13 @@
             this._menuFactorize = new System.Windows.Forms.ToolStripMenuItem();
             this._menuCollectAbout = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator8 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuStartHotLoading = new System.Windows.Forms.ToolStripMenuItem();
             this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
+            this._panelHotLoading = new System.Windows.Forms.Panel();
+            this._btnStopHotLoading = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._textBoxHotReloadingPath = new System.Windows.Forms.TextBox();
+            this._picHotReloading = new System.Windows.Forms.PictureBox();
             this._panelFind = new System.Windows.Forms.Panel();
             this._btnToggleFindPanelPosition = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this.pictureBox3 = new System.Windows.Forms.PictureBox();
@@ -83,6 +89,10 @@
             this._textBoxReplace = new System.Windows.Forms.TextBox();
             this._textBoxFind = new System.Windows.Forms.TextBox();
             this._btnAllDelete = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._panelHotSaving = new System.Windows.Forms.Panel();
+            this._btnStopHotSaving = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
+            this._textBoxHotSavingPath = new System.Windows.Forms.TextBox();
+            this._picHotSaving = new System.Windows.Forms.PictureBox();
             this._resultTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuResult = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._menuCopyResult = new System.Windows.Forms.ToolStripMenuItem();
@@ -93,6 +103,8 @@
             this._menuJumpDefineResult = new System.Windows.Forms.ToolStripMenuItem();
             this._menuAddUserDefineResult = new System.Windows.Forms.ToolStripMenuItem();
             this._menuVisibleDeformHistoryResult = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator15 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuToggleHotSaving = new System.Windows.Forms.ToolStripMenuItem();
             this._treeViewHistory = new System.Windows.Forms.TreeView();
             this._contextMenuHistory = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._menuHideDeformHistory = new System.Windows.Forms.ToolStripMenuItem();
@@ -129,12 +141,26 @@
             this._expandMenuSubstitute = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._expandMenuCollectAbout = new System.Windows.Forms.ContextMenuStrip(this.components);
             this._txtBoxCollectAbout = new System.Windows.Forms.ToolStripTextBox();
-            this._menuDeformAboutSelected = new System.Windows.Forms.ToolStripMenuItem();
+            this._fileSystemWatcherHotLoading = new System.IO.FileSystemWatcher();
+            this._contextMenuEditOnHotLoading = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this._menuCopyOnHotLoading = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator13 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuSelectAllOnHotLoading = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator14 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuFindOnHotLoading = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuVisibleDeformHistoryOnHotLoading = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem10 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
+            this._menuStopHotLoading = new System.Windows.Forms.ToolStripMenuItem();
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
             this._splitContainer.SuspendLayout();
+            this._panelHotLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnStopHotLoading)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._picHotReloading)).BeginInit();
             this._panelFind.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindPanelPosition)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox3)).BeginInit();
@@ -149,6 +175,9 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnAllDelete)).BeginInit();
+            this._panelHotSaving.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnStopHotSaving)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._picHotSaving)).BeginInit();
             this._contextMenuResult.SuspendLayout();
             this._contextMenuHistory.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picStatus)).BeginInit();
@@ -167,6 +196,8 @@
             this._expandMenuConvertUnit.SuspendLayout();
             this._expandMenuExtractDefine.SuspendLayout();
             this._expandMenuCollectAbout.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcherHotLoading)).BeginInit();
+            this._contextMenuEditOnHotLoading.SuspendLayout();
             this.SuspendLayout();
             // 
             // _inputTextBox
@@ -182,10 +213,10 @@
             this._inputTextBox.DrawsTab = false;
             this._inputTextBox.FirstVisibleLine = 0;
             this._inputTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo1.Name = "HGｺﾞｼｯｸM";
-            fontInfo1.Size = 9;
-            fontInfo1.Style = System.Drawing.FontStyle.Regular;
-            this._inputTextBox.FontInfo = fontInfo1;
+            fontInfo2.Name = "HGｺﾞｼｯｸM";
+            fontInfo2.Size = 9;
+            fontInfo2.Style = System.Drawing.FontStyle.Regular;
+            this._inputTextBox.FontInfo = fontInfo2;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
             this._inputTextBox.HighlightsCurrentLine = false;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
@@ -234,6 +265,7 @@
             this._menuSolveSimultaneousEquation,
             this._menuDeformFormula,
             this.toolStripSeparator8,
+            this._menuStartHotLoading,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
             this._contextMenuEdit.Size = new System.Drawing.Size(288, 502);
@@ -382,6 +414,15 @@
             this._menuConvertUnit.ToolTipText = "計算結果を単位換算します。";
             this._menuConvertUnit.Click += new System.EventHandler(this._menuConvertUnit_Click);
             // 
+            // _menuSubstitute
+            // 
+            this._menuSubstitute.Name = "_menuSubstitute";
+            this._menuSubstitute.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
+            this._menuSubstitute.Size = new System.Drawing.Size(287, 22);
+            this._menuSubstitute.Text = "変数の代入(&R)";
+            this._menuSubstitute.ToolTipText = "指定変数に任意値を代入し、その結果を次の行に挿入します。";
+            this._menuSubstitute.Click += new System.EventHandler(this._menuSubstitute_Click);
+            // 
             // _menuDefineAsConstantOfFunction
             // 
             this._menuDefineAsConstantOfFunction.Name = "_menuDefineAsConstantOfFunction";
@@ -391,14 +432,14 @@
             this._menuDefineAsConstantOfFunction.ToolTipText = "選択部分を定数/関数で置き換え、その定義を前の行に挿入します。";
             this._menuDefineAsConstantOfFunction.Click += new System.EventHandler(this._menuDefineAsConstantOfFunction_Click);
             // 
-            // _menuSubstitute
+            // _menuDeformAboutSelected
             // 
-            this._menuSubstitute.Name = "_menuSubstitute";
-            this._menuSubstitute.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.R)));
-            this._menuSubstitute.Size = new System.Drawing.Size(287, 22);
-            this._menuSubstitute.Text = "変数の代入(&R)";
-            this._menuSubstitute.ToolTipText = "指定変数に任意値を代入し、その結果を次の行に挿入します。";
-            this._menuSubstitute.Click += new System.EventHandler(this._menuSubstitute_Click);
+            this._menuDeformAboutSelected.Name = "_menuDeformAboutSelected";
+            this._menuDeformAboutSelected.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
+            this._menuDeformAboutSelected.Size = new System.Drawing.Size(287, 22);
+            this._menuDeformAboutSelected.Text = "選択部分に関する式に変形(&O)";
+            this._menuDeformAboutSelected.ToolTipText = "選択部分に関する式に変形します。";
+            this._menuDeformAboutSelected.Click += new System.EventHandler(this._menuDeformAboutSelected_Click);
             // 
             // _menuSolveSimultaneousEquation
             // 
@@ -473,6 +514,13 @@
             this.toolStripSeparator8.Name = "toolStripSeparator8";
             this.toolStripSeparator8.Size = new System.Drawing.Size(284, 6);
             // 
+            // _menuStartHotLoading
+            // 
+            this._menuStartHotLoading.Name = "_menuStartHotLoading";
+            this._menuStartHotLoading.Size = new System.Drawing.Size(287, 22);
+            this._menuStartHotLoading.Text = "ホットローディングの開始(&L)";
+            this._menuStartHotLoading.Click += new System.EventHandler(this._menuStartHotLoading_Click);
+            // 
             // _menuInsertHelp
             // 
             this._menuInsertHelp.Name = "_menuInsertHelp";
@@ -489,16 +537,75 @@
             // 
             // _splitContainer.Panel1
             // 
+            this._splitContainer.Panel1.Controls.Add(this._panelHotLoading);
             this._splitContainer.Panel1.Controls.Add(this._panelFind);
             this._splitContainer.Panel1.Controls.Add(this._inputTextBox);
             this._splitContainer.Panel1.Controls.Add(this._btnAllDelete);
             // 
             // _splitContainer.Panel2
             // 
+            this._splitContainer.Panel2.Controls.Add(this._panelHotSaving);
             this._splitContainer.Panel2.Controls.Add(this._resultTextBox);
             this._splitContainer.Size = new System.Drawing.Size(683, 440);
             this._splitContainer.SplitterDistance = 432;
             this._splitContainer.TabIndex = 17;
+            // 
+            // _panelHotLoading
+            // 
+            this._panelHotLoading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._panelHotLoading.BackColor = System.Drawing.Color.White;
+            this._panelHotLoading.Controls.Add(this._btnStopHotLoading);
+            this._panelHotLoading.Controls.Add(this._textBoxHotReloadingPath);
+            this._panelHotLoading.Controls.Add(this._picHotReloading);
+            this._panelHotLoading.Location = new System.Drawing.Point(-5, 411);
+            this._panelHotLoading.Name = "_panelHotLoading";
+            this._panelHotLoading.Size = new System.Drawing.Size(437, 29);
+            this._panelHotLoading.TabIndex = 24;
+            this._panelHotLoading.Visible = false;
+            // 
+            // _btnStopHotLoading
+            // 
+            this._btnStopHotLoading.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnStopHotLoading.BackColor = System.Drawing.Color.White;
+            this._btnStopHotLoading.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnStopHotLoading.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnStopHotLoading.DownMove = 1;
+            this._btnStopHotLoading.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort;
+            this._btnStopHotLoading.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort_Unfocus;
+            this._btnStopHotLoading.Location = new System.Drawing.Point(412, 4);
+            this._btnStopHotLoading.Name = "_btnStopHotLoading";
+            this._btnStopHotLoading.Size = new System.Drawing.Size(22, 22);
+            this._btnStopHotLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnStopHotLoading.TabIndex = 30;
+            this._btnStopHotLoading.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnStopHotLoading, "ホットローディングの停止");
+            this._btnStopHotLoading.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort_Unfocus;
+            this._btnStopHotLoading.Click += new System.EventHandler(this._btnStopHotLoading_Click);
+            // 
+            // _textBoxHotReloadingPath
+            // 
+            this._textBoxHotReloadingPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._textBoxHotReloadingPath.BackColor = System.Drawing.Color.White;
+            this._textBoxHotReloadingPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._textBoxHotReloadingPath.ForeColor = System.Drawing.Color.Firebrick;
+            this._textBoxHotReloadingPath.Location = new System.Drawing.Point(28, 9);
+            this._textBoxHotReloadingPath.Name = "_textBoxHotReloadingPath";
+            this._textBoxHotReloadingPath.ReadOnly = true;
+            this._textBoxHotReloadingPath.Size = new System.Drawing.Size(379, 12);
+            this._textBoxHotReloadingPath.TabIndex = 19;
+            this._textBoxHotReloadingPath.Text = "C:\\\\Test";
+            // 
+            // _picHotReloading
+            // 
+            this._picHotReloading.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this._picHotReloading.Image = global::GoodSeat.Clapte.Properties.Resources.SpinnerBlueSmall;
+            this._picHotReloading.Location = new System.Drawing.Point(6, 6);
+            this._picHotReloading.Name = "_picHotReloading";
+            this._picHotReloading.Size = new System.Drawing.Size(18, 18);
+            this._picHotReloading.TabIndex = 18;
+            this._picHotReloading.TabStop = false;
             // 
             // _panelFind
             // 
@@ -535,7 +642,7 @@
             this._btnToggleFindPanelPosition.DownMove = 1;
             this._btnToggleFindPanelPosition.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveFindPanel;
             this._btnToggleFindPanelPosition.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_MoveFindPanel_Unfocus;
-            this._btnToggleFindPanelPosition.Location = new System.Drawing.Point(197, 24);
+            this._btnToggleFindPanelPosition.Location = new System.Drawing.Point(197, 26);
             this._btnToggleFindPanelPosition.Name = "_btnToggleFindPanelPosition";
             this._btnToggleFindPanelPosition.Size = new System.Drawing.Size(22, 22);
             this._btnToggleFindPanelPosition.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -564,7 +671,7 @@
             this._btnReplaceAll.DownMove = 1;
             this._btnReplaceAll.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ReplaceAll;
             this._btnReplaceAll.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ReplaceAll_Unfocus;
-            this._btnReplaceAll.Location = new System.Drawing.Point(164, 24);
+            this._btnReplaceAll.Location = new System.Drawing.Point(164, 26);
             this._btnReplaceAll.Name = "_btnReplaceAll";
             this._btnReplaceAll.Size = new System.Drawing.Size(22, 22);
             this._btnReplaceAll.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -639,7 +746,7 @@
             this._labelReplace.AutoSize = true;
             this._labelReplace.Cursor = System.Windows.Forms.Cursors.IBeam;
             this._labelReplace.ForeColor = System.Drawing.Color.DarkGray;
-            this._labelReplace.Location = new System.Drawing.Point(12, 29);
+            this._labelReplace.Location = new System.Drawing.Point(12, 31);
             this._labelReplace.Name = "_labelReplace";
             this._labelReplace.Size = new System.Drawing.Size(35, 12);
             this._labelReplace.TabIndex = 34;
@@ -667,7 +774,7 @@
             this._btnReplaceAndPrev.DownMove = 1;
             this._btnReplaceAndPrev.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ReplaceAndPrev;
             this._btnReplaceAndPrev.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ReplaceAndPrev_Unfocus;
-            this._btnReplaceAndPrev.Location = new System.Drawing.Point(140, 24);
+            this._btnReplaceAndPrev.Location = new System.Drawing.Point(140, 26);
             this._btnReplaceAndPrev.Name = "_btnReplaceAndPrev";
             this._btnReplaceAndPrev.Size = new System.Drawing.Size(22, 22);
             this._btnReplaceAndPrev.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -688,7 +795,7 @@
             this._btnReplaceAndNext.DownMove = 1;
             this._btnReplaceAndNext.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ReplaceAndNext;
             this._btnReplaceAndNext.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_ReplaceAndNext_Unfocus;
-            this._btnReplaceAndNext.Location = new System.Drawing.Point(120, 24);
+            this._btnReplaceAndNext.Location = new System.Drawing.Point(120, 26);
             this._btnReplaceAndNext.Name = "_btnReplaceAndNext";
             this._btnReplaceAndNext.Size = new System.Drawing.Size(22, 22);
             this._btnReplaceAndNext.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
@@ -745,7 +852,7 @@
             // pictureBox2
             // 
             this.pictureBox2.BackColor = System.Drawing.Color.Gray;
-            this.pictureBox2.Location = new System.Drawing.Point(8, 44);
+            this.pictureBox2.Location = new System.Drawing.Point(8, 46);
             this.pictureBox2.Name = "pictureBox2";
             this.pictureBox2.Size = new System.Drawing.Size(110, 1);
             this.pictureBox2.TabIndex = 3;
@@ -764,7 +871,7 @@
             // 
             this._textBoxReplace.BackColor = System.Drawing.SystemColors.Window;
             this._textBoxReplace.BorderStyle = System.Windows.Forms.BorderStyle.None;
-            this._textBoxReplace.Location = new System.Drawing.Point(10, 29);
+            this._textBoxReplace.Location = new System.Drawing.Point(10, 31);
             this._textBoxReplace.Name = "_textBoxReplace";
             this._textBoxReplace.Size = new System.Drawing.Size(100, 12);
             this._textBoxReplace.TabIndex = 1;
@@ -801,6 +908,63 @@
             this._btnAllDelete.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_ClearFilter_Unfocus;
             this._btnAllDelete.Click += new System.EventHandler(this._btnAllDelete_Click);
             // 
+            // _panelHotSaving
+            // 
+            this._panelHotSaving.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._panelHotSaving.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._panelHotSaving.Controls.Add(this._btnStopHotSaving);
+            this._panelHotSaving.Controls.Add(this._textBoxHotSavingPath);
+            this._panelHotSaving.Controls.Add(this._picHotSaving);
+            this._panelHotSaving.Location = new System.Drawing.Point(0, 411);
+            this._panelHotSaving.Name = "_panelHotSaving";
+            this._panelHotSaving.Size = new System.Drawing.Size(230, 29);
+            this._panelHotSaving.TabIndex = 25;
+            this._panelHotSaving.Visible = false;
+            // 
+            // _btnStopHotSaving
+            // 
+            this._btnStopHotSaving.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnStopHotSaving.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._btnStopHotSaving.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnStopHotSaving.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnStopHotSaving.DownMove = 1;
+            this._btnStopHotSaving.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort;
+            this._btnStopHotSaving.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort_Unfocus;
+            this._btnStopHotSaving.Location = new System.Drawing.Point(205, 4);
+            this._btnStopHotSaving.Name = "_btnStopHotSaving";
+            this._btnStopHotSaving.Size = new System.Drawing.Size(22, 22);
+            this._btnStopHotSaving.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnStopHotSaving.TabIndex = 30;
+            this._btnStopHotSaving.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnStopHotSaving, "ホットセービングの停止");
+            this._btnStopHotSaving.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort_Unfocus;
+            this._btnStopHotSaving.Click += new System.EventHandler(this._menuToggleHotSaving_Click);
+            // 
+            // _textBoxHotSavingPath
+            // 
+            this._textBoxHotSavingPath.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this._textBoxHotSavingPath.BackColor = System.Drawing.Color.WhiteSmoke;
+            this._textBoxHotSavingPath.BorderStyle = System.Windows.Forms.BorderStyle.None;
+            this._textBoxHotSavingPath.ForeColor = System.Drawing.Color.Firebrick;
+            this._textBoxHotSavingPath.Location = new System.Drawing.Point(28, 9);
+            this._textBoxHotSavingPath.Name = "_textBoxHotSavingPath";
+            this._textBoxHotSavingPath.ReadOnly = true;
+            this._textBoxHotSavingPath.Size = new System.Drawing.Size(172, 12);
+            this._textBoxHotSavingPath.TabIndex = 19;
+            this._textBoxHotSavingPath.Text = "C:\\\\Test";
+            // 
+            // _picHotSaving
+            // 
+            this._picHotSaving.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this._picHotSaving.Image = global::GoodSeat.Clapte.Properties.Resources.SpinnerBlueSmall;
+            this._picHotSaving.Location = new System.Drawing.Point(6, 6);
+            this._picHotSaving.Name = "_picHotSaving";
+            this._picHotSaving.Size = new System.Drawing.Size(18, 18);
+            this._picHotSaving.TabIndex = 18;
+            this._picHotSaving.TabStop = false;
+            // 
             // _resultTextBox
             // 
             this._resultTextBox.BackColor = System.Drawing.Color.WhiteSmoke;
@@ -814,10 +978,10 @@
             this._resultTextBox.DrawsTab = false;
             this._resultTextBox.FirstVisibleLine = 0;
             this._resultTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo2.Name = "HGｺﾞｼｯｸM";
-            fontInfo2.Size = 9;
-            fontInfo2.Style = System.Drawing.FontStyle.Regular;
-            this._resultTextBox.FontInfo = fontInfo2;
+            fontInfo3.Name = "HGｺﾞｼｯｸM";
+            fontInfo3.Size = 9;
+            fontInfo3.Style = System.Drawing.FontStyle.Regular;
+            this._resultTextBox.FontInfo = fontInfo3;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
             this._resultTextBox.HighlightsCurrentLine = false;
             this._resultTextBox.IsReadOnly = true;
@@ -847,40 +1011,42 @@
             this._menuFindAndReplaceResult,
             this._menuJumpDefineResult,
             this._menuAddUserDefineResult,
-            this._menuVisibleDeformHistoryResult});
+            this._menuVisibleDeformHistoryResult,
+            this.toolStripSeparator15,
+            this._menuToggleHotSaving});
             this._contextMenuResult.Name = "_contextMenuEdit";
-            this._contextMenuResult.Size = new System.Drawing.Size(185, 148);
+            this._contextMenuResult.Size = new System.Drawing.Size(193, 176);
             this._contextMenuResult.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuCopyResult
             // 
             this._menuCopyResult.Name = "_menuCopyResult";
-            this._menuCopyResult.Size = new System.Drawing.Size(184, 22);
+            this._menuCopyResult.Size = new System.Drawing.Size(192, 22);
             this._menuCopyResult.Text = "コピー(&C)";
             this._menuCopyResult.Click += new System.EventHandler(this._menuCopyResult_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(189, 6);
             // 
             // _menuSelectAllResult
             // 
             this._menuSelectAllResult.Name = "_menuSelectAllResult";
-            this._menuSelectAllResult.Size = new System.Drawing.Size(184, 22);
+            this._menuSelectAllResult.Size = new System.Drawing.Size(192, 22);
             this._menuSelectAllResult.Text = "すべて選択(&A)";
             this._menuSelectAllResult.Click += new System.EventHandler(this._menuSelectAllResult_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(181, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(189, 6);
             // 
             // _menuFindAndReplaceResult
             // 
             this._menuFindAndReplaceResult.Name = "_menuFindAndReplaceResult";
             this._menuFindAndReplaceResult.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(184, 22);
+            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(192, 22);
             this._menuFindAndReplaceResult.Text = "検索と置換(&F)";
             this._menuFindAndReplaceResult.ToolTipText = "検索/置換パネルを表示します。";
             this._menuFindAndReplaceResult.Click += new System.EventHandler(this._menuFindAndReplace_Click);
@@ -889,7 +1055,7 @@
             // 
             this._menuJumpDefineResult.Name = "_menuJumpDefineResult";
             this._menuJumpDefineResult.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefineResult.Size = new System.Drawing.Size(184, 22);
+            this._menuJumpDefineResult.Size = new System.Drawing.Size(192, 22);
             this._menuJumpDefineResult.Text = "定義を参照(&J)";
             this._menuJumpDefineResult.ToolTipText = "カーソル位置にある定数/関数/単位の定義位置にジャンプします。";
             this._menuJumpDefineResult.Click += new System.EventHandler(this._menuJumpDefineResult_Click);
@@ -897,7 +1063,7 @@
             // _menuAddUserDefineResult
             // 
             this._menuAddUserDefineResult.Name = "_menuAddUserDefineResult";
-            this._menuAddUserDefineResult.Size = new System.Drawing.Size(184, 22);
+            this._menuAddUserDefineResult.Size = new System.Drawing.Size(192, 22);
             this._menuAddUserDefineResult.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefineResult.Visible = false;
             this._menuAddUserDefineResult.Click += new System.EventHandler(this._menuAddUserDefineResult_Click);
@@ -905,10 +1071,22 @@
             // _menuVisibleDeformHistoryResult
             // 
             this._menuVisibleDeformHistoryResult.Name = "_menuVisibleDeformHistoryResult";
-            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(184, 22);
+            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(192, 22);
             this._menuVisibleDeformHistoryResult.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistoryResult.ToolTipText = "計算過程の表示/非表示を切り替えます。";
             this._menuVisibleDeformHistoryResult.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
+            // 
+            // toolStripSeparator15
+            // 
+            this.toolStripSeparator15.Name = "toolStripSeparator15";
+            this.toolStripSeparator15.Size = new System.Drawing.Size(189, 6);
+            // 
+            // _menuToggleHotSaving
+            // 
+            this._menuToggleHotSaving.Name = "_menuToggleHotSaving";
+            this._menuToggleHotSaving.Size = new System.Drawing.Size(192, 22);
+            this._menuToggleHotSaving.Text = "ホットセービングの開始(&S)";
+            this._menuToggleHotSaving.Click += new System.EventHandler(this._menuToggleHotSaving_Click);
             // 
             // _treeViewHistory
             // 
@@ -1278,14 +1456,102 @@
             this._txtBoxCollectAbout.KeyDown += new System.Windows.Forms.KeyEventHandler(this._txtBoxCollectAbout_KeyDown);
             this._txtBoxCollectAbout.TextChanged += new System.EventHandler(this._txtBoxCollectAbout_TextChanged);
             // 
-            // _menuDeformAboutSelected
+            // _fileSystemWatcherHotLoading
             // 
-            this._menuDeformAboutSelected.Name = "_menuDeformAboutSelected";
-            this._menuDeformAboutSelected.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.T)));
-            this._menuDeformAboutSelected.Size = new System.Drawing.Size(287, 22);
-            this._menuDeformAboutSelected.Text = "選択部分に関する式に変形(&O)";
-            this._menuDeformAboutSelected.ToolTipText = "選択部分に関する式に変形します。";
-            this._menuDeformAboutSelected.Click += new System.EventHandler(this._menuDeformAboutSelected_Click);
+            this._fileSystemWatcherHotLoading.EnableRaisingEvents = true;
+            this._fileSystemWatcherHotLoading.SynchronizingObject = this;
+            this._fileSystemWatcherHotLoading.Changed += new System.IO.FileSystemEventHandler(this._fileSystemWatcherHotLoading_Changed);
+            this._fileSystemWatcherHotLoading.Deleted += new System.IO.FileSystemEventHandler(this._fileSystemWatcherHotLoading_Deleted);
+            this._fileSystemWatcherHotLoading.Renamed += new System.IO.RenamedEventHandler(this._fileSystemWatcherHotLoading_Renamed);
+            // 
+            // _contextMenuEditOnHotLoading
+            // 
+            this._contextMenuEditOnHotLoading.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this._menuCopyOnHotLoading,
+            this.toolStripSeparator13,
+            this._menuSelectAllOnHotLoading,
+            this.toolStripSeparator14,
+            this._menuFindOnHotLoading,
+            this._menuVisibleDeformHistoryOnHotLoading,
+            this.toolStripMenuItem10,
+            this.toolStripMenuItem11,
+            this.toolStripSeparator12,
+            this._menuStopHotLoading});
+            this._contextMenuEditOnHotLoading.Name = "_contextMenuEdit";
+            this._contextMenuEditOnHotLoading.Size = new System.Drawing.Size(215, 176);
+            // 
+            // _menuCopyOnHotLoading
+            // 
+            this._menuCopyOnHotLoading.Name = "_menuCopyOnHotLoading";
+            this._menuCopyOnHotLoading.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.C)));
+            this._menuCopyOnHotLoading.Size = new System.Drawing.Size(214, 22);
+            this._menuCopyOnHotLoading.Text = "コピー(&C)";
+            this._menuCopyOnHotLoading.Click += new System.EventHandler(this._menuCopy_Click);
+            // 
+            // toolStripSeparator13
+            // 
+            this.toolStripSeparator13.Name = "toolStripSeparator13";
+            this.toolStripSeparator13.Size = new System.Drawing.Size(211, 6);
+            // 
+            // _menuSelectAllOnHotLoading
+            // 
+            this._menuSelectAllOnHotLoading.Name = "_menuSelectAllOnHotLoading";
+            this._menuSelectAllOnHotLoading.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.A)));
+            this._menuSelectAllOnHotLoading.Size = new System.Drawing.Size(214, 22);
+            this._menuSelectAllOnHotLoading.Text = "すべて選択(&A)";
+            this._menuSelectAllOnHotLoading.Click += new System.EventHandler(this._menuSelectAll_Click);
+            // 
+            // toolStripSeparator14
+            // 
+            this.toolStripSeparator14.Name = "toolStripSeparator14";
+            this.toolStripSeparator14.Size = new System.Drawing.Size(211, 6);
+            // 
+            // _menuFindOnHotLoading
+            // 
+            this._menuFindOnHotLoading.Name = "_menuFindOnHotLoading";
+            this._menuFindOnHotLoading.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
+            this._menuFindOnHotLoading.Size = new System.Drawing.Size(214, 22);
+            this._menuFindOnHotLoading.Text = "検索(&F)";
+            this._menuFindOnHotLoading.ToolTipText = "検索パネルを表示します。";
+            this._menuFindOnHotLoading.Click += new System.EventHandler(this._menuFindAndReplace_Click);
+            // 
+            // _menuVisibleDeformHistoryOnHotLoading
+            // 
+            this._menuVisibleDeformHistoryOnHotLoading.Name = "_menuVisibleDeformHistoryOnHotLoading";
+            this._menuVisibleDeformHistoryOnHotLoading.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.H)));
+            this._menuVisibleDeformHistoryOnHotLoading.Size = new System.Drawing.Size(214, 22);
+            this._menuVisibleDeformHistoryOnHotLoading.Text = "計算過程の表示(&D)";
+            this._menuVisibleDeformHistoryOnHotLoading.ToolTipText = "計算過程の表示/非表示を切り替えます。";
+            this._menuVisibleDeformHistoryOnHotLoading.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
+            // 
+            // toolStripMenuItem10
+            // 
+            this.toolStripMenuItem10.Name = "toolStripMenuItem10";
+            this.toolStripMenuItem10.ShortcutKeys = System.Windows.Forms.Keys.F12;
+            this.toolStripMenuItem10.Size = new System.Drawing.Size(214, 22);
+            this.toolStripMenuItem10.Text = "定義を参照(&J)";
+            this.toolStripMenuItem10.ToolTipText = "カーソル位置にある定数/関数/単位の定義位置にジャンプします。";
+            this.toolStripMenuItem10.Click += new System.EventHandler(this._menuJumpDefine_Click);
+            // 
+            // toolStripMenuItem11
+            // 
+            this.toolStripMenuItem11.Name = "toolStripMenuItem11";
+            this.toolStripMenuItem11.Size = new System.Drawing.Size(214, 22);
+            this.toolStripMenuItem11.Text = "ユーザー定義に登録(&G)";
+            this.toolStripMenuItem11.Visible = false;
+            // 
+            // toolStripSeparator12
+            // 
+            this.toolStripSeparator12.Name = "toolStripSeparator12";
+            this.toolStripSeparator12.Size = new System.Drawing.Size(211, 6);
+            // 
+            // _menuStopHotLoading
+            // 
+            this._menuStopHotLoading.Name = "_menuStopHotLoading";
+            this._menuStopHotLoading.Size = new System.Drawing.Size(214, 22);
+            this._menuStopHotLoading.Text = "ホットローディングの停止(&S)";
+            this._menuStopHotLoading.ToolTipText = "ホットローディングを停止します。";
+            this._menuStopHotLoading.Click += new System.EventHandler(this._btnStopHotLoading_Click);
             // 
             // FormOfClaptePad
             // 
@@ -1323,6 +1589,10 @@
             this._splitContainer.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).EndInit();
             this._splitContainer.ResumeLayout(false);
+            this._panelHotLoading.ResumeLayout(false);
+            this._panelHotLoading.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnStopHotLoading)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._picHotReloading)).EndInit();
             this._panelFind.ResumeLayout(false);
             this._panelFind.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._btnToggleFindPanelPosition)).EndInit();
@@ -1338,6 +1608,10 @@
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox2)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnAllDelete)).EndInit();
+            this._panelHotSaving.ResumeLayout(false);
+            this._panelHotSaving.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnStopHotSaving)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._picHotSaving)).EndInit();
             this._contextMenuResult.ResumeLayout(false);
             this._contextMenuHistory.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this._picStatus)).EndInit();
@@ -1359,6 +1633,8 @@
             this._expandMenuExtractDefine.PerformLayout();
             this._expandMenuCollectAbout.ResumeLayout(false);
             this._expandMenuCollectAbout.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcherHotLoading)).EndInit();
+            this._contextMenuEditOnHotLoading.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1464,5 +1740,28 @@
         private System.Windows.Forms.ContextMenuStrip _expandMenuCollectAbout;
         private System.Windows.Forms.ToolStripTextBox _txtBoxCollectAbout;
         private System.Windows.Forms.ToolStripMenuItem _menuDeformAboutSelected;
+        private System.Windows.Forms.Panel _panelHotLoading;
+        private System.IO.FileSystemWatcher _fileSystemWatcherHotLoading;
+        private Components.ImageButton _btnStopHotLoading;
+        private System.Windows.Forms.TextBox _textBoxHotReloadingPath;
+        private System.Windows.Forms.PictureBox _picHotReloading;
+        private System.Windows.Forms.ToolStripMenuItem _menuStartHotLoading;
+        private System.Windows.Forms.ContextMenuStrip _contextMenuEditOnHotLoading;
+        private System.Windows.Forms.ToolStripMenuItem _menuCopyOnHotLoading;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator13;
+        private System.Windows.Forms.ToolStripMenuItem _menuSelectAllOnHotLoading;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator14;
+        private System.Windows.Forms.ToolStripMenuItem _menuFindOnHotLoading;
+        private System.Windows.Forms.ToolStripMenuItem _menuVisibleDeformHistoryOnHotLoading;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem10;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem11;
+        private System.Windows.Forms.ToolStripMenuItem _menuStopHotLoading;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator12;
+        private System.Windows.Forms.Panel _panelHotSaving;
+        private Components.ImageButton _btnStopHotSaving;
+        private System.Windows.Forms.TextBox _textBoxHotSavingPath;
+        private System.Windows.Forms.PictureBox _picHotSaving;
+        private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
+        private System.Windows.Forms.ToolStripMenuItem _menuToggleHotSaving;
     }
 }

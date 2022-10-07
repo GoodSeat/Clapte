@@ -187,6 +187,16 @@ namespace GoodSeat.Clapte.Views.Forms
         /// </summary>
         private bool IgnoreScroll { get; set; }
 
+        /// <summary>
+        /// ホットローディングの対象とするファイルパスを設定もしくは取得します。
+        /// </summary>
+        public string HotLoadingPath { get; set; }
+
+        /// <summary>
+        /// ホットセービングの対象とするファイルパスを設定もしくは取得します。
+        /// </summary>
+        public string HotSavingPath { get; set; }
+
         #endregion
 
         #region 処理
@@ -230,6 +240,8 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.ColorScheme.SetMarkingDecoration(2, new BgColorTextDecoration(Color.Orange));
 
             _panelFind.Parent = _inputTextBox;
+            _panelHotLoading.Parent = _inputTextBox;
+            _panelHotSaving.Parent = _resultTextBox;
 
             _greekLetterModableForFindBox = new GreekLetterModable(_textBoxFind);
             _greekLetterModableForReplaceBox = new GreekLetterModable(_textBoxReplace);
@@ -398,6 +410,56 @@ namespace GoodSeat.Clapte.Views.Forms
             }
         }
 
+        /// <summary>
+        /// ホットローディング機能を有効あるいは無効にした際の表示要素の調整を行います。
+        /// </summary>
+        /// <param name="enter"></param>
+        private void enterOrEscapeHotReloadingMode(bool enter)
+        {
+            _panelHotLoading.Visible = enter;
+            _inputTextBox.IsReadOnly = enter;
+
+            _btnLoad.Enabled = !enter;
+
+            if (enter)
+            {
+                _textBoxHotReloadingPath.Text = HotLoadingPath;
+                _panelFind.Height /= 2;
+                _inputTextBox.ContextMenuStrip = _contextMenuEditOnHotLoading;
+
+                _panelFind.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+                _panelFind.Top = 0;
+                _inputTextBox.BackColor = Color.WhiteSmoke;
+                _panelHotLoading.BackColor = Color.White;
+            }
+            else
+            {
+                _panelFind.Height *= 2;
+                _inputTextBox.ContextMenuStrip = _contextMenuEdit;
+                _inputTextBox.BackColor = Color.White;
+            }
+            _inputTextBox.Refresh();
+        }
+
+        /// <summary>
+        /// ホットセービング機能を有効あるいは無効にした際の表示要素の調整を行います。
+        /// </summary>
+        /// <param name="enter"></param>
+        private void enterOrEscapeHotSavingMode(bool enter)
+        {
+            _panelHotSaving.Visible = enter;
+
+            if (enter)
+            {
+                _textBoxHotSavingPath.Text = HotSavingPath;
+                _menuToggleHotSaving.Text = "ホットセービングの停止(&S)";
+            }
+            else
+            {
+                _menuToggleHotSaving.Text = "ホットセービングの開始(&S)";
+            }
+        }
+
         #endregion
 
         #region イベント対応(ビューモデルとのやり取り)
@@ -445,6 +507,19 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox_CaretMoved(_inputTextBox, null);
 
             if (_panelFind.Visible) _textBoxFind_TextChanged(sender, e);
+
+            // ホットセービング
+            if (!string.IsNullOrEmpty(HotSavingPath))
+            {
+                try
+                {
+                    File.WriteAllText(HotSavingPath, resultText, Encoding.UTF8);
+                }
+                catch
+                {
+                    _menuToggleHotSaving_Click(null, EventArgs.Empty);
+                }
+            }
         }
 
         /// <summary>
@@ -496,6 +571,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
             _treeViewHistory.Font = _inputTextBox.Font;
             _panelFind.Font = new Font(_inputTextBox.Font.FontFamily, 9.0f);
+            _panelHotLoading.Font = new Font(_inputTextBox.Font.FontFamily, 9.0f);
         }
 
         private void _inputTextBox_VScroll(object sender, EventArgs e)
@@ -674,6 +750,8 @@ namespace GoodSeat.Clapte.Views.Forms
             _menuCut.Enabled = _inputTextBox.CanCut;
             _menuPaste.Enabled = _inputTextBox.CanPaste;
             _menuDelete.Enabled = _inputTextBox.CanCut;
+
+            _menuStartHotLoading.Enabled = !_picStatus.Visible;
 
             var selected = _inputTextBox.GetSelectedText();
 
@@ -898,6 +976,60 @@ namespace GoodSeat.Clapte.Views.Forms
 
             var msg = EditorViewModel.DeformAboutSelected();
             if (msg != null) EditorViewModel.InsertLine(msg, false);
+        }
+
+        private void _menuStartHotLoading_Click(object sender, EventArgs e)
+        {
+            if (_picStatus.Visible) return; // 計算中は不可
+
+            if (_openFileDialog.ShowDialog() != DialogResult.OK) return;
+
+            HotLoadingPath = _openFileDialog.FileName;
+            _fileSystemWatcherHotLoading.Path = Path.GetDirectoryName(HotLoadingPath);
+            _fileSystemWatcherHotLoading.Filter = Path.GetFileName(HotLoadingPath);
+            _fileSystemWatcherHotLoading.SynchronizingObject = this;
+            _fileSystemWatcherHotLoading.EnableRaisingEvents = true;
+
+            enterOrEscapeHotReloadingMode(true);
+
+            _fileSystemWatcherHotLoading_Changed(sender, null);
+        }
+
+        private void _fileSystemWatcherHotLoading_Changed(object sender, FileSystemEventArgs e)
+        {
+            _inputTextBox.Text = File.ReadAllText(HotLoadingPath);
+        }
+
+        private void _fileSystemWatcherHotLoading_Deleted(object sender, FileSystemEventArgs e)
+        {
+//            if (!File.Exists(HotLoadingPath)) _btnStopHotLoading_Click(sender, e);
+        }
+
+        private void _fileSystemWatcherHotLoading_Renamed(object sender, RenamedEventArgs e)
+        {
+//            if (!File.Exists(HotLoadingPath)) _btnStopHotLoading_Click(sender, e);
+        }
+
+        private void _btnStopHotLoading_Click(object sender, EventArgs e)
+        {
+            enterOrEscapeHotReloadingMode(false);
+            _fileSystemWatcherHotLoading.EnableRaisingEvents = false;
+        }
+
+        private void _menuToggleHotSaving_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrEmpty(HotSavingPath))
+            {
+                if (_saveFileDialog.ShowDialog() != DialogResult.OK) return;
+
+                HotSavingPath = _saveFileDialog.FileName;
+                enterOrEscapeHotSavingMode(true);
+            }
+            else
+            {
+                HotSavingPath = "";
+                enterOrEscapeHotSavingMode(false);
+            }
         }
 
         #endregion
