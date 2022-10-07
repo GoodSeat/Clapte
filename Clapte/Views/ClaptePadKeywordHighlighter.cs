@@ -12,6 +12,7 @@ using Sgry.Azuki.Highlighter;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Liffom.Formulas.Units;
+using GoodSeat.Clapte.Models;
 
 namespace GoodSeat.Clapte.Views
 {
@@ -76,6 +77,10 @@ namespace GoodSeat.Clapte.Views
             constantNames.AddRange(GetAllConstantsDefinedInCell().Select(def => def.Name).Where(name => !constantNames.Contains(name)));
             constantNames.AddRange(Target.ConstantList.Target.Select(def => def.Name).Where(name => !constantNames.Contains(name)));
             constantNames.AddRange(Target.ConstantList.GetSystemConstants().Select(def => def.Name).Where(name => !constantNames.Contains(name)));
+            constantNames.Add(FormulaCellContent.NameOfInputVariable);
+            constantNames.Add(FormulaCellContent.NameOfInputRevVariable);
+            constantNames.Add(FormulaCellContent.NameOfAnswerVariable);
+            constantNames.Add(FormulaCellContent.NameOfAnswerRevVariable);
             constantNames.Sort();
             AddKeywordSet(constantNames.ToArray(), GetCharClassOf(SyntaxTarget.Constant));
 
