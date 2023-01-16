@@ -29,8 +29,8 @@
         private void InitializeComponent()
         {
             this.components = new System.ComponentModel.Container();
+            Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
             Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
-            Sgry.Azuki.FontInfo fontInfo3 = new Sgry.Azuki.FontInfo();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(FormOfClaptePad));
             this._inputTextBox = new Sgry.Azuki.WinForms.AzukiControl();
             this._contextMenuEdit = new System.Windows.Forms.ContextMenuStrip(this.components);
@@ -57,6 +57,8 @@
             this._menuDefineAsConstantOfFunction = new System.Windows.Forms.ToolStripMenuItem();
             this._menuDeformAboutSelected = new System.Windows.Forms.ToolStripMenuItem();
             this._menuSolveSimultaneousEquation = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuInsertSigma = new System.Windows.Forms.ToolStripMenuItem();
+            this._menuInsertPi = new System.Windows.Forms.ToolStripMenuItem();
             this._menuDeformFormula = new System.Windows.Forms.ToolStripMenuItem();
             this._menuExpand = new System.Windows.Forms.ToolStripMenuItem();
             this._menuTidyUp = new System.Windows.Forms.ToolStripMenuItem();
@@ -213,10 +215,10 @@
             this._inputTextBox.DrawsTab = false;
             this._inputTextBox.FirstVisibleLine = 0;
             this._inputTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo2.Name = "HGｺﾞｼｯｸM";
-            fontInfo2.Size = 9;
-            fontInfo2.Style = System.Drawing.FontStyle.Regular;
-            this._inputTextBox.FontInfo = fontInfo2;
+            fontInfo1.Name = "HGｺﾞｼｯｸM";
+            fontInfo1.Size = 9;
+            fontInfo1.Style = System.Drawing.FontStyle.Regular;
+            this._inputTextBox.FontInfo = fontInfo1;
             this._inputTextBox.ForeColor = System.Drawing.Color.Black;
             this._inputTextBox.HighlightsCurrentLine = false;
             this._inputTextBox.Location = new System.Drawing.Point(0, 0);
@@ -263,12 +265,14 @@
             this._menuDefineAsConstantOfFunction,
             this._menuDeformAboutSelected,
             this._menuSolveSimultaneousEquation,
+            this._menuInsertSigma,
+            this._menuInsertPi,
             this._menuDeformFormula,
             this.toolStripSeparator8,
             this._menuStartHotLoading,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(288, 502);
+            this._contextMenuEdit.Size = new System.Drawing.Size(288, 568);
             this._contextMenuEdit.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._contextMenuEdit_Closing);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
@@ -449,6 +453,21 @@
             this._menuSolveSimultaneousEquation.Text = "連立方程式を解く(&S)";
             this._menuSolveSimultaneousEquation.ToolTipText = "選択行を連立方程式として求解します。";
             this._menuSolveSimultaneousEquation.Click += new System.EventHandler(this._menuSolveSimultaneousEquation_Click);
+            // 
+            // _menuInsertSigma
+            // 
+            this._menuInsertSigma.Name = "_menuInsertSigma";
+            this._menuInsertSigma.Size = new System.Drawing.Size(287, 22);
+            this._menuInsertSigma.Text = "選択行の総和を挿入(&S)";
+            this._menuInsertSigma.Click += new System.EventHandler(this._menuInsertSigma_Click);
+            // 
+            // _menuInsertPi
+            // 
+            this._menuInsertPi.Name = "_menuInsertPi";
+            this._menuInsertPi.Size = new System.Drawing.Size(287, 22);
+            this._menuInsertPi.Text = "選択行の総積を挿入(&P)";
+            this._menuInsertPi.Visible = false;
+            this._menuInsertPi.Click += new System.EventHandler(this._menuInsertPi_Click);
             // 
             // _menuDeformFormula
             // 
@@ -978,10 +997,10 @@
             this._resultTextBox.DrawsTab = false;
             this._resultTextBox.FirstVisibleLine = 0;
             this._resultTextBox.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo3.Name = "HGｺﾞｼｯｸM";
-            fontInfo3.Size = 9;
-            fontInfo3.Style = System.Drawing.FontStyle.Regular;
-            this._resultTextBox.FontInfo = fontInfo3;
+            fontInfo2.Name = "HGｺﾞｼｯｸM";
+            fontInfo2.Size = 9;
+            fontInfo2.Style = System.Drawing.FontStyle.Regular;
+            this._resultTextBox.FontInfo = fontInfo2;
             this._resultTextBox.ForeColor = System.Drawing.Color.Black;
             this._resultTextBox.HighlightsCurrentLine = false;
             this._resultTextBox.IsReadOnly = true;
@@ -1763,5 +1782,7 @@
         private System.Windows.Forms.PictureBox _picHotSaving;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator15;
         private System.Windows.Forms.ToolStripMenuItem _menuToggleHotSaving;
+        private System.Windows.Forms.ToolStripMenuItem _menuInsertSigma;
+        private System.Windows.Forms.ToolStripMenuItem _menuInsertPi;
     }
 }

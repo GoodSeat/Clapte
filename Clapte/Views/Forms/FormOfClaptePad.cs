@@ -756,6 +756,9 @@ namespace GoodSeat.Clapte.Views.Forms
             var selected = _inputTextBox.GetSelectedText();
 
             _menuSolveSimultaneousEquation.Enabled = selected.Contains("\n");
+            _menuInsertSigma.Enabled = selected.Contains("\n");
+            _menuInsertPi.Enabled = selected.Contains("\n");
+
             Formula dummy;
             _menuDefineAsConstantOfFunction.Enabled = !string.IsNullOrEmpty(selected) && Target.BaseSolver.Target.TryParse(selected, out dummy);
 
@@ -945,6 +948,30 @@ namespace GoodSeat.Clapte.Views.Forms
                 var txtBox = (_expandMenuSubstitute.Items[0] as ToolStripMenuItem).DropDownItems[0] as ToolStripTextBox;
                 txtBox.Focus();
             }
+        }
+
+        private void _menuInsertSigma_Click(object sender, EventArgs e)
+        {
+            // MEMO:選択行の中に、優先解決行が存在すると、上手く考慮されないという課題がある（これはこの機能の問題というよりかは、_ANSの仕様の問題…）。
+            //      継続行は最終行以外は加算の単位元である0となるため、問題ないようだ。
+            int sline, eline;
+            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
+
+            var max = (eline - sline + 1).ToString();
+            var text = "sigma(" + FormulaCellContent.NameOfAnswerRevVariable + "@j, j=1, " + max + ") # 上" + max + "行の総和";
+            EditorViewModel.InsertLine(text, false);
+        }
+
+        private void _menuInsertPi_Click(object sender, EventArgs e)
+        {
+            // MEMO:現状、この機能は止めている。評価できなかった行は、0となるため積算の単位元としてはふさわしくないため。
+            //      考えてみると、総和を入力後にsigmaをpiに書き換えればよいのだから、分かっている人からしたらこの機能は別になくても良いような気もする。
+            int sline, eline;
+            _inputTextBox.GetSelectedLineIndex(out sline, out eline);
+
+            var max = (eline - sline + 1).ToString();
+            var text = "pi(" + FormulaCellContent.NameOfAnswerRevVariable + "@j, j=1, " + max + ") # 上" + max + "行の総積";
+            EditorViewModel.InsertLine(text, false);
         }
 
         private void _menuVisibleDeformHistory_Click(object sender, EventArgs e)
