@@ -647,7 +647,7 @@ namespace GoodSeat.Clapte.ViewModels
             int begin, end;
             textBox.GetSelection(out begin, out end);
             bool isOnSelected = mouseIndex > begin && mouseIndex < end;
-            if (isOnSelected && selectedText.Length > 1)
+            if (isOnSelected && selectedText.Length > 1 && Target.Count() > lineIndex)
             {
                 selectedText = Regex.Replace(selectedText, "#[^\n]*", "");
                 selectedText = Regex.Replace(selectedText, " _ *\r?\n", "");
