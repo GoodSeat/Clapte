@@ -852,6 +852,9 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuSolveSimultaneousEquation_Click(object sender, EventArgs e)
         {
+            var selected = _inputTextBox.GetSelectedText();
+            if (!selected.Contains("\n")) return;
+
             EditorViewModel.EditSelectedLines((text, isLast) => { return (isLast ? "{_ " : "{  ") + text; });
         }
 
@@ -956,6 +959,7 @@ namespace GoodSeat.Clapte.Views.Forms
             //      継続行は最終行以外は加算の単位元である0となるため、問題ないようだ。
             int sline, eline;
             _inputTextBox.GetSelectedLineIndex(out sline, out eline);
+            if (sline == eline) return;
 
             var vs = new List<string> { "j", "k", "l" };
 
