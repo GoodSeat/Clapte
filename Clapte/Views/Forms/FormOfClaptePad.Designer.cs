@@ -457,8 +457,10 @@
             // _menuInsertSigma
             // 
             this._menuInsertSigma.Name = "_menuInsertSigma";
+            this._menuInsertSigma.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.S)));
             this._menuInsertSigma.Size = new System.Drawing.Size(287, 22);
             this._menuInsertSigma.Text = "選択行の総和を挿入(&S)";
+            this._menuInsertSigma.ToolTipText = "選択行の総和を求める式を次の行に挿入します。";
             this._menuInsertSigma.Click += new System.EventHandler(this._menuInsertSigma_Click);
             // 
             // _menuInsertPi

@@ -957,8 +957,26 @@ namespace GoodSeat.Clapte.Views.Forms
             int sline, eline;
             _inputTextBox.GetSelectedLineIndex(out sline, out eline);
 
+            var vs = new List<string> { "j", "k", "l" };
+
+            int n = 0;
+            string vuse = null;
+            while (vuse == null)
+            {
+                foreach (var v in vs)
+                {
+                    var vt = v;
+                    if (n != 0) vt = v + n.ToString();
+                    var cs = EditorViewModel.InputSupportEnumerator.GetAllCandidates(vt, ViewModels.InputSupports.ClaptePadInputSupportEnumerator.CandidateType.Constant);
+                    if (cs.Any(i => i.ReplaceText == vt)) continue;
+                    vuse = vt;
+                    break;
+                }
+                n++;
+            }
+
             var max = (eline - sline + 1).ToString();
-            var text = "sigma(" + FormulaCellContent.NameOfAnswerRevVariable + "@j, j=1, " + max + ") # 上" + max + "行の総和";
+            var text = $"sigma({FormulaCellContent.NameOfAnswerRevVariable}@{vuse}, {vuse}=1, {max}) # 上{max}行の総和";
             EditorViewModel.InsertLine(text, false);
         }
 
