@@ -433,10 +433,11 @@ namespace GoodSeat.Liffom.Formulas
         /// 数式中の指定要素一覧を取得します。
         /// </summary>
         /// <typeparam name="T">探索対象要素の型。</typeparam>
+        /// <param name="alsoSameName">同名要素も重複して列挙するか否か。</param>
         /// <returns>指定タイプの数式リスト。</returns>
-        public IEnumerable<T> GetExistFactors<T>() where T : Formula
+        public IEnumerable<T> GetExistFactors<T>(bool alsoSameName = false) where T : Formula
         {
-            List<T> already = new List<T>();
+            List<T> already = alsoSameName ? null : new List<T>();
             foreach (T f in onGetExistFactors<T>(already)) yield return f;
         }
 
@@ -444,14 +445,14 @@ namespace GoodSeat.Liffom.Formulas
         /// 数式中の指定要素一覧を取得します。
         /// </summary>
         /// <typeparam name="T">探索対象要素の型。</typeparam>
-        /// <param name="already">既に返した数式要素。</param>
+        /// <param name="already">既に返した数式要素。同名要素も重複して返す場合にはnullを指定。</param>
         /// <returns>指定タイプの数式リスト。</returns>
         private IEnumerable<T> onGetExistFactors<T>(List<T> already) where T : Formula
         {
-            if (this is T && !already.Contains(this as T))
+            if ( this is T && (already == null || !already.Contains(this as T)))
             {
                 yield return (this as T);
-                already.Add(this as T);
+                if (already != null) already.Add(this as T);
             }
 
             foreach (Formula f in this)

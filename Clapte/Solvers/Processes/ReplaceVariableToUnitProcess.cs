@@ -114,20 +114,20 @@ namespace GoodSeat.Clapte.Solvers.Processes
                 input = replaceVariableWithUnit(input, variable);
             }
             // ユーザー定義変数の定義についても同様の変換
-            foreach (var variableWithDefine in input.GetExistFactors<VariableWithDefine>())
+            foreach (var variableWithDefine in input.GetExistFactors<VariableWithDefine>(true))
             {
                 var def = variableWithDefine.Define;
-                foreach (var variable in def.GetExistFactors<Variable>())
+                foreach (var variable in def.GetExistFactors<Variable>(true))
                 {
                     def = replaceVariableWithUnit(def, variable);
                 }
                 variableWithDefine.Define = def;
             }
             // ユーザー定義関数の定義についても同様の変換
-            foreach (var function in input.GetExistFactors<UserFunction>())
+            foreach (var function in input.GetExistFactors<UserFunction>(true))
             {
                 var def = function.UseFormula;
-                foreach (var variable in def.GetExistFactors<Variable>())
+                foreach (var variable in def.GetExistFactors<Variable>(true))
                 {
                     if (function.UseVariable.Contains(variable)) continue;
                     def = replaceVariableWithUnit(def, variable);

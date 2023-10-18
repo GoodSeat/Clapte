@@ -106,7 +106,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
                     if (define == null) continue;
                     input = input.Substituted(v, new VariableWithDefine(v.Mark, define));
                 }
-                foreach (UserFunction v in input.GetExistFactors<UserFunction>())
+                foreach (UserFunction v in input.GetExistFactors<UserFunction>(true))
                 {
                     var error = EvaluateFunction(v, callStack);
                     if (error != null) return error;
