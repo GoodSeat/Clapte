@@ -11,6 +11,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.Solvers.Processes;
 using GoodSeat.Liffom.Formulas.Functions;
+using GoodSeat.Liffom.Formulas.Matrices;
 
 namespace GoodSeat.Clapte.Models
 {
@@ -54,6 +55,30 @@ namespace GoodSeat.Clapte.Models
             s_protTypes.Add(new FormulaCellContentComment());
             s_protTypes.Add(new FormulaCellContentContinuation(null));
         }
+
+        /// <summary>
+        /// 結果参照用配列の変数名称を取得します。
+        /// </summary>
+        /// <remarks>_o@1は1つ目のセルの結果、_o@2は2つ目のセルの結果となります。</remarks>
+        public static string NameOfAnswerVariable { get { return "_ans"; } }
+
+        /// <summary>
+        /// 入力参照用配列の変数名称を取得します。
+        /// </summary>
+        /// <remarks>_i@1は1つ目のセルの結果、_i@2は2つ目のセルの結果となります。</remarks>
+        public static string NameOfInputVariable { get { return "_inp"; } }
+
+        /// <summary>
+        /// 結果参照用配列(逆順)の変数名称を取得します。
+        /// </summary>
+        /// <remarks>_O@1は1つ前のセルの結果、_O@2は2つ前のセルの結果となります。</remarks>
+        public static string NameOfAnswerRevVariable { get { return "_ANS"; } }
+
+        /// <summary>
+        /// 入力参照用配列(逆順)の変数名称を取得します。
+        /// </summary>
+        /// <remarks>_I@1は1つ前のセルの結果、_I@2は2つ前のセルの結果となります。</remarks>
+        public static string NameOfInputRevVariable { get { return "_INP"; } }
 
 
         /// <summary>
@@ -123,6 +148,9 @@ namespace GoodSeat.Clapte.Models
             if (notReferenceVariableNames != null) _notReferenceVariableNames.AddRange(notReferenceVariableNames);
             if (notReferenceFunctionNames != null) _notReferenceFunctionNames.AddRange(notReferenceFunctionNames);
 
+            PreFormulaCells = new List<FormulaCell>();
+            if (previous != null) PreFormulaCells.AddRange(previous);
+
             PreDemandEvaluateFormulaCells = CreatePreDemandEvaluateFormulaCellsList(previous);
             if (previous != null)
             {
@@ -187,6 +215,11 @@ namespace GoodSeat.Clapte.Models
         /// この数式セルより先に評価されるべき数式セルの一覧を取得します。
         /// </summary>
         public List<FormulaCell> PreDemandEvaluateFormulaCells { get; private set; }
+
+        /// <summary>
+        /// この数式セルより前方にある数式セルの一覧を取得します。
+        /// </summary>
+        public List<FormulaCell> PreFormulaCells { get; private set; }
 
         /// <summary>
         /// 評価を開始するのに必要な数式セルが既に評価されているかを判定します。
@@ -255,6 +288,13 @@ namespace GoodSeat.Clapte.Models
         private List<FormulaCell> CreatePreDemandEvaluateFormulaCellsList(params FormulaCell[] previous)
         {
             var result = new List<FormulaCell>();
+
+            if (GetAllReferenceVariableNames().Contains(NameOfAnswerVariable) || GetAllReferenceVariableNames().Contains(NameOfAnswerRevVariable) 
+             || GetAllReferenceVariableNames().Contains(NameOfInputVariable)  || GetAllReferenceVariableNames().Contains(NameOfInputRevVariable))
+            {
+                result.AddRange(previous);
+                return result;
+            }
 
             foreach (var mark in GetAllReferenceVariableNames())
             {
@@ -349,6 +389,89 @@ namespace GoodSeat.Clapte.Models
             proc.CustomDefineConstants.Clear();
             proc.CustomDefineFunctions.Clear();
 
+            // 前方セルの入力、結果の参照変数の定義
+            if (GetAllReferenceVariableNames().Contains(NameOfInputVariable))
+            {
+                var def = new ConstantDefine(NameOfInputVariable);
+                var f = new Vector(true, PreFormulaCells.Count);
+                int idx = 0;
+                foreach (var i in PreFormulaCells)
+                {
+                    var fi = i.Content.TargetFormula;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfInputVariable).Any()) fi = null;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfInputRevVariable).Any()) fi = null;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfAnswerVariable).Any()) fi = null;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfAnswerRevVariable).Any()) fi = null;
+                    f[++idx] = fi == null ? 0 : fi;
+                }
+                def.Define = f.ToString();
+                proc.CustomDefineConstants.Add(def);
+            }
+            if (GetAllReferenceVariableNames().Contains(NameOfInputRevVariable))
+            {
+                var def = new ConstantDefine(NameOfInputRevVariable);
+                var f = new Vector(true, PreFormulaCells.Count);
+                int idx = PreFormulaCells.Count;
+                foreach (var i in PreFormulaCells)
+                {
+                    var fi = i.Content.TargetFormula;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfInputVariable).Any()) fi = null;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfInputRevVariable).Any()) fi = null;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfAnswerVariable).Any()) fi = null;
+                    if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfAnswerRevVariable).Any()) fi = null;
+                    f[idx--] = fi == null ? 0 : fi;
+                }
+                def.Define = f.ToString();
+                proc.CustomDefineConstants.Add(def);
+            }
+            if (GetAllReferenceVariableNames().Contains(NameOfAnswerVariable))
+            {
+                var def = new ConstantDefine(NameOfAnswerVariable);
+                var f = new Vector(true, PreFormulaCells.Count);
+                int idx = 0;
+                foreach (var o in PreFormulaCells)
+                {
+                    ++idx;
+                    if (o.Content.ResultLevel != Result.Level.Success) f[idx] = 0;
+                    else
+                    {
+                        var txt = o.Content.ResultText;
+                        var defv = o.Content.GetAllConstantDefines().FirstOrDefault();
+                        if (defv != null) txt = defv.Define;
+
+                        Formula r = 0;
+                        if (solver.TryParse(txt, out r)) f[idx] = r;
+                        else f[idx] = 0;
+                    }
+                }
+                def.Define = f.ToString();
+                proc.CustomDefineConstants.Add(def);
+            }
+            if (GetAllReferenceVariableNames().Contains(NameOfAnswerRevVariable))
+            {
+                var def = new ConstantDefine(NameOfAnswerRevVariable);
+                var f = new Vector(true, PreFormulaCells.Count);
+                int idx = PreFormulaCells.Count;
+                foreach (var o in PreFormulaCells)
+                {
+                    if (o.Content.ResultLevel != Result.Level.Success) f[idx] = 0;
+                    else
+                    {
+                        var txt = o.Content.ResultText;
+                        var defv = o.Content.GetAllConstantDefines().FirstOrDefault();
+                        if (defv != null) txt = defv.Define;
+
+                        Formula r = 0;
+                        if (solver.TryParse(txt, out r)) f[idx] = r;
+                        else f[idx] = 0;
+                    }
+                    --idx;
+                }
+                def.Define = f.ToString();
+                proc.CustomDefineConstants.Add(def);
+            }
+
+            // 前方の必要な関数、変数の定義を参照
             foreach (var name in GetAllReferenceVariableNames())
             {
                 foreach (var cell in PreDemandEvaluateFormulaCells)

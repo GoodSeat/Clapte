@@ -325,6 +325,7 @@
     <Content Include="Icon_Clapte.ico" />
     <Content Include="Icon_Clapte_Notify.ico" />
     <Content Include="Icon_Clapte_Notify_Deactive.ico" />
+    <None Include="Resources\SpinnerBlueSmall.gif" />
     <None Include="Resources\Icon_MoveFindPanel_Unfocus.png" />
     <None Include="Resources\Icon_MoveFindPanel.png" />
     <None Include="Resources\Icon_Abort_Unfocus.png" />

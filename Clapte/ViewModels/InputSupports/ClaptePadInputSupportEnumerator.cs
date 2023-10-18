@@ -7,6 +7,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using GoodSeat.Clapte.Models;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Liffom.Formulas.Units;
 
@@ -221,6 +222,19 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
 
                     if (candidates.Contains(candidate)) continue;
                     candidates.Add(candidate);
+                }
+                { // システム定義の変数
+                    var lstTmp = new List<InputSupportCandidate>{
+                          new InputSupportCandidate(FormulaCellContent.NameOfInputVariable + "：変数", FormulaCellContent.NameOfInputVariable, "入力数式を1行目から順に格納した行ベクトル", null)
+                        , new InputSupportCandidate(FormulaCellContent.NameOfInputRevVariable + "：変数", FormulaCellContent.NameOfInputRevVariable, "入力数式を一つ上の行から逆順に格納した行ベクトル", null)
+                        , new InputSupportCandidate(FormulaCellContent.NameOfAnswerVariable + "：変数", FormulaCellContent.NameOfAnswerVariable, "結果数式を1行目から順に格納した行ベクトル", null)
+                        , new InputSupportCandidate(FormulaCellContent.NameOfAnswerRevVariable + "：変数", FormulaCellContent.NameOfAnswerRevVariable, "結果数式を一つ上の行から逆順に格納した行ベクトル", null)
+                    };
+                    foreach (var inf in lstTmp)
+                    {
+                        if (inf.Title.StartsWith(startWith)) candidates.Add(inf);
+                        else if (AlsoInfomation && inf.Information.Contains(startWith)) candidates.Add(inf);
+                    }
                 }
             }
 
