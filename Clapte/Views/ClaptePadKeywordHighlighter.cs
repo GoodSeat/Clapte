@@ -77,6 +77,7 @@ namespace GoodSeat.Clapte.Views
             constantNames.AddRange(GetAllConstantsDefinedInCell().Select(def => def.Name).Where(name => !constantNames.Contains(name)));
             constantNames.AddRange(Target.ConstantList.Target.Select(def => def.Name).Where(name => !constantNames.Contains(name)));
             constantNames.AddRange(Target.ConstantList.GetSystemConstants().Select(def => def.Name).Where(name => !constantNames.Contains(name)));
+            constantNames.Add(FormulaCellContent.NameOfCurrentLineVariable);
             constantNames.Add(FormulaCellContent.NameOfInputVariable);
             constantNames.Add(FormulaCellContent.NameOfInputRevVariable);
             constantNames.Add(FormulaCellContent.NameOfAnswerVariable);

@@ -225,7 +225,8 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
                 }
                 { // システム定義の変数
                     var lstTmp = new List<InputSupportCandidate>{
-                          new InputSupportCandidate(FormulaCellContent.NameOfInputVariable + "：変数", FormulaCellContent.NameOfInputVariable, "入力数式を1行目から順に格納した行ベクトル", null)
+                          new InputSupportCandidate(FormulaCellContent.NameOfCurrentLineVariable + "：変数", FormulaCellContent.NameOfCurrentLineVariable, "行番号", null)
+                        , new InputSupportCandidate(FormulaCellContent.NameOfInputVariable + "：変数", FormulaCellContent.NameOfInputVariable, "入力数式を1行目から順に格納した行ベクトル", null)
                         , new InputSupportCandidate(FormulaCellContent.NameOfInputRevVariable + "：変数", FormulaCellContent.NameOfInputRevVariable, "入力数式を一つ上の行から逆順に格納した行ベクトル", null)
                         , new InputSupportCandidate(FormulaCellContent.NameOfAnswerVariable + "：変数", FormulaCellContent.NameOfAnswerVariable, "結果数式を1行目から順に格納した行ベクトル", null)
                         , new InputSupportCandidate(FormulaCellContent.NameOfAnswerRevVariable + "：変数", FormulaCellContent.NameOfAnswerRevVariable, "結果数式を一つ上の行から逆順に格納した行ベクトル", null)

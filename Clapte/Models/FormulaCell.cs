@@ -132,13 +132,23 @@ namespace GoodSeat.Clapte.Models
         /// </summary>
         public string GetUniqueText()
         {
-            string result = "CELL::" + FormulaText;
+            var sb = new StringBuilder();
+            sb.Append("CELL::");
+            sb.Append(FormulaText);
 
             foreach (var previous in Content.PreDemandEvaluateFormulaCells)
             {
-                result += "<-(" + previous.GetUniqueText() + ")";
+                sb.Append("<-(");
+                sb.Append(previous.GetUniqueText());
+                sb.Append(")");
             }
-            return result;
+            if (FormulaText.Contains(FormulaCellContent.NameOfCurrentLineVariable) &&
+                Content.GetAllReferenceVariableNames().Any(n => n == FormulaCellContent.NameOfCurrentLineVariable))
+            {
+                sb.Append(";_LN=");
+                sb.Append((Content.PreFormulaCells.Count + 1).ToString());
+            }
+            return sb.ToString();
         }
 
         /// <summary>

@@ -57,6 +57,11 @@ namespace GoodSeat.Clapte.Models
         }
 
         /// <summary>
+        /// 現在行番号の変数名称を取得します。
+        /// </summary>
+        public static string NameOfCurrentLineVariable { get { return "_LN"; } }
+
+        /// <summary>
         /// 結果参照用配列の変数名称を取得します。
         /// </summary>
         /// <remarks>_o@1は1つ目のセルの結果、_o@2は2つ目のセルの結果となります。</remarks>
@@ -388,6 +393,14 @@ namespace GoodSeat.Clapte.Models
             var proc = solver.GetProcessOf<EvaluateUserDefineProcess>();
             proc.CustomDefineConstants.Clear();
             proc.CustomDefineFunctions.Clear();
+
+            // 現在行数変数の定義
+            if (GetAllReferenceVariableNames().Contains(NameOfCurrentLineVariable))
+            {
+                var def = new ConstantDefine(NameOfCurrentLineVariable);
+                def.Define = (PreFormulaCells.Count + 1).ToString();
+                proc.CustomDefineConstants.Add(def);
+            }
 
             // 前方セルの入力、結果の参照変数の定義
             if (GetAllReferenceVariableNames().Contains(NameOfInputVariable))
