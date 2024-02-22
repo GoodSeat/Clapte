@@ -253,8 +253,11 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
         {
             int currentTextLength = Azuki.TextLength;
 
-            if (CandidateListBox.Visible) ShowInputSupport(true);
-            else if (AutoShow && currentTextLength > _lastTextLength) ShowInputSupport(false);
+            if (Azuki.FindForm().Visible)
+            {
+                if (CandidateListBox.Visible) ShowInputSupport(true);
+                else if (AutoShow && currentTextLength > _lastTextLength) ShowInputSupport(false);
+            }
 
             _lastTextLength = currentTextLength;
         }

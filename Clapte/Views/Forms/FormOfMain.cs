@@ -161,13 +161,24 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             InitializeModelView();
 
-
             if (!LoadSetting(SettingFilePath)) LoadSetting(UpdateFilePath);
 
             this.WindowState = FormWindowState.Minimized;
 
             // 計算機モード
-            if (IsCalculatorMode) _menuCalculator_Click(sender, e);
+            if (IsCalculatorMode)
+            {
+                _menuCalculator_Click(sender, e);
+            }
+            else
+            {
+                // MEMO:ファイルの自動同期において、スレッド例外にならないよう、このスレッドでコントロールを生成しておく
+                _menuCalculator_Click(sender, e);
+                _formOfClaptePad.Hide();
+            }
+
+            _formOfClaptePad.StartHotLoadingInput();
+            _formOfClaptePad.StartHotSavingResult();
 #if DEBUG
             ToolStripMenuItem testFormuMenu = new ToolStripMenuItem("テストフォーム起動(&F)");
             _menuClapte.Items.Add(testFormuMenu);

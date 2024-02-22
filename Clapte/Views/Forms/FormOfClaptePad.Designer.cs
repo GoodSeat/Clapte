@@ -155,6 +155,7 @@
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this._menuStopHotLoading = new System.Windows.Forms.ToolStripMenuItem();
+            this._btnSaveSync = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
@@ -200,6 +201,7 @@
             this._expandMenuCollectAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcherHotLoading)).BeginInit();
             this._contextMenuEditOnHotLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnSaveSync)).BeginInit();
             this.SuspendLayout();
             // 
             // _inputTextBox
@@ -272,7 +274,7 @@
             this._menuStartHotLoading,
             this._menuInsertHelp});
             this._contextMenuEdit.Name = "_contextMenuEdit";
-            this._contextMenuEdit.Size = new System.Drawing.Size(288, 568);
+            this._contextMenuEdit.Size = new System.Drawing.Size(288, 546);
             this._contextMenuEdit.Closing += new System.Windows.Forms.ToolStripDropDownClosingEventHandler(this._contextMenuEdit_Closing);
             this._contextMenuEdit.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
@@ -539,7 +541,7 @@
             // 
             this._menuStartHotLoading.Name = "_menuStartHotLoading";
             this._menuStartHotLoading.Size = new System.Drawing.Size(287, 22);
-            this._menuStartHotLoading.Text = "ホットローディングの開始(&L)";
+            this._menuStartHotLoading.Text = "入力ファイルの同期(&L)";
             this._menuStartHotLoading.Click += new System.EventHandler(this._menuStartHotLoading_Click);
             // 
             // _menuInsertHelp
@@ -576,6 +578,7 @@
             this._panelHotLoading.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left) 
             | System.Windows.Forms.AnchorStyles.Right)));
             this._panelHotLoading.BackColor = System.Drawing.Color.White;
+            this._panelHotLoading.Controls.Add(this._btnSaveSync);
             this._panelHotLoading.Controls.Add(this._btnStopHotLoading);
             this._panelHotLoading.Controls.Add(this._textBoxHotReloadingPath);
             this._panelHotLoading.Controls.Add(this._picHotReloading);
@@ -600,7 +603,7 @@
             this._btnStopHotLoading.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnStopHotLoading.TabIndex = 30;
             this._btnStopHotLoading.TabStop = false;
-            this._toolTipHelp.SetToolTip(this._btnStopHotLoading, "ホットローディングの停止");
+            this._toolTipHelp.SetToolTip(this._btnStopHotLoading, "自動同期の停止");
             this._btnStopHotLoading.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort_Unfocus;
             this._btnStopHotLoading.Click += new System.EventHandler(this._btnStopHotLoading_Click);
             // 
@@ -614,7 +617,7 @@
             this._textBoxHotReloadingPath.Location = new System.Drawing.Point(28, 9);
             this._textBoxHotReloadingPath.Name = "_textBoxHotReloadingPath";
             this._textBoxHotReloadingPath.ReadOnly = true;
-            this._textBoxHotReloadingPath.Size = new System.Drawing.Size(379, 12);
+            this._textBoxHotReloadingPath.Size = new System.Drawing.Size(350, 12);
             this._textBoxHotReloadingPath.TabIndex = 19;
             this._textBoxHotReloadingPath.Text = "C:\\\\Test";
             // 
@@ -627,6 +630,7 @@
             this._picHotReloading.Size = new System.Drawing.Size(18, 18);
             this._picHotReloading.TabIndex = 18;
             this._picHotReloading.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._picHotReloading, "自動同期中…");
             // 
             // _panelFind
             // 
@@ -958,7 +962,7 @@
             this._btnStopHotSaving.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this._btnStopHotSaving.TabIndex = 30;
             this._btnStopHotSaving.TabStop = false;
-            this._toolTipHelp.SetToolTip(this._btnStopHotSaving, "ホットセービングの停止");
+            this._toolTipHelp.SetToolTip(this._btnStopHotSaving, "自動出力の停止");
             this._btnStopHotSaving.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Abort_Unfocus;
             this._btnStopHotSaving.Click += new System.EventHandler(this._menuToggleHotSaving_Click);
             // 
@@ -985,6 +989,7 @@
             this._picHotSaving.Size = new System.Drawing.Size(18, 18);
             this._picHotSaving.TabIndex = 18;
             this._picHotSaving.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._picHotSaving, "自動出力中…");
             // 
             // _resultTextBox
             // 
@@ -1036,38 +1041,38 @@
             this.toolStripSeparator15,
             this._menuToggleHotSaving});
             this._contextMenuResult.Name = "_contextMenuEdit";
-            this._contextMenuResult.Size = new System.Drawing.Size(193, 176);
+            this._contextMenuResult.Size = new System.Drawing.Size(206, 176);
             this._contextMenuResult.Opening += new System.ComponentModel.CancelEventHandler(this._contextMenuEdit_Opening);
             // 
             // _menuCopyResult
             // 
             this._menuCopyResult.Name = "_menuCopyResult";
-            this._menuCopyResult.Size = new System.Drawing.Size(192, 22);
+            this._menuCopyResult.Size = new System.Drawing.Size(205, 22);
             this._menuCopyResult.Text = "コピー(&C)";
             this._menuCopyResult.Click += new System.EventHandler(this._menuCopyResult_Click);
             // 
             // toolStripSeparator5
             // 
             this.toolStripSeparator5.Name = "toolStripSeparator5";
-            this.toolStripSeparator5.Size = new System.Drawing.Size(189, 6);
+            this.toolStripSeparator5.Size = new System.Drawing.Size(202, 6);
             // 
             // _menuSelectAllResult
             // 
             this._menuSelectAllResult.Name = "_menuSelectAllResult";
-            this._menuSelectAllResult.Size = new System.Drawing.Size(192, 22);
+            this._menuSelectAllResult.Size = new System.Drawing.Size(205, 22);
             this._menuSelectAllResult.Text = "すべて選択(&A)";
             this._menuSelectAllResult.Click += new System.EventHandler(this._menuSelectAllResult_Click);
             // 
             // toolStripSeparator6
             // 
             this.toolStripSeparator6.Name = "toolStripSeparator6";
-            this.toolStripSeparator6.Size = new System.Drawing.Size(189, 6);
+            this.toolStripSeparator6.Size = new System.Drawing.Size(202, 6);
             // 
             // _menuFindAndReplaceResult
             // 
             this._menuFindAndReplaceResult.Name = "_menuFindAndReplaceResult";
             this._menuFindAndReplaceResult.ShortcutKeys = ((System.Windows.Forms.Keys)((System.Windows.Forms.Keys.Control | System.Windows.Forms.Keys.F)));
-            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(192, 22);
+            this._menuFindAndReplaceResult.Size = new System.Drawing.Size(205, 22);
             this._menuFindAndReplaceResult.Text = "検索と置換(&F)";
             this._menuFindAndReplaceResult.ToolTipText = "検索/置換パネルを表示します。";
             this._menuFindAndReplaceResult.Click += new System.EventHandler(this._menuFindAndReplace_Click);
@@ -1076,7 +1081,7 @@
             // 
             this._menuJumpDefineResult.Name = "_menuJumpDefineResult";
             this._menuJumpDefineResult.ShortcutKeys = System.Windows.Forms.Keys.F12;
-            this._menuJumpDefineResult.Size = new System.Drawing.Size(192, 22);
+            this._menuJumpDefineResult.Size = new System.Drawing.Size(205, 22);
             this._menuJumpDefineResult.Text = "定義を参照(&J)";
             this._menuJumpDefineResult.ToolTipText = "カーソル位置にある定数/関数/単位の定義位置にジャンプします。";
             this._menuJumpDefineResult.Click += new System.EventHandler(this._menuJumpDefineResult_Click);
@@ -1084,7 +1089,7 @@
             // _menuAddUserDefineResult
             // 
             this._menuAddUserDefineResult.Name = "_menuAddUserDefineResult";
-            this._menuAddUserDefineResult.Size = new System.Drawing.Size(192, 22);
+            this._menuAddUserDefineResult.Size = new System.Drawing.Size(205, 22);
             this._menuAddUserDefineResult.Text = "ユーザー定義に登録(&G)";
             this._menuAddUserDefineResult.Visible = false;
             this._menuAddUserDefineResult.Click += new System.EventHandler(this._menuAddUserDefineResult_Click);
@@ -1092,7 +1097,7 @@
             // _menuVisibleDeformHistoryResult
             // 
             this._menuVisibleDeformHistoryResult.Name = "_menuVisibleDeformHistoryResult";
-            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(192, 22);
+            this._menuVisibleDeformHistoryResult.Size = new System.Drawing.Size(205, 22);
             this._menuVisibleDeformHistoryResult.Text = "計算過程の表示(&D)";
             this._menuVisibleDeformHistoryResult.ToolTipText = "計算過程の表示/非表示を切り替えます。";
             this._menuVisibleDeformHistoryResult.Click += new System.EventHandler(this._menuVisibleDeformHistory_Click);
@@ -1100,13 +1105,13 @@
             // toolStripSeparator15
             // 
             this.toolStripSeparator15.Name = "toolStripSeparator15";
-            this.toolStripSeparator15.Size = new System.Drawing.Size(189, 6);
+            this.toolStripSeparator15.Size = new System.Drawing.Size(202, 6);
             // 
             // _menuToggleHotSaving
             // 
             this._menuToggleHotSaving.Name = "_menuToggleHotSaving";
-            this._menuToggleHotSaving.Size = new System.Drawing.Size(192, 22);
-            this._menuToggleHotSaving.Text = "ホットセービングの開始(&S)";
+            this._menuToggleHotSaving.Size = new System.Drawing.Size(205, 22);
+            this._menuToggleHotSaving.Text = "結果テキストの自動出力(&S)";
             this._menuToggleHotSaving.Click += new System.EventHandler(this._menuToggleHotSaving_Click);
             // 
             // _treeViewHistory
@@ -1574,6 +1579,24 @@
             this._menuStopHotLoading.ToolTipText = "ホットローディングを停止します。";
             this._menuStopHotLoading.Click += new System.EventHandler(this._btnStopHotLoading_Click);
             // 
+            // _btnSaveSync
+            // 
+            this._btnSaveSync.BackColor = System.Drawing.Color.White;
+            this._btnSaveSync.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnSaveSync.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnSaveSync.DownMove = 1;
+            this._btnSaveSync.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save;
+            this._btnSaveSync.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
+            this._btnSaveSync.Location = new System.Drawing.Point(386, 1);
+            this._btnSaveSync.Name = "_btnSaveSync";
+            this._btnSaveSync.Size = new System.Drawing.Size(26, 26);
+            this._btnSaveSync.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnSaveSync.TabIndex = 18;
+            this._btnSaveSync.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnSaveSync, "編集内容を上書保存");
+            this._btnSaveSync.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
+            this._btnSaveSync.Click += new System.EventHandler(this._btnSaveSync_Click);
+            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1656,6 +1679,7 @@
             this._expandMenuCollectAbout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcherHotLoading)).EndInit();
             this._contextMenuEditOnHotLoading.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this._btnSaveSync)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -1786,5 +1810,6 @@
         private System.Windows.Forms.ToolStripMenuItem _menuToggleHotSaving;
         private System.Windows.Forms.ToolStripMenuItem _menuInsertSigma;
         private System.Windows.Forms.ToolStripMenuItem _menuInsertPi;
+        private Components.ImageButton _btnSaveSync;
     }
 }

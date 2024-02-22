@@ -20,6 +20,7 @@ using GoodSeat.Sio.Xml;
 using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Deforms;
 using System.Text.RegularExpressions;
+using System.Diagnostics;
 
 namespace GoodSeat.Clapte.Views.Forms
 {
@@ -271,6 +272,37 @@ namespace GoodSeat.Clapte.Views.Forms
         void HotSave() { File.WriteAllText(HotSaveFilepath, _inputTextBox.Text, Encoding.UTF8); }
 
         /// <summary>
+        /// 設定に基づきホットローディングを開始します。ファイルが見つからない場合にはfalseを返します。
+        /// </summary>
+        public bool StartHotLoadingInput()
+        {
+            if (!File.Exists(HotLoadingPath)) return false;
+
+            _fileSystemWatcherHotLoading.Path = Path.GetDirectoryName(HotLoadingPath);
+            _fileSystemWatcherHotLoading.Filter = Path.GetFileName(HotLoadingPath);
+            _fileSystemWatcherHotLoading.SynchronizingObject = this;
+            _fileSystemWatcherHotLoading.EnableRaisingEvents = true;
+
+            enterOrEscapeHotReloadingMode(true);
+
+            _fileSystemWatcherHotLoading_Changed(this, null);
+            return true;
+        }
+
+        /// <summary>
+        /// 設定に基づきホットセービングを開始します。ファイルが見つからない場合にはfalseを返します。
+        /// </summary>
+        public bool StartHotSavingResult()
+        {
+            if (!File.Exists(HotSavingPath)) return false;
+
+            enterOrEscapeHotSavingMode(true);
+
+            File.WriteAllText(HotSavingPath, _resultTextBox.Text, Encoding.UTF8);
+            return true;
+        }
+
+        /// <summary>
         /// ツールチップヘルプ表示を終了します。
         /// </summary>
         private void HideTooltipHelp()
@@ -417,26 +449,28 @@ namespace GoodSeat.Clapte.Views.Forms
         private void enterOrEscapeHotReloadingMode(bool enter)
         {
             _panelHotLoading.Visible = enter;
-            _inputTextBox.IsReadOnly = enter;
+//          _inputTextBox.IsReadOnly = enter;
 
-            _btnLoad.Enabled = !enter;
+//          _btnLoad.Enabled = !enter;
 
             if (enter)
             {
                 _textBoxHotReloadingPath.Text = HotLoadingPath;
-                _panelFind.Height /= 2;
-                _inputTextBox.ContextMenuStrip = _contextMenuEditOnHotLoading;
+                _menuStartHotLoading.Text = "入力ファイルの同期停止(&L)";
+//              _panelFind.Height /= 2;
+//              _inputTextBox.ContextMenuStrip = _contextMenuEditOnHotLoading;
 
-                _panelFind.Anchor = AnchorStyles.Top | AnchorStyles.Right;
-                _panelFind.Top = 0;
-                _inputTextBox.BackColor = Color.WhiteSmoke;
-                _panelHotLoading.BackColor = Color.White;
+//              _panelFind.Anchor = AnchorStyles.Top | AnchorStyles.Right;
+//              _panelFind.Top = 0;
+//              _inputTextBox.BackColor = Color.WhiteSmoke;
+//              _panelHotLoading.BackColor = Color.White;
             }
             else
             {
-                _panelFind.Height *= 2;
-                _inputTextBox.ContextMenuStrip = _contextMenuEdit;
-                _inputTextBox.BackColor = Color.White;
+                _menuStartHotLoading.Text = "入力ファイルの同期(&L)";
+//              _panelFind.Height *= 2;
+//              _inputTextBox.ContextMenuStrip = _contextMenuEdit;
+//              _inputTextBox.BackColor = Color.White;
             }
             _inputTextBox.Refresh();
         }
@@ -452,11 +486,11 @@ namespace GoodSeat.Clapte.Views.Forms
             if (enter)
             {
                 _textBoxHotSavingPath.Text = HotSavingPath;
-                _menuToggleHotSaving.Text = "ホットセービングの停止(&S)";
+                _menuToggleHotSaving.Text = "結果テキストの自動出力停止(&S)";
             }
             else
             {
-                _menuToggleHotSaving.Text = "ホットセービングの開始(&S)";
+                _menuToggleHotSaving.Text = "結果テキストの自動出力(&S)";
             }
         }
 
@@ -1030,24 +1064,36 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuStartHotLoading_Click(object sender, EventArgs e)
         {
-            if (_picStatus.Visible) return; // 計算中は不可
+            if (!_fileSystemWatcherHotLoading.EnableRaisingEvents)
+            {
+//              if (_picStatus.Visible) return; // 計算中は不可
 
-            if (_openFileDialog.ShowDialog() != DialogResult.OK) return;
+                if (_openFileDialog.ShowDialog() != DialogResult.OK) return;
 
-            HotLoadingPath = _openFileDialog.FileName;
-            _fileSystemWatcherHotLoading.Path = Path.GetDirectoryName(HotLoadingPath);
-            _fileSystemWatcherHotLoading.Filter = Path.GetFileName(HotLoadingPath);
-            _fileSystemWatcherHotLoading.SynchronizingObject = this;
-            _fileSystemWatcherHotLoading.EnableRaisingEvents = true;
+                HotLoadingPath = _openFileDialog.FileName;
 
-            enterOrEscapeHotReloadingMode(true);
-
-            _fileSystemWatcherHotLoading_Changed(sender, null);
+                StartHotLoadingInput();
+            }
+            else
+            {
+                enterOrEscapeHotReloadingMode(false);
+                _fileSystemWatcherHotLoading.EnableRaisingEvents = false;
+                HotLoadingPath = "";
+            }
         }
 
         private void _fileSystemWatcherHotLoading_Changed(object sender, FileSystemEventArgs e)
         {
+            int begin, end;
+            _inputTextBox.GetSelection(out begin, out end);
+
             _inputTextBox.Text = File.ReadAllText(HotLoadingPath);
+
+            try
+            {
+                _inputTextBox.SetSelection(begin, end);
+            }
+            catch { }
         }
 
         private void _fileSystemWatcherHotLoading_Deleted(object sender, FileSystemEventArgs e)
@@ -1064,6 +1110,7 @@ namespace GoodSeat.Clapte.Views.Forms
         {
             enterOrEscapeHotReloadingMode(false);
             _fileSystemWatcherHotLoading.EnableRaisingEvents = false;
+            HotLoadingPath = "";
         }
 
         private void _menuToggleHotSaving_Click(object sender, EventArgs e)
@@ -1079,6 +1126,17 @@ namespace GoodSeat.Clapte.Views.Forms
             {
                 HotSavingPath = "";
                 enterOrEscapeHotSavingMode(false);
+            }
+        }
+        private void _btnSaveSync_Click(object sender, EventArgs e)
+        {
+            try
+            {
+                File.WriteAllText(HotLoadingPath, _inputTextBox.Text, Encoding.UTF8);
+            }
+            catch
+            {
+                _btnStopHotLoading_Click(null, EventArgs.Empty);
             }
         }
 
