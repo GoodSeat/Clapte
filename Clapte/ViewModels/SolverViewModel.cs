@@ -237,8 +237,7 @@ namespace GoodSeat.Clapte.ViewModels
             var result = new List<Solvers.Processes.Process>();
 
             // 文字列長チェック
-            int maxVariableTextLength = (DetectUnitMode == ReplaceVariableToUnitProcess.Mode.AllAutoDetect) ? MaxVariableTextLength : 0;
-            result.Add(new SieveTargetInputProcess(solver, MaxInputTextLength, maxVariableTextLength));
+            result.Add(new SieveTargetInputProcess(solver, MaxInputTextLength, MaxVariableTextLength));
 
             // 出力文字列の半角/全角判定、変換
             result.Add(new OutputTextByteFormatProcess(solver, OutputCharaType));

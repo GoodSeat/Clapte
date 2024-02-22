@@ -893,6 +893,7 @@ namespace GoodSeat.Clapte.Views.Forms
 
         private void _menuFactorize_Click(object sender, EventArgs e)
         {
+            HotSave(); // MEMO:非常に時間が掛かることがあるため、強制終了に備えて保存しておく
             EditorViewModel.DeformFormula(f => {
                 var proc = new Liffom.Processes.Factorize();
                 if (!(f is Liffom.Formulas.Operators.Comparers.Comparer)) return proc.Do(f.Simplify());
@@ -1675,6 +1676,8 @@ namespace GoodSeat.Clapte.Views.Forms
             EditorViewModel.AutoShowInputSupport = bool.Parse(xmlElement.GetAttribute("AutoShowInputSupport", "True"));
             EditorViewModel.AutoShowArgumentHelp = bool.Parse(xmlElement.GetAttribute("AutoShowArgumentHelp", "True"));
             EditorViewModel.InputSupportWithAlsoInfomation = bool.Parse(xmlElement.GetAttribute("InputSupportWithAlsoInfomation", "True"));
+            HotSavingPath  = xmlElement.GetAttribute("HotSavingPath", "");
+            HotLoadingPath = xmlElement.GetAttribute("HotLoadingPath", "");
 
             var colorSchemeElement = xmlElement["ColorScheme"];
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant, Color.FromArgb(int.Parse(colorSchemeElement["Constant"].GetAttribute("Color"))));
@@ -1701,6 +1704,8 @@ namespace GoodSeat.Clapte.Views.Forms
             xmlElement.AddAttribute("AutoShowInputSupport", EditorViewModel.InputSupport.AutoShow.ToString());
             xmlElement.AddAttribute("AutoShowArgumentHelp", EditorViewModel.ArgumentHelper.AutoShow.ToString());
             xmlElement.AddAttribute("InputSupportWithAlsoInfomation", EditorViewModel.InputSupportWithAlsoInfomation.ToString());
+            xmlElement.AddAttribute("HotSavingPath",  HotSavingPath);
+            xmlElement.AddAttribute("HotLoadingPath", HotLoadingPath);
 
             XmlElement colorScheme = new XmlElement("ColorScheme");
             XmlElement colorConstant = new XmlElement("Constant");
