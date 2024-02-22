@@ -400,16 +400,19 @@ namespace GoodSeat.Liffom.Extensions
         /// <returns>商。</returns>
         private static Formula DivideWithoutFraction(Formula f, Formula g, out Formula r)
         {
-            if (f is Numeric && g is Numeric)
+            var f_ = f.Simplify();
+            var g_ = g.Simplify();
+
+            if (f_ is Numeric && g_ is Numeric)
             {
-                var nf = f as Numeric;
-                var ng = g as Numeric;
+                var nf = f_ as Numeric;
+                var ng = g_ as Numeric;
                 r = nf.Figure % ng.Figure;
-                return ((f - r) / g).Simplify();
+                return ((f_ - r) / g_).Simplify();
             }
             else
             {
-                var q = (f / g).Simplify();
+                var q = (f_ / g_).Simplify();
 
                 var a = new RulePatternVariable("a");
                 a.AdmitMultiplyOne = true;
@@ -418,7 +421,7 @@ namespace GoodSeat.Liffom.Extensions
 
                 if (q.PatternMatch(rule)) // 分母が残るなら割れなかったと判定
                 {
-                    r = f;
+                    r = f_;
                     return 0;
                 }
                 else
