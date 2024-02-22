@@ -139,6 +139,7 @@ namespace GoodSeat.Liffom.Formulas.Matrices
             get
             {
                 if (i == 0) return Null.Empty;
+                if (ColumnSize == 0) return null;
 
                 i--;
                 int allCount = RowSize * ColumnSize;
