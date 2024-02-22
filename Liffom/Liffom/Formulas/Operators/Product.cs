@@ -108,7 +108,7 @@ namespace GoodSeat.Liffom.Formulas.Operators
                     result += f.ToString() + "*";
                 }
 
-                if (initial && f == -1) result = result.Replace("-1*", "-");
+                if (initial && f == -1 && !(Formulas[1] is Unit)) result = result.Replace("-1*", "-");
                 initial = false;
                 pre_f = f;
             }
