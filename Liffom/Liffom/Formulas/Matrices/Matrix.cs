@@ -178,7 +178,13 @@ namespace GoodSeat.Liffom.Formulas.Matrices
                 else
                 {
                     for (int c = 1; c <= ColumnSize; c++)
-                        rowText += this[r, c].ToString() + ", ";
+                    {
+                        var v = this[r, c];
+                        var t = v.ToString();
+                        if (v is Argument && !t.StartsWith("(")) t = "(" + t + ")";
+
+                        rowText += t + ", ";
+                    }
                     rowText = rowText.TrimEnd(' ', ',') + "]";
                 }
                 result += rowText + ", ";
