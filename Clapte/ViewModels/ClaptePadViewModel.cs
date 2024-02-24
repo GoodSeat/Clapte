@@ -549,7 +549,9 @@ namespace GoodSeat.Clapte.ViewModels
             var line = Target.ElementAt(lineIndex);
 
             // MEMO:現状、単位の自動認識はされない([]で囲ったやつだけが単位として認識される)
-            return Target.BaseSolver.Target.Parse(line.Target.Content.FormulaText);
+            var t = line.Target.Content.FormulaText;
+            if (t != null) return Target.BaseSolver.Target.Parse(t);
+            else return null;
         }
 
         /// <summary>

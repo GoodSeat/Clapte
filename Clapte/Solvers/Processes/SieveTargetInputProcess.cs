@@ -51,7 +51,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
         /// <returns>エラー情報。エラーのない場合、null。</returns>
         public override Error CheckInputText(ref string input, bool onlyCheckInput)
         {
-            if (input.Length > MaxInputTextLength)
+            if (input != null && input.Length > MaxInputTextLength)
                 return new Error(Error.Level.Abort, "計算対象とする数式の最大文字列長を超過します。");
 
             if (!string.IsNullOrWhiteSpace(input))

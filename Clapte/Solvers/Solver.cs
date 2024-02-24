@@ -133,7 +133,7 @@ namespace GoodSeat.Clapte.Solvers
         /// 文字列を指定して、処理を実行します。
         /// </summary>
         /// <param name="input">処理対象の文字列。</param>
-        /// <param name="preEvaluateFormul">評価直前の数式。</param>
+        /// <param name="preEvaluateFormula">評価直前の数式。</param>
         /// <returns>処理結果。</returns>
         public Result Solve(string input, out Formula preEvaluateFormula)
         {
