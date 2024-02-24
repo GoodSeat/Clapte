@@ -76,7 +76,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void GetNextIndexTest()
         {
-            MultiArray_Accessor target = new MultiArray_Accessor("Test", 3);
+            var target = new MultiArray("Test", 3);
             target.SetSize(1, 4);
             target.SetSize(2, 5);
             target.SetSize(3, 3);
@@ -110,7 +110,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void GetIndexFromSerialIndexTest()
         {
-            MultiArray_Accessor target = new MultiArray_Accessor("Test", 3); // TODO: 適切な値に初期化してください
+            var target = new MultiArray("Test", 3); // TODO: 適切な値に初期化してください
             target.SetSize(1, 4);
             target.SetSize(2, 5);
             target.SetSize(3, 3);

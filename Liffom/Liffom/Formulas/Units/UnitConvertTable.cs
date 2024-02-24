@@ -258,7 +258,7 @@ namespace GoodSeat.Liffom.Formulas.Units
         /// <param name="unitFormula">対象の単位扱い数式。</param>
         /// <param name="modify">単位接頭辞の削除のための変換係数。</param>
         /// <returns>単位接頭辞をすべて削除した単位扱い数式。</returns>
-        private Formula GetPrefixRemovedUnitFormula(Formula unitFormula, out Formula modify)
+        public Formula GetPrefixRemovedUnitFormula(Formula unitFormula, out Formula modify)
         {
             if (!unitFormula.IsUnit(true)) throw new FormulaAssertionException("対象の数式を単位扱い数式として扱えません。");
 

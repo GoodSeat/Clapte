@@ -243,7 +243,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="target">対象の単位扱い数式</param>
         /// <param name="moleculars">分子項リスト</param>
         /// <param name="denominators">分母項リスト</param>
-        private void BuildUnitList(Formula target, ref List<Unit> moleculars, ref List<Unit> denominators)
+        public void BuildUnitList(Formula target, ref List<Unit> moleculars, ref List<Unit> denominators)
         {
             if (target == null) return;
 

@@ -217,7 +217,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void GetPrefixRemovedUnitFormulaTest()
         {
-            UnitConvertTable_Accessor target = new UnitConvertTable_Accessor();
+            var target = new UnitConvertTable();
             Formula unitFormula = Formula.Parse("[kN/cm]");
             Formula modify = null;
             Formula modifyExpected = 100000;

@@ -208,7 +208,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void AnalyzeLexicalTest()
         {
-            Liffom.Parse.FormulaParser_Accessor target = new Liffom.Parse.FormulaParser_Accessor();
+            var target = new Liffom.Parse.FormulaParser();
             target.Lexers.Add(new NumericLexer());
             target.Lexers.Add(new ParenthesesLexer());
             target.AddOperatorParsers(new ProductOperatorParser(), new SumOperatorParser());

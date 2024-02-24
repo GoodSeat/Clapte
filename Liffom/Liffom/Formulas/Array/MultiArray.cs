@@ -220,7 +220,7 @@ namespace GoodSeat.Liffom.Formulas.Array
         /// </summary>
         /// <param name="serialIndex">変換対象の直列インデックス。</param>
         /// <returns>対応する配列インデックス。</returns>
-        ArrayIndex GetIndexFromSerialIndex(int serialIndex)
+        public ArrayIndex GetIndexFromSerialIndex(int serialIndex)
         {
             ArrayIndex result = new ArrayIndex(DimensionSize);
             ArrayIndex size = new ArrayIndex(DimensionSize);
@@ -279,7 +279,7 @@ namespace GoodSeat.Liffom.Formulas.Array
         /// <param name="index">インデックス位置を表す整数配列。</param>
         /// <returns>指定インデックス位置の次の位置が見つかったか否か。</returns>
         /// <example>[1,1,1][2,1,1][3,1,1][1,2,1][2,2,1]....[2,3,3][3,3,3]の順に返す。</example>
-        bool GetNextIndex(int dimension, ref int[] index)
+        public bool GetNextIndex(int dimension, ref int[] index)
         {
             foreach (int check in index) if (check < 1) throw new IndexOutOfRangeException();
 

@@ -60,7 +60,7 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 現在の対象変数の指数とその係数の対応マップを設定もしくは取得します。
         /// </summary>
-        private Dictionary<int, Formula> CoefficientMap { get; set; }
+        public Dictionary<int, Formula> CoefficientMap { get; set; }
 
 
 
@@ -188,7 +188,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="target">整理対象の等式</param>
         /// <param name="about">整理対象の等式</param>
         /// <returns></returns>
-        private Equal GetCollected(Equal target, Variable about)
+        public Equal GetCollected(Equal target, Variable about)
         {
             target.LeftHandSide -= target.RightHandSide;
             target.RightHandSide = 0;
@@ -201,7 +201,7 @@ namespace GoodSeat.Liffom.Processes
         /// </summary>
         /// <param name="target">係数の対応マップの作成対象の等式</param>
         /// <returns>対象変数がいずれかの項の分母に存在する場合、それを消すために必要な乗数。ない場合、null。</returns>
-        private Formula SetCoefficientMap(Equal target, Variable about)
+        public Formula SetCoefficientMap(Equal target, Variable about)
         {
             CoefficientMap = new Dictionary<int, Formula>();
             List<Formula> needMult = new List<Formula>();

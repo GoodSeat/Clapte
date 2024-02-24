@@ -106,7 +106,7 @@ namespace GoodSeat.LiffomTestProject
             double error = 0.001d;
             Formula expected = 15d;
             Formula actual;
-            actual = SolveEquation_Accessor.GetRoundSolution(f, x, solution, error);
+            actual = SolveEquation.GetRoundSolution(f, x, solution, error);
             Assert.AreEqual(expected, actual);
         }
         
@@ -127,7 +127,7 @@ namespace GoodSeat.LiffomTestProject
             int initialPrecisionExpected = -11;
             bool expected = true;
             bool actual;
-            actual = SolveEquation_Accessor.GetInitialPrecision(f, x, solution, out initialValidDigit, out initialPrecision);
+            actual = SolveEquation.GetInitialPrecision(f, x, solution, out initialValidDigit, out initialPrecision);
             Assert.AreEqual(initialValidDigitExpected, initialValidDigit);
             Assert.AreEqual(initialPrecisionExpected, initialPrecision);
             Assert.AreEqual(expected, actual);
@@ -146,7 +146,7 @@ namespace GoodSeat.LiffomTestProject
             int initialValidDigit = -3;
 
             Numeric actual;
-            actual = SolveEquation_Accessor.GetPrecisionModifiedSolution(f, x, solution, initialValidDigit) as Numeric;
+            actual = SolveEquation.GetPrecisionModifiedSolution(f, x, solution, initialValidDigit) as Numeric;
             Assert.AreEqual(3, actual.SignificantDigits);
         }
 

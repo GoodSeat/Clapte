@@ -79,7 +79,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void GetAllDivisorsTest()
         {
-            Factorize_Accessor target = new Factorize_Accessor();
+            var target = new Factorize();
             Formula f = Formula.Parse("a*(x+1)^2");
             bool containMinus = true;
             List<Formula> expected = new List<Formula>();
@@ -108,7 +108,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void GetDecomposedFactorsTest()
         {
-            Factorize_Accessor target = new Factorize_Accessor();
+            var target = new Factorize();
             Formula f = Formula.Parse("a*(x+1)^2");
             List<Formula> expected = new List<Formula>();
             expected.Add(Formula.Parse("a"));
@@ -137,8 +137,8 @@ namespace GoodSeat.LiffomTestProject
 
         void AddFactorizeTestCase(string target, string expected)
         {
-            Factorize_Accessor factorizer = new Factorize_Accessor();
-            Formula actual = factorizer.OnDo(null, Formula.Parse(target));
+            var factorizer = new Factorize();
+            Formula actual = factorizer.Do(Formula.Parse(target));
             Assert.AreEqual(Formula.Parse(expected), actual);
         }
     }

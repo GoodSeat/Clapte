@@ -234,7 +234,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="containMinus">約数に負数を含めるか。</param>
         /// <returns>全約数リスト。</returns>
         /// <example>a(x+1)^2 → 1, -1, a, -a, x+1, -(x+1), (x+1)^2, -(x+1)^2, a(x+1), -a(x+1), a(x+1)^2, -a(x+1)^2</example>
-        private List<Formula> GetAllDivisors(Formula target, bool containMinus)
+        public List<Formula> GetAllDivisors(Formula target, bool containMinus)
         {
             Factorize factorize = new Factorize(false);
             var factorized = factorize.Do(target);
@@ -282,7 +282,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="factorized">対象とする因数分解済みの数式。</param>
         /// <returns>因数リスト。</returns>
         /// <example>a(x+1)^2 → a, x+1, x+1</example>
-        private IEnumerable<Formula> GetDecomposedFactors(Formula factorized)
+        public IEnumerable<Formula> GetDecomposedFactors(Formula factorized)
         {
             if (factorized is Product)
             {

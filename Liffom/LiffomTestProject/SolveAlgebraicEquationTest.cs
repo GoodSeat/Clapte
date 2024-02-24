@@ -115,7 +115,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void GetCollectedTest()
         {
-            SolveAlgebraicEquation_Accessor target = new SolveAlgebraicEquation_Accessor();
+            var target = new SolveAlgebraicEquation();
             Equal f = Formula.Parse("(7*x+a)*b + z*x^2 = 50") as Equal;
             Variable about = new Variable("x");
 
@@ -148,7 +148,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void SetCoefficientMapTest()
         {
-            SolveAlgebraicEquation_Accessor target = new SolveAlgebraicEquation_Accessor(); // TODO: 適切な値に初期化してください
+            var target = new SolveAlgebraicEquation(); // TODO: 適切な値に初期化してください
             Variable about = new Variable("x");
 
             Equal f = Formula.Parse("(7*x+a)*b + z*x^2 = 50") as Equal;

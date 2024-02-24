@@ -96,7 +96,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="error">計算時に用いた許容誤差値。</param>
         /// <param name="startPrecision">丸め処理の試行を開始する精度桁数。</param>
         /// <returns></returns>
-        private static Formula GetRoundSolution(Formula f, Variable x, Formula solution, double error, int startPrecision = 0)
+        public static Formula GetRoundSolution(Formula f, Variable x, Formula solution, double error, int startPrecision = 0)
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
@@ -132,7 +132,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="initialValidDigit">有効桁数を無限大とした解を代入したときの左辺の最大有効桁。</param>
         /// <param name="initialPrecision">有効桁数を無限大とした解を代入したときの左辺の有効桁数。</param>
         /// <returns>解の有効桁数調整が必要か否か。</returns>
-        private static bool GetInitialPrecision(Formula f, Variable x, Formula solution, out int initialValidDigit, out int initialPrecision)
+        public static bool GetInitialPrecision(Formula f, Variable x, Formula solution, out int initialValidDigit, out int initialPrecision)
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
@@ -161,7 +161,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="solution">初期解。</param>
         /// <param name="initialValidDigit">解の有効桁数を無限大としたときの f(x) の最大有効桁。</param>
         /// <returns></returns>
-        private static Formula GetPrecisionModifiedSolution(Formula f, Variable x, Formula solution, int initialValidDigit)
+        public static Formula GetPrecisionModifiedSolution(Formula f, Variable x, Formula solution, int initialValidDigit)
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 

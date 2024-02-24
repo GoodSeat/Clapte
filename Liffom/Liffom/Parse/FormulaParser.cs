@@ -167,7 +167,7 @@ namespace GoodSeat.Liffom.Parse
         /// <param name="text">字句解析の対象文字列。</param>
         /// <returns>解析結果トークン列の先頭トークン。</returns>
         /// <exception cref="FormulaParseException">文字列のトークン化に失敗した場合にスローされます。</exception>
-        private StartToken AnalyzeLexical(string text)
+        public StartToken AnalyzeLexical(string text)
         {
             Token lastToken = new StartToken();
             lastToken.InsertNext(new EndToken());

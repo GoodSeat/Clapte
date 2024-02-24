@@ -79,7 +79,7 @@ namespace GoodSeat.LiffomTestProject
         [DeploymentItem("Liffom.dll")]
         public void BuildUnitListTest()
         {
-            CalculateUnitConversionFactor_Accessor target = new CalculateUnitConversionFactor_Accessor(); // TODO: 適切な値に初期化してください
+            var target = new CalculateUnitConversionFactor();
             Formula unitFormula = Formula.Parse("[kN*g*m/(s*h)]");
             List<Unit> moleculars = new List<Unit>();
             List<Unit> denominators = new List<Unit>();
