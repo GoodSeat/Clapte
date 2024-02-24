@@ -93,6 +93,7 @@
     <Compile Include="Formats\Bracket.cs" />
     <Compile Include="Formats\Format.cs" />
     <Compile Include="Formats\FormatProperty.cs" />
+    <Compile Include="Formats\Numerics\RadixConvertFormatProperty.cs" />
     <Compile Include="Formats\OperatorFormatProperty.cs" />
     <Compile Include="Formats\Powers\DivisionFormatProperty.cs" />
     <Compile Include="Formats\Numerics\ConsiderDigitFormatProperty.cs" />

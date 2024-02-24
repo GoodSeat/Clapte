@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using GoodSeat.Liffom.Formulas;
+using Microsoft.VisualBasic.ApplicationServices;
 
 namespace GoodSeat.Liffom.Parse
 {
@@ -17,13 +18,38 @@ namespace GoodSeat.Liffom.Parse
     /// </summary>
     public class NumericLexer : Lexer
     {
-        static NumericLexer()
+        public NumericLexer()
         {
+            var ops = new List<string>();
+            ops.Add("^([0-9]*(\\.)?[0-9]+|[0-9]+(\\.)?[0-9]*)(e[+-]?[0-9]+)?$");
+
+            if (Use0b)
+            {
+                var c = "[0-1]";
+                ops.Add($"^0b({c}*(\\.)?{c}+|{c}+(\\.)?{c}*)(e[+-]?{c}+)?$");
+            }
+            if (Use0o)
+            {
+                var c = "[0-7]";
+                ops.Add($"^0o({c}*(\\.)?{c}+|{c}+(\\.)?{c}*)(e[+-]?{c}+)?$");
+            }
+            if (Use0x)
+            {
+                var c = "[0-9abcdef]";
+                ops.Add($"^0x({c}*(\\.)?{c}+|{c}+(\\.)?{c}*)(e[+-]?{c}+)?$");
+            }
+
+            var pattern = string.Join("|", ops);
+
             // 正負記号は和算演算に任せる
-            NumericRegex = new Regex("^([0-9]*(\\.)?[0-9]+|[0-9]+(\\.)?[0-9]*)(e[+-]?[0-9]+)?$", RegexOptions.IgnoreCase);
+            NumericRegex = new Regex(pattern, RegexOptions.IgnoreCase);
         }
 
-        public static Regex NumericRegex { get; private set; }
+        public bool Use0b { get; set; } = true;
+        public bool Use0o { get; set; } = true;
+        public bool Use0x { get; set; } = true;
+
+        public Regex NumericRegex { get; private set; }
 
         public override Lexer.ScanResult Scan(string text)
         {

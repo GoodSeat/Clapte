@@ -146,6 +146,73 @@ namespace GoodSeat.Liffom.Formulas
         /// <returns>変換されたNumeric型のオブジェクト。</returns>
         public static implicit operator Numeric(Value r) { return new Numeric(r); }
 
+        /// <summary>
+        /// 指定文字列を指定基数を有する実数として<see cref="Numeric"/>に変換します。
+        /// </summary>
+        /// <param name="s">変換元とする文字列。</param>
+        /// <param name="fromBase">基数。</param>
+        /// <returns>変換された<see cref="Numeric"/>。</returns>
+        /// <exception cref="NotSupportedException">変換不能な文字列である場合に送出されます。</exception>
+        public static Numeric FromBase(string s, int fromBase)
+        {
+            if (fromBase <= 1) throw new NotSupportedException();
+
+            var eps = s.Split(new string[] { "e+" }, StringSplitOptions.None);
+            if (eps.Length == 1) eps = s.Split(new string[] { "E+" }, StringSplitOptions.None);
+            if (eps.Length != 1)
+            {
+                if (eps.Length != 2) throw new NotSupportedException();
+                var n1 = FromBase(eps[0], fromBase);
+                var n2 = FromBase(eps[1], fromBase);
+                if (!n2.IsInteger) throw new NotSupportedException();
+                return (n1 * Math.Pow(fromBase, (int)n2)).Numerate() as Numeric;
+            }
+
+            var ems = s.Split(new string[] { "e-" }, StringSplitOptions.None);
+            if (ems.Length == 1) ems = s.Split(new string[] { "E-" }, StringSplitOptions.None);
+            if (ems.Length != 1)
+            {
+                if (ems.Length != 2) throw new NotSupportedException();
+                var n1 = FromBase(ems[0], fromBase);
+                var n2 = FromBase(ems[1], fromBase);
+                if (!n2.IsInteger) throw new NotSupportedException();
+                return (n1 * Math.Pow(fromBase, -(int)n2)).Numerate() as Numeric;
+            }
+
+            var ts = s.Split('.');
+            if (ts.Length != 1 && ts.Length != 2) throw new NotSupportedException();
+
+            Func<char, int> toN = c =>
+            {
+                var c_ = c.ToString().ToLower()[0];
+                int r;
+                if ('a' <= c_ && c_ <= 'z') r = 10 + (int)c_ - (int)'a';
+                else r = int.Parse(c.ToString());
+
+                if (r >= fromBase) throw new NotSupportedException();
+                return r;
+            };
+
+            Formula n = new Numeric(0.0);
+            int b = 0;
+            for (int i = ts[0].Length - 1; i >= 0; i--)
+            {
+                n += new Numeric(toN(ts[0][i])) * new Numeric(Math.Pow(fromBase, b));
+                ++b;
+            }
+            if (ts.Length == 2)
+            {
+                b = -1;
+                for (int i = 0; i < ts[1].Length; i++)
+                {
+                    n += new Numeric(toN(ts[1][i])) * new Numeric(Math.Pow(fromBase, b));
+                    --b;
+                }
+            }
+
+            return n.Numerate() as Numeric;
+        }
+
 
 
         /// <summary>
@@ -154,15 +221,33 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="s">初期値を指定する文字列。</param>
         public Numeric(string s)
         {
-            if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(double.Parse(s)), s);
-            else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(double.Parse(s)), s);
-            else if (InnerRealType == RealType.Decimal)
+            if (s.StartsWith("0b"))
             {
-                if (s.ToLower().Contains("e")) Figure = new SignificantReal(new DecimalValue(double.Parse(s)), s);
-                else Figure = new SignificantReal(new DecimalValue(decimal.Parse(s)), s);
+                Figure = FromBase(s.Substring(2), 2).Figure;
+                Format.SetProperty(new RadixConvertFormatProperty() { Mode = RadixConvertFormatProperty.RadixConvertMode._0b });
             }
-            else if (InnerRealType == RealType.BigDecimal) Figure = new SignificantReal(BigDecimalValue.Parse(s), s);
-            else throw new NotImplementedException();
+            else if (s.StartsWith("0o"))
+            {
+                Figure = FromBase(s.Substring(2), 8).Figure;
+                Format.SetProperty(new RadixConvertFormatProperty() { Mode = RadixConvertFormatProperty.RadixConvertMode._0o });
+            }
+            else if (s.StartsWith("0x"))
+            {
+                Figure = FromBase(s.Substring(2), 16).Figure;
+                Format.SetProperty(new RadixConvertFormatProperty() { Mode = RadixConvertFormatProperty.RadixConvertMode._0x });
+            }
+            else
+            {
+                if (InnerRealType == RealType.Double) Figure = new SignificantReal(new DoubleValue(double.Parse(s)), s);
+                else if (InnerRealType == RealType.DoubleModified) Figure = new SignificantReal(new DoubleValueModified(double.Parse(s)), s);
+                else if (InnerRealType == RealType.Decimal)
+                {
+                    if (s.ToLower().Contains("e")) Figure = new SignificantReal(new DecimalValue(double.Parse(s)), s);
+                    else Figure = new SignificantReal(new DecimalValue(decimal.Parse(s)), s);
+                }
+                else if (InnerRealType == RealType.BigDecimal) Figure = new SignificantReal(BigDecimalValue.Parse(s), s);
+                else throw new NotImplementedException();
+            }
         }
 
         /// <summary>
@@ -248,10 +333,25 @@ namespace GoodSeat.Liffom.Formulas
 
             // 有効桁数考慮表記
             bool considerSignificantFigures = Format.PropertyOf<ConsiderSignificantFiguresFormatProperty>();
-            if (considerSignificantFigures)
-                result = Figure.ToString();
+
+            var convertRadix = Format.PropertyOf<RadixConvertFormatProperty>();
+            if (considerSignificantFigures && convertRadix.Mode != RadixConvertFormatProperty.RadixConvertMode._00)
+            {
+                throw new NotSupportedException("有効桁数を考慮する数値においては、10進数以外の進数表記はできません。");
+            }
+
+            // 進数変換
+            if (convertRadix.Mode == RadixConvertFormatProperty.RadixConvertMode._00)
+            {
+                if (considerSignificantFigures)
+                    result = Figure.ToString();
+                else
+                    result = Figure.Value.ToString("G");
+            }
             else
-                result = Figure.Value.ToString("G");
+            {
+                result = convertRadix.Convert(this);
+            }
 
             // 小数点表記
             result = Format.PropertyOf<RadixPointFormatProperty>().SetRadixPoint(result);
@@ -259,7 +359,7 @@ namespace GoodSeat.Liffom.Formulas
             // 3桁区切り表記
             result = Format.PropertyOf<SplitFormatProperty>().SetSplit(result, Format);
 
-            return result;
+            return convertRadix.GetPrefix() + result;
         }
 
         /// <summary>
