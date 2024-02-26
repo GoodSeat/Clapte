@@ -172,7 +172,7 @@ namespace GoodSeat.Liffom.Formulas
                 var n1 = FromBase(eps[0], fromBase);
                 var n2 = FromBase(eps[1], fromBase);
                 if (!n2.IsInteger) throw new NotSupportedException();
-                return (n1 * Math.Pow(fromBase, (int)n2)).Numerate() as Numeric;
+                return (n1 * (new Numeric(fromBase) ^ n2)).Numerate() as Numeric;
             }
 
             var ems = s.Split(new string[] { "e-" }, StringSplitOptions.None);
@@ -183,7 +183,7 @@ namespace GoodSeat.Liffom.Formulas
                 var n1 = FromBase(ems[0], fromBase);
                 var n2 = FromBase(ems[1], fromBase);
                 if (!n2.IsInteger) throw new NotSupportedException();
-                return (n1 * Math.Pow(fromBase, -(int)n2)).Numerate() as Numeric;
+                return (n1 * (new Numeric(fromBase) ^ (-n2))).Numerate() as Numeric;
             }
 
             var ts = s.Split('.');
@@ -204,7 +204,7 @@ namespace GoodSeat.Liffom.Formulas
             int b = 0;
             for (int i = ts[0].Length - 1; i >= 0; i--)
             {
-                n += new Numeric(toN(ts[0][i])) * new Numeric(Math.Pow(fromBase, b));
+                n += new Numeric(toN(ts[0][i])) * (new Numeric(fromBase) ^ b);
                 ++b;
             }
             if (ts.Length == 2)
@@ -212,7 +212,7 @@ namespace GoodSeat.Liffom.Formulas
                 b = -1;
                 for (int i = 0; i < ts[1].Length; i++)
                 {
-                    n += new Numeric(toN(ts[1][i])) * new Numeric(Math.Pow(fromBase, b));
+                    n += new Numeric(toN(ts[1][i])) * (new Numeric(fromBase) ^ b);
                     --b;
                 }
             }
