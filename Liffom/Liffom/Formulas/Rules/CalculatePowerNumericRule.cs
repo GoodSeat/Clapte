@@ -1,5 +1,5 @@
 // -----------------------------------------------------------------------------
-//  Copyright (C) 2016-2019 GoodSeat
+//  Copyright (C) 2016-2024 GoodSeat
 //  Distributed under the MIT License
 //  See https://sites.google.com/site/eatbaconandham/liffom/license 
 // -----------------------------------------------------------------------------
@@ -61,7 +61,7 @@ namespace GoodSeat.Liffom.Formulas.Rules
             Numeric rad = Imaginary.Arg(R, E); // 元の偏角
 
             // 累乗計算後の複素数の絶対値
-            Numeric newAbs = abs.Figure ^ expNumeric.Figure;
+            Numeric newAbs = ((E == 0) ? (R.Figure > 0 ? R.Figure : -R.Figure) : abs.Figure) ^ expNumeric.Figure;
 
             // 角度を取得
             Numeric newRad = (rad * expNumeric).Numerate() as Numeric;
