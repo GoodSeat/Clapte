@@ -374,43 +374,28 @@ namespace GoodSeat.Liffom.Processes
             var token = new DeformToken(Formula.SimplifyToken, Formula.NumerateToken, Formula.CalculateToken);
 
             Formula i = Imaginary.i;
-            Numeric n2 = new Numeric(2d);
             Numeric n3 = new Numeric(3d);
 
-            Formula A = (b / a).Simplify();
-            Formula B = (c / a).Simplify();
-            Formula C = (d / a).Simplify();
+            var p = (3*a*c - (b^2)) / (9*(a^2));
+            var q = (2*(b^3) - 9*a*b*c + 27*(a^2)*d) / (27*(a^3));
+            p = p.DeformFormula(token);
+            q = q.DeformFormula(token);
 
-            var a2 = (A ^ 2).DeformFormula(token);
-            var a3_2 = (2 * (A ^ 3)).DeformFormula(token);
-            var ab = (A * B).DeformFormula(token);
+            var pq = (((q^2) + 4*(p^3)) ^ 0.5).DeformFormula(token);
+            var a_ = (-q + pq) / 2.0;
+            var b_ = (-q - pq) / 2.0;
+            a_ = a_.DeformFormula(token);
+            b_ = b_.DeformFormula(token);
 
-            Formula q = ((C + a3_2 / 27d - ab / n3) / n2).DeformFormula(token);
-            Formula p = ((B - a2 / n3) / n3).DeformFormula(token);
+            var w = (-1 + (n3 ^ 0.5)*i) / 2;
+            w = w.DeformFormula(token);
 
-            Formula w1 = 1;
-            Formula w2 = ((-1 + i * (n3 ^ 0.5)) / n2).DeformFormula(token);
-            Formula w3 = ((-1 - i * (n3 ^ 0.5)) / n2).DeformFormula(token);
-
-            Formula mid = (((q ^ 2) + (p ^ 3)) ^ 0.5).DeformFormula(token);
-
-            Formula uBase = (-q + mid) ^ (n3 ^ -1);
-            uBase = uBase.Simplify().DeformFormula(token);
-            Formula u1 = (w1 * uBase).DeformFormula(token);
-            Formula u2 = (w2 * uBase).DeformFormula(token);
-            Formula u3 = (w3 * uBase).DeformFormula(token);
-
-            Formula vBase = (-q - mid) ^ (n3 ^ -1);
-            vBase = vBase.Simplify().DeformFormula(token);
-
-            Formula v1 = (w1 * vBase).DeformFormula(token);
-            Formula v2 = (w2 * vBase).DeformFormula(token);
-            Formula v3 = (w3 * vBase).DeformFormula(token);
-
-            Formula x1 = u1 + v1 - A / n3;
-            Formula x2 = u2 + v3 - A / n3;
-            Formula x3 = u3 + v2 - A / n3;
-
+            var a1 = (a_ ^ (n3 ^ -1)).DeformFormula(token);
+            var b1 = (b_ ^ (n3 ^ -1)).DeformFormula(token);
+            var c1 = b / (3*a).DeformFormula(token);
+            Formula x1 =       a1 +       b1 - c1;
+            Formula x2 =  w   *a1 + (w^2)*b1 - c1;
+            Formula x3 = (w^2)*a1 +  w   *b1 - c1;
             x1 = x1.DeformFormula(token);
             x2 = x2.DeformFormula(token);
             x3 = x3.DeformFormula(token);
@@ -419,7 +404,6 @@ namespace GoodSeat.Liffom.Processes
             ret.Add(x1);
             if (x2 != x1) ret.Add(x2);
             if (x3 != x1 && x3 != x2) ret.Add(x3);
-
             return ret;
         }
 

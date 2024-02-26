@@ -372,6 +372,12 @@ namespace GoodSeat.Liffom.Reals
 
 
         /// <summary>
+        /// このインスタンスの絶対値を返します。
+        /// </summary>
+        /// <returns>評価後の実数。</returns>
+        public Real Abs() { return OnFunction(r => r.Abs()); }
+
+        /// <summary>
         /// このインスタンスの角度のサインを返します。
         /// </summary>
         /// <returns>評価後の実数。</returns>

@@ -102,7 +102,7 @@ namespace GoodSeat.LiffomTestProject
             DeformTokenTest.DeformTest(token, "cos(i)",             "1.54308063481524");
             DeformTokenTest.DeformTest(token, "cos(i + 1)",         "0.833730025131149-0.988897705762865*i");
             DeformTokenTest.DeformTest(token, "tan(i)",             "0.761594155955765*i");
-            DeformTokenTest.DeformTest(token, "tan(i + 1)",         "0.271752585319512+1.0839233273387*i");
+            DeformTokenTest.DeformTest(token, "tan(i + 1)",         "0.271752585319511+1.0839233273387*i");
                                                                      
             DeformTokenTest.DeformTest(token, "i^i",                "0.207879576350762");
             DeformTokenTest.DeformTest(token, "ln(i)",              "1.5707963267949*i");
@@ -123,7 +123,7 @@ namespace GoodSeat.LiffomTestProject
 //			DeformTokenTest.DeformTest(token, "tan(355/226)",       "-7497258.18532558711"); // 内部数値がdoubleだと精度が足りないため、テストケースから除外
             DeformTokenTest.DeformTest(token, "((1-i)/(1+i))^8",    "1");
 			DeformTokenTest.DeformTest(token, "i/(1-i)+(1-i)/i",    "-1.5 - 0.5*i");
-			DeformTokenTest.DeformTest(token, "sqrt(-i)",           "0.707106781186547-0.707106781186548*i");
+  			DeformTokenTest.DeformTest(token, "sqrt(-i)",           "0.707106781186547-0.707106781186548*i");
 			DeformTokenTest.DeformTest(token, "(1-i)^(1+i)",        "2.80787929726062904-1.31786517290118086*i");
 			DeformTokenTest.DeformTest(token, "2^(2i)",             "0.183456974743304+0.983027740411243*i");
 			DeformTokenTest.DeformTest(token, "ln(-1)",             "3.14159265358979324*i");
