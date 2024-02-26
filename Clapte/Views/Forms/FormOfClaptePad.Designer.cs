@@ -70,6 +70,7 @@
             this._menuInsertHelp = new System.Windows.Forms.ToolStripMenuItem();
             this._splitContainer = new System.Windows.Forms.SplitContainer();
             this._panelHotLoading = new System.Windows.Forms.Panel();
+            this._btnSaveSync = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._btnStopHotLoading = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._textBoxHotReloadingPath = new System.Windows.Forms.TextBox();
             this._picHotReloading = new System.Windows.Forms.PictureBox();
@@ -155,13 +156,13 @@
             this.toolStripMenuItem11 = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator12 = new System.Windows.Forms.ToolStripSeparator();
             this._menuStopHotLoading = new System.Windows.Forms.ToolStripMenuItem();
-            this._btnSaveSync = new GoodSeat.Clapte.Views.Components.ImageButton(this.components);
             this._contextMenuEdit.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._splitContainer)).BeginInit();
             this._splitContainer.Panel1.SuspendLayout();
             this._splitContainer.Panel2.SuspendLayout();
             this._splitContainer.SuspendLayout();
             this._panelHotLoading.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnSaveSync)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnStopHotLoading)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picHotReloading)).BeginInit();
             this._panelFind.SuspendLayout();
@@ -201,7 +202,6 @@
             this._expandMenuCollectAbout.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcherHotLoading)).BeginInit();
             this._contextMenuEditOnHotLoading.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._btnSaveSync)).BeginInit();
             this.SuspendLayout();
             // 
             // _inputTextBox
@@ -587,6 +587,25 @@
             this._panelHotLoading.Size = new System.Drawing.Size(437, 29);
             this._panelHotLoading.TabIndex = 24;
             this._panelHotLoading.Visible = false;
+            // 
+            // _btnSaveSync
+            // 
+            this._btnSaveSync.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
+            this._btnSaveSync.BackColor = System.Drawing.Color.White;
+            this._btnSaveSync.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this._btnSaveSync.Cursor = System.Windows.Forms.Cursors.Hand;
+            this._btnSaveSync.DownMove = 1;
+            this._btnSaveSync.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save;
+            this._btnSaveSync.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
+            this._btnSaveSync.Location = new System.Drawing.Point(386, 1);
+            this._btnSaveSync.Name = "_btnSaveSync";
+            this._btnSaveSync.Size = new System.Drawing.Size(26, 26);
+            this._btnSaveSync.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
+            this._btnSaveSync.TabIndex = 18;
+            this._btnSaveSync.TabStop = false;
+            this._toolTipHelp.SetToolTip(this._btnSaveSync, "編集内容を上書保存");
+            this._btnSaveSync.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
+            this._btnSaveSync.Click += new System.EventHandler(this._btnSaveSync_Click);
             // 
             // _btnStopHotLoading
             // 
@@ -1579,24 +1598,6 @@
             this._menuStopHotLoading.ToolTipText = "ホットローディングを停止します。";
             this._menuStopHotLoading.Click += new System.EventHandler(this._btnStopHotLoading_Click);
             // 
-            // _btnSaveSync
-            // 
-            this._btnSaveSync.BackColor = System.Drawing.Color.White;
-            this._btnSaveSync.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
-            this._btnSaveSync.Cursor = System.Windows.Forms.Cursors.Hand;
-            this._btnSaveSync.DownMove = 1;
-            this._btnSaveSync.FocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save;
-            this._btnSaveSync.Image = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
-            this._btnSaveSync.Location = new System.Drawing.Point(386, 1);
-            this._btnSaveSync.Name = "_btnSaveSync";
-            this._btnSaveSync.Size = new System.Drawing.Size(26, 26);
-            this._btnSaveSync.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
-            this._btnSaveSync.TabIndex = 18;
-            this._btnSaveSync.TabStop = false;
-            this._toolTipHelp.SetToolTip(this._btnSaveSync, "編集内容を上書保存");
-            this._btnSaveSync.UnFocusImage = global::GoodSeat.Clapte.Properties.Resources.Icon_Save_Unfocus_mini;
-            this._btnSaveSync.Click += new System.EventHandler(this._btnSaveSync_Click);
-            // 
             // FormOfClaptePad
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -1635,6 +1636,7 @@
             this._splitContainer.ResumeLayout(false);
             this._panelHotLoading.ResumeLayout(false);
             this._panelHotLoading.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._btnSaveSync)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._btnStopHotLoading)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picHotReloading)).EndInit();
             this._panelFind.ResumeLayout(false);
@@ -1679,7 +1681,6 @@
             this._expandMenuCollectAbout.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._fileSystemWatcherHotLoading)).EndInit();
             this._contextMenuEditOnHotLoading.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)(this._btnSaveSync)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
