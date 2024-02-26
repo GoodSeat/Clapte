@@ -12,6 +12,7 @@ using GoodSeat.Liffom.Formulas;
 using GoodSeat.Liffom.Formats;
 using GoodSeat.Clapte.Solvers.Processes;
 using GoodSeat.Liffom;
+using GoodSeat.Liffom.Formats.Numerics;
 
 namespace GoodSeat.Clapte.Solvers
 {
@@ -162,7 +163,9 @@ namespace GoodSeat.Clapte.Solvers
                     result = DoProcess(Step.EvaluateFormula, ref input, ref formula, errors);
                     if (result != null) return result;
 
+                    var convertRadix = formula.Format.PropertyOf<RadixConvertFormatProperty>();
                     formula.Format = OutputFormat;
+                    formula.Format.SetProperty(convertRadix);
 
                     result = DoProcess(Step.CheckOutputFormula, ref input, ref formula, errors);
                     if (result != null) return result;
