@@ -27,19 +27,19 @@ namespace GoodSeat.Liffom.Formats.Numerics
             /// <summary>
             /// 2進数。
             /// </summary>
-            _0b, 
+            _0b = 2, 
             /// <summary>
             /// 8進数。
             /// </summary>
-            _0o, 
+            _0o = 8, 
             /// <summary>
             /// 10進数。
             /// </summary>
-            _00, 
+            _0d = 10, 
             /// <summary>
             /// 16進数。
             /// </summary>
-            _0x, 
+            _0x = 16, 
         }
 
         /// <summary>
@@ -50,7 +50,7 @@ namespace GoodSeat.Liffom.Formats.Numerics
         /// <summary>
         /// 表記用の基数を設定もしくは取得します。
         /// </summary>
-        public RadixConvertMode Mode { get; set; } = RadixConvertMode._00;
+        public RadixConvertMode Mode { get; set; } = RadixConvertMode._0d;
 
         /// <summary>
         /// 設定に基づいて指定の10進数数値を文字列("0x"等の接頭辞は付与しない)に変換します。
@@ -59,32 +59,26 @@ namespace GoodSeat.Liffom.Formats.Numerics
         /// <returns>変換された文字列("0x"等の接頭辞は付与しない)。</returns>
         public string Convert(Numeric n)
         {
-            if (Mode == RadixConvertMode._00) return n.ToString();
-
-            var v2 = new Mod(n, new Numeric(1.0)).Calculate() as Numeric;
-            var v1 = (n - v2).Numerate() as Numeric;
-
-            var b = 2;
-            switch (Mode)
-            {
-                case RadixConvertMode._0b: b = 2; break;
-                case RadixConvertMode._0o: b = 8; break;
-                case RadixConvertMode._0x: b = 16; break;
-                default: throw new NotImplementedException();
-            }
+            if (Mode == RadixConvertMode._0d) return n.ToString();
 
             bool isNegative = false;
+            var figure = n.Figure;
             if (n < 0)
             {
                 isNegative = true;
-                n.Figure *= -1;
+                figure *= -1;
             }
+
+            var n_ = new Numeric(figure);
+
+            var v2 = new Mod(n_, new Numeric(1.0)).Calculate() as Numeric;
+            var v1 = (n_ - v2).Numerate() as Numeric;
+
+            var b = (int)Mode;
 
             Func<Numeric, string> toDigit = n1 =>
             {
-                if (!n1.IsInteger) throw new NotSupportedException();
-
-                if (n1.Figure < 10) return ((int)n1.Figure).ToString();
+                if (n1.Figure < 10) return ((int)(n1.Figure.Value.ToDouble() + 0.01)).ToString();
                 if (n1.Figure < 36) return ((char)((int)'a' + (int)(n1.Figure.Value.ToDouble() + 0.01) - 10)).ToString();
                 throw new NotSupportedException();
             };
@@ -102,7 +96,7 @@ namespace GoodSeat.Liffom.Formats.Numerics
             }
             s = toDigit(v1) + s;
 
-            int m = n.Figure.Value.MaxValidDigits * 10 / b + 1;
+            int m = figure.Value.MaxValidDigits * 10 / b + 1;
 
             int cnt = s == "0" ? 0 : s.Length;
             int tn0 = 0;
@@ -146,11 +140,11 @@ namespace GoodSeat.Liffom.Formats.Numerics
         {
             switch (Mode)
             {
-                case RadixConvertMode._00: return "";
+                case RadixConvertMode._0d: return "";
                 case RadixConvertMode._0b: return "0b";
                 case RadixConvertMode._0o: return "0o";
                 case RadixConvertMode._0x: return "0x";
-                default: throw new NotImplementedException();
+                default: return "0n[" + ((int)Mode).ToString() + "]";
             }
         }
 

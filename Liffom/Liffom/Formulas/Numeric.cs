@@ -157,6 +157,13 @@ namespace GoodSeat.Liffom.Formulas
         {
             if (fromBase <= 1) throw new NotSupportedException();
 
+            bool isNegative = false;
+            if (s.StartsWith("-"))
+            {
+                isNegative = true;
+                s = s.Substring(1);
+            }
+
             var eps = s.Split(new string[] { "e+" }, StringSplitOptions.None);
             if (eps.Length == 1) eps = s.Split(new string[] { "E+" }, StringSplitOptions.None);
             if (eps.Length != 1)
@@ -210,6 +217,7 @@ namespace GoodSeat.Liffom.Formulas
                 }
             }
 
+            if (isNegative) n *= -1;
             return n.Numerate() as Numeric;
         }
 
@@ -335,13 +343,9 @@ namespace GoodSeat.Liffom.Formulas
             bool considerSignificantFigures = Format.PropertyOf<ConsiderSignificantFiguresFormatProperty>();
 
             var convertRadix = Format.PropertyOf<RadixConvertFormatProperty>();
-            if (considerSignificantFigures && convertRadix.Mode != RadixConvertFormatProperty.RadixConvertMode._00)
-            {
-                throw new NotSupportedException("有効桁数を考慮する数値においては、10進数以外の進数表記はできません。");
-            }
 
             // 進数変換
-            if (convertRadix.Mode == RadixConvertFormatProperty.RadixConvertMode._00)
+            if (convertRadix.Mode == RadixConvertFormatProperty.RadixConvertMode._0d)
             {
                 if (considerSignificantFigures)
                     result = Figure.ToString();
@@ -350,7 +354,10 @@ namespace GoodSeat.Liffom.Formulas
             }
             else
             {
-                result = convertRadix.Convert(this);
+                if (considerSignificantFigures)
+                    throw new NotSupportedException("有効桁数を考慮する数値においては、10進数以外の進数表記はできません。");
+                else
+                    result = convertRadix.Convert(this);
             }
 
             // 小数点表記
