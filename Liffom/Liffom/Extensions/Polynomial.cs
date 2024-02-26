@@ -30,7 +30,6 @@ namespace GoodSeat.Liffom.Extensions
         {
             if (f == 0) return true;
 
-            var product = f as Product;
             if (f == null) return false;
 
             bool containZero = false;
@@ -137,13 +136,13 @@ namespace GoodSeat.Liffom.Extensions
         /// <returns>指定次数の係数。</returns>
         public static Formula CoefficientOf(this Formula f, AtomicFormula x, Formula exponent)
         {
-            f = f.CollectAbout(x);
+            var f_ = f.CollectAbout(x);
 
             Formula lc = 0;
             Formula le = 0;
-            if (f is Sum)
+            if (f_ is Sum)
             {
-                foreach (var term in f)
+                foreach (var term in f_)
                 {
                     Formula c = GetTermCoefficientOf(term, x, out le);
                     if (le != exponent) continue;
@@ -154,7 +153,7 @@ namespace GoodSeat.Liffom.Extensions
             }
             else
             {
-                Formula c = GetTermCoefficientOf(f, x, out le);
+                Formula c = GetTermCoefficientOf(f_, x, out le);
                 if (le == exponent) lc = c;
             }
             return lc;
@@ -173,13 +172,13 @@ namespace GoodSeat.Liffom.Extensions
         /// </example>
         public static Formula Degree(this Formula f, AtomicFormula x)
         {
-            f = f.CollectAbout(x);
+            var f_ = f.CollectAbout(x);
 
             Numeric maxExponent = null;
             Formula exponent = 0;
-            if (f is Sum)
+            if (f_ is Sum)
             {
-                foreach (var term in f)
+                foreach (var term in f_)
                 {
                     Formula c = GetTermCoefficientOf(term, x, out exponent);
 
@@ -190,7 +189,7 @@ namespace GoodSeat.Liffom.Extensions
             }
             else
             {
-                Formula c = GetTermCoefficientOf(f, x, out exponent);
+                Formula c = GetTermCoefficientOf(f_, x, out exponent);
 
                 if (!(exponent is Numeric)) return exponent;
                 maxExponent = exponent as Numeric;
@@ -233,14 +232,14 @@ namespace GoodSeat.Liffom.Extensions
         /// </summary>
         /// <param name="f">対象数式。</param>
         /// <param name="x">対象とする主変数。</param>
-        /// <returns><see cref="x"/>について整理した数式。</returns>
+        /// <returns><paramref name="x"/>について整理した数式。</returns>
         public static Formula CollectAbout(this Formula f, AtomicFormula x)
         {
             var collectToken = f.LastDeformToken as CollectToken;
             if (collectToken == null || collectToken.About != x)
             {
                 collectToken = new CollectToken(x);
-                f = f.DeformFormula(collectToken);
+                return f.Copy().DeformFormula(collectToken);
             }
 
             return f;
@@ -318,27 +317,27 @@ namespace GoodSeat.Liffom.Extensions
                 r = 0;
                 return f;
             }
-            f = f.CollectAbout(x);
-            g = g.CollectAbout(x);
+            var f_ = f.CollectAbout(x);
+            var g_ = g.CollectAbout(x);
 
-            Numeric degF = f.Degree(x) as Numeric;
-            if (degF == null || !degF.IsInteger) throw new FormulaProcessException(string.Format("{0}は整数多項式ではありません。", f));
-            Numeric degG = g.Degree(x) as Numeric;
-            if (degG == null || !degG.IsInteger) throw new FormulaProcessException(string.Format("{0}は整数多項式ではありません。", g));
+            Numeric degF = f_.Degree(x) as Numeric;
+            if (degF == null || !degF.IsInteger) throw new FormulaProcessException(string.Format("{0}は整数多項式ではありません。", f_));
+            Numeric degG = g_.Degree(x) as Numeric;
+            if (degG == null || !degG.IsInteger) throw new FormulaProcessException(string.Format("{0}は整数多項式ではありません。", g_));
 
             Formula q = 0;
-            r = f.Copy();
-            while (r.Degree(x) >= g.Degree(x))
+            r = f_.Copy();
+            while (r.Degree(x) >= g_.Degree(x))
             {
                 Formula rt;
-                Formula qt = r.LeadingCoefficient(x).Divide(g.LeadingCoefficient(x), out rt, admitFraction);
+                Formula qt = r.LeadingCoefficient(x).Divide(g_.LeadingCoefficient(x), out rt, admitFraction);
 
-                Formula t = qt * (x ^ (r.Degree(x) - g.Degree(x)));
+                Formula t = qt * (x ^ (r.Degree(x) - g_.Degree(x)));
 //                t = t.CollectAbout(x);
                 t = t.Simplify();
                 if (t.IsZero()) break;
 
-                r = (r - t * g).CollectAbout(x);
+                r = (r - t * g_).CollectAbout(x);
 //                q = (q + t).CollectAbout(x);
                 q = (q + t).Simplify();
             }
@@ -479,19 +478,19 @@ namespace GoodSeat.Liffom.Extensions
         public static Formula PrimitivePolynomial(this Formula f, AtomicFormula x, out Formula cont)
         {
             cont = 1;
-            f = f.CollectAbout(x);
+            var f_ = f.CollectAbout(x);
 
             // 指数 - 係数マップ
             Dictionary<Formula, Formula> coefMap = new Dictionary<Formula, Formula>();
-            if (!(f is Sum))
+            if (!(f_ is Sum))
             {
                 Formula exp;
-                Formula coef = GetTermCoefficientOf(f, x, out exp);
+                Formula coef = GetTermCoefficientOf(f_, x, out exp);
                 if (coef != 0) coefMap.Add(exp, coef);
             }
             else
             {
-                foreach (var term in f)
+                foreach (var term in f_)
                 {
                     Formula exp;
                     Formula coef = GetTermCoefficientOf(term, x, out exp);
@@ -503,7 +502,7 @@ namespace GoodSeat.Liffom.Extensions
             }
 
             // 係数1があるならすでに原始多項式
-            if (coefMap.Values.Contains(1)) return f;
+            if (coefMap.Values.Contains(1)) return f_;
 
             Formula gcd = null;
             foreach (var pair in coefMap)
@@ -511,16 +510,16 @@ namespace GoodSeat.Liffom.Extensions
                 if (gcd == null) gcd = pair.Value;
                 else gcd = GCD(gcd, pair.Value);
             }
-            if (gcd == null) return f; // 0など。
+            if (gcd == null) return f_; // 0など。
 
             Formula rem, pp;
             if (gcd is Numeric)
             {
-                pp = (f / gcd).CollectAbout(x);
+                pp = (f_ / gcd).CollectAbout(x);
             }
             else
             {
-                pp = f.Divide(gcd, x, out rem, false);
+                pp = f_.Divide(gcd, x, out rem, false);
 #if DEBUG
                 FormulaAssertionException.Assert(rem.LeadingCoefficient(x).IsZero());
 #endif
