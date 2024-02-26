@@ -96,7 +96,7 @@
     <Compile Include="Formats\Numerics\RadixConvertFormatProperty.cs" />
     <Compile Include="Formats\OperatorFormatProperty.cs" />
     <Compile Include="Formats\Powers\DivisionFormatProperty.cs" />
-    <Compile Include="Formats\Numerics\ConsiderDigitFormatProperty.cs" />
+    <Compile Include="Formats\Numerics\ConsiderSignificantFiguresFormatProperty.cs" />
     <Compile Include="Formats\Numerics\RadixPointFormatProperty.cs" />
     <Compile Include="Formats\Numerics\SplitFormatProperty.cs" />
     <Compile Include="Formulas\Array\ArrayIndex.cs" />
