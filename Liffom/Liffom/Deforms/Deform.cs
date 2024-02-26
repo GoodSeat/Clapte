@@ -1,14 +1,11 @@
 ﻿// -----------------------------------------------------------------------------
-//  Copyright (C) 2016-2019 GoodSeat
+//  Copyright (C) 2016-2024 GoodSeat
 //  Distributed under the MIT License
 //  See https://sites.google.com/site/eatbaconandham/liffom/license 
 // -----------------------------------------------------------------------------
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using GoodSeat.Liffom.Formulas;
-using GoodSeat.Liffom.Formulas.Operators;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formats;
 
@@ -39,8 +36,7 @@ namespace GoodSeat.Liffom.Deforms
         {
             if (target is IUndeformable && (target as IUndeformable).IsUndeformable()) return target;
 
-            Format format = null;
-            if (target.HasFormat) format = target.Format;
+            var formatSetting = target.Format.IndividualSetting;
 
             if (history == null) history = new DeformHistory(target);
             if (history.Era > token.EraMaximum) throw new FormulaDeformException(string.Format("数式変形の世代が、許容されている最大数{0}を超過しました。変形が無限ループとなっているか、もしくは数式が複雑すぎます。", token.EraMaximum));
@@ -60,6 +56,15 @@ namespace GoodSeat.Liffom.Deforms
                     {
                         if (rule.TryMatchRule(ref target))
                         {
+                            foreach (var pair in target.Format.IndividualSetting)
+                            {
+                                formatSetting.Remove(pair.Key);
+                                formatSetting.Add(pair.Key, pair.Value);
+                            }
+
+                            target.Format = new Format();
+                            foreach (var s in formatSetting) target.Format.SetProperty(s.Value);
+
                             ruleApplied = true;
                             history.Add(new DeformHistoryNode(target, rule)); // 変形履歴地点を登録
 
@@ -80,7 +85,6 @@ namespace GoodSeat.Liffom.Deforms
             } 
             if (history.Era == 1) token.Sort(target);
 
-            target.Format = format;
             target.LastDeformToken = token;
             return target;
         }

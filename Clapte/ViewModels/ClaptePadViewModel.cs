@@ -582,8 +582,17 @@ namespace GoodSeat.Clapte.ViewModels
 
             Func<Formula, string> toString = f =>
             {
-                f.Format = format;
-                return f.ToString();
+                try
+                {
+                    var settingFormat = f.Format.IndividualSetting;
+                    f.Format = format;
+                    foreach (var s in settingFormat) f.Format.SetProperty(s.Value);
+                    return f.ToString();
+                }
+                catch (Exception ex)
+                {
+                    return "!!! " + ex.Message;
+                }
             };
 
             foreach (var historyNode in history)
@@ -600,7 +609,7 @@ namespace GoodSeat.Clapte.ViewModels
                 if (historyNode.AppliedRule == null) treeNode.Tag = history;
                 else treeNode.Tag = historyNode;
 
-                if (historyNode.Formula is ErrorFormula) treeNode.ForeColor = colorOfError;
+                if (historyNode.Formula is ErrorFormula || treeNode.Text.StartsWith("!!! ")) treeNode.ForeColor = colorOfError;
 
                 treeNode.ContextMenuStrip = contextMenuOfNode;
 

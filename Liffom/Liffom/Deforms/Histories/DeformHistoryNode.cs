@@ -9,6 +9,7 @@ using System.Linq;
 using System.Text;
 using GoodSeat.Liffom.Deforms.Rules;
 using GoodSeat.Liffom.Formulas;
+using GoodSeat.Liffom.Utilities;
 
 namespace GoodSeat.Liffom.Deforms
 {
@@ -35,7 +36,7 @@ namespace GoodSeat.Liffom.Deforms
         /// <param name="appliedRule">直前に適用されたルール</param>
         public DeformHistoryNode(Formula target, Rule appliedRule)
         {
-            Formula = target;
+            Formula = Clone.GetClone(target);
             AppliedRule = appliedRule;
             ChildrenHistories = new List<DeformHistory>();
 

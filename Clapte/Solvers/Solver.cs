@@ -163,9 +163,9 @@ namespace GoodSeat.Clapte.Solvers
                     result = DoProcess(Step.EvaluateFormula, ref input, ref formula, errors);
                     if (result != null) return result;
 
-                    var convertRadix = formula.Format.PropertyOf<RadixConvertFormatProperty>();
+                    var settingFormat = formula.Format.IndividualSetting;
                     formula.Format = OutputFormat;
-                    formula.Format.SetProperty(convertRadix);
+                    foreach (var s in settingFormat) formula.Format.SetProperty(s.Value);
 
                     result = DoProcess(Step.CheckOutputFormula, ref input, ref formula, errors);
                     if (result != null) return result;

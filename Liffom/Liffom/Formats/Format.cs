@@ -110,7 +110,7 @@ namespace GoodSeat.Liffom.Formats
         /// <summary>
         /// この書式情報に設定された個別の書式設定マップを設定もしくは取得します。
         /// </summary>
-        Dictionary<Type, FormatProperty> IndividualSetting { get; set; }
+        public Dictionary<Type, FormatProperty> IndividualSetting { get; private set; }
 
         /// <summary>
         /// この書式情報の対象となる数式を取得します。

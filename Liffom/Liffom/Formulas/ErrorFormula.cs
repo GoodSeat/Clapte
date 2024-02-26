@@ -13,6 +13,7 @@ namespace GoodSeat.Liffom.Formulas
     /// <summary>
     /// 計算の続行が不可能となるエラーを含む数式を表します。
     /// </summary>
+    [Serializable()]
     public class ErrorFormula : Formula
     {
         /// <summary>
@@ -21,17 +22,17 @@ namespace GoodSeat.Liffom.Formulas
         /// <param name="e">エラーの原因となる例外。</param>
         public ErrorFormula(Exception e)
         {
-            CauseException = e;
+            CauseExceptionMessage = e.Message;
         }
 
         /// <summary>
         /// エラーの原因となる例外を取得します。
         /// </summary>
-        public Exception CauseException { get; private set; }
+        public string CauseExceptionMessage { get; private set; }
 
         public override string GetText()
         {
-            return "{" + CauseException.Message + "}";
+            return "{" + CauseExceptionMessage + "}";
         }
 
         protected override string OnGetUniqueText()
