@@ -71,27 +71,29 @@ namespace GoodSeat.Liffom.Formats.Numerics
 
             var n_ = new Numeric(figure);
 
-            var v2 = new Mod(n_, new Numeric(1.0)).Calculate() as Numeric;
-            var v1 = (n_ - v2).Numerate() as Numeric;
+            var eps = 0.00001;
+
+            var v2 = new Mod(n_, new Numeric(1.0)).Calculate() as Numeric; // 小数部
+            var v1 = (n_ - v2).Numerate() as Numeric; // 整数部
 
             var b = (int)Mode;
 
             Func<Numeric, string> toDigit = n1 =>
             {
-                if (n1.Figure < 10) return ((int)(n1.Figure.Value.ToDouble() + 0.01)).ToString();
-                if (n1.Figure < 36) return ((char)((int)'a' + (int)(n1.Figure.Value.ToDouble() + 0.01) - 10)).ToString();
+                if (n1.Figure < 10) return ((int)(n1.Figure.Value.ToDouble() + eps)).ToString();
+                if (n1.Figure < 36) return ((char)((int)'a' + (int)(n1.Figure.Value.ToDouble() + eps) - 10)).ToString();
                 throw new NotSupportedException();
             };
 
             var s = "";
             int tn1 = 0;
-            while (v1 >= b)
+            while (v1 >= (double)b - eps)
             {
                 Formula.CheckCancelOperation(n);
 
                 var d = new Mod(v1, b).Calculate() as Numeric;
                 s = toDigit(d) + s;
-                v1 = ((v1 - d) / b).Numerate() as Numeric;
+                v1 = ((v1 - d) / b + eps).Numerate() as Numeric;
                 if (s.All(c => c == '0')) ++tn1;
             }
             s = toDigit(v1) + s;
