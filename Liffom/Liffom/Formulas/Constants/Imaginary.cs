@@ -193,15 +193,19 @@ namespace GoodSeat.Liffom.Formulas.Constants
             var asin = new ArcSin(sin);
 
             var rad = asin.Calculate();
-            Numeric radn = rad.Numerate() as Numeric;
-            if (R is Numeric && radn != null && R < 0) rad = rad + Pi.pi;
+            var radn = rad.Numerate() as Numeric;
+            if (R is Numeric && radn != null && R < 0)
+            {
+                rad = -rad + Pi.pi;
+                radn = rad.Numerate() as Numeric;
+            }
 
-            while (radn != null && radn > Math.PI)
+            while (radn != null && radn > Pi.pi.Value)
             {
                 rad = (rad - 2 * Pi.pi).Simplify();
                 radn = rad.Numerate() as Numeric;
             }
-            while (radn != null && radn < -Math.PI)
+            while (radn != null && radn < -Pi.pi.Value)
             {
                 rad = (rad + 2 * Pi.pi).Simplify();
                 radn = rad.Numerate() as Numeric;
@@ -225,7 +229,7 @@ namespace GoodSeat.Liffom.Formulas.Constants
             if (asin < -1) asin = new Numeric(-1);
 
             Numeric rad = new Numeric(asin.Figure.Asin());
-            if (R < 0) rad = new Numeric(rad.Figure + pi);
+            if (R < 0) rad = new Numeric(-rad.Figure + pi);
 
             while (rad > pi) rad = new Numeric(rad.Figure - 2 * pi);
             while (rad < -pi) rad = new Numeric(rad.Figure + 2 * pi);

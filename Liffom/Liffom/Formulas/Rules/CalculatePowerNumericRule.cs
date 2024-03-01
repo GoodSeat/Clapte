@@ -59,17 +59,30 @@ namespace GoodSeat.Liffom.Formulas.Rules
                 else throw new FormulaRuleException("0による除算が発生しました。", new DivideByZeroException());
             }
             Numeric rad = Imaginary.Arg(R, E); // 元の偏角
+            while (rad >  pi) rad = new Numeric(rad - 2 * pi);
+            while (rad < -pi) rad = new Numeric(rad + 2 * pi);
 
             // 累乗計算後の複素数の絶対値
-            Numeric newAbs = ((E == 0) ? (R.Figure > 0 ? R.Figure : -R.Figure) : abs.Figure) ^ expNumeric.Figure;
-
-            // 角度を取得
-            Numeric newRad = (rad * expNumeric).Numerate() as Numeric;
-            if (newRad > pi) newRad = new Numeric(newRad % (2 * pi));
-            if (newRad < 0) newRad = (newRad + new Numeric(2 * pi)).Numerate() as Numeric;
+            Numeric newAbs = ((E == 0) ? R.Figure.Abs() : abs.Figure) ^ expNumeric.Figure;
 
             var eps = new Numeric(5);
             eps.Figure = eps.Figure * (eps.Figure.CreateFrom(10d) ^ (-1 * Numeric.MaxValidDigits));
+
+            Func<Numeric, bool> matchWithOriginal = r => (rad.Figure.Value - r).Cos() > 1.0 - eps.Figure;
+
+            // 角度を取得
+            Numeric newRad = null;
+            if      (rad != 0 && matchWithOriginal(pi / expNumeric)) // 180deg (-1)
+                newRad = pi;
+            else if (rad != 0 && matchWithOriginal(pi / 2.0 / expNumeric)) // 90deg (+i)
+                newRad = pi / 2.0;
+            else if (rad != 0 && matchWithOriginal((pi * 3.0 / 2.0) / expNumeric)) // 270deg (-i)
+                newRad = pi * 3.0 / 2.0;
+            else
+                newRad = (rad * expNumeric).Numerate() as Numeric;
+
+            while (newRad >  pi) newRad = new Numeric(newRad - 2 * pi);
+            while (newRad < -pi) newRad = new Numeric(newRad + 2 * pi);
 
             Numeric cos = new Numeric(newRad.Figure.Cos());
             Numeric sin = new Numeric(newRad.Figure.Sin());
@@ -86,12 +99,11 @@ namespace GoodSeat.Liffom.Formulas.Rules
             if (newReal == 0)
             {
                 if (newImag == 1) return Imaginary.i;
-                else return newImag * Imaginary.i;
+                else              return newImag * Imaginary.i;
             }
             else if (newImag == 0) return newReal;
-
-            if (newImag == 1) return newReal + Imaginary.i;
-            else return newReal + newImag * Imaginary.i;
+            else if (newImag == 1) return newReal + Imaginary.i;
+            else                   return newReal + newImag * Imaginary.i;
         }
 
         protected override IEnumerable<Type> OnGetPreDemandRules()
