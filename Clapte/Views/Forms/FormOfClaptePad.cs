@@ -216,7 +216,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.View.ColorScheme.LineNumberFore = Color.DarkGray;
             _inputTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _inputTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
-            _inputTextBox.View.ColorScheme.SetColor(CharClass.Keyword3, Color.OrangeRed, Color.LightGray);
+            _inputTextBox.View.ColorScheme.SetColor(CharClass.Keyword3, Color.OrangeRed, Color.Transparent);
             _inputTextBox.ShowsHScrollBar = false;
             _inputTextBox.MouseWheel += _inputTextBox_MouseMove;
 
@@ -227,7 +227,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.View.ColorScheme.LineNumberFore = Color.DarkGray;
             _resultTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _resultTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
-            _resultTextBox.View.ColorScheme.SetColor(CharClass.Keyword3, Color.OrangeRed, Color.Transparent);
+            _resultTextBox.View.ColorScheme.SetColor(CharClass.Annotation, Color.OrangeRed, Color.Transparent);
             _resultTextBox.ShowsHScrollBar = false;
 
             _resultTextBox.SetKeyBind(Keys.Control | Keys.F, i => OpenFindPanel());

@@ -127,17 +127,18 @@ namespace GoodSeat.Clapte.Models
                 }
             }
 
-            FormulaCell prevContentOperation = null;
-            var lstOperate = FormulaCellContentOperation.GetRelateOperations(previous);
-            if (lstOperate.Any()) prevContentOperation = lstOperate.Last();
-
             // セルの初期化
             foreach (var protType in s_protTypes)
             {
                 var content = protType.CreateFrom(formulaText, solver, previous);
                 if (content != null)
                 {
-                    content.EvaluationDependCell = prevContentOperation; // TODO!:Operationか否かでセットすべき物が違う、Operationなら一つ上のレベル、それ以外なら自身を囲うレベル（同じか…）
+                    FormulaCell prevContentOperation = null;
+                    bool searchUpLv = content is FormulaCellContentOperation && (content as FormulaCellContentOperation).Type != FormulaCellContentOperation.OperationType.IF;
+                    var lstOperate = FormulaCellContentOperation.GetRelateOperations(searchUpLv, previous);
+                    if (lstOperate.Any()) prevContentOperation = lstOperate.Last();
+
+                    content.EvaluationDependCell = prevContentOperation;
                     content.resetPre(previous);
                     return content;
                 }
@@ -175,6 +176,8 @@ namespace GoodSeat.Clapte.Models
         void resetPre(FormulaCell[] previous)
         {
             PreDemandEvaluateFormulaCells = CreatePreDemandEvaluateFormulaCellsList(previous);
+            GetAdditionalDependCells().ForEach(c => PreDemandEvaluateFormulaCells.Add(c));
+
             if (previous != null)
             {
                 foreach (var cell in previous.Reverse())
@@ -184,6 +187,8 @@ namespace GoodSeat.Clapte.Models
                 }
             }
         }
+
+        protected virtual List<FormulaCell> GetAdditionalDependCells() { return new List<FormulaCell>(); }  
 
         /// <summary>
         /// 付加情報の種別を表します。
@@ -229,7 +234,7 @@ namespace GoodSeat.Clapte.Models
         }
 
         /// <summary>
-        /// この数式セルの評価必要有無が依存する前方の数式セルを設定もしくは取得します。
+        /// この数式セルの評価必要有無が依存する前方の数式セル(自身を囲うIF/ELIF/ELSE)を設定もしくは取得します。
         /// </summary>
         public FormulaCell EvaluationDependCell { get; set; } 
 
@@ -381,7 +386,8 @@ namespace GoodSeat.Clapte.Models
                 foreach (var mark in GetAllDefinedVariableNames()) addNeedForVariable(mark);
                 foreach (var name in GetAllDefinedFunctionNames()) addNeedForFunction(name.Item1);
 
-                result.Add(previous.Reverse().First(c => c.Content != this && c.Content == EvaluationDependCell.Content));
+                result.Add(EvaluationDependCell);
+                //result.Add(previous.Reverse().First(c => c.Content != this && c.Content == EvaluationDependCell.Content));
             }
 
             return result;

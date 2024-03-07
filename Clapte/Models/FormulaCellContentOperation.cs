@@ -40,8 +40,9 @@ namespace GoodSeat.Clapte.Models
         /// </summary>
         /// <param name="previous">前方の数式セルリスト。</param>
         /// <returns>関連する制御セルリスト。</returns>
-        public static List<FormulaCell> GetRelateOperations(params FormulaCell[] previous)
+        public static List<FormulaCell> GetRelateOperations(bool searchUpLv, params FormulaCell[] previous)
         {
+            int dlv = searchUpLv ? 1 : 0;
             int lv = 0;
             var lstRelated = new List<FormulaCell>();
             foreach (var cell in previous.Reverse())
@@ -49,15 +50,15 @@ namespace GoodSeat.Clapte.Models
                 var op = cell.Content as FormulaCellContentOperation;
                 if (op == null) continue;
 
-                if (op.Type == OperationType.IF) --lv;
+                if      (op.Type == OperationType.IF   ) --lv;
                 else if (op.Type == OperationType.ENDIF) ++lv;
 
-                if ((op.Type == OperationType.IF && lv < 0)
-                 || (op.Type != OperationType.IF && lv <= 0))
+                if ((op.Type == OperationType.IF && lv < 0 - dlv)
+                 || (op.Type != OperationType.IF && lv <= 0 - dlv))
                 {
                     lstRelated.Insert(0, cell);
                 }
-                if (lv < 0) break;
+                if (lv < 0 - dlv) break;
             }
             return lstRelated;
         }
@@ -71,7 +72,7 @@ namespace GoodSeat.Clapte.Models
         /// <returns>初期化された数式セル内容オブジェクト。</returns>
         protected override FormulaCellContent CreateFrom(string formulaText, Solver solver, params FormulaCell[] previous)
         {
-            var lstRelated = GetRelateOperations(previous);
+            var lstRelated = GetRelateOperations(false, previous);
 
             Func<int, OperationType, FormulaCellContentOperation> init = (n, t) =>
             {
@@ -85,20 +86,20 @@ namespace GoodSeat.Clapte.Models
                 };
             };
 
-            if (formulaText.StartsWith("$IF "))
+            if (formulaText.ToUpper().StartsWith("$IF "))
             {
                 lstRelated.Clear();
                 return init(4, OperationType.IF);
             }
-            else if (formulaText.StartsWith("$ELIF "))
+            else if (formulaText.ToUpper().StartsWith("$ELIF "))
             {
                 return init(6, OperationType.ELSEIF);
             }
-            else if (formulaText.StartsWith("$ELSEIF "))
+            else if (formulaText.ToUpper().StartsWith("$ELSEIF "))
             {
                 return init(8, OperationType.ELSEIF);
             }
-            else if (formulaText.StartsWith("$ELSE"))
+            else if (formulaText.ToUpper().StartsWith("$ELSE"))
             {
                 return new FormulaCellContentOperation("", null, previous)
                 {
@@ -106,7 +107,7 @@ namespace GoodSeat.Clapte.Models
                     RelatedContents = lstRelated
                 };
             }
-            else if (formulaText.StartsWith("$ENDIF"))
+            else if (formulaText.ToUpper().StartsWith("$ENDIF"))
             {
                 return new FormulaCellContentOperation(formulaText, null, previous)
                 {
@@ -122,9 +123,18 @@ namespace GoodSeat.Clapte.Models
 
         List<FormulaCell> RelatedContents { get; set; } = new List<FormulaCell>();
 
+        protected override List<FormulaCell> GetAdditionalDependCells() { return RelatedContents; }  
+
         protected override Result OnEvaluate(Solver solver)
         {
-            if (RelatedContents.Any(c => (c.Content as FormulaCellContentOperation).Condition))
+            if (!IsEvaluateTarget) return base.OnEvaluate(solver);
+
+            if (Type == OperationType.ENDIF)
+            {
+                Condition = false;
+                return new Result(Result.Level.Success, "", null);
+            }
+            else if (RelatedContents.Any(c => (c.Content as FormulaCellContentOperation).Condition))
             {
                 Condition = false;
                 return new Result(Result.Level.Success, "$FALSE", null);

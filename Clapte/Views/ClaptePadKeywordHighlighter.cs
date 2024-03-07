@@ -36,6 +36,8 @@ namespace GoodSeat.Clapte.Views
             Operator = CharClass.Macro,
             /// <summary>制御記号を表します。</summary>
             Control = CharClass.Keyword3,
+            /// <summary>制御結果を表します。</summary>
+            ControlResult = CharClass.Annotation,
             /// <summary>コメントを表します。</summary>
             Comment = CharClass.Comment,
             /// <summary>コメントを表します。</summary>
@@ -100,9 +102,13 @@ namespace GoodSeat.Clapte.Views
             operatorNames.Sort();
             AddKeywordSet(operatorNames.ToArray(), GetCharClassOf(SyntaxTarget.Operator));
 
-            var controlNames = new List<string>(){ "$IF", "$ELIF", "$ELSEIF", "$ELSE", "$ENDIF" };
+            var controlNames = new List<string>(){ "$IF", "$ELIF", "$ELSEIF", "$ELSE", "$ENDIF",  "$if", "$elif", "$elseif", "$else", "$endif" };
             controlNames.Sort();
             AddKeywordSet(controlNames.ToArray(), GetCharClassOf(SyntaxTarget.Control));
+
+            var controlResultNames = new List<string>(){ "$TRUE", "$FALSE" };
+            controlResultNames.Sort();
+            AddKeywordSet(controlResultNames.ToArray(), GetCharClassOf(SyntaxTarget.ControlResult));
 
             List<string> unitNames = new List<string>();
             foreach (var table in UnitConvertTable.ValidTables)
