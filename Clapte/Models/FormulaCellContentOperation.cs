@@ -36,14 +36,14 @@ namespace GoodSeat.Clapte.Models
         }
 
         /// <summary>
-        /// 関連する制御セル内容リストを取得します。
+        /// 関連する制御セルを取得します。
         /// </summary>
         /// <param name="previous">前方の数式セルリスト。</param>
-        /// <returns>関連する制御セル内容リスト。</returns>
-        public static List<FormulaCellContentOperation> GetRelateOperations(params FormulaCell[] previous)
+        /// <returns>関連する制御セルリスト。</returns>
+        public static List<FormulaCell> GetRelateOperations(params FormulaCell[] previous)
         {
             int lv = 0;
-            var lstRelated = new List<FormulaCellContentOperation>();
+            var lstRelated = new List<FormulaCell>();
             foreach (var cell in previous.Reverse())
             {
                 var op = cell.Content as FormulaCellContentOperation;
@@ -55,7 +55,7 @@ namespace GoodSeat.Clapte.Models
                 if ((op.Type == OperationType.IF && lv < 0)
                  || (op.Type != OperationType.IF && lv <= 0))
                 {
-                    lstRelated.Insert(0, op);
+                    lstRelated.Insert(0, cell);
                 }
                 if (lv < 0) break;
             }
@@ -120,11 +120,11 @@ namespace GoodSeat.Clapte.Models
             }
         }
 
-        List<FormulaCellContentOperation> RelatedContents { get; set; } = new List<FormulaCellContentOperation>();
+        List<FormulaCell> RelatedContents { get; set; } = new List<FormulaCell>();
 
         protected override Result OnEvaluate(Solver solver)
         {
-            if (RelatedContents.Any(c => c.Condition))
+            if (RelatedContents.Any(c => (c.Content as FormulaCellContentOperation).Condition))
             {
                 Condition = false;
                 return new Result(Result.Level.Success, "$FALSE", null);
@@ -170,10 +170,10 @@ namespace GoodSeat.Clapte.Models
         /// <summary>
         /// この数式セルの項目が、評価対象とすべきか否かを取得します。
         /// </summary>
-        public override bool IsEvaluateTarget
-        {
-            get { return true; }
-        }
+        //public override bool IsEvaluateTarget
+        //{
+        //    get { return true; }
+        //}
 
     }
 }

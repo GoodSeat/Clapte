@@ -127,7 +127,7 @@ namespace GoodSeat.Clapte.Models
                 }
             }
 
-            FormulaCellContentOperation prevContentOperation = null;
+            FormulaCell prevContentOperation = null;
             var lstOperate = FormulaCellContentOperation.GetRelateOperations(previous);
             if (lstOperate.Any()) prevContentOperation = lstOperate.Last();
 
@@ -137,7 +137,7 @@ namespace GoodSeat.Clapte.Models
                 var content = protType.CreateFrom(formulaText, solver, previous);
                 if (content != null)
                 {
-                    content.EvaluationDependCellContent = prevContentOperation;
+                    content.EvaluationDependCell = prevContentOperation; // TODO!:Operationか否かでセットすべき物が違う、Operationなら一つ上のレベル、それ以外なら自身を囲うレベル（同じか…）
                     content.resetPre(previous);
                     return content;
                 }
@@ -224,14 +224,14 @@ namespace GoodSeat.Clapte.Models
         {
             get
             {
-                return EvaluationDependCellContent == null || EvaluationDependCellContent.Condition;
+                return EvaluationDependCell == null || (EvaluationDependCell.Content as FormulaCellContentOperation).Condition;
             }
         }
 
         /// <summary>
         /// この数式セルの評価必要有無が依存する前方の数式セルを設定もしくは取得します。
         /// </summary>
-        public FormulaCellContentOperation EvaluationDependCellContent { get; set; } 
+        public FormulaCell EvaluationDependCell { get; set; } 
 
 
         /// <summary>
@@ -376,12 +376,12 @@ namespace GoodSeat.Clapte.Models
             foreach (var mark in GetAllReferenceVariableNames()) addNeedForVariable(mark);
             foreach (var name in GetAllReferenceFunctionNames()) addNeedForFunction(name);
 
-            if (EvaluationDependCellContent != null)
+            if (EvaluationDependCell != null)
             {
                 foreach (var mark in GetAllDefinedVariableNames()) addNeedForVariable(mark);
                 foreach (var name in GetAllDefinedFunctionNames()) addNeedForFunction(name.Item1);
 
-                result.Add(previous.Reverse().First(c => c.Content != this && c.Content == EvaluationDependCellContent));
+                result.Add(previous.Reverse().First(c => c.Content != this && c.Content == EvaluationDependCell.Content));
             }
 
             return result;
