@@ -38,7 +38,7 @@ namespace GoodSeat.Clapte.Models
         /// </summary>
         /// <param name="formulaText">初期化対象のテキスト。</param>
         /// <param name="f">対象の数式。</param>
-        /// <param name="target">定義対象の変数。</param>
+        /// <param name="targets">定義対象の変数。</param>
         /// <param name="evaluateTarget">具体に評価対象とする数式。</param>
         /// <param name="previous">前方に宣言されている可変数の数式セル。</param>
         protected internal FormulaCellContentDefineWithSimultaneousEquation(string formulaText, List<Variable> targets, IEnumerable<Equal> evaluateTarget, FormulaCell[] previous)
@@ -168,6 +168,36 @@ namespace GoodSeat.Clapte.Models
         /// <returns>評価結果を表す文字列。</returns>
         protected override Result OnEvaluate(Solver solver)
         {
+            if (!IsEvaluateTarget)
+            {
+                foreach (var item in EvaluatedDefines)
+                {
+                    foreach (var cell in PreDemandEvaluateFormulaCells)
+                    {
+                        var define = cell.GetVariableDefineOf(item.Key.Mark);
+                        if (define == null) continue;
+
+                        var def = solver.Parse(define.Define);
+                        def.Format = solver.OutputFormat;
+
+                        var val = item.Key;
+                        if (EvaluatedDefines.ContainsKey(val))
+                        {
+                            EvaluatedDefines[val].Add(def);
+                        }
+                        else
+                        {
+                            var list = new List<Formula>();
+                            list.Add(def);
+                            EvaluatedDefines.Add(val, list);
+                        }
+                    }
+                }
+
+                AdditionalInformation = Tuple.Create(AdditionalInformationType.NotEvaluated, "評価対象外");
+                return new Result(Result.Level.Success, " --- ", null);
+            }
+
             var evaluateUserDefineProc = solver.GetProcessOf<EvaluateUserDefineProcess>();
             var replaceUnitProc = solver.GetProcessOf<ReplaceVariableToUnitProcess>();
             foreach (var variableName in DefineTargets.Select(v => v.Mark))

@@ -216,6 +216,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _inputTextBox.View.ColorScheme.LineNumberFore = Color.DarkGray;
             _inputTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _inputTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
+            _inputTextBox.View.ColorScheme.SetColor(CharClass.Keyword3, Color.OrangeRed, Color.LightGray);
             _inputTextBox.ShowsHScrollBar = false;
             _inputTextBox.MouseWheel += _inputTextBox_MouseMove;
 
@@ -226,6 +227,7 @@ namespace GoodSeat.Clapte.Views.Forms
             _resultTextBox.View.ColorScheme.LineNumberFore = Color.DarkGray;
             _resultTextBox.View.ColorScheme.MatchedBracketBack = Color.PowderBlue;
             _resultTextBox.View.ColorScheme.HighlightColor = Color.Lavender;
+            _resultTextBox.View.ColorScheme.SetColor(CharClass.Keyword3, Color.OrangeRed, Color.Transparent);
             _resultTextBox.ShowsHScrollBar = false;
 
             _resultTextBox.SetKeyBind(Keys.Control | Keys.F, i => OpenFindPanel());
@@ -239,6 +241,11 @@ namespace GoodSeat.Clapte.Views.Forms
             Marking.Register(new MarkingInfo(2, "検索のマッチ"));
             _inputTextBox.ColorScheme.SetMarkingDecoration(2, new BgColorTextDecoration(Color.Orange));
             _resultTextBox.ColorScheme.SetMarkingDecoration(2, new BgColorTextDecoration(Color.Orange));
+
+            int notEvaluatedID = (int)FormulaCellContent.AdditionalInformationType.NotEvaluated;
+            Marking.Register(new MarkingInfo(notEvaluatedID, "評価対象外"));
+            _inputTextBox.ColorScheme.SetMarkingDecoration(notEvaluatedID, new BgColorTextDecoration(Color.LightGray));
+            _resultTextBox.ColorScheme.SetMarkingDecoration(notEvaluatedID, new BgColorTextDecoration(Color.LightGray));
 
             _panelFind.Parent = _inputTextBox;
             _panelHotLoading.Parent = _inputTextBox;

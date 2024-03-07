@@ -94,6 +94,7 @@
     <Compile Include="Models\FormulaCellContentDefineFunction.cs" />
     <Compile Include="Models\FormulaCellContentDefineWithEquation.cs" />
     <Compile Include="Models\FormulaCellContentDefineWithSimultaneousEquation.cs" />
+    <Compile Include="Models\FormulaCellContentOperation.cs" />
     <Compile Include="Models\FormulaCellList.cs" />
     <Compile Include="Models\Formulas\SubstituteDefineForVariableRule.cs" />
     <Compile Include="Models\Formulas\VariableWithDefine.cs" />

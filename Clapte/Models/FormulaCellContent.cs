@@ -22,6 +22,9 @@ namespace GoodSeat.Clapte.Models
     /// ・解釈不可
     ///        コメント文字ではないが、数式への変換に失敗するもの。
     ///        5 + 等
+    /// ・制御行
+    ///        後続行の有効可否を制御するもの。
+    ///        $IF i > 5
     /// ・継続行
     ///        行の末尾が " _" で終わる行。後続の行で併せて評価される。
     ///        1 + 2 + 3 + 4 + 5 + _ 等
@@ -51,6 +54,7 @@ namespace GoodSeat.Clapte.Models
             s_protTypes.Add(new FormulaCellContentDefineFunction(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineWithEquation(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentDefineWithSimultaneousEquation(null));
+            s_protTypes.Add(new FormulaCellContentOperation(null, null, null));
             s_protTypes.Add(new FormulaCellContent(null, null, null, null));
             s_protTypes.Add(new FormulaCellContentComment());
             s_protTypes.Add(new FormulaCellContentContinuation(null));
@@ -64,25 +68,25 @@ namespace GoodSeat.Clapte.Models
         /// <summary>
         /// 結果参照用配列の変数名称を取得します。
         /// </summary>
-        /// <remarks>_o@1は1つ目のセルの結果、_o@2は2つ目のセルの結果となります。</remarks>
+        /// <remarks>_ans@1は1つ目のセルの結果、_ans@2は2つ目のセルの結果となります。</remarks>
         public static string NameOfAnswerVariable { get { return "_ans"; } }
 
         /// <summary>
         /// 入力参照用配列の変数名称を取得します。
         /// </summary>
-        /// <remarks>_i@1は1つ目のセルの結果、_i@2は2つ目のセルの結果となります。</remarks>
+        /// <remarks>_inp@1は1つ目のセルの結果、_inp@2は2つ目のセルの結果となります。</remarks>
         public static string NameOfInputVariable { get { return "_inp"; } }
 
         /// <summary>
         /// 結果参照用配列(逆順)の変数名称を取得します。
         /// </summary>
-        /// <remarks>_O@1は1つ前のセルの結果、_O@2は2つ前のセルの結果となります。</remarks>
+        /// <remarks>_ANS@1は1つ前のセルの結果、_ANS@2は2つ前のセルの結果となります。</remarks>
         public static string NameOfAnswerRevVariable { get { return "_ANS"; } }
 
         /// <summary>
         /// 入力参照用配列(逆順)の変数名称を取得します。
         /// </summary>
-        /// <remarks>_I@1は1つ前のセルの結果、_I@2は2つ前のセルの結果となります。</remarks>
+        /// <remarks>_INP@1は1つ前のセルの結果、_INP@2は2つ前のセルの結果となります。</remarks>
         public static string NameOfInputRevVariable { get { return "_INP"; } }
 
 
@@ -123,11 +127,20 @@ namespace GoodSeat.Clapte.Models
                 }
             }
 
+            FormulaCellContentOperation prevContentOperation = null;
+            var lstOperate = FormulaCellContentOperation.GetRelateOperations(previous);
+            if (lstOperate.Any()) prevContentOperation = lstOperate.Last();
+
             // セルの初期化
             foreach (var protType in s_protTypes)
             {
                 var content = protType.CreateFrom(formulaText, solver, previous);
-                if (content != null) return content;
+                if (content != null)
+                {
+                    content.EvaluationDependCellContent = prevContentOperation;
+                    content.resetPre(previous);
+                    return content;
+                }
             }
             return null;
         }
@@ -156,6 +169,11 @@ namespace GoodSeat.Clapte.Models
             PreFormulaCells = new List<FormulaCell>();
             if (previous != null) PreFormulaCells.AddRange(previous);
 
+            resetPre(previous);
+        }
+
+        void resetPre(FormulaCell[] previous)
+        {
             PreDemandEvaluateFormulaCells = CreatePreDemandEvaluateFormulaCellsList(previous);
             if (previous != null)
             {
@@ -173,7 +191,9 @@ namespace GoodSeat.Clapte.Models
         public enum AdditionalInformationType
         {
             /// <summary>構文解析のエラー。</summary>
-            ParseError
+            ParseError = 0,
+            /// <summary>評価対象外。</summary>
+            NotEvaluated = 3
         }
 
         /// <summary>
@@ -195,6 +215,24 @@ namespace GoodSeat.Clapte.Models
         /// 評価結果を表す文字列を設定もしくは取得します。
         /// </summary>
         public string ResultText { get; set; }
+
+
+        /// <summary>
+        /// この数式セルの項目が、評価対象とすべきか否かを取得します。
+        /// </summary>
+        public virtual bool IsEvaluateTarget
+        {
+            get
+            {
+                return EvaluationDependCellContent == null || EvaluationDependCellContent.Condition;
+            }
+        }
+
+        /// <summary>
+        /// この数式セルの評価必要有無が依存する前方の数式セルを設定もしくは取得します。
+        /// </summary>
+        public FormulaCellContentOperation EvaluationDependCellContent { get; set; } 
+
 
         /// <summary>
         /// 数式評価で行なわれた数式変形の履歴を取得します。
@@ -301,12 +339,11 @@ namespace GoodSeat.Clapte.Models
                 return result;
             }
 
-            foreach (var mark in GetAllReferenceVariableNames())
+            Action<string> addNeedForVariable = mark =>
             {
-                bool picked = false;
-
                 for (int i = previous.Length - 1; i >= 0; i--)
                 {
+                    bool picked = false;
                     foreach (var define in previous[i].Content.GetAllDefinedVariableNames())
                     {
                         if (define != mark) continue;
@@ -317,13 +354,12 @@ namespace GoodSeat.Clapte.Models
                     }
                     if (picked) break;
                 }
-            }
-            foreach (var name in GetAllReferenceFunctionNames())
+            };
+            Action<string> addNeedForFunction = name =>
             {
-                bool picked = false;
-
                 for (int i = previous.Length - 1; i >= 0; i--)
                 {
+                    bool picked = false;
                     foreach (var define in previous[i].Content.GetAllDefinedFunctionNames())
                     {
                         if (define.Item1 != name) continue;
@@ -334,7 +370,20 @@ namespace GoodSeat.Clapte.Models
                     }
                     if (picked) break;
                 }
+            };
+
+
+            foreach (var mark in GetAllReferenceVariableNames()) addNeedForVariable(mark);
+            foreach (var name in GetAllReferenceFunctionNames()) addNeedForFunction(name);
+
+            if (EvaluationDependCellContent != null)
+            {
+                foreach (var mark in GetAllDefinedVariableNames()) addNeedForVariable(mark);
+                foreach (var name in GetAllDefinedFunctionNames()) addNeedForFunction(name.Item1);
+
+                result.Add(previous.Reverse().First(c => c.Content != this && c.Content == EvaluationDependCellContent));
             }
+
             return result;
         }
 
@@ -570,6 +619,12 @@ namespace GoodSeat.Clapte.Models
         /// <returns>評価結果を表す文字列。</returns>
         protected virtual Result OnEvaluate(Solver solver)
         {
+            if (!IsEvaluateTarget)
+            {
+                AdditionalInformation = Tuple.Create(AdditionalInformationType.NotEvaluated, "評価対象外");
+                return new Result(Result.Level.Success, " --- ", null);
+            }
+
             try
             {
                 Formula f;

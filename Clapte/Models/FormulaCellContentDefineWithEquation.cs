@@ -113,6 +113,21 @@ namespace GoodSeat.Clapte.Models
         /// <returns>評価結果を表す文字列。</returns>
         protected override Result OnEvaluate(Solver solver)
         {
+            if (!IsEvaluateTarget)
+            {
+                foreach (var cell in PreDemandEvaluateFormulaCells)
+                {
+                    var define = cell.GetVariableDefineOf(DefineTarget.Mark);
+                    if (define == null) continue;
+
+                    EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
+                    EvaluatedDefine.Define = define.Define;
+                }
+                AdditionalInformation = Tuple.Create(AdditionalInformationType.NotEvaluated, "評価対象外");
+                return new Result(Result.Level.Success, " --- ", null);
+            }
+
+
             Formula f;
             var result = solver.Solve(FormulaText, out f);
             TargetFormula = f;

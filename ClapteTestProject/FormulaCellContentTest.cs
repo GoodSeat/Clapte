@@ -82,6 +82,57 @@ namespace GoodSeat.ClapteTestProject
             Check(solver, tests);
         }
 
+		/// <summary>
+		/// ClaptePadの評価テスト2
+		/// </summary>
+		[TestCategory("ClaptePad"), TestMethod()]
+        public void EvaluateTest2()
+        {
+            // 小数モード、有効数字を考慮しない
+            var mode = CalculateMode.Decimal;
+            Solver solver = SolverTest.CreateStandardSolver(mode, false);
+            solver.AbortLevel = Error.Level.Error;
+
+            // if制御のテスト
+            {
+                var tests = new List<KeyValuePair<string, string>>();
+                tests.Add(new KeyValuePair<string, string>("$IF 1"     , "$TRUE (1)"));
+                tests.Add(new KeyValuePair<string, string>("x = 1"     , "x = 1"));
+                tests.Add(new KeyValuePair<string, string>("$ELSE IF 1", "$FALSE"));
+                tests.Add(new KeyValuePair<string, string>("x = 2"     , " --- "));
+                tests.Add(new KeyValuePair<string, string>("$ELSE"     , "$FALSE"));
+                tests.Add(new KeyValuePair<string, string>("x = 3"     , " --- "));
+                tests.Add(new KeyValuePair<string, string>("$ENDIF"    , "$FALSE"));
+                tests.Add(new KeyValuePair<string, string>("x * 3"     , "3"));
+                Check(solver, tests);
+            }
+            {
+                var tests = new List<KeyValuePair<string, string>>();
+                tests.Add(new KeyValuePair<string, string>("$IF 0"     , "$FALSE (0)"));
+                tests.Add(new KeyValuePair<string, string>("x = 1"     , " --- "));
+                tests.Add(new KeyValuePair<string, string>("$ELSE IF 1", "$TRUE (1)"));
+                tests.Add(new KeyValuePair<string, string>("x = 2"     , "x = 2"));
+                tests.Add(new KeyValuePair<string, string>("$ELSE"     , "$FALSE"));
+                tests.Add(new KeyValuePair<string, string>("x = 3"     , " --- "));
+                tests.Add(new KeyValuePair<string, string>("$ENDIF"    , "$FALSE"));
+                tests.Add(new KeyValuePair<string, string>("x * 3"     , "6"));
+                Check(solver, tests);
+            }
+            {
+                var tests = new List<KeyValuePair<string, string>>();
+                tests.Add(new KeyValuePair<string, string>("$IF 0"     , "$FALSE (0)"));
+                tests.Add(new KeyValuePair<string, string>("x = 1"     , " --- "));
+                tests.Add(new KeyValuePair<string, string>("$ELSE IF 0", "$FALSE (0)"));
+                tests.Add(new KeyValuePair<string, string>("x = 2"     , " --- "));
+                tests.Add(new KeyValuePair<string, string>("$ELSE"     , "$TRUE"));
+                tests.Add(new KeyValuePair<string, string>("x = 3"     , "x = 3"));
+                tests.Add(new KeyValuePair<string, string>("$ENDIF"    , "$FALSE"));
+                tests.Add(new KeyValuePair<string, string>("x * 3"     , "9"));
+                Check(solver, tests);
+            }
+
+        }
+
 
         private void Check(Solver solver, List<KeyValuePair<string, string>> targets)
         {

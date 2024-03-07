@@ -34,6 +34,8 @@ namespace GoodSeat.Clapte.Views
             Unit = CharClass.Keyword2,
             /// <summary>演算記号を表します。</summary>
             Operator = CharClass.Macro,
+            /// <summary>制御記号を表します。</summary>
+            Control = CharClass.Keyword3,
             /// <summary>コメントを表します。</summary>
             Comment = CharClass.Comment,
             /// <summary>コメントを表します。</summary>
@@ -97,6 +99,10 @@ namespace GoodSeat.Clapte.Views
             };
             operatorNames.Sort();
             AddKeywordSet(operatorNames.ToArray(), GetCharClassOf(SyntaxTarget.Operator));
+
+            var controlNames = new List<string>(){ "$IF", "$ELIF", "$ELSEIF", "$ELSE", "$ENDIF" };
+            controlNames.Sort();
+            AddKeywordSet(controlNames.ToArray(), GetCharClassOf(SyntaxTarget.Control));
 
             List<string> unitNames = new List<string>();
             foreach (var table in UnitConvertTable.ValidTables)

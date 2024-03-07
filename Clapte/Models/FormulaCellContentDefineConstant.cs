@@ -12,6 +12,7 @@ using GoodSeat.Liffom.Formulas.Operators.Comparers;
 using GoodSeat.Clapte.Solvers;
 using GoodSeat.Clapte.Solvers.Processes;
 using GoodSeat.Liffom.Formulas.Constants;
+using System.ComponentModel.Design;
 
 namespace GoodSeat.Clapte.Models
 {
@@ -101,18 +102,34 @@ namespace GoodSeat.Clapte.Models
             if (Constant.GetEnableConstants().FirstOrDefault(cst => cst.GetAllDistinguishedNames().Contains(DefineTarget.Mark)) != null)
                 throw new ClapteProcessException(string.Format("変数名 {0} はシステムで定義されているため、再定義できません。", DefineTarget.Mark));
 
-            Formula f;
-            var result = solver.Solve(FormulaText, out f);
-            TargetFormula = f;
-
-            if (result.ResultLevel == Result.Level.Success)
+            if (!IsEvaluateTarget)
             {
-                EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
-                EvaluatedDefine.Define = result.ResultFormula.ToString();
+                foreach (var cell in PreDemandEvaluateFormulaCells)
+                {
+                    var define = cell.GetVariableDefineOf(DefineTarget.Mark);
+                    if (define == null) continue;
 
-                result.ResultText = string.Format("{0} = {1}", DefineTarget, EvaluatedDefine.Define);
+                    EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
+                    EvaluatedDefine.Define = define.Define;
+                }
+                AdditionalInformation = Tuple.Create(AdditionalInformationType.NotEvaluated, "評価対象外");
+                return new Result(Result.Level.Success, " --- ", null);
             }
-            return result;
+            else
+            {
+                Formula f;
+                var result = solver.Solve(FormulaText, out f);
+                TargetFormula = f;
+
+                if (result.ResultLevel == Result.Level.Success)
+                {
+                    EvaluatedDefine = new ConstantDefine(DefineTarget.Mark);
+                    EvaluatedDefine.Define = result.ResultFormula.ToString();
+
+                    result.ResultText = string.Format("{0} = {1}", DefineTarget, EvaluatedDefine.Define);
+                }
+                return result;
+            }
         }
 
 
