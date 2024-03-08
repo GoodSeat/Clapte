@@ -240,7 +240,8 @@ namespace GoodSeat.Clapte.ViewModels
                 int line = 0;
                 foreach (var cell in Target)
                 {
-                    if (cell.Target.Content.GetAllDefinedFunctionNames().Select(u => u.Item1).Contains(def.Name)) jump = line;
+                    var content = cell.Target.Content;
+                    if (content.IsEvaluateTarget && content.GetAllDefinedFunctionNames().Select(u => u.Item1).Contains(def.Name)) jump = line;
                     if (line++ >= lineIndex) break;
                 }
                 if (jump == -1) return def.Target;
@@ -252,7 +253,8 @@ namespace GoodSeat.Clapte.ViewModels
                 int line = 0;
                 foreach (var cell in Target)
                 {
-                    if (cell.Target.Content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
+                    var content = cell.Target.Content;
+                    if (content.IsEvaluateTarget && content.GetAllDefinedVariableNames().Contains(def.Name)) jump = line;
                     if (line++ >= lineIndex) break;
                 }
                 if (jump == -1) return def.Target;

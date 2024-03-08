@@ -82,6 +82,7 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
             {
                 if (Target[i] == null) continue;
                 var cell = Target[i].Target;
+                if (!cell.Content.IsEvaluateTarget) continue;
 
                 foreach (var def in cell.Content.GetAllConstantDefines().Where(d => d != null && !considerdNames.Contains(d.Name)))
                 {
@@ -110,6 +111,7 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
             {
                 if (Target[i] == null) continue;
                 var cell = Target[i].Target;
+                if (!cell.Content.IsEvaluateTarget) continue;
 
                 foreach (var def in cell.Content.GetAllFunctionDefines().Where(d => d != null && !considerdNames.Contains(d.Name)))
                 {
