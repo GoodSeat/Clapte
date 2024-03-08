@@ -40,9 +40,13 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
             /// </summary>
             UnitAllPrefix = 12,
             /// <summary>
+            /// 制御キーワードを候補とします。
+            /// </summary>
+            ControlOperator = 16,
+            /// <summary>
             /// 考えられる全てを候補とします。
             /// </summary>
-            All = Constant | Function | UnitAllPrefix
+            All = Constant | Function | UnitAllPrefix | ControlOperator
         }
 
 
@@ -262,6 +266,23 @@ namespace GoodSeat.Clapte.ViewModels.InputSupports
 
                     if (candidates.Contains(candidate)) continue;
                     candidates.Add(candidate);
+                }
+            }
+
+            if ((targetType & CandidateType.ControlOperator) == CandidateType.ControlOperator)
+            {
+                { // システム定義の変数
+                    var lstTmp = new List<InputSupportCandidate>{
+                          new InputSupportCandidate("$if：制御"   , "$if"   , "if:評価結果がtrue(0以外の数値)となる場合のみ以降の評価を行います。", null)
+                        , new InputSupportCandidate("$elif：制御" , "$elif" , "elif:上方のif/elifの評価結果がいずれもfalseで、かつ評価結果が0以外の数値となる場合のみ以降の評価を行います。", null)
+                        , new InputSupportCandidate("$else：制御" , "$else" , "else:上方のif/elifの評価結果がいずれもfalseとなる場合のみ以降の評価を行います。", null)
+                        , new InputSupportCandidate("$endif：制御", "$endif", "endif:if/elif/elseの括りの終わりを表します。", null)
+                    };
+                    foreach (var inf in lstTmp)
+                    {
+                        if (inf.Title.StartsWith(startWith)) candidates.Add(inf);
+                        else if (AlsoInfomation && inf.Information.Contains(startWith)) candidates.Add(inf);
+                    }
                 }
             }
 

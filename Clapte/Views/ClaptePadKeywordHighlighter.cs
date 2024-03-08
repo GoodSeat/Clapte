@@ -102,7 +102,7 @@ namespace GoodSeat.Clapte.Views
             operatorNames.Sort();
             AddKeywordSet(operatorNames.ToArray(), GetCharClassOf(SyntaxTarget.Operator));
 
-            var controlNames = new List<string>(){ "$IF", "$ELIF", "$ELSEIF", "$ELSE", "$ENDIF",  "$if", "$elif", "$elseif", "$else", "$endif" };
+            var controlNames = new List<string>(){ "$IF", "$ELIF", "$ELSE", "$ENDIF",  "$if", "$elif", "$else", "$endif" };
             controlNames.Sort();
             AddKeywordSet(controlNames.ToArray(), GetCharClassOf(SyntaxTarget.Control));
 
