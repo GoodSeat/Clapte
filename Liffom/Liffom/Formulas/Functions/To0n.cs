@@ -30,7 +30,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// <summary>
         /// 引数を指定して、関数を生成します。
         /// </summary>
-        /// <param name="args">初期化に用いるか変数の数式。</param>
+        /// <param name="args">初期化に用いる可変数の数式。</param>
         /// <returns>初期化された関数。</returns>
         public override Function CreateFunction(params Formula[] args)
         {
@@ -39,6 +39,10 @@ namespace GoodSeat.Liffom.Formulas.Functions
 
         protected virtual Formula ForBase { get { return Argument[1]; } }
 
+        /// <summary>
+        /// 関数に設定された引数により、関数を評価します。
+        /// </summary>
+        /// <returns>関数の評価結果。</returns>
         public override Formula CalculateFunction()
         {
             //if (!(Argument[0] is Numeric)) return this;
@@ -60,15 +64,26 @@ namespace GoodSeat.Liffom.Formulas.Functions
             return f;
         }
 
+        /// <summary>
+        /// この関数の引数として最低限必要な引数の数を取得します。
+        /// </summary>
         public override int MinimumArgumentQty
         {
             get { return 1; }
         }
+        /// <summary>
+        /// この関数の引数として可能な引数の最大数を取得します。既定では、MinimumArgumentQtyと同様の値を返します。
+        /// </summary>
         public override int MaximumArgumentQty
         {
             get { return 2; }
         }
 
+        /// <summary>
+        /// 関数の説明を取得します。
+        /// </summary>
+        /// <param name="args">引数の説明。</param>
+        /// <returns>関数の説明。</returns>
         public override string GetInformation(out List<string> args)
         {
             args = new List<string>()
