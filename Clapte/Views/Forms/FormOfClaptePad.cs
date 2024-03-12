@@ -614,6 +614,8 @@ namespace GoodSeat.Clapte.Views.Forms
             _treeViewHistory.Font = _inputTextBox.Font;
             _panelFind.Font = new Font(_inputTextBox.Font.FontFamily, 9.0f);
             _panelHotLoading.Font = new Font(_inputTextBox.Font.FontFamily, 9.0f);
+            _labelFind.Font = _inputTextBox.Font;
+            _labelReplace.Font = _inputTextBox.Font;
         }
 
         private void _inputTextBox_VScroll(object sender, EventArgs e)
