@@ -82,6 +82,7 @@ namespace GoodSeat.Clapte.Views.Forms
             EditorViewModel = new ClaptePadViewModel(Target, _inputTextBox, _splitContainerAll.Location);
 
             Delay = 500;
+            _inputTextBox.AutoIndentHook = AutoIndentHooks.GenericHook;
 
             HotLoad();
         }
@@ -452,7 +453,7 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <summary>
         /// ホットローディング機能を有効あるいは無効にした際の表示要素の調整を行います。
         /// </summary>
-        /// <param name="enter"></param>
+        /// <param name="enter">ホットローディングの開始時ならtrue、停止時ならfalseを指定。</param>
         private void enterOrEscapeHotReloadingMode(bool enter)
         {
             _panelHotLoading.Visible = enter;
@@ -529,7 +530,7 @@ namespace GoodSeat.Clapte.Views.Forms
                     string lineText = document.GetLineContent(i);
                     int head = document.GetLineHeadIndex(i);
                     int indent = lineText.Length - lineText.TrimStart().Length;
-                    int len = lineText.Split('#')[0].TrimEnd().Length;
+                    int len = Math.Max(indent, lineText.Split('#')[0].TrimEnd().Length);
                     document.Mark(head + indent, head + len, (int)addInfo.Item1);
                 }
                 EditorViewModel.AdditionalInformations.Add(addInfo);
