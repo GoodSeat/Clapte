@@ -21,12 +21,20 @@ namespace GoodSeat.Liffom.Processes
     public class BrentMethod : SolveEquation
     {
         /// <summary>
+        /// ブレント法による解の算出処理を初期化します。
+        /// </summary>
+        public BrentMethod()
+        {
+            _errorTolerance = new Numeric(1E-6);
+        }
+
+        /// <summary>
         /// 一意のユーザー情報を指定して、複数の同時呼び出しを許可するか否かを取得します。
         /// </summary>
         public override bool IsSupportMultipleConcurrentInvocations { get { return true; } }
 
-        double _errorTolerance = 1E-6;            //    許容誤差
-        int _maxTryCount = 500;        // 最大試行回数
+        Real _errorTolerance;   // 許容誤差
+        int _maxTryCount = 500; // 最大試行回数
 
         Numeric _lowerLimit = new Numeric(-1000d), _upperLimit = new Numeric(1000d);
 
@@ -34,7 +42,7 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 解の許容誤差を設定もしくは取得します。
         /// </summary>
-        public double ErrorTolerance
+        public Real ErrorTolerance
         {
             get { return _errorTolerance; }
             set { _errorTolerance = value; }

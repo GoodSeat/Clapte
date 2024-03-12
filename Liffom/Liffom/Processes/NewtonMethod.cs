@@ -156,7 +156,7 @@ namespace GoodSeat.Liffom.Processes
             fd = fd.DeformFormula(token);
 
             // 微分結果の確認
-            if (fd.Contains<Differentiate>()) throw new FormulaProcessException(f.ToString() + "を、微分できませんでした。");
+            if (fd.Contains<Differentiate>()) throw new FormulaProcessException(f.ToString() + $"を、{x.Mark}について微分することができませんでした。");
 
             // 初期解の代入
             Random random = new Random(0);
@@ -166,8 +166,8 @@ namespace GoodSeat.Liffom.Processes
                 try
                 {
                     Numeric initialTest = fd.Substituted(x, solution).DeformFormula(token) as Numeric;
-                    if (initialTest == null) throw new FormulaProcessException(f.ToString() + "を、微分できませんでした。");
-                    if (!fd.Contains(x) && initialTest == 0) throw new FormulaProcessException(f.ToString() + "は解を持ちません。");
+                    if (initialTest == null) throw new FormulaProcessException(f.ToString() + $"を、{x.Mark}について微分することができませんでした。");
+                    if (!fd.Contains(x) && initialTest == 0) throw new FormulaProcessException(f.ToString() + $"は{x.Mark}について解を持ちません。");
                 }
                 catch (Exception e) // 0除算などが発生したら、初期解をずらして再試行
                 {
@@ -180,7 +180,7 @@ namespace GoodSeat.Liffom.Processes
             // 導関数が0になるなら初期値の設定をやり直す。
             while (fd.Substituted(x, solution).DeformFormula(token) == 0)
             {
-                if (!AutoInitialSolutionShift) throw new FormulaProcessException(f.ToString() + "の導関数に初期解\"" + solution.ToString() + "\"を代入した結果が0になります。");
+                if (!AutoInitialSolutionShift) throw new FormulaProcessException(f.ToString() + "の導関数に初期解\"" + x.Mark + "=" + solution.ToString() + "\"を代入した結果が0になります。");
                 solution = GetRandomShift(solution, random);
             }
 

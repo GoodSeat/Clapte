@@ -439,7 +439,7 @@ namespace GoodSeat.Liffom.Processes
                 result.Clear();
                 foreach (Formula solRounded in solRoundeds)
                 {
-                    result.Add(GetModifiedSolution(target.LeftHandSide, about, solRounded, 0, startRoundPrecision));
+                    result.Add(GetModifiedSolution(target.LeftHandSide, about, solRounded, Numeric.Zero, startRoundPrecision));
                 }
 
                 startRoundPrecision++;

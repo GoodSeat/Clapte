@@ -70,7 +70,7 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="error">近似解を求めるのに使用した許容誤差値。</param>
         /// <param name="startRoundPrecision">丸め処理の試行を開始する精度桁数。</param>
         /// <returns>解の真値。</returns>
-        public Formula GetModifiedSolution(Formula f, Variable x, Formula solution, double error, int startRoundPrecision = 0)
+        public Formula GetModifiedSolution(Formula f, Variable x, Formula solution, Real error, int startRoundPrecision = 0)
         {
             // 解のまるめ (f(x)にxを代入したとき、ちゃんと0となるまで解を丸める)
             solution = GetRoundSolution(f, x, solution, error, startRoundPrecision);
@@ -96,11 +96,11 @@ namespace GoodSeat.Liffom.Processes
         /// <param name="error">計算時に用いた許容誤差値。</param>
         /// <param name="startPrecision">丸め処理の試行を開始する精度桁数。</param>
         /// <returns></returns>
-        public static Formula GetRoundSolution(Formula f, Variable x, Formula solution, double error, int startPrecision = 0)
+        public static Formula GetRoundSolution(Formula f, Variable x, Formula solution, Real error, int startPrecision = 0)
         {
             var token = new DeformToken(Formula.SimplifyToken, Formula.CalculateToken, Formula.NumerateToken);
 
-            int testDigit = (new Numeric(error)).Figure.Exponent + 1; // 許容誤差値の正規化時の指数
+            int testDigit = error.Exponent + 1; // 許容誤差値の正規化時の指数
             int minExponent = testDigit;
             foreach (Numeric n in solution.GetExistFactors<Numeric>())
                 minExponent = Math.Min(minExponent, n.Figure.Exponent - Numeric.MaxValidDigits);

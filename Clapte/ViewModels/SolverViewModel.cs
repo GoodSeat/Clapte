@@ -424,7 +424,7 @@ namespace GoodSeat.Clapte.ViewModels
                 NewtonMethod.MaxTryCount = int.Parse(newtonElement.GetAttribute("MaxTryCount"));
 
                 XmlElement brentElement = calculateElement["BrentMethod"];
-                BrentMethod.ErrorTolerance = double.Parse(brentElement.GetAttribute("ErrorTolerance"));
+                BrentMethod.ErrorTolerance = new Numeric(double.Parse(brentElement.GetAttribute("ErrorTolerance")));
                 BrentMethod.MaxTryCount = int.Parse(brentElement.GetAttribute("MaxTryCount"));
                 BrentMethod.UpperLimit = new Numeric(double.Parse(brentElement.GetAttribute("UpperLimit")));
                 BrentMethod.LowerLimit = new Numeric(double.Parse(brentElement.GetAttribute("LowerLimit")));

@@ -86,7 +86,7 @@ namespace GoodSeat.LiffomTestProject
             Console.WriteLine(string.Format("全プロセス開始前 : {0}", DateTime.Now));
             if (Numeric.InnerRealType == Numeric.RealType.BigDecimal)
             {
-                solve.ErrorTolerance = 1E-20;
+                solve.ErrorTolerance = new Numeric(1E-20);
                 SolveEquationTest.AddTestCaseAsync(solve, "x^9 + 7*x = 589", "x", "x=2.02588389785460739614073495466", userStates);
                 SolveEquationTest.AddTestCaseAsync(solve, "(x+3)*(x-1)^2 = 0", "x", "x=-3", userStates);
                 SolveEquationTest.AddTestCaseAsync(solve, "π*x=951.3", "x", "x=302.808194726640377979065375498", userStates);

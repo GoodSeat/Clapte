@@ -84,7 +84,7 @@ namespace GoodSeat.LiffomTestProject
             Formula f = Formula.Parse("3*x^2 - 45*x");
             Variable x = new Variable("x");
             Formula solution = 14.9998d;
-            double error = 0.001d;
+            Numeric error = 0.001d;
             Formula expected = 15d;
             Formula actual;
 
@@ -103,7 +103,7 @@ namespace GoodSeat.LiffomTestProject
             Formula f = Formula.Parse("3*x^2 - 45*x");
             Variable x = new Variable("x");
             Formula solution = 14.9998d;
-            double error = 0.001d;
+            Numeric error = 0.001d;
             Formula expected = 15d;
             Formula actual;
             actual = SolveEquation.GetRoundSolution(f, x, solution, error);

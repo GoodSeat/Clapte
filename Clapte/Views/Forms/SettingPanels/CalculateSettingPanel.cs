@@ -180,7 +180,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 
             TargetBrentMethod.UpperLimit = (double)_numUpperLimitBrent.Value;
             TargetBrentMethod.LowerLimit = (double)_numLowerLimitBrent.Value;
-            TargetBrentMethod.ErrorTolerance = Math.Pow(10.0, (double)_numErrorToleranceBrent.Value);
+            TargetBrentMethod.ErrorTolerance = new Numeric(Math.Pow(10.0, (double)_numErrorToleranceBrent.Value));
             TargetBrentMethod.MaxTryCount = (int)_numTryMaxCountBrent.Value;
 
             TargetSolver.ParseAbsPunctuation = _checkParseAbs.Checked;
