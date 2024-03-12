@@ -53,7 +53,8 @@ namespace GoodSeat.Liffom.Formulas.Functions
         {
             var eq = Argument[0] as Equal;
             var x  = Argument[1] as Variable;
-            if (eq == null || x == null) return this;
+            if (eq == null) throw new FormulaProcessException("第一引数には方程式を指定して下さい。");
+            if (x == null) throw new FormulaProcessException("第二引数には求解対象とする変数を指定して下さい。");
 
             var solve = new SolveAlgebraicEquation();
             solve.AdmitImaginary = true;
