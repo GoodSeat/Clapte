@@ -20,22 +20,33 @@ namespace GoodSeat.Liffom.Processes
     public class NewtonMethod : SolveEquation
     {
         /// <summary>
+        /// ニュートン・ラフソン法による解の算出処理を初期化します。
+        /// </summary>
+        public NewtonMethod()
+        {
+            _initialSolution = Numeric.Zero;
+            _errorTolerance = new Numeric(1E-6).Figure;  // 許容誤差
+            _increment = new Numeric(0.5).Figure;        // 再試行時の初期解のずらし基準量
+            _incrementWidth = new Numeric(0.25).Figure;  // 再試行時の初期解ずらし基準の振れ幅
+        }
+
+        /// <summary>
         /// 一意のユーザー情報を指定して、複数の同時呼び出しを許可するか否かを取得します。
         /// </summary>
         public override bool IsSupportMultipleConcurrentInvocations { get { return true; } }
 
-        double _initialSolution = 0d;   // 初期解
-        double _errorTolerance = 1E-6;  // 許容誤差
-        int _maxTryCount = 500;         // 最大試行回数
+        Real _initialSolution;  // 初期解
+        Real _errorTolerance;   // 許容誤差
+        int _maxTryCount = 500; // 最大試行回数
         bool _autoInitialSolutinoShift = true; // 与えられた初期解で求解できない場合に、自動で初期解をずらして試行を続行するか
 
-        double _increment = 0.5;        // 再試行時の初期解のずらし基準量
-        double _incrementWidth = 0.25;  // 再試行時の初期解ずらし基準の振れ幅
+        Real _increment;        // 再試行時の初期解のずらし基準量
+        Real _incrementWidth;   // 再試行時の初期解ずらし基準の振れ幅
 
         /// <summary>
         /// 初期解を設定もしくは取得します。
         /// </summary>
-        public double InitialSolution
+        public Real InitialSolution
         {
             get { return _initialSolution; }
             set { _initialSolution = value; }
@@ -53,7 +64,7 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 解の許容誤差を設定もしくは取得します。
         /// </summary>
-        public double ErrorTolerance
+        public Real ErrorTolerance
         {
             get { return _errorTolerance; }
             set { _errorTolerance = value; }
@@ -71,7 +82,7 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 初期解のずらし基準量を設定もしくは取得します。
         /// </summary>
-        public double Increment
+        public Real Increment
         {
             get { return _increment; }
             set { _increment = value; }
@@ -80,7 +91,7 @@ namespace GoodSeat.Liffom.Processes
         /// <summary>
         /// 初期解のずらし基準量からの乱数最大振れ幅を設定もしくは取得します。
         /// </summary>
-        public double IncrementWidth
+        public Real IncrementWidth
         {
             get { return _incrementWidth; }
             set { _incrementWidth = value; }
@@ -174,7 +185,7 @@ namespace GoodSeat.Liffom.Processes
             }
 
             // 無限ループ検知用の途中解リスト
-            List<double> solList = new List<double>();
+            List<Real> solList = new List<Real>();
 
             Real lastSolution = null;
             Real fdSubstituted = null;

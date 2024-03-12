@@ -15,6 +15,7 @@ using GoodSeat.Liffom.Reals;
 using GoodSeat.Liffom.Processes;
 using GoodSeat.Clapte.ViewModels;
 using GoodSeat.Clapte.Solvers.Processes;
+using GoodSeat.Liffom.Formulas;
 
 namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 {
@@ -109,7 +110,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             }
 
             // 方程式求解の設定
-            _numInitialSolutionNewton.Value = (decimal)TargetNewtonMethod.InitialSolution;
+            _numInitialSolutionNewton.Value = (decimal)TargetNewtonMethod.InitialSolution.Value.ToDouble();
             _numErrorToleranceNewton.Value = (decimal)new DecimalValue(TargetNewtonMethod.ErrorTolerance).Exponent;
             _numTryMaxCountNewton.Value = (decimal)TargetNewtonMethod.MaxTryCount;
 
@@ -173,8 +174,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             }
 
             // 方程式求解の設定
-            TargetNewtonMethod.InitialSolution = (double)_numInitialSolutionNewton.Value;
-            TargetNewtonMethod.ErrorTolerance = Math.Pow(10.0, (double)_numErrorToleranceNewton.Value);
+            TargetNewtonMethod.InitialSolution = new Numeric((double)_numInitialSolutionNewton.Value);
+            TargetNewtonMethod.ErrorTolerance = new Numeric(Math.Pow(10.0, (double)_numErrorToleranceNewton.Value));
             TargetNewtonMethod.MaxTryCount = (int)_numTryMaxCountNewton.Value;
 
             TargetBrentMethod.UpperLimit = (double)_numUpperLimitBrent.Value;

@@ -71,14 +71,14 @@ namespace GoodSeat.Liffom.Formulas.Functions
             {
                 var x1  = Argument[2] as Numeric;
                 if (x1 == null) return this;
-                solve.InitialSolution = (double)x1;
+                solve.InitialSolution = x1.Figure;
             }
 
             if (Argument.Count > 3)
             {
                 var eps = Argument[3] as Numeric;
                 if (eps == null) return this;
-                solve.ErrorTolerance = (double)eps;
+                solve.ErrorTolerance = eps;
             }
 
             if (Argument.Count > 4)
@@ -92,7 +92,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             {
                 var inc = Argument[5] as Numeric;
                 if (inc == null) return this;
-                solve.Increment = (double)inc;
+                solve.Increment = inc;
                 solve.IncrementWidth = solve.Increment / 2.0;
             }
 
@@ -112,7 +112,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
             var solve = new NewtonMethod();
             args = new List<string>()
             {
-                "方程式", "求解対象の変数", $"初期解。既定は{solve.InitialSolution}です。", $"許容誤差値。既定は{solve.ErrorTolerance}です。", $"探索最大回数。既定は{solve.MaxTryCount}です。", $"探索時の解の振動幅。既定は{solve.Increment}です。"
+                "方程式", "求解対象の変数", $"初期解。既定は{solve.InitialSolution}です", $"許容誤差値。既定は{solve.ErrorTolerance}です", $"探索最大回数。既定は{solve.MaxTryCount}です", $"探索時の解の振動幅。既定は{solve.Increment}です"
             };
             return "ニュートン・ラフソン法を用いて方程式の近似解を一つ求めます。";
         }

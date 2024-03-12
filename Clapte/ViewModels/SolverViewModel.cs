@@ -419,8 +419,8 @@ namespace GoodSeat.Clapte.ViewModels
             MidpointRound = (MidpointRounding)Enum.Parse(typeof(MidpointRounding), calculateElement.GetAttribute("MidpointRound"));
             {
                 XmlElement newtonElement = calculateElement["NewtonMethod"];
-                NewtonMethod.InitialSolution = double.Parse(newtonElement.GetAttribute("InitialSolution"));
-                NewtonMethod.ErrorTolerance = double.Parse(newtonElement.GetAttribute("ErrorTolerance"));
+                NewtonMethod.InitialSolution = new Numeric(double.Parse(newtonElement.GetAttribute("InitialSolution")));
+                NewtonMethod.ErrorTolerance = new Numeric(double.Parse(newtonElement.GetAttribute("ErrorTolerance")));
                 NewtonMethod.MaxTryCount = int.Parse(newtonElement.GetAttribute("MaxTryCount"));
 
                 XmlElement brentElement = calculateElement["BrentMethod"];
