@@ -4,6 +4,7 @@
 //  See https://sites.google.com/site/eatbaconandham/clapte/license 
 // -----------------------------------------------------------------------------
 using GoodSeat.Clapte.Solvers;
+using GoodSeat.Clapte.Solvers.Processes;
 using GoodSeat.Liffom.Formulas;
 using System;
 using System.Collections.Generic;
@@ -145,7 +146,19 @@ namespace GoodSeat.Clapte.Models
                 return new Result(Result.Level.Success, "$TRUE", null);
             }
 
-            var result = base.OnEvaluate(solver);
+            Result result = null;
+
+            // 方程式として検知されないようにする
+            var proc = solver.GetProcessOf<EvaluateUserDefineProcess>();
+            if (proc != null) proc.ForceSubstitute = true;
+            try
+            {
+                result = base.OnEvaluate(solver);
+            }
+            finally
+            {
+                if (proc != null) proc.ForceSubstitute = false;
+            }
 
             if (result.ResultLevel == Result.Level.Success)
             {

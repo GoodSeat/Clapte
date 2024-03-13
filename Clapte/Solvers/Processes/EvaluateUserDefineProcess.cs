@@ -56,6 +56,11 @@ namespace GoodSeat.Clapte.Solvers.Processes
         public List<FunctionDefine> CustomDefineFunctions { get; set; }
 
         /// <summary>
+        /// 方程式と考えられる式か否かに依らず、常に変数の値を置き換えるか否かを設定もしくは取得します。
+        /// </summary>
+        public bool ForceSubstitute { get; set; } = false;
+
+        /// <summary>
         /// 入力された文字列を対象として、処理を行います。
         /// </summary>
         /// <param name="input">処理対象の入力文字列。</param>
@@ -91,7 +96,7 @@ namespace GoodSeat.Clapte.Solvers.Processes
             UserFunctionCache.Clear();
 
             // 変数がただ1つだけある等式なら、方程式とみなす
-            if (input is Equal && input.GetExistFactors<Variable>().Count() == 1) return null;
+            if (!ForceSubstitute && input is Equal && input.GetExistFactors<Variable>().Count() == 1) return null;
 
             var callStack = new Stack<Formula>();
 
