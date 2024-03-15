@@ -104,15 +104,13 @@ cond = 0 # 何らかの条件変数
 
 $if cond = 0
   val = 3
-$elif cond = 1
+$elif cond > 0
   val = 5
-$elif cond = 2
-  val = 7
 $else
-  val = 11
+  val = 7
 $endif
 
-val * 2 # cond=0なら6、cond=1なら10、cond=2なら14、それ以外なら22
+val * 2 # cond = 0なら6、cond > 0なら10、cond < 0なら14
 
 # ------------------------------------------------------------------
 # 6. 各行の計算結果参照
