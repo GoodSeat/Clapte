@@ -360,7 +360,8 @@ namespace GoodSeat.Clapte.Views.Forms
         /// <param name="color">設定する色。</param>
         public void SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget target, Color color)
         {
-            ColorScheme.SetColor(Highlighter.GetCharClassOf(target), color, Color.White);
+            _inputTextBox.ColorScheme.SetColor(Highlighter.GetCharClassOf(target), color, Color.Transparent);
+            _resultTextBox.ColorScheme.SetColor(Highlighter.GetCharClassOf(target), color, Color.Transparent);
         }
 
         /// <summary>
@@ -1753,6 +1754,12 @@ namespace GoodSeat.Clapte.Views.Forms
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Unit, Color.FromArgb(int.Parse(colorSchemeElement["Unit"].GetAttribute("Color"))));
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment, Color.FromArgb(int.Parse(colorSchemeElement["Comment"].GetAttribute("Color"))));
             SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Operator, Color.FromArgb(int.Parse(colorSchemeElement["Operator"].GetAttribute("Color"))));
+
+            if (colorSchemeElement["Operation"] != null)
+            {
+                SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Control, Color.FromArgb(int.Parse(colorSchemeElement["Operation"].GetAttribute("Color"))));
+                SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.ControlResult, Color.FromArgb(int.Parse(colorSchemeElement["Operation"].GetAttribute("Color"))));
+            }
         }
 
         /// <summary>
@@ -1795,6 +1802,10 @@ namespace GoodSeat.Clapte.Views.Forms
             XmlElement colorOperator = new XmlElement("Operator");
             colorOperator.AddAttribute("Color", GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Operator).ToArgb().ToString());
             colorScheme.AddElements(colorOperator);
+
+            XmlElement colorOperation = new XmlElement("Operation");
+            colorOperation.AddAttribute("Color", GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Control).ToArgb().ToString());
+            colorScheme.AddElements(colorOperation);
 
             xmlElement.AddElements(colorScheme);
         }

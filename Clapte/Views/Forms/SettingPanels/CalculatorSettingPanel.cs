@@ -34,12 +34,13 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             highlighter.AddKeywordSet(new string[] { "sin" }, target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Function));
             highlighter.AddKeywordSet(new string[] { "cm" }, target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Unit));
             highlighter.AddKeywordSet(new string[] { "+" }, target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Operator));
+            highlighter.AddKeywordSet(new string[] { "$if" }, target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Control));
             highlighter.AddLineHighlight("#", target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment));
             _textBoxSample.Highlighter = highlighter;
             _textBoxSample.ColorScheme.SelectionBack = Target.ColorScheme.SelectionBack;
             _textBoxSample.ColorScheme.HighlightColor = Target.ColorScheme.HighlightColor;
             _textBoxSample.ColorScheme.MatchedBracketBack = Target.ColorScheme.MatchedBracketBack;
-            _textBoxSample.Text = "# サンプル\r\n\tA = sin(pi) + 5[cm]";
+            _textBoxSample.Text = "$if 1 # サンプル\r\n\tA = sin(pi) + 5[cm]";
             _textBoxSample.IsReadOnly = true;
 
             _installedFonts = new InstalledFontCollection();
@@ -74,6 +75,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _picColorOperator.BackColor = Target.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Operator);
             _picColorUnit.BackColor = Target.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Unit);
             _picColorComment.BackColor = Target.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment);
+            _picColorOperation.BackColor = Target.GetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Control);
 
             RenewSample();
         }
@@ -98,6 +100,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Operator, _picColorOperator.BackColor);
             Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Unit, _picColorUnit.BackColor);
             Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment, _picColorComment.BackColor);
+            Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.Control, _picColorOperation.BackColor);
+            Target.SetSyntaxColorOf(ClaptePadKeywordHighlighter.SyntaxTarget.ControlResult, _picColorOperation.BackColor);
         }
 
         /// <summary>
@@ -117,6 +121,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _textBoxSample.ColorScheme.SetColor(Target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Operator), _picColorOperator.BackColor, Color.White);
             _textBoxSample.ColorScheme.SetColor(Target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Unit), _picColorUnit.BackColor, Color.White);
             _textBoxSample.ColorScheme.SetColor(Target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Comment), _picColorComment.BackColor, Color.White);
+            _textBoxSample.ColorScheme.SetColor(Target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Control), _picColorOperation.BackColor, Color.White);
         }
 
         private void ColorSampleClicked(object sender, EventArgs e)

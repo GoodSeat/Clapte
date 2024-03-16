@@ -1,4 +1,4 @@
-﻿namespace GoodSeat.Clapte.Views.Forms.SettingPanels
+namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 {
     partial class CalculatorSettingPanel
     {
@@ -54,6 +54,8 @@
             this._checkVisibleEol = new System.Windows.Forms.CheckBox();
             this._groupSupport = new System.Windows.Forms.GroupBox();
             this._checkInputSupportAlsoInfomation = new System.Windows.Forms.CheckBox();
+            this._labelOperation = new System.Windows.Forms.Label();
+            this._picColorOperation = new System.Windows.Forms.PictureBox();
             ((System.ComponentModel.ISupportInitialize)(this._picColorConstant)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorFunction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorUnit)).BeginInit();
@@ -62,6 +64,7 @@
             ((System.ComponentModel.ISupportInitialize)(this._picColorComment)).BeginInit();
             this._groupFont.SuspendLayout();
             this._groupSupport.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._picColorOperation)).BeginInit();
             this.SuspendLayout();
             // 
             // _labelConstant
@@ -148,7 +151,9 @@
             this._groupHighlight.Controls.Add(this._labelComment);
             this._groupHighlight.Controls.Add(this._labelConstant);
             this._groupHighlight.Controls.Add(this._picColorConstant);
+            this._groupHighlight.Controls.Add(this._picColorOperation);
             this._groupHighlight.Controls.Add(this._picColorOperator);
+            this._groupHighlight.Controls.Add(this._labelOperation);
             this._groupHighlight.Controls.Add(this._labelFunction);
             this._groupHighlight.Controls.Add(this._labelOperator);
             this._groupHighlight.Controls.Add(this._picColorFunction);
@@ -366,6 +371,25 @@
             this._checkInputSupportAlsoInfomation.Text = "説明文も入力補完の引き当てに考慮する";
             this._checkInputSupportAlsoInfomation.UseVisualStyleBackColor = true;
             // 
+            // _labelOperation
+            // 
+            this._labelOperation.AutoSize = true;
+            this._labelOperation.Location = new System.Drawing.Point(141, 85);
+            this._labelOperation.Name = "_labelOperation";
+            this._labelOperation.Size = new System.Drawing.Size(41, 12);
+            this._labelOperation.TabIndex = 6;
+            this._labelOperation.Text = "制御文";
+            // 
+            // _picColorOperation
+            // 
+            this._picColorOperation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._picColorOperation.Location = new System.Drawing.Point(196, 79);
+            this._picColorOperation.Name = "_picColorOperation";
+            this._picColorOperation.Size = new System.Drawing.Size(37, 22);
+            this._picColorOperation.TabIndex = 7;
+            this._picColorOperation.TabStop = false;
+            this._picColorOperation.Click += new System.EventHandler(this.ColorSampleClicked);
+            // 
             // CalculatorSettingPanel
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
@@ -389,6 +413,7 @@
             this._groupFont.ResumeLayout(false);
             this._groupSupport.ResumeLayout(false);
             this._groupSupport.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this._picColorOperation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -420,5 +445,7 @@
         private System.Windows.Forms.CheckBox _checkVisibleEol;
         private System.Windows.Forms.GroupBox _groupSupport;
         private System.Windows.Forms.CheckBox _checkInputSupportAlsoInfomation;
+        private System.Windows.Forms.PictureBox _picColorOperation;
+        private System.Windows.Forms.Label _labelOperation;
     }
 }

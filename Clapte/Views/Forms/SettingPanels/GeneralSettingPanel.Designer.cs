@@ -1,4 +1,4 @@
-﻿namespace GoodSeat.Clapte.Views.Forms.SettingPanels
+namespace GoodSeat.Clapte.Views.Forms.SettingPanels
 {
     partial class GeneralSettingPanel
     {
@@ -67,7 +67,7 @@
             this._numMaxLength.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numMaxLength.EnableUpDown = false;
             this._numMaxLength.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numMaxLength.Location = new System.Drawing.Point(207, 17);
+            this._numMaxLength.Location = new System.Drawing.Point(231, 17);
             this._numMaxLength.Maximum = new decimal(new int[] {
             500,
             0,
@@ -134,10 +134,10 @@
             this._labelMaxUnitLength.AutoSize = true;
             this._labelMaxUnitLength.Location = new System.Drawing.Point(22, 53);
             this._labelMaxUnitLength.Name = "_labelMaxUnitLength";
-            this._labelMaxUnitLength.Size = new System.Drawing.Size(170, 12);
+            this._labelMaxUnitLength.Size = new System.Drawing.Size(200, 12);
             this._labelMaxUnitLength.TabIndex = 5;
-            this._labelMaxUnitLength.Text = "単位として認識する最大文字列長";
-            this._toolTipHelp.SetToolTip(this._labelMaxUnitLength, "単位記号として自動認識する最大の文字列長を指定します。");
+            this._labelMaxUnitLength.Text = "単位/変数として認識する最大文字列長";
+            this._toolTipHelp.SetToolTip(this._labelMaxUnitLength, "単位/変数記号として自動認識する最大の文字列長を指定します。");
             // 
             // _numMaxUnitLength
             // 
@@ -150,7 +150,7 @@
             this._numMaxUnitLength.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numMaxUnitLength.EnableUpDown = false;
             this._numMaxUnitLength.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numMaxUnitLength.Location = new System.Drawing.Point(207, 50);
+            this._numMaxUnitLength.Location = new System.Drawing.Point(231, 50);
             this._numMaxUnitLength.Maximum = new decimal(new int[] {
             20,
             0,
@@ -335,7 +335,7 @@
             this._numBalloonTime.Cursor = System.Windows.Forms.Cursors.SizeWE;
             this._numBalloonTime.EnableUpDown = false;
             this._numBalloonTime.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 11.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(128)));
-            this._numBalloonTime.Location = new System.Drawing.Point(207, 18);
+            this._numBalloonTime.Location = new System.Drawing.Point(231, 18);
             this._numBalloonTime.Maximum = new decimal(new int[] {
             60,
             0,
