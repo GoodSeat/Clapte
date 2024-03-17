@@ -1,4 +1,4 @@
-﻿namespace GoodSeat.Clapte.Views.Forms
+namespace GoodSeat.Clapte.Views.Forms
 {
     partial class FormOfClaptePad
     {
@@ -1503,7 +1503,6 @@
             // 
             // _fileSystemWatcherHotLoading
             // 
-            this._fileSystemWatcherHotLoading.EnableRaisingEvents = true;
             this._fileSystemWatcherHotLoading.SynchronizingObject = this;
             this._fileSystemWatcherHotLoading.Changed += new System.IO.FileSystemEventHandler(this._fileSystemWatcherHotLoading_Changed);
             this._fileSystemWatcherHotLoading.Deleted += new System.IO.FileSystemEventHandler(this._fileSystemWatcherHotLoading_Deleted);

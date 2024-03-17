@@ -4,6 +4,7 @@
 //  See https://sites.google.com/site/eatbaconandham/liffom/license 
 // -----------------------------------------------------------------------------
 using GoodSeat.Liffom.Formulas.Operators.Comparers;
+using GoodSeat.Liffom.Formulas.Units;
 using GoodSeat.Liffom.Processes;
 using System;
 using System.Collections.Generic;
@@ -53,6 +54,12 @@ namespace GoodSeat.Liffom.Formulas.Functions
         {
             var eq = Argument[0] as Equal;
             var x  = Argument[1] as Variable;
+            if (Argument[1] is Unit)
+            {
+                x = new Variable((Argument[1] as Unit).GetText());
+                eq = eq.Substitute(Argument[1], x) as Equal;
+            }
+
             if (eq == null) throw new FormulaProcessException("第一引数には方程式を指定して下さい。");
             if (x == null) throw new FormulaProcessException("第二引数には求解対象とする変数を指定して下さい。");
 

@@ -233,6 +233,8 @@ namespace GoodSeat.Clapte.ViewModels
                 solver.Target.AbortLevel = Error.Level.Error;
                 solver.Target.UserConstants = UserConstantList;
                 solver.Target.UserFunctions = UserFunctionList;
+                solver.MaxTime = Math.Max(10000, solver.MaxTime); // 複雑な計算を想定し、計算機では最低でも10secは計算させる
+                solver.UpdateSetting();
                 Solvers.Add(solver);
 
                 var worker = new BackgroundWorker();
