@@ -127,7 +127,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         {
             get
             {
-                return "20200329";
+                return "20240317";
             }
         }
 
