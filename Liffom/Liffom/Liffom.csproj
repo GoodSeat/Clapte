@@ -121,6 +121,7 @@
     <Compile Include="Formulas\Functions\Factorial.cs" />
     <Compile Include="Formulas\Functions\Function.cs" />
     <Compile Include="Formulas\Functions\Ln.cs" />
+    <Compile Include="Formulas\Functions\Lock.cs" />
     <Compile Include="Formulas\Functions\Log.cs" />
     <Compile Include="Formulas\Functions\Mod.cs" />
     <Compile Include="Formulas\Functions\ModA.cs" />

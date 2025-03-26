@@ -472,7 +472,7 @@ namespace GoodSeat.Clapte.Models
                     if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfAnswerRevVariable).Any()) fi = null;
                     f[++idx] = fi == null ? 0 : fi;
                 }
-                def.Define = f.ToString();
+                def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
             }
             if (GetAllReferenceVariableNames().Contains(NameOfInputRevVariable))
@@ -489,7 +489,7 @@ namespace GoodSeat.Clapte.Models
                     if (fi != null && fi.GetExistFactors(v => v.ToString() == NameOfAnswerRevVariable).Any()) fi = null;
                     f[idx--] = fi == null ? 0 : fi;
                 }
-                def.Define = f.ToString();
+                def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
             }
             if (GetAllReferenceVariableNames().Contains(NameOfAnswerVariable))
@@ -512,7 +512,7 @@ namespace GoodSeat.Clapte.Models
                         else f[idx] = 0;
                     }
                 }
-                def.Define = f.ToString();
+                def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
             }
             if (GetAllReferenceVariableNames().Contains(NameOfAnswerRevVariable))
@@ -535,7 +535,7 @@ namespace GoodSeat.Clapte.Models
                     }
                     --idx;
                 }
-                def.Define = f.ToString();
+                def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
             }
 
