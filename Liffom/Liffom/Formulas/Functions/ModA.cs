@@ -1,5 +1,5 @@
-// -----------------------------------------------------------------------------
-//  Copyright (C) 2016-2019 GoodSeat
+﻿// -----------------------------------------------------------------------------
+//  Copyright (C) 2016-2025 GoodSeat
 //  Distributed under the MIT License
 //  See https://sites.google.com/site/eatbaconandham/liffom/license 
 // -----------------------------------------------------------------------------
@@ -14,22 +14,22 @@ using System.Drawing;
 namespace GoodSeat.Liffom.Formulas.Functions
 {
     /// <summary>
-    /// Mod関数（剰余）を表します。
+    /// Mod関数（整数式剰余）を表します。
     /// </summary>
     [Serializable()]
-    public class Mod : Function
+    public class ModA : Function
     {
         /// <summary>
-        /// 剰余関数を初期化します。
+        /// 整数式剰余関数を初期化します。
         /// </summary>
-        public Mod() : base() { }
+        public ModA() : base() { }
 
         /// <summary>
-        /// 剰余関数を初期化します。
+        /// 整数式剰余関数を初期化します。
         /// </summary>
         /// <param name="molecular">被除数。</param>
         /// <param name="denominator">除数。</param>
-        public Mod(Formula molecular, Formula denominator) : base(molecular, denominator) { }
+        public ModA(Formula molecular, Formula denominator) : base(molecular, denominator) { }
 
         /// <summary>
         /// 引数を指定して、関数を生成します。
@@ -38,12 +38,12 @@ namespace GoodSeat.Liffom.Formulas.Functions
         /// <returns>初期化された関数。</returns>
         public override Function CreateFunction(params Formula[] args)
         {
-            return new Mod(args[0], args[1]);
+            return new ModA(args[0], args[1]);
         }
 
         public override Formula CalculateFunction()
         {
-            if (Argument[0] is Numeric && Argument[1] is Numeric)
+            if (Argument[0] != null && Argument[1] != null)
             {
                 Formula result;
                 Argument[0].Divide(Argument[1], out result);
@@ -53,6 +53,11 @@ namespace GoodSeat.Liffom.Formulas.Functions
                 return this;
         }
 
+        /// <summary>
+        /// この関数として識別する文字列を取得します。
+        /// </summary>
+        public override string DistinguishedName => "modA";
+
         public override int MinimumArgumentQty
         {
             get { return 2; }
@@ -61,7 +66,7 @@ namespace GoodSeat.Liffom.Formulas.Functions
         public override string GetInformation(out List<string> args)
         {
             args = new List<string>(); args.Add("分子"); args.Add("分母");
-            return "指定した分子分母による除算の剰余を取得します。分子及び分母の両方が数値である場合のみ評価を実行します。";
+            return "指定した分子分母による除算の剰余を取得します。分子あるいは分母が数値でない場合にも、整数式とみなして評価を実行します。";
         }
     }
 }

@@ -123,6 +123,7 @@
     <Compile Include="Formulas\Functions\Ln.cs" />
     <Compile Include="Formulas\Functions\Log.cs" />
     <Compile Include="Formulas\Functions\Mod.cs" />
+    <Compile Include="Formulas\Functions\ModA.cs" />
     <Compile Include="Formulas\Functions\Solve\SolveB.cs" />
     <Compile Include="Formulas\Functions\Solve\SolveN.cs" />
     <Compile Include="Formulas\Functions\Pi.cs" />
