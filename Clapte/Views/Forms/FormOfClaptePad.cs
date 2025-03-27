@@ -126,6 +126,19 @@ namespace GoodSeat.Clapte.Views.Forms
         }
 
         /// <summary>
+        /// 水平ルーラーを表示するか否かを設定もしくは取得します。
+        /// </summary>
+        public bool ShowHRuler
+        {
+            get { return _inputTextBox.ShowsHRuler; }
+            set 
+            { 
+                _inputTextBox.ShowsHRuler = value;
+                _resultTextBox.ShowsHRuler = value;
+            }
+        }
+
+        /// <summary>
         /// タブ文字を表示するか否かを設定もしくは取得します。
         /// </summary>
         public bool ShowTabChara
@@ -1740,6 +1753,7 @@ namespace GoodSeat.Clapte.Views.Forms
             ShowTabChara = bool.Parse(xmlElement.GetAttribute("ShowTab", "False"));
             ShowEolChara = bool.Parse(xmlElement.GetAttribute("ShowEol", "False"));
             ShowLineNumber = bool.Parse(xmlElement.GetAttribute("ShowLineNumber", "False"));
+            ShowHRuler = bool.Parse(xmlElement.GetAttribute("ShowHRuler", "False"));
             ShowUnderLine = bool.Parse(xmlElement.GetAttribute("ShowUnderLine", "True"));
             Delay = int.Parse(xmlElement.GetAttribute("Delay", "500"));
             EditorViewModel.AutoShowInputSupport = bool.Parse(xmlElement.GetAttribute("AutoShowInputSupport", "True"));
@@ -1774,6 +1788,7 @@ namespace GoodSeat.Clapte.Views.Forms
             xmlElement.AddAttribute("ShowTab", ShowTabChara.ToString());
             xmlElement.AddAttribute("ShowEol", ShowEolChara.ToString());
             xmlElement.AddAttribute("ShowLineNumber", ShowLineNumber.ToString());
+            xmlElement.AddAttribute("ShowHRuler", ShowHRuler.ToString());
             xmlElement.AddAttribute("ShowUnderLine", ShowUnderLine.ToString());
             xmlElement.AddAttribute("Delay", Delay.ToString());
             xmlElement.AddAttribute("AutoShowInputSupport", EditorViewModel.InputSupport.AutoShow.ToString());

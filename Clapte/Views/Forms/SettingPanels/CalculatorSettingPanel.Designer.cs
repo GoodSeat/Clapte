@@ -29,7 +29,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         /// </summary>
         private void InitializeComponent()
         {
-            Sgry.Azuki.FontInfo fontInfo1 = new Sgry.Azuki.FontInfo();
+            Sgry.Azuki.FontInfo fontInfo2 = new Sgry.Azuki.FontInfo();
             this._labelConstant = new System.Windows.Forms.Label();
             this._picColorConstant = new System.Windows.Forms.PictureBox();
             this._picColorFunction = new System.Windows.Forms.PictureBox();
@@ -41,6 +41,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             this._groupHighlight = new System.Windows.Forms.GroupBox();
             this._picColorComment = new System.Windows.Forms.PictureBox();
             this._labelComment = new System.Windows.Forms.Label();
+            this._picColorOperation = new System.Windows.Forms.PictureBox();
+            this._labelOperation = new System.Windows.Forms.Label();
             this._colorDialog = new System.Windows.Forms.ColorDialog();
             this._fontDialog = new System.Windows.Forms.FontDialog();
             this._comboFont = new System.Windows.Forms.ComboBox();
@@ -54,17 +56,17 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             this._checkVisibleEol = new System.Windows.Forms.CheckBox();
             this._groupSupport = new System.Windows.Forms.GroupBox();
             this._checkInputSupportAlsoInfomation = new System.Windows.Forms.CheckBox();
-            this._labelOperation = new System.Windows.Forms.Label();
-            this._picColorOperation = new System.Windows.Forms.PictureBox();
+            this._checkLineNumber = new System.Windows.Forms.CheckBox();
+            this._checkHRuler = new System.Windows.Forms.CheckBox();
             ((System.ComponentModel.ISupportInitialize)(this._picColorConstant)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorFunction)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorUnit)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorOperator)).BeginInit();
             this._groupHighlight.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picColorComment)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this._picColorOperation)).BeginInit();
             this._groupFont.SuspendLayout();
             this._groupSupport.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._picColorOperation)).BeginInit();
             this.SuspendLayout();
             // 
             // _labelConstant
@@ -185,6 +187,25 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             this._labelComment.TabIndex = 8;
             this._labelComment.Text = "コメント";
             // 
+            // _picColorOperation
+            // 
+            this._picColorOperation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this._picColorOperation.Location = new System.Drawing.Point(196, 79);
+            this._picColorOperation.Name = "_picColorOperation";
+            this._picColorOperation.Size = new System.Drawing.Size(37, 22);
+            this._picColorOperation.TabIndex = 7;
+            this._picColorOperation.TabStop = false;
+            this._picColorOperation.Click += new System.EventHandler(this.ColorSampleClicked);
+            // 
+            // _labelOperation
+            // 
+            this._labelOperation.AutoSize = true;
+            this._labelOperation.Location = new System.Drawing.Point(141, 85);
+            this._labelOperation.Name = "_labelOperation";
+            this._labelOperation.Size = new System.Drawing.Size(41, 12);
+            this._labelOperation.TabIndex = 6;
+            this._labelOperation.Text = "制御文";
+            // 
             // _fontDialog
             // 
             this._fontDialog.AllowVerticalFonts = false;
@@ -278,7 +299,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             // _checkUnderline
             // 
             this._checkUnderline.AutoSize = true;
-            this._checkUnderline.Location = new System.Drawing.Point(13, 315);
+            this._checkUnderline.Location = new System.Drawing.Point(13, 336);
             this._checkUnderline.Name = "_checkUnderline";
             this._checkUnderline.Size = new System.Drawing.Size(175, 16);
             this._checkUnderline.TabIndex = 13;
@@ -294,27 +315,29 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             this._textBoxSample.BackColor = System.Drawing.Color.White;
             this._textBoxSample.BorderStyle = System.Windows.Forms.BorderStyle.None;
             this._textBoxSample.Cursor = System.Windows.Forms.Cursors.IBeam;
-            this._textBoxSample.DrawingOption = ((Sgry.Azuki.DrawingOption)((Sgry.Azuki.DrawingOption.HighlightCurrentLine | Sgry.Azuki.DrawingOption.HighlightsMatchedBracket)));
+            this._textBoxSample.DrawingOption = ((Sgry.Azuki.DrawingOption)((((Sgry.Azuki.DrawingOption.HighlightCurrentLine | Sgry.Azuki.DrawingOption.ShowsLineNumber) 
+            | Sgry.Azuki.DrawingOption.ShowsHRuler) 
+            | Sgry.Azuki.DrawingOption.HighlightsMatchedBracket)));
             this._textBoxSample.DrawsEolCode = false;
             this._textBoxSample.DrawsFullWidthSpace = false;
             this._textBoxSample.DrawsTab = false;
             this._textBoxSample.FirstVisibleLine = 0;
             this._textBoxSample.Font = new System.Drawing.Font("HGｺﾞｼｯｸM", 9F);
-            fontInfo1.Name = "HGｺﾞｼｯｸM";
-            fontInfo1.Size = 9;
-            fontInfo1.Style = System.Drawing.FontStyle.Regular;
-            this._textBoxSample.FontInfo = fontInfo1;
+            fontInfo2.Name = "HGｺﾞｼｯｸM";
+            fontInfo2.Size = 9;
+            fontInfo2.Style = System.Drawing.FontStyle.Regular;
+            this._textBoxSample.FontInfo = fontInfo2;
             this._textBoxSample.ForeColor = System.Drawing.Color.Black;
-            this._textBoxSample.Location = new System.Drawing.Point(13, 337);
+            this._textBoxSample.Location = new System.Drawing.Point(13, 362);
             this._textBoxSample.Name = "_textBoxSample";
             this._textBoxSample.ScrollPos = new System.Drawing.Point(0, 0);
             this._textBoxSample.ShowsDirtBar = false;
+            this._textBoxSample.ShowsHRuler = true;
             this._textBoxSample.ShowsHScrollBar = false;
-            this._textBoxSample.ShowsLineNumber = false;
             this._textBoxSample.ShowsVScrollBar = false;
-            this._textBoxSample.Size = new System.Drawing.Size(276, 100);
+            this._textBoxSample.Size = new System.Drawing.Size(276, 99);
             this._textBoxSample.TabIndex = 17;
-            this._textBoxSample.ViewWidth = 4097;
+            this._textBoxSample.ViewWidth = 4128;
             // 
             // _checkAutoShowInputSupport
             // 
@@ -339,7 +362,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             // _checkVisibleEol
             // 
             this._checkVisibleEol.AutoSize = true;
-            this._checkVisibleEol.Location = new System.Drawing.Point(155, 293);
+            this._checkVisibleEol.Location = new System.Drawing.Point(148, 293);
             this._checkVisibleEol.Name = "_checkVisibleEol";
             this._checkVisibleEol.Size = new System.Drawing.Size(124, 16);
             this._checkVisibleEol.TabIndex = 20;
@@ -371,24 +394,27 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             this._checkInputSupportAlsoInfomation.Text = "説明文も入力補完の引き当てに考慮する";
             this._checkInputSupportAlsoInfomation.UseVisualStyleBackColor = true;
             // 
-            // _labelOperation
+            // _checkLineNumber
             // 
-            this._labelOperation.AutoSize = true;
-            this._labelOperation.Location = new System.Drawing.Point(141, 85);
-            this._labelOperation.Name = "_labelOperation";
-            this._labelOperation.Size = new System.Drawing.Size(41, 12);
-            this._labelOperation.TabIndex = 6;
-            this._labelOperation.Text = "制御文";
+            this._checkLineNumber.AutoSize = true;
+            this._checkLineNumber.Location = new System.Drawing.Point(13, 314);
+            this._checkLineNumber.Name = "_checkLineNumber";
+            this._checkLineNumber.Size = new System.Drawing.Size(112, 16);
+            this._checkLineNumber.TabIndex = 13;
+            this._checkLineNumber.Text = "行番号を表示する";
+            this._checkLineNumber.UseVisualStyleBackColor = true;
+            this._checkLineNumber.CheckedChanged += new System.EventHandler(this.SettingChanged);
             // 
-            // _picColorOperation
+            // _checkHRuler
             // 
-            this._picColorOperation.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this._picColorOperation.Location = new System.Drawing.Point(196, 79);
-            this._picColorOperation.Name = "_picColorOperation";
-            this._picColorOperation.Size = new System.Drawing.Size(37, 22);
-            this._picColorOperation.TabIndex = 7;
-            this._picColorOperation.TabStop = false;
-            this._picColorOperation.Click += new System.EventHandler(this.ColorSampleClicked);
+            this._checkHRuler.AutoSize = true;
+            this._checkHRuler.Location = new System.Drawing.Point(148, 314);
+            this._checkHRuler.Name = "_checkHRuler";
+            this._checkHRuler.Size = new System.Drawing.Size(138, 16);
+            this._checkHRuler.TabIndex = 13;
+            this._checkHRuler.Text = "水平ルーラーを表示する";
+            this._checkHRuler.UseVisualStyleBackColor = true;
+            this._checkHRuler.CheckedChanged += new System.EventHandler(this.SettingChanged);
             // 
             // CalculatorSettingPanel
             // 
@@ -397,12 +423,14 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             this.Controls.Add(this._textBoxSample);
             this.Controls.Add(this._groupSupport);
             this.Controls.Add(this._checkVisibleEol);
+            this.Controls.Add(this._checkHRuler);
+            this.Controls.Add(this._checkLineNumber);
             this.Controls.Add(this._checkUnderline);
             this.Controls.Add(this._groupFont);
             this.Controls.Add(this._checkVisibleTab);
             this.Controls.Add(this._groupHighlight);
             this.Name = "CalculatorSettingPanel";
-            this.Size = new System.Drawing.Size(301, 449);
+            this.Size = new System.Drawing.Size(301, 473);
             ((System.ComponentModel.ISupportInitialize)(this._picColorConstant)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorFunction)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this._picColorUnit)).EndInit();
@@ -410,10 +438,10 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             this._groupHighlight.ResumeLayout(false);
             this._groupHighlight.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this._picColorComment)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this._picColorOperation)).EndInit();
             this._groupFont.ResumeLayout(false);
             this._groupSupport.ResumeLayout(false);
             this._groupSupport.PerformLayout();
-            ((System.ComponentModel.ISupportInitialize)(this._picColorOperation)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -447,5 +475,7 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
         private System.Windows.Forms.CheckBox _checkInputSupportAlsoInfomation;
         private System.Windows.Forms.PictureBox _picColorOperation;
         private System.Windows.Forms.Label _labelOperation;
+        private System.Windows.Forms.CheckBox _checkLineNumber;
+        private System.Windows.Forms.CheckBox _checkHRuler;
     }
 }
