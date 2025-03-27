@@ -458,6 +458,8 @@ namespace GoodSeat.Clapte.Models
             }
 
             // 前方セルの入力、結果の参照変数の定義
+            bool needFunctionDefsF = false;
+            bool needFunctionDefsB = false;
             if (GetAllReferenceVariableNames().Contains(NameOfInputVariable))
             {
                 var def = new ConstantDefine(NameOfInputVariable);
@@ -474,6 +476,8 @@ namespace GoodSeat.Clapte.Models
                 }
                 def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
+
+                needFunctionDefsF = true;
             }
             if (GetAllReferenceVariableNames().Contains(NameOfInputRevVariable))
             {
@@ -491,6 +495,8 @@ namespace GoodSeat.Clapte.Models
                 }
                 def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
+
+                needFunctionDefsB = true;
             }
             if (GetAllReferenceVariableNames().Contains(NameOfAnswerVariable))
             {
@@ -514,6 +520,8 @@ namespace GoodSeat.Clapte.Models
                 }
                 def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
+
+                needFunctionDefsF = true;
             }
             if (GetAllReferenceVariableNames().Contains(NameOfAnswerRevVariable))
             {
@@ -537,6 +545,23 @@ namespace GoodSeat.Clapte.Models
                 }
                 def.Define = "lock(" + f.ToString() + ")";
                 proc.CustomDefineConstants.Add(def);
+
+                needFunctionDefsB = true;
+            }
+
+            if (needFunctionDefsF)
+            {
+                foreach (var cell in PreDemandEvaluateFormulaCells)
+                {
+                    foreach (var fd in cell.Content.GetAllFunctionDefines()) proc.CustomDefineFunctions.Add(fd);
+                }
+            }
+            else if (needFunctionDefsB)
+            {
+                foreach (var cell in PreDemandEvaluateFormulaCells.Reverse<FormulaCell>())
+                {
+                    foreach (var fd in cell.Content.GetAllFunctionDefines()) proc.CustomDefineFunctions.Add(fd);
+                }
             }
 
             // 前方の必要な関数、変数の定義を参照
