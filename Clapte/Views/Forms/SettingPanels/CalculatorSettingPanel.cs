@@ -40,6 +40,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _textBoxSample.ColorScheme.SelectionBack = Target.ColorScheme.SelectionBack;
             _textBoxSample.ColorScheme.HighlightColor = Target.ColorScheme.HighlightColor;
             _textBoxSample.ColorScheme.MatchedBracketBack = Target.ColorScheme.MatchedBracketBack;
+            _textBoxSample.ColorScheme.LineNumberBack = Target.ColorScheme.LineNumberBack;
+            _textBoxSample.ColorScheme.LineNumberFore = Target.ColorScheme.LineNumberFore;
             _textBoxSample.Text = "$if 1 # サンプル\r\n\tA = sin(pi) + 5[cm]";
             _textBoxSample.IsReadOnly = true;
 
@@ -65,6 +67,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _checkUnderline.Checked = Target.ShowUnderLine;
             _checkVisibleTab.Checked = Target.ShowTabChara;
             _checkVisibleEol.Checked = Target.ShowEolChara;
+            _checkLineNumber.Checked = Target.ShowLineNumber;
+            _checkHRuler.Checked = Target.ShowHRuler;
 
             _checkAutoShowInputSupport.Checked = Target.EditorViewModel.AutoShowInputSupport;
             _checkInputSupportAlsoInfomation.Checked = Target.EditorViewModel.InputSupportWithAlsoInfomation;
@@ -90,6 +94,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             Target.ShowUnderLine = _checkUnderline.Checked;
             Target.ShowTabChara = _checkVisibleTab.Checked;
             Target.ShowEolChara = _checkVisibleEol.Checked;
+            Target.ShowLineNumber = _checkLineNumber.Checked;
+            Target.ShowHRuler = _checkHRuler.Checked;
 
             Target.EditorViewModel.AutoShowInputSupport = _checkAutoShowInputSupport.Checked;
             Target.EditorViewModel.InputSupportWithAlsoInfomation = _checkInputSupportAlsoInfomation.Checked;
@@ -115,6 +121,8 @@ namespace GoodSeat.Clapte.Views.Forms.SettingPanels
             _textBoxSample.HighlightsCurrentLine = _checkUnderline.Checked;
             _textBoxSample.DrawsTab= _checkVisibleTab.Checked ;
             _textBoxSample.DrawsEolCode = _checkVisibleEol.Checked;
+            _textBoxSample.ShowsLineNumber= _checkLineNumber.Checked ;
+            _textBoxSample.ShowsHRuler = _checkHRuler.Checked;
 
             _textBoxSample.ColorScheme.SetColor(Target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Constant), _picColorConstant.BackColor, Color.White);
             _textBoxSample.ColorScheme.SetColor(Target.Highlighter.GetCharClassOf(ClaptePadKeywordHighlighter.SyntaxTarget.Function), _picColorFunction.BackColor, Color.White);
