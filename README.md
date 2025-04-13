@@ -50,7 +50,7 @@ Clapteのタスクトレイアイコンをダブルクリックするか、Clapt
 Clapte は MIT License で配布されます。
 ```
 MIT license  
-Copyright(c) 2016-2019 GoodSeat
+Copyright(c) 2016-2025 GoodSeat
 [https://sites.google.com/site/eatbaconandham/clapte/license]
 ```
 
@@ -127,7 +127,7 @@ Copyright(c) 2008-2013 Suguru YAMAMOTO
 ---
 ## 7. 更新履歴 ##
 
-#### 2025.03.30 ver2.2.1 ####
+#### 2025.04.06 ver2.2.1 ####
 * 修正
     * mod関数は、数値化できない記号を含む場合には計算対象外とするようにした（定義にmod関数を含むユーザー定義関数(floor等)が正しく評価されないケースがあったため）。
     * 計算機において、\_inp、\_INP、\_ans、\_ANSのベクトル変数はlock関数でくるんだ値とした（計算速度向上のため）。
