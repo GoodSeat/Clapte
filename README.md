@@ -111,7 +111,7 @@ Copyright(c) 2008-2013 Suguru YAMAMOTO
 
         `x * sin(x) = 0.2`
 
-その他、詳細な使用方法についてはClapteの[wiki](https://bitbucket.org/GoodSeat/clapte/wiki/Home)をご参照ください。
+その他、詳細な使用方法についてはClapteの[wiki](https://github.com/GoodSeat/Clapte/wiki)をご参照ください。
 
 ---
 ## 6. その他 ##
@@ -121,7 +121,7 @@ Copyright(c) 2008-2013 Suguru YAMAMOTO
 * 著作者           : いいせき
 * Email            : GoodSeat@hotmail.co.jp
 * HP               : https://sites.google.com/site/eatbaconandham/home
-* バグや要望の報告 : https://bitbucket.org/GoodSeat/clapte/issues?status=new&status=open
+* バグや要望の報告 : https://github.com/GoodSeat/Clapte/issues
 
 
 ---

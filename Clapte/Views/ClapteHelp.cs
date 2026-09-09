@@ -20,24 +20,24 @@ namespace GoodSeat.Clapte.Views
 
         static ClapteHelp()
         {
-            s_pathMap.Add("設定画面/一般設定", "02_リファレンス/02-01_一般設定.md");
-            s_pathMap.Add("設定画面/計算の詳細", "02_リファレンス/02-02_計算の詳細.md");
-            s_pathMap.Add("設定画面/計算機", "02_リファレンス/02-03_計算機.md");
-            s_pathMap.Add("設定画面/監視対象外", "02_リファレンス/02-04_監視対象外.md");
-            s_pathMap.Add("設定画面/区切り数値集計", "02_リファレンス/02-05_区切り数値集計.md");
-            s_pathMap.Add("設定画面/定数", "02_リファレンス/02-06_定数.md");
-            s_pathMap.Add("設定画面/関数", "02_リファレンス/02-07_関数.md");
-            s_pathMap.Add("設定画面/単位換算表", "02_リファレンス/02-08_単位換算表.md");
-            s_pathMap.Add("設定画面/バージョン情報", "02_リファレンス/02-09_バージョン情報.md");
+            s_pathMap.Add("設定画面/一般設定", "02-01_一般設定");
+            s_pathMap.Add("設定画面/計算の詳細", "02-02_計算の詳細");
+            s_pathMap.Add("設定画面/計算機", "02-03_計算機");
+            s_pathMap.Add("設定画面/監視対象外", "02-04_監視対象外");
+            s_pathMap.Add("設定画面/区切り数値集計", "02-05_区切り数値集計");
+            s_pathMap.Add("設定画面/定数", "02-06_定数");
+            s_pathMap.Add("設定画面/関数", "02-07_関数");
+            s_pathMap.Add("設定画面/単位換算表", "02-08_単位換算表");
+            s_pathMap.Add("設定画面/バージョン情報", "02-09_バージョン情報");
 
-            s_pathMap.Add("計算機", "02_リファレンス/03_計算機.md");
+            s_pathMap.Add("計算機", "03_計算機");
         }
         /// <summary>
         /// Clapteのヘルプファイルパスを取得します。
         /// </summary>
         public static string BaseURL
         {
-            get { return "https://bitbucket.org/GoodSeat/clapte/wiki/"; }
+            get { return "https://github.com/GoodSeat/Clapte/wiki/"; }
         }
 
         /// <summary>
@@ -69,7 +69,7 @@ namespace GoodSeat.Clapte.Views
             if (s_pathMap.ContainsKey(topic))
                 return s_pathMap[topic];
             else
-                return "Home.md";
+                return "";
         }
     }
 }
